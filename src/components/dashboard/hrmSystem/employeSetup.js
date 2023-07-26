@@ -39,7 +39,7 @@ const EmployeSetup = () => {
                       <td>{""}</td>
                       <td>{""}</td>
                       <td>
-                      <Link to="/endless/dashboard/hrm/edit" className="btn btn-pill btn-outline-light btn-xs txt-dark">edit</Link>
+                      <Link to="/dashboard/hrm/edit" className="btn btn-pill btn-outline-light btn-xs txt-dark">edit</Link>
                       <button className="btn btn-pill btn-outline-light btn-xs txt-dark">delete</button>
                       </td>                     
                     </tr>                    

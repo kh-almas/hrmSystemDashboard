@@ -33,7 +33,7 @@ const SetSalary = () => {
                       <td>{""}</td>
                       <td>
                         <Link
-                          to="/endless/dashboard/hrm/salary-details"
+                          to="/dashboard/hrm/salary-details"
                           className="btn btn-pill btn-outline-light btn-xs txt-dark"
                         >
                           view
