@@ -1,8 +1,8 @@
 {
-  "name": "endless",
+  "name": "management-system",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://react.pixelstrap.com/endless/",
+  "homepage": "/",
   "dependencies": {
     "@auth0/auth0-react": "^2.0.1",
     "@fullcalendar/daygrid": "^6.1.4",

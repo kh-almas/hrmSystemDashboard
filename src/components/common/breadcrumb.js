@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Home } from 'react-feather';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import Bookmark from './bookmark';
 
 const Breadcrumb = props => {
@@ -22,6 +22,10 @@ const Breadcrumb = props => {
                                     </li>
                                     <li className="breadcrumb-item">{breadcrumb.parent}</li>
                                     <li className="breadcrumb-item active">{breadcrumb.title}</li>
+                                    {
+                                        breadcrumb.id && 
+                                        <li className="breadcrumb-item active">{breadcrumb.id}</li>
+                                    }
                                 </ol>
                             </div>
                         </div>

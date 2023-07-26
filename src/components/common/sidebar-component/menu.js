@@ -39,9 +39,9 @@ export const MENUITEMS = [
           {
             title: "Manage Leave",
             type: "link",
-            path: "/base/tabs/tab-bootstrap",
+            path: "/dashboard/hrm/manage-leave",
           },
-          { title: "Attendance", type: "link", path: "/base/tabs/tab-line" },
+          { title: "Attendance", type: "link", path: "/dashboard/hrm/manage-attendance" },
         ],
       },
       {
@@ -51,10 +51,10 @@ export const MENUITEMS = [
           {
             title: "Indicator",
             type: "link",
-            path: "/base/tabs/tab-bootstrap",
+            path: "/dashboard/hrm/manage-indicator",
           },
-          { title: "Appraisal", type: "link", path: "/base/tabs/tab-line" },
-          { title: "Goal Tracking", type: "link", path: "/base/tabs/tab-line" },
+          { title: "Appraisal", type: "link", path: "/dashboard/hrm/manage-appraisal" },
+          { title: "Goal Tracking", type: "link", path: "/dashboard/hrm/goal-tracking" },
         ],
       },
       {
@@ -64,16 +64,16 @@ export const MENUITEMS = [
           {
             title: "Training List",
             type: "link",
-            path: "/base/tabs/tab-bootstrap",
+            path: "/dashboard/hrm/manage-training",
           },
-          { title: "Trainer", type: "link", path: "/base/tabs/tab-line" },
+          { title: "Trainer", type: "link", path: "/dashboard/hrm/manage-trainer" },
         ],
       },
       {
         title: "Recruitment Setup",
         type: "sub",
         children: [
-          { title: "Jobs", type: "link", path: "/base/tabs/tab-bootstrap" },
+          { title: "Jobs", type: "link", path: "/dashboard/hrm/recruitment-jobs" },
           { title: "Job Create", type: "link", path: "/base/tabs/tab-line" },
           {
             title: "Job Application",

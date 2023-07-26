@@ -1,5 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Breadcrumb from "../../common/breadcrumb";
+import CommonSearchComponet from "../../common/salaryCard/CommonSearchComponet";
 
 const EmployeSetup = () => {
   return (
@@ -9,14 +11,8 @@ const EmployeSetup = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-12">
-            <div className="card">
-              {/* <div className="card-header">
-                <h5>{BasicTable}</h5>
-                <span>
-                  {" "}
-                  {"Use a class"} <code> {"table"} </code> {"to any table."}
-                </span>
-              </div> */}
+            <div className="card" style={{padding: "20px"}}>
+              <CommonSearchComponet />
               <div className="table-responsive">
                 <table className="table">
                   <thead>
@@ -34,48 +30,23 @@ const EmployeSetup = () => {
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">{"1"}</th>
-                      <td>{"Alexander"}</td>
-                      <td>{"Orton"}</td>
-                      <td>{"@mdorton"}</td>
-                      <td>{"Admin"}</td>
-                      <td>{"USA"}</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">{"2"}</th>
-                      <td>{"John Deo"}</td>
-                      <td>{"Deo"}</td>
-                      <td>{"@johndeo"}</td>
-                      <td>{"User"}</td>
-                      <td>{"USA"}</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">{"3"}</th>
-                      <td>{"Randy Orton"}</td>
-                      <td>{"the Bird"}</td>
-                      <td>{"@twitter"}</td>
-                      <td>{"admin"}</td>
-                      <td>{"UK"}</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">{"4"}</th>
-                      <td>{"Randy Mark"}</td>
-                      <td>{"Ottandy"}</td>
-                      <td>{"@mdothe"}</td>
-                      <td>{"user"}</td>
-                      <td>{"AUS"}</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">{"5"}</th>
-                      <td>{"Ram Jacob"}</td>
-                      <td>{"Thornton"}</td>
-                      <td>{"@twitter"}</td>
-                      <td>{"admin"}</td>
-                      <td>{"IND"}</td>
-                    </tr>
+                      <th scope="row">{"#EMP0000001"}</th>
+                      <td>{"accountant"}</td>
+                      <td>{"accountant@example.com"}</td>
+                      <td>{""}</td>
+                      <td>{""}</td>
+                      <td>{""}</td>
+                      <td>{""}</td>
+                      <td>{""}</td>
+                      <td>
+                      <Link to="/endless/dashboard/hrm/edit" className="btn btn-pill btn-outline-light btn-xs txt-dark">edit</Link>
+                      <button className="btn btn-pill btn-outline-light btn-xs txt-dark">delete</button>
+                      </td>                     
+                    </tr>                    
                   </tbody>
                 </table>
               </div>
+              <p className="p-l-10 p-t-10">Showing 1 to 1 of 1 entries</p>
             </div>
           </div>
         </div>

@@ -1,9 +1,8 @@
-import React, { Suspense } from "react";
-import { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
+import { Loader } from "react-feather";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "../components/app";
 import { routes } from "./layouts-routes";
-import { Loader } from "react-feather";
 
 import configDB from "../data/customizer/config";
 
