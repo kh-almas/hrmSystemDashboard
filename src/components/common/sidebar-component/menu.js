@@ -103,16 +103,56 @@ export const MENUITEMS = [
         title: "HR Admin Setup",
         type: "sub",
         children: [
-          { title: "Award", type: "link", path: "/base/tabs/tab-bootstrap" },
-          { title: "Transfer", type: "link", path: "/base/tabs/tab-line" },
-          { title: "Resignation", type: "link", path: "/base/tabs/tab-line" },
-          { title: "Trip", type: "link", path: "/base/tabs/tab-line" },
-          { title: "Promotion", type: "link", path: "/base/tabs/tab-line" },
-          { title: "Complaints", type: "link", path: "/base/tabs/tab-line" },
-          { title: "Warning", type: "link", path: "/base/tabs/tab-line" },
-          { title: "Termination", type: "link", path: "/base/tabs/tab-line" },
-          { title: "Announcement", type: "link", path: "/base/tabs/tab-line" },
-          { title: "Holidays", type: "link", path: "/base/tabs/tab-line" },
+          {
+            title: "Award",
+            type: "link",
+            path: "/hr/dashboard/admin/award"
+          },
+          {
+            title: "Transfer",
+            type: "link",
+            path: "/hr/dashboard/admin/transfer"
+          },
+          {
+            title: "Resignation",
+            type: "link",
+            path: "/hr/dashboard/admin/resignation"
+          },
+          {
+            title: "Trip",
+            type: "link",
+            path: "/hr/dashboard/admin/trip"
+          },
+          {
+            title: "Promotion",
+            type: "link",
+            path: "/hr/dashboard/admin/promotion"
+          },
+          {
+            title: "Complaints",
+            type: "link",
+            path: "/hr/dashboard/admin/complaints"
+          },
+          {
+            title: "Warning",
+            type: "link",
+            path: "/hr/dashboard/admin/warning"
+          },
+          {
+            title: "Termination",
+            type: "link",
+            path: "/hr/dashboard/admin/termination"
+          },
+          {
+            title: "Announcement",
+            type: "link",
+            path: "/hr/dashboard/admin/announcement"
+          },
+          {
+            title: "Holidays",
+            type: "link",
+            path: "/hr/dashboard/admin/holiday"
+          },
         ],
       },
       {

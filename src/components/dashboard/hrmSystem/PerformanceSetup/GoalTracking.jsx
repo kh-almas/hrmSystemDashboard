@@ -97,10 +97,10 @@ const GoalTracking = () => {
                     Description
                   </label>
                   <textarea
-                    className="form-control"
-                    id="exampleFormControlTextarea4"
-                    rows="7"
-                    placeholder="Enter Remark"
+                      className="form-control"
+                      id="exampleFormControlTextarea4"
+                      rows="7"
+                      placeholder="Enter Remark"
                   ></textarea>
                 </div>
               </div>

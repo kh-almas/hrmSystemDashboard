@@ -21,6 +21,16 @@ import Payslip from "../components/dashboard/hrmSystem/payrollSetup/payslip";
 import SalaryDetails from "../components/dashboard/hrmSystem/payrollSetup/salaryDetails";
 import SetSalary from "../components/dashboard/hrmSystem/payrollSetup/setSalary";
 import SupportTicket from "../components/support-ticket/supportTicket";
+import Award from "../components/dashboard/hrmSystem/hrAdminSetup/Award";
+import Transfer from "../components/dashboard/hrmSystem/hrAdminSetup/Transfer";
+import Resignation from "../components/dashboard/hrmSystem/hrAdminSetup/Resignation";
+import Trip from "../components/dashboard/hrmSystem/hrAdminSetup/Trip";
+import Promotion from "../components/dashboard/hrmSystem/hrAdminSetup/Promotion";
+import Complaints from "../components/dashboard/hrmSystem/hrAdminSetup/Complaints";
+import Warning from "../components/dashboard/hrmSystem/hrAdminSetup/Warning";
+import Termination from "../components/dashboard/hrmSystem/hrAdminSetup/Termination";
+import Announcement from "../components/dashboard/hrmSystem/hrAdminSetup/Announcement";
+import Holiday from "../components/dashboard/hrmSystem/hrAdminSetup/Holiday";
 
 
 export const routes = [
@@ -47,4 +57,17 @@ export const routes = [
 
 
   { path: `${process.env.PUBLIC_URL}/support-ticket/supportTicket`, Component: <SupportTicket /> },
+
+    //hr admin setup
+  { path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/award`, Component: <Award /> },
+  { path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/transfer`, Component: <Transfer /> },
+  { path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/resignation`, Component: <Resignation /> },
+  { path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/trip`, Component: <Trip /> },
+  { path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/promotion`, Component: <Promotion /> },
+  { path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/complaints`, Component: <Complaints /> },
+  { path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/warning`, Component: <Warning /> },
+  { path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/termination`, Component: <Termination /> },
+  { path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/announcement`, Component: <Announcement /> },
+  { path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/holiday`, Component: <Holiday /> },
+
 ];
