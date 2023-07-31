@@ -106,52 +106,52 @@ export const MENUITEMS = [
           {
             title: "Award",
             type: "link",
-            path: "/hr/dashboard/admin/award"
+            path: "/dashboard/admin/award"
           },
           {
             title: "Transfer",
             type: "link",
-            path: "/hr/dashboard/admin/transfer"
+            path: "/dashboard/admin/transfer"
           },
           {
             title: "Resignation",
             type: "link",
-            path: "/hr/dashboard/admin/resignation"
+            path: "/dashboard/admin/resignation"
           },
           {
             title: "Trip",
             type: "link",
-            path: "/hr/dashboard/admin/trip"
+            path: "/dashboard/admin/trip"
           },
           {
             title: "Promotion",
             type: "link",
-            path: "/hr/dashboard/admin/promotion"
+            path: "/dashboard/admin/promotion"
           },
           {
             title: "Complaints",
             type: "link",
-            path: "/hr/dashboard/admin/complaints"
+            path: "/dashboard/admin/complaints"
           },
           {
             title: "Warning",
             type: "link",
-            path: "/hr/dashboard/admin/warning"
+            path: "/dashboard/admin/warning"
           },
           {
             title: "Termination",
             type: "link",
-            path: "/hr/dashboard/admin/termination"
+            path: "/dashboard/admin/termination"
           },
           {
             title: "Announcement",
             type: "link",
-            path: "/hr/dashboard/admin/announcement"
+            path: "/dashboard/admin/announcement"
           },
           {
             title: "Holidays",
             type: "link",
-            path: "/hr/dashboard/admin/holiday"
+            path: "/dashboard/admin/holiday"
           },
         ],
       },
