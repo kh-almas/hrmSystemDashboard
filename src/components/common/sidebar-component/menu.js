@@ -181,7 +181,7 @@ export const MENUITEMS = [
         type: "link",
       },
       {
-        path: "/base/dropdownComponent",
+        path: "/hrm/dashboard/manage-branch",
         title: "HRM System Setup",
         type: "link",
       },
