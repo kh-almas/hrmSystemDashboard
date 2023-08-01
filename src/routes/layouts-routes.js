@@ -128,47 +128,7 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/support-ticket/supportTicket`,
     Component: <SupportTicket />,
   },
-  //hr admin setup
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/award`,
-    Component: <Award />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/transfer`,
-    Component: <Transfer />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/resignation`,
-    Component: <Resignation />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/trip`,
-    Component: <Trip />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/promotion`,
-    Component: <Promotion />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/complaints`,
-    Component: <Complaints />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/warning`,
-    Component: <Warning />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/termination`,
-    Component: <Termination />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/announcement`,
-    Component: <Announcement />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday`,
-    Component: <Holiday />,
-  },
+
     //hr admin setup
   { path: `${process.env.PUBLIC_URL}/dashboard/admin/award`, Component: <Award /> },
   { path: `${process.env.PUBLIC_URL}/dashboard/admin/transfer`, Component: <Transfer /> },
@@ -185,48 +145,7 @@ export const routes = [
 
   //hr admin setup
   { path: `${process.env.PUBLIC_URL}/dashboard/admin/event/setup`, Component: <EventSetup /> },
-  //
-  // //hr admin setup
-  // {
-  //   path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/award`,
-  //   Component: <Award />,
-  // },
-  // {
-  //   path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/transfer`,
-  //   Component: <Transfer />,
-  // },
-  // {
-  //   path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/resignation`,
-  //   Component: <Resignation />,
-  // },
-  // {
-  //   path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/trip`,
-  //   Component: <Trip />,
-  // },
-  // {
-  //   path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/promotion`,
-  //   Component: <Promotion />,
-  // },
-  // {
-  //   path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/complaints`,
-  //   Component: <Complaints />,
-  // },
-  // {
-  //   path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/warning`,
-  //   Component: <Warning />,
-  // },
-  // {
-  //   path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/termination`,
-  //   Component: <Termination />,
-  // },
-  // {
-  //   path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/announcement`,
-  //   Component: <Announcement />,
-  // },
-  // {
-  //   path: `${process.env.PUBLIC_URL}/hr/dashboard/admin/holiday`,
-  //   Component: <Holiday />,
-  // },
+
   {
     path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-branch`,
     Component: <ManageBranch />,

@@ -25,6 +25,9 @@ const EventSetup = () => {
         <>
             <Breadcrumb parent="HRM System" title="Event setup" />
             <div style={{display: "flex", alignItems: "center", justifyContent: "flex-end", marginBottom: "20px",}}>
+                <Link to={'/dashboard/admin/holiday'} className="btn btn-pill btn-info btn-air-info btn-air-info me-2">
+                    <i class="fa fa-calendar"></i>
+                </Link>
                 <button onClick={toggle} className="btn btn-pill btn-info btn-air-info btn-air-info">
                     <i className="fa fa-plus"></i>
                 </button>
@@ -61,19 +64,18 @@ const EventSetup = () => {
                                 <Input labelName={'End Date'} inputName={'enddate'} inputType={'date'}  validation={{...register("enddate", { required: true })}} />
                             </div>
                         </div>
+
                         <div>
                             <Label htmlFor="color"> Event color</Label>
                             <div>
                                 <input className={`${errors?.inputName && "is-invalid"} w-[70px] h-[50px]`} id="color" type="color" name="color"/>
                             </div>
                         </div>
+
                         <div>
                             <Textarea labelName={"Description"} inputName={"description"} placeholder={"Enter Description"} height={"5"}/>
                         </div>
-                        <div>
-                            <input className="me-2 mt-1" id="checkbox-primary-2" type="checkbox" />
-                            <label htmlFor="exampleFormControlSelect9">Synchronize in Google Calendar ?</label>
-                        </div>
+
                         <div className="d-flex justify-content-end">
                             <Button color="" onClick={toggle} className="me-2">
                                 Cancel
