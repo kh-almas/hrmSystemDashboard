@@ -1,12 +1,11 @@
 import React from "react";
-import ManageJobStage from "../dashboard/hrmSystem/hrmSystemSetup/ManageJobStage";
 import CommonSearchComponet from "./salaryCard/CommonSearchComponet";
 
 const HrmManageCard = ({ data }) => {
   console.log(data);
   return (
     <div>
-      {data?.tr1 || data?.JobStageComponent ? 
+      
         <div className="card" style={{ padding: "20px" }}>
           <CommonSearchComponet />
           <div className="table-responsive">
@@ -34,9 +33,8 @@ const HrmManageCard = ({ data }) => {
             <p className="text-center p-t-10">No entries found</p>
           </div>
           {/* <p>Showing 1 to 1 of 1 entries</p> */}
-        </div> : <ManageJobStage />
-      }
-  
+        </div>
+     
     </div>
   );
 };

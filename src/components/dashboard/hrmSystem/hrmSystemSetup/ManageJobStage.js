@@ -1,10 +1,9 @@
 import React from "react";
-import Breadcrumb from "../../../common/breadcrumb";
 import data from "../../../../data/customizer/jobStageData.json";
 import JobStageComponent from "./jobStageComponent/JobStageComponent";
 const ManageJobStage = () => {
   return (
-    <div>
+    <div className="card" style={{ padding: "20px" }}>
       {/* <Breadcrumb parent="HRM System Setup" title="Manage Job Stage" /> */}
 
       {data?.map((stage, i) => (

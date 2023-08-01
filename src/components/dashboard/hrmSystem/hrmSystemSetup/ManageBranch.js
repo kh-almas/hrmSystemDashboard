@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Breadcrumb from "../../../common/breadcrumb";
 import data from "../../../../data/customizer/hrmManageData.json";
 import HrmManageCard from "../../../common/HrmManageCard";
+import Breadcrumb from "../../../common/breadcrumb";
 import "./CustomCss/Custom-Style.css";
 import ManageJobStage from "./ManageJobStage";
 
@@ -46,13 +46,10 @@ const ManageBranch = () => {
           ))}
         </div>
         <div className="col-sm-12 col-xl-9">
-          {/* {data?.map((item, index) => ( */}
-          <HrmManageCard data={pItem} />
-          {
-            <ManageJobStage/>
+          {pItem.id == "17" ? <ManageJobStage/> :
+          <HrmManageCard data={pItem} />          
           }
          
-          {/* ))} */}
         </div>
         {/* <div className="col-sm-12 col-xl-12">
         {data?.map((item, index) => (
