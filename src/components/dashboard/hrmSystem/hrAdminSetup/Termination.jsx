@@ -59,9 +59,15 @@ const Termination = () => {
                 <ModalHeader toggle={toggle}>Create New Termination</ModalHeader>
                 <ModalBody>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div>
-                            <Select name={"employee"} labelName={"Employee"} placeholder={"Select an option"} options={['Accountant',]} inputName={"employ"}/>
+                        <div className="row row-cols-1 row-cols-lg-2">
+                            <div>
+                                <Select name={"employee"} labelName={"Employee"} placeholder={"Select an option"} options={['Accountant',]}/>
+                            </div>
+                            <div>
+                                <Select name={"type"} labelName={"Termination Type"} placeholder={"Select an option"} options={[]}/>
+                            </div>
                         </div>
+
 
                         <div className="row row-cols-1 row-cols-lg-2">
                             <div>

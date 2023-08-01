@@ -55,6 +55,7 @@ import ManageMeeting from "../components/dashboard/hrmSystem/ManageMeeting";
 import Calendar2 from "../components/dashboard/hrmSystem/hrAdminSetup/Calendar2";
 import HolidayCalender from "../components/dashboard/hrmSystem/hrAdminSetup/HolidayCalender";
 import EventSetup from "../components/dashboard/hrmSystem/EventSetup";
+import MeetingCalender from "../components/dashboard/MeetingCalender";
 
 export const routes = [
   {
@@ -222,19 +223,23 @@ export const routes = [
     Component: <ManageCompetencies />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/company-policy`,
-    Component: <CompanyPolicy />,
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-meeting`,
+    Component: <ManageMeeting />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/document-setup`,
-    Component: <DocumentSetup />,
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-meeting-calender`,
+    Component: <MeetingCalender />,
   },
   {
     path: `${process.env.PUBLIC_URL}/hrm/dashboard/employees-asset-setup`,
     Component: <EmployeesAssetSetup />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-meeting`,
-    Component: <ManageMeeting />,
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/document-setup`,
+    Component: <DocumentSetup />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/company-policy`,
+    Component: <CompanyPolicy />,
   },
 ];
