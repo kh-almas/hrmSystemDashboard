@@ -33,12 +33,12 @@ const Complaints = () => {
                     <table className="table">
                         <thead>
                         <tr>
-                            <th scope="col">{"Complaint From"}</th>
-                            <th scope="col">{"Complaint Against"}</th>
-                            <th scope="col">{"Title"}</th>
-                            <th scope="col">{"Complaint Date"}</th>
-                            <th scope="col">{"Description"}</th>
-                            <th scope="col">{"Action"}</th>
+                            <th scope="col">{"COMPLAINT FORM"}</th>
+                            <th scope="col">{"COMPLAINT AGAINST"}</th>
+                            <th scope="col">{"TITLE"}</th>
+                            <th scope="col">{"COMPLAINT DATE"}</th>
+                            <th scope="col">{"DESCRIPTION"}</th>
+                            <th scope="col">{"ACTION"}</th>
                         </tr>
                         </thead>
                         <tbody>

@@ -33,11 +33,11 @@ const Announcement = () => {
                     <table className="table">
                         <thead>
                         <tr>
-                            <th scope="col">{"Title"}</th>
-                            <th scope="col">{"Start Date"}</th>
-                            <th scope="col">{"End Date"}</th>
-                            <th scope="col">{"Description"}</th>
-                            <th scope="col">{"Action"}</th>
+                            <th scope="col">{"TITLE"}</th>
+                            <th scope="col">{"START DATE"}</th>
+                            <th scope="col">{"END DATE"}</th>
+                            <th scope="col">{"DESCRIPTION"}</th>
+                            <th scope="col">{"ACTION"}</th>
                         </tr>
                         </thead>
                         <tbody>

@@ -61,10 +61,10 @@ const Holiday = () => {
                     <table className="table">
                         <thead>
                         <tr>
-                            <th scope="col">{"Occasion"}</th>
-                            <th scope="col">{"Start Date"}</th>
-                            <th scope="col">{"End Date"}</th>
-                            <th scope="col">{"Action"}</th>
+                            <th scope="col">{"OCCASION"}</th>
+                            <th scope="col">{"START DATE"}</th>
+                            <th scope="col">{"END DATE"}</th>
+                            <th scope="col">{"ACTION"}</th>
                         </tr>
                         </thead>
                         <tbody>

@@ -33,12 +33,12 @@ const Termination = () => {
                     <table className="table">
                         <thead>
                         <tr>
-                            <th scope="col">{"Employee Name"}</th>
-                            <th scope="col">{"Termination Type"}</th>
-                            <th scope="col">{"Notice Date"}</th>
-                            <th scope="col">{"Termination Date"}</th>
-                            <th scope="col">{"Description"}</th>
-                            <th scope="col">{"Action"}</th>
+                            <th scope="col">{"EMPLOYEE NAME"}</th>
+                            <th scope="col">{"TERMINATION TYPE"}</th>
+                            <th scope="col">{"NOTICE DATE"}</th>
+                            <th scope="col">{"TERMINATION DATE"}</th>
+                            <th scope="col">{"DESCRIPTION"}</th>
+                            <th scope="col">{"ACTION"}</th>
                         </tr>
                         </thead>
                         <tbody>

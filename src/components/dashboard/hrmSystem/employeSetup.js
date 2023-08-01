@@ -17,15 +17,15 @@ const EmployeSetup = () => {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th scope="col">{"Employee ID"}</th>
-                      <th scope="col">{"Name"}</th>
-                      <th scope="col">{"Email"}</th>
-                      <th scope="col">{"Branch"}</th>
-                      <th scope="col">{"Department"}</th>
-                      <th scope="col">{"Designation"}</th>
-                      <th scope="col">{"Date Of Joining"}</th>
-                      <th scope="col">{"Last Login"}</th>
-                      <th scope="col">{"Action"}</th>
+                      <th scope="col">{"EMPLOYEE ID"}</th>
+                      <th scope="col">{"NAME"}</th>
+                      <th scope="col">{"EMAIL"}</th>
+                      <th scope="col">{"BRANCH"}</th>
+                      <th scope="col">{"DEPARTMENT"}</th>
+                      <th scope="col">{"DESIGMATION"}</th>
+                      <th scope="col">{"DATE OF JOINING"}</th>
+                      <th scope="col">{"LAST LOGIN"}</th>
+                      <th scope="col">{"ACTION"}</th>
                     </tr>
                   </thead>
                   <tbody>

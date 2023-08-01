@@ -39,9 +39,9 @@ const ManageMeeting = () => {
                 <table className="table ">
                   <thead>
                     <tr className="">
-                      <th scope="col">{"Meeting Title"}</th>
-                      <th scope="col">{"Meetting Date"}</th>
-                      <th scope="col">{"Meeting Time"}</th>
+                      <th scope="col">{"MEETING TITLE"}</th>
+                      <th scope="col">{"MEETING DATE"}</th>
+                      <th scope="col">{"MEETING TIME"}</th>
                       <th scope="col">{"ACTION"}</th>
                     </tr>
                   </thead>

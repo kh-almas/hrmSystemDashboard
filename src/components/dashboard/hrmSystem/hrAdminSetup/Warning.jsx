@@ -33,12 +33,12 @@ const Warning = () => {
                     <table className="table">
                         <thead>
                         <tr>
-                            <th scope="col">{"Warning BY"}</th>
-                            <th scope="col">{"Warning TO"}</th>
-                            <th scope="col">{"Subject"}</th>
-                            <th scope="col">{"Warning Date"}</th>
-                            <th scope="col">{"Description"}</th>
-                            <th scope="col">{"Action"}</th>
+                            <th scope="col">{"WARNING BY"}</th>
+                            <th scope="col">{"WARNING TO"}</th>
+                            <th scope="col">{"SUBJECT"}</th>
+                            <th scope="col">{"WARNING DATE"}</th>
+                            <th scope="col">{"DESCRIPTION"}</th>
+                            <th scope="col">{"ACTION"}</th>
                         </tr>
                         </thead>
                         <tbody>
