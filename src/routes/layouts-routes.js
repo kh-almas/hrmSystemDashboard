@@ -48,6 +48,12 @@ import ManageJobStage from "../components/dashboard/hrmSystem/hrmSystemSetup/Man
 import ManageLoanOption from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageLoanOption";
 import ManagePayslipType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePayslipType";
 import ManagePerformanceType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePerformanceType";
+import SetSalary from "../components/dashboard/hrmSystem/payrollSetup/setSalary";
+import SalaryDetails from "../components/dashboard/hrmSystem/payrollSetup/salaryDetails";
+import Payslip from "../components/dashboard/hrmSystem/payrollSetup/payslip";
+import SupportTicket from "../components/support-ticket/supportTicket";
+import ManageTrainingType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTrainingType";
+import ManageTerminationType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTerminationType";
 
 export const routes = [
   {
