@@ -92,57 +92,69 @@ class Calendar2 extends Component {
     render() {
         return (
             <Fragment>
-                {/*<Breadcrumb parent="Calender" title="Draggable Calender" />*/}
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-sm-12">
-                            <div className="card">
-                                <div className="card-header">
-                                    <h5>{Dragging_Event}</h5>
-                                </div>
-                                <div className="card-body">
-                                    <div className="animated fadeIn demo-app">
-                                        <div className="row">
-                                            <div className="col-sm-12 col-xl-3">
-                                                <div id="external" style={{border: "1px solid #cccccc", background: "#ffffff", padding: "10px 0"}}>
-                                                    <p align="center">
-                                                        <strong> {"Events"}</strong>
-                                                    </p>
-                                                    {this.state.events.map(event => (
-                                                        <div className="fc-event" title={event.title} data={event.id} key={event.id}  style={{margin: "10px", border: "1px solid #cccccc", background: "#eeeeee"}}>
-                                                            {event.title}
+                <div className="row">
+                    <div className="col-lg-8">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <div className="card">
+                                        <div className="card-header">
+                                            <h5>{Dragging_Event}</h5>
+                                        </div>
+                                        <div className="card-body">
+                                            <div className="animated fadeIn demo-app">
+                                                <div className="row">
+                                                    <div className="col-sm-12 col-xl-3">
+                                                        <div id="external" style={{border: "1px solid #cccccc", background: "#ffffff", padding: "10px 0"}}>
+                                                            <p align="center">
+                                                                <strong> {"Events"}</strong>
+                                                            </p>
+                                                            {this.state.events.map(event => (
+                                                                <div className="fc-event" title={event.title} data={event.id} key={event.id}  style={{margin: "10px", border: "1px solid #cccccc", background: "#eeeeee"}}>
+                                                                    {event.title}
+                                                                </div>
+                                                            ))}
                                                         </div>
-                                                    ))}
-                                                </div>
-                                            </div>
+                                                    </div>
 
-                                            <div className="col-sm-12 col-xl-9">
-                                                <div className="demo-app-calendar" id="mycalendartest">
-                                                    <FullCalendar
-                                                        defaultView="dayGridMonth"
-                                                        header={{left: "prev,next today", center: "title", right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"}}
-                                                        rerenderDelay={10}
-                                                        eventDurationEditable={false}
-                                                        editable={true}
-                                                        droppable={true}
-                                                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                                                        ref={this.calendarComponentRef}
-                                                        weekends={this.state.calendarWeekends}
-                                                        events={this.state.calendarEvents}
-                                                        eventDrop={this.drop}
-                                                        eventReceive={this.eventReceive}
-                                                        eventClick={this.eventClick}
-                                                    />
+                                                    <div className="col-sm-12 col-xl-9">
+                                                        <div className="demo-app-calendar" id="mycalendartest">
+                                                            <FullCalendar
+                                                                defaultView="dayGridMonth"
+                                                                header={{left: "prev,next today", center: "title", right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"}}
+                                                                rerenderDelay={10}
+                                                                eventDurationEditable={false}
+                                                                editable={true}
+                                                                droppable={true}
+                                                                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                                                                ref={this.calendarComponentRef}
+                                                                weekends={this.state.calendarWeekends}
+                                                                events={this.state.calendarEvents}
+                                                                eventDrop={this.drop}
+                                                                eventReceive={this.eventReceive}
+                                                                eventClick={this.eventClick}
+                                                            />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
-
+                        </div>
+                    </div>
+                    <div className="col-lg-4">
+                        <div className="card p-4">
+                            <h2>Holiday List</h2>
+                            <div className="card text-center mt-3">
+                                <p className="py-2 mb-0">No interview scheduled!</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </Fragment>
 
 
