@@ -19,7 +19,7 @@ export const MENUITEMS = [
         path: "/dashboard/hrm/employee",
         title: "Employee Setup ",
         type: "link",
-      },      
+      },
       {
         title: "Payroll Setup",
         type: "sub",
@@ -41,7 +41,11 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/manage-leave",
           },
-          { title: "Attendance", type: "link", path: "/dashboard/hrm/manage-attendance" },
+          {
+            title: "Attendance",
+            type: "link",
+            path: "/dashboard/hrm/manage-attendance",
+          },
         ],
       },
       {
@@ -53,8 +57,16 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/manage-indicator",
           },
-          { title: "Appraisal", type: "link", path: "/dashboard/hrm/manage-appraisal" },
-          { title: "Goal Tracking", type: "link", path: "/dashboard/hrm/goal-tracking" },
+          {
+            title: "Appraisal",
+            type: "link",
+            path: "/dashboard/hrm/manage-appraisal",
+          },
+          {
+            title: "Goal Tracking",
+            type: "link",
+            path: "/dashboard/hrm/goal-tracking",
+          },
         ],
       },
       {
@@ -66,14 +78,22 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/manage-training",
           },
-          { title: "Trainer", type: "link", path: "/dashboard/hrm/manage-trainer" },
+          {
+            title: "Trainer",
+            type: "link",
+            path: "/dashboard/hrm/manage-trainer",
+          },
         ],
       },
       {
         title: "Recruitment Setup",
         type: "sub",
         children: [
-          { title: "Jobs", type: "link", path: "/dashboard/hrm/recruitment-jobs" },
+          {
+            title: "Jobs",
+            type: "link",
+            path: "/dashboard/hrm/recruitment-jobs",
+          },
           { title: "Job Create", type: "link", path: "/base/tabs/tab-line" },
           {
             title: "Job Application",
@@ -106,77 +126,77 @@ export const MENUITEMS = [
           {
             title: "Award",
             type: "link",
-            path: "/dashboard/admin/award"
+            path: "/dashboard/admin/award",
           },
           {
             title: "Transfer",
             type: "link",
-            path: "/dashboard/admin/transfer"
+            path: "/dashboard/admin/transfer",
           },
           {
             title: "Resignation",
             type: "link",
-            path: "/dashboard/admin/resignation"
+            path: "/dashboard/admin/resignation",
           },
           {
             title: "Trip",
             type: "link",
-            path: "/dashboard/admin/trip"
+            path: "/dashboard/admin/trip",
           },
           {
             title: "Promotion",
             type: "link",
-            path: "/dashboard/admin/promotion"
+            path: "/dashboard/admin/promotion",
           },
           {
             title: "Complaints",
             type: "link",
-            path: "/dashboard/admin/complaints"
+            path: "/dashboard/admin/complaints",
           },
           {
             title: "Warning",
             type: "link",
-            path: "/dashboard/admin/warning"
+            path: "/dashboard/admin/warning",
           },
           {
             title: "Termination",
             type: "link",
-            path: "/dashboard/admin/termination"
+            path: "/dashboard/admin/termination",
           },
           {
             title: "Announcement",
             type: "link",
-            path: "/dashboard/admin/announcement"
+            path: "/dashboard/admin/announcement",
           },
           {
             title: "Holidays",
             type: "link",
-            path: "/dashboard/admin/holiday"
+            path: "/dashboard/admin/holiday",
           },
         ],
       },
       {
-        path: "/base/dropdownComponent",
+        path: "/dashboard/admin/event/setup",
         title: "Event Setup",
         type: "link",
       },
       {
-        path: "/base/dropdownComponent",
+        path: "/hrm/dashboard/manage-meeting",
         title: "Meeting",
         type: "link",
       },
       {
-        path: "/base/dropdownComponent",
+        path: "/hrm/dashboard/employees-asset-setup",
         title: "Employees Asset Setup ",
         type: "link",
       },
       {
-        path: "/base/dropdownComponent",
+        path: "/hrm/dashboard/document-setup",
         title: "Document Setup",
         type: "link",
       },
       {
-        path: "/base/dropdownComponent",
+        path: "/hrm/dashboard/company-policy",
         title: "Company policy",
         type: "link",
       },

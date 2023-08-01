@@ -7,6 +7,7 @@ import Input from "../../../modal/Input";
 import Textarea from "../../../modal/Textarea";
 import {useForm} from "react-hook-form";
 import {Link} from "react-router-dom";
+import Calendar2 from "./Calendar2";
 
 const Holiday = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -24,7 +25,7 @@ const Holiday = () => {
         <>
             <Breadcrumb parent="HRM System" title="Manage Holiday" />
             <div style={{display: "flex", alignItems: "center", justifyContent: "flex-end", marginBottom: "20px",}}>
-                <Link to={'/dashboard/admin/holiday-calender'} className="btn btn-pill btn-info btn-air-info btn-air-info me-2">
+                <Link to={'/dashboard/admin/holiday'} className="btn btn-pill btn-info btn-air-info btn-air-info me-2">
                     <i class="fa fa-calendar"></i>
                 </Link>
                 <button onClick={toggle} className="btn btn-pill btn-info btn-air-info btn-air-info">
@@ -55,29 +56,8 @@ const Holiday = () => {
                 </div>
             </div>
 
-            <div className="card" style={{ padding: "20px" }}>
-                <CommonSearchComponet />
-                <div className="table-responsive">
-                    <table className="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">{"Occasion"}</th>
-                            <th scope="col">{"Start Date"}</th>
-                            <th scope="col">{"End Date"}</th>
-                            <th scope="col">{"Action"}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {/* <tr>
-                <th scope="row">{""}</th>
-                <td>{""}</td>
-                <td>{""}</td>
-                <td>{""}</td>
-              </tr> */}
-                        </tbody>
-                    </table>
-                    <p className="text-center p-t-10">No entries found</p>
-                </div>
+            <div>
+                <Calendar2 />
             </div>
 
 
