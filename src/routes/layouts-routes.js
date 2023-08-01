@@ -54,6 +54,8 @@ import Payslip from "../components/dashboard/hrmSystem/payrollSetup/payslip";
 import SupportTicket from "../components/support-ticket/supportTicket";
 import ManageTrainingType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTrainingType";
 import ManageTerminationType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTerminationType";
+import Sale from "../components/dashboard/inventoryManagement/sales/Sale";
+import SaleReturn from "../components/dashboard/inventoryManagement/sales/SaleReturn";
 
 export const routes = [
   {
@@ -235,5 +237,13 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-meeting`,
     Component: <ManageMeeting />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/sale`,
+    Component: <Sale />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/sale-return`,
+    Component: <SaleReturn />,
   },
 ];
