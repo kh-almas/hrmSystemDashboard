@@ -52,6 +52,9 @@ import CompanyPolicy from "../components/dashboard/hrmSystem/CompanyPolicy";
 import DocumentSetup from "../components/dashboard/hrmSystem/DocumentSetup";
 import EmployeesAssetSetup from "../components/dashboard/hrmSystem/EmployeesAssetSetup";
 import ManageMeeting from "../components/dashboard/hrmSystem/ManageMeeting";
+import Calendar2 from "../components/dashboard/hrmSystem/hrAdminSetup/Calendar2";
+import HolidayCalender from "../components/dashboard/hrmSystem/hrAdminSetup/HolidayCalender";
+import EventSetup from "../components/dashboard/hrmSystem/EventSetup";
 
 export const routes = [
   {
@@ -173,6 +176,22 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday`,
     Component: <Holiday />,
   },
+    //hr admin setup
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/award`, Component: <Award /> },
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/transfer`, Component: <Transfer /> },
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/resignation`, Component: <Resignation /> },
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/trip`, Component: <Trip /> },
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/promotion`, Component: <Promotion /> },
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/complaints`, Component: <Complaints /> },
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/warning`, Component: <Warning /> },
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/termination`, Component: <Termination /> },
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/announcement`, Component: <Announcement /> },
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday`, Component: <Holiday /> },
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday-calender`, Component: <HolidayCalender /> },
+
+
+  //hr admin setup
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/event/setup`, Component: <EventSetup /> },
   //
   // //hr admin setup
   // {

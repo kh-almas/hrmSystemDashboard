@@ -176,7 +176,7 @@ export const MENUITEMS = [
         ],
       },
       {
-        path: "/base/dropdownComponent",
+        path: "/dashboard/admin/event/setup",
         title: "Event Setup",
         type: "link",
       },
