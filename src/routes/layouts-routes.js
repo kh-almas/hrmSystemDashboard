@@ -7,8 +7,13 @@ import University from "../components/dashboard/university";
 
 // sample page
 
+import CompanyPolicy from "../components/dashboard/hrmSystem/CompanyPolicy";
+import DocumentSetup from "../components/dashboard/hrmSystem/DocumentSetup";
+import EmployeesAssetSetup from "../components/dashboard/hrmSystem/EmployeesAssetSetup";
+import EventSetup from "../components/dashboard/hrmSystem/EventSetup";
 import Attendance from "../components/dashboard/hrmSystem/ManageLeaveSetup/Attendance";
 import ManageLeave from "../components/dashboard/hrmSystem/ManageLeaveSetup/ManageLeave";
+import ManageMeeting from "../components/dashboard/hrmSystem/ManageMeeting";
 import Appraisal from "../components/dashboard/hrmSystem/PerformanceSetup/Appraisal";
 import GoalTracking from "../components/dashboard/hrmSystem/PerformanceSetup/GoalTracking";
 import ManageIndicator from "../components/dashboard/hrmSystem/PerformanceSetup/ManageIndicator";
@@ -17,44 +22,32 @@ import ManageTrainer from "../components/dashboard/hrmSystem/TrainingSetup/Manag
 import ManageTraining from "../components/dashboard/hrmSystem/TrainingSetup/ManageTraining";
 import EditEmploySetup from "../components/dashboard/hrmSystem/editEmploySetup";
 import EmployeSetup from "../components/dashboard/hrmSystem/employeSetup";
-import Payslip from "../components/dashboard/hrmSystem/payrollSetup/payslip";
-import SalaryDetails from "../components/dashboard/hrmSystem/payrollSetup/salaryDetails";
-import SetSalary from "../components/dashboard/hrmSystem/payrollSetup/setSalary";
-import SupportTicket from "../components/support-ticket/supportTicket";
-import Award from "../components/dashboard/hrmSystem/hrAdminSetup/Award";
-import Transfer from "../components/dashboard/hrmSystem/hrAdminSetup/Transfer";
-import Resignation from "../components/dashboard/hrmSystem/hrAdminSetup/Resignation";
-import Trip from "../components/dashboard/hrmSystem/hrAdminSetup/Trip";
-import Promotion from "../components/dashboard/hrmSystem/hrAdminSetup/Promotion";
-import Complaints from "../components/dashboard/hrmSystem/hrAdminSetup/Complaints";
-import Warning from "../components/dashboard/hrmSystem/hrAdminSetup/Warning";
-import Termination from "../components/dashboard/hrmSystem/hrAdminSetup/Termination";
 import Announcement from "../components/dashboard/hrmSystem/hrAdminSetup/Announcement";
+import Award from "../components/dashboard/hrmSystem/hrAdminSetup/Award";
+import Complaints from "../components/dashboard/hrmSystem/hrAdminSetup/Complaints";
 import Holiday from "../components/dashboard/hrmSystem/hrAdminSetup/Holiday";
+import HolidayCalender from "../components/dashboard/hrmSystem/hrAdminSetup/HolidayCalender";
+import Promotion from "../components/dashboard/hrmSystem/hrAdminSetup/Promotion";
+import Resignation from "../components/dashboard/hrmSystem/hrAdminSetup/Resignation";
+import Termination from "../components/dashboard/hrmSystem/hrAdminSetup/Termination";
+import Transfer from "../components/dashboard/hrmSystem/hrAdminSetup/Transfer";
+import Trip from "../components/dashboard/hrmSystem/hrAdminSetup/Trip";
+import Warning from "../components/dashboard/hrmSystem/hrAdminSetup/Warning";
+import LeaveType from "../components/dashboard/hrmSystem/hrmSystemSetup/LeaveType";
+import ManageAllowanceOption from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageAllowanceOption";
+import ManageAwardType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageAwardType";
 import ManageBranch from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageBranch";
+import ManageCompetencies from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageCompetencies";
+import ManageDeductionOption from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageDeductionOption";
 import ManageDepartment from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageDepartment";
 import ManageDesignation from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageDesignation";
-import LeaveType from "../components/dashboard/hrmSystem/hrmSystemSetup/LeaveType";
 import ManageDocumentType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageDocumentType";
-import ManagePayslipType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePayslipType";
-import ManageAllowanceOption from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageAllowanceOption";
-import ManageLoanOption from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageLoanOption";
-import ManageDeductionOption from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageDeductionOption";
 import ManageGoalType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageGoalType";
-import ManageTrainingType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTrainingType";
-import ManageAwardType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageAwardType";
-import ManageTerminationType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTerminationType";
 import ManageJobCategory from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageJobCategory";
 import ManageJobStage from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageJobStage";
+import ManageLoanOption from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageLoanOption";
+import ManagePayslipType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePayslipType";
 import ManagePerformanceType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePerformanceType";
-import ManageCompetencies from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageCompetencies";
-import CompanyPolicy from "../components/dashboard/hrmSystem/CompanyPolicy";
-import DocumentSetup from "../components/dashboard/hrmSystem/DocumentSetup";
-import EmployeesAssetSetup from "../components/dashboard/hrmSystem/EmployeesAssetSetup";
-import ManageMeeting from "../components/dashboard/hrmSystem/ManageMeeting";
-import Calendar2 from "../components/dashboard/hrmSystem/hrAdminSetup/Calendar2";
-import HolidayCalender from "../components/dashboard/hrmSystem/hrAdminSetup/HolidayCalender";
-import EventSetup from "../components/dashboard/hrmSystem/EventSetup";
 
 export const routes = [
   {
