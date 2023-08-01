@@ -48,6 +48,10 @@ import ManageJobCategory from "../components/dashboard/hrmSystem/hrmSystemSetup/
 import ManageJobStage from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageJobStage";
 import ManagePerformanceType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePerformanceType";
 import ManageCompetencies from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageCompetencies";
+import CompanyPolicy from "../components/dashboard/hrmSystem/CompanyPolicy";
+import DocumentSetup from "../components/dashboard/hrmSystem/DocumentSetup";
+import EmployeesAssetSetup from "../components/dashboard/hrmSystem/EmployeesAssetSetup";
+import ManageMeeting from "../components/dashboard/hrmSystem/ManageMeeting";
 
 export const routes = [
   {
@@ -128,17 +132,47 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/support-ticket/supportTicket`,
     Component: <SupportTicket />,
   },
-    //hr admin setup
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/award`, Component: <Award /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/transfer`, Component: <Transfer /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/resignation`, Component: <Resignation /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/trip`, Component: <Trip /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/promotion`, Component: <Promotion /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/complaints`, Component: <Complaints /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/warning`, Component: <Warning /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/termination`, Component: <Termination /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/announcement`, Component: <Announcement /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday`, Component: <Holiday /> },
+  //hr admin setup
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/award`,
+    Component: <Award />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/transfer`,
+    Component: <Transfer />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/resignation`,
+    Component: <Resignation />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/trip`,
+    Component: <Trip />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/promotion`,
+    Component: <Promotion />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/complaints`,
+    Component: <Complaints />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/warning`,
+    Component: <Warning />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/termination`,
+    Component: <Termination />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/announcement`,
+    Component: <Announcement />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday`,
+    Component: <Holiday />,
+  },
   //
   // //hr admin setup
   // {
@@ -248,5 +282,21 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-competencies`,
     Component: <ManageCompetencies />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/company-policy`,
+    Component: <CompanyPolicy />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/document-setup`,
+    Component: <DocumentSetup />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/employees-asset-setup`,
+    Component: <EmployeesAssetSetup />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-meeting`,
+    Component: <ManageMeeting />,
   },
 ];
