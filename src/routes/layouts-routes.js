@@ -48,6 +48,8 @@ import ManageJobCategory from "../components/dashboard/hrmSystem/hrmSystemSetup/
 import ManageJobStage from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageJobStage";
 import ManagePerformanceType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePerformanceType";
 import ManageCompetencies from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageCompetencies";
+import Calendar2 from "../components/dashboard/hrmSystem/hrAdminSetup/Calendar2";
+import HolidayCalender from "../components/dashboard/hrmSystem/hrAdminSetup/HolidayCalender";
 
 export const routes = [
   {
@@ -139,6 +141,7 @@ export const routes = [
   { path: `${process.env.PUBLIC_URL}/dashboard/admin/termination`, Component: <Termination /> },
   { path: `${process.env.PUBLIC_URL}/dashboard/admin/announcement`, Component: <Announcement /> },
   { path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday`, Component: <Holiday /> },
+  { path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday-calender`, Component: <HolidayCalender /> },
   //
   // //hr admin setup
   // {
