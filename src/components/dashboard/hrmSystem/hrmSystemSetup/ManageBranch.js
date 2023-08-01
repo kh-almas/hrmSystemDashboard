@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Breadcrumb from "../../../common/breadcrumb";
 import data from "../../../../data/customizer/hrmManageData.json";
 import HrmManageCard from "../../../common/HrmManageCard";
-import { FaGreaterThan } from "react-icons/fa";
 import "./CustomCss/Custom-Style.css";
+import ManageJobStage from "./ManageJobStage";
+
 
 const ManageBranch = () => {
   const [pItem, setPItem] = useState(data.find((item) => item.id == "1"));
@@ -35,11 +36,11 @@ const ManageBranch = () => {
             
               >
                 {item.cetagory}
+
               </button>
               <span>
-                <FaGreaterThan
-                  className={`${pItem.id == item.id ? "text-white" : ""}`}
-                />
+              <i className={`icofont icofont-thin-right ${pItem.id == item.id ? "text-white" : ""}`}></i>
+
               </span>
             </div>
           ))}
@@ -47,6 +48,10 @@ const ManageBranch = () => {
         <div className="col-sm-12 col-xl-9">
           {/* {data?.map((item, index) => ( */}
           <HrmManageCard data={pItem} />
+          {
+            <ManageJobStage/>
+          }
+         
           {/* ))} */}
         </div>
         {/* <div className="col-sm-12 col-xl-12">
