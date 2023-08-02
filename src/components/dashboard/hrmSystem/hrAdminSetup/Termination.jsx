@@ -46,7 +46,7 @@ const Termination = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead>
+            <thead className="table-light table-border">
               <tr>
                 <th scope="col">{"EMPLOYEE NAME"}</th>
                 <th scope="col">{"TERMINATION TYPE"}</th>
@@ -67,7 +67,7 @@ const Termination = () => {
               </tr> */}
             </tbody>
           </table>
-          <p className="text-center p-t-10">No entries found</p>
+          <p className="text-center p-t-10 table-text">No entries found</p>
         </div>
       </div>
       <Modal isOpen={modal} toggle={toggle}>

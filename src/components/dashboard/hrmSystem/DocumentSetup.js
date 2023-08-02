@@ -49,7 +49,7 @@ const DocumentSetup = () => {
               <CommonSearchComponet />
               <div className="table-responsive ">
                 <table className="table ">
-                  <thead>
+                  <thead className="table-light table-border">
                     <tr className="">
                       <th scope="col">{"NAME"}</th>
                       <th scope="col">{"DOCUMENT"}</th>

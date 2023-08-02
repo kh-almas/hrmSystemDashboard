@@ -46,7 +46,7 @@ const Award = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead>
+            <thead className="table-light table-border">
               <tr>
                 <th scope="col">{"EMPLOYEE"}</th>
                 <th scope="col">{"AWARD TYPE"}</th>
