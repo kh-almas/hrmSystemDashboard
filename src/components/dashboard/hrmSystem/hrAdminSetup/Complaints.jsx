@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
-import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import Select from "../../../common/modal/Select";
 import Input from "../../../common/modal/Input";
+import Select from "../../../common/modal/Select";
 import Textarea from "../../../common/modal/Textarea";
+import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 
 const Complaints = () => {
   const {
@@ -48,12 +48,12 @@ const Complaints = () => {
           <table className="table">
             <thead className="table-light table-border">
               <tr>
-                <th scope="col">{"COMPLAINT FORM"}</th>
-                <th scope="col">{"COMPLAINT AGAINST"}</th>
-                <th scope="col">{"TITLE"}</th>
-                <th scope="col">{"COMPLAINT DATE"}</th>
-                <th scope="col">{"DESCRIPTION"}</th>
-                <th scope="col">{"ACTION"}</th>
+                <th scope="col">{"Complaint Form"}</th>
+                <th scope="col">{"Complaint Against"}</th>
+                <th scope="col">{"Title"}</th>
+                <th scope="col">{"Complaint Date"}</th>
+                <th scope="col">{"Description"}</th>
+                <th scope="col">{"Action"}</th>
               </tr>
             </thead>
             <tbody>

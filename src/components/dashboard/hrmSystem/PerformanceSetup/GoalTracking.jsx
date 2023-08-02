@@ -160,15 +160,15 @@ const GoalTracking = () => {
           <table className="table">
             <thead className="table-light table-border">
               <tr>
-                <th scope="col">{"GOAL TYPE"}</th>
-                <th scope="col">{"SUBJECT"}</th>
-                <th scope="col">{"BRANCH"}</th>
-                <th scope="col">{"TARGET ACHIEVEMENT"}</th>
-                <th scope="col">{"START DATE"}</th>
-                <th scope="col">{"END DATE"}</th>
-                <th scope="col">{"RATING"}</th>
-                <th scope="col">{"PROGRESS"}</th>
-                <th scope="col">{"ACTION"}</th>
+                <th scope="col">{"Goal Type"}</th>
+                <th scope="col">{"Subject"}</th>
+                <th scope="col">{"Branch"}</th>
+                <th scope="col">{"Target Achievement"}</th>
+                <th scope="col">{"Start Date"}</th>
+                <th scope="col">{"End Date"}</th>
+                <th scope="col">{"Rating"}</th>
+                <th scope="col">{"Progress"}</th>
+                <th scope="col">{"Action"}</th>
               </tr>
             </thead>
             <tbody>

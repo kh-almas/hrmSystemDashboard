@@ -48,11 +48,11 @@ const Resignation = () => {
           <table className="table">
             <thead className="table-light table-border">
               <tr>
-                <th scope="col">{"EMPLOYEE NAME"}</th>
-                <th scope="col">{"REGISTRATION DATE"}</th>
-                <th scope="col">{"LAST WORKING DATE"}</th>
-                <th scope="col">{"REASON"}</th>
-                <th scope="col">{"ACTION"}</th>
+                <th scope="col">{"Employee Name"}</th>
+                <th scope="col">{"Registration Date"}</th>
+                <th scope="col">{"Last Working Date"}</th>
+                <th scope="col">{"Reason"}</th>
+                <th scope="col">{"Action"}</th>
               </tr>
             </thead>
             <tbody>

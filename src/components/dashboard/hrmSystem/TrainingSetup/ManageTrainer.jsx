@@ -128,11 +128,11 @@ const ManageTrainer = () => {
           <table className="table">
             <thead className="table-light table-border">
               <tr>
-                <th scope="col">{"BRANCH"}</th>
-                <th scope="col">{"FULL NAME"}</th>
-                <th scope="col">{"CONTACT"}</th>
-                <th scope="col">{"EMAIL"}</th>
-                <th scope="col">{"ACTION"}</th>
+                <th scope="col">{"Branch"}</th>
+                <th scope="col">{"Full Name"}</th>
+                <th scope="col">{"Contact"}</th>
+                <th scope="col">{"Email"}</th>
+                <th scope="col">{"Action"}</th>
               </tr>
             </thead>
             <tbody>

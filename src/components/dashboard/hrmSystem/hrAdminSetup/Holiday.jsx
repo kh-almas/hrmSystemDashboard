@@ -3,10 +3,8 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
-import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import Select from "../../../common/modal/Select";
 import Input from "../../../common/modal/Input";
-import Textarea from "../../../common/modal/Textarea";
+import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 
 const Holiday = () => {
   const {
@@ -96,10 +94,10 @@ const Holiday = () => {
           <table className="table">
             <thead className="table-light table-border">
               <tr>
-                <th scope="col">{"OCCASION"}</th>
-                <th scope="col">{"START DATE"}</th>
-                <th scope="col">{"END DATE"}</th>
-                <th scope="col">{"ACTION"}</th>
+                <th scope="col">{"Occasion"}</th>
+                <th scope="col">{"Start Date"}</th>
+                <th scope="col">{"End Date"}</th>
+                <th scope="col">{"Action"}</th>
               </tr>
             </thead>
             <tbody>

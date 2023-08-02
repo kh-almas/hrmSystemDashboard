@@ -102,14 +102,14 @@ const Appraisal = () => {
           <table className="table">
             <thead className="table-light table-border">
               <tr>
-                <th scope="col">{"BRANCH"}</th>
-                <th scope="col">{"DEPARTMENT"}</th>
-                <th scope="col">{"DESIGNATION"}</th>
-                <th scope="col">{"EMPLOYEE"}</th>
-                <th scope="col">{"TARGET RATING"}</th>
-                <th scope="col">{"OVERALL RATING"}</th>
-                <th scope="col">{"APPRAISAL DATE"}</th>
-                <th scope="col">{"ACTION"}</th>
+                <th scope="col">{"Branch"}</th>
+                <th scope="col">{"Department"}</th>
+                <th scope="col">{"Desigmation"}</th>
+                <th scope="col">{"Employee"}</th>
+                <th scope="col">{"Target Rating"}</th>
+                <th scope="col">{"Overall Rating"}</th>
+                <th scope="col">{"Appraisal Date"}</th>
+                <th scope="col">{"Action"}</th>
               </tr>
             </thead>
             <tbody>
