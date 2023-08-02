@@ -46,7 +46,7 @@ const Resignation = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead>
+            <thead className="table-light table-border">
               <tr>
                 <th scope="col">{"EMPLOYEE NAME"}</th>
                 <th scope="col">{"REGISTRATION DATE"}</th>
@@ -65,7 +65,7 @@ const Resignation = () => {
               </tr> */}
             </tbody>
           </table>
-          <p className="text-center p-t-10">No entries found</p>
+          <p className="text-center p-t-10 table-text">No entries found</p>
         </div>
       </div>
 

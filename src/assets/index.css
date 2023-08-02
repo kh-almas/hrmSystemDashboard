@@ -1,6 +1,11 @@
 .table-border th {
     border-right: 1px solid #ccc;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 600;
-    font-family: system-ui;
+    text-transform: capitalize !important;
+}
+
+.table-text {
+    font-size: 16px;
+    color: #939393;
 }

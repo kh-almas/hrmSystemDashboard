@@ -46,7 +46,7 @@ const Promotion = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead>
+            <thead className="table-light table-border">
               <tr>
                 <th scope="col">{"EMPLOYEE NAME"}</th>
                 <th scope="col">{"DESCRIPTION"}</th>
