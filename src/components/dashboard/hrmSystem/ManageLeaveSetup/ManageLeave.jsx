@@ -120,13 +120,13 @@ const ManageLeave = () => {
             <thead className="table-light table-border">
               <tr>
                 <th scope="col">{"Employee"}</th>
-                <th scope="col">{"LEAVE TYPE"}</th>
-                <th scope="col">{"APPLIED ON"}</th>
-                <th scope="col">{"START DATE"}</th>
-                <th scope="col">{"END DATE"}</th>
-                <th scope="col">{"TOTAL DAYS"}</th>
-                <th scope="col">{"LEAVE REASON"}</th>
-                <th scope="col">{"STATUS"}</th>
+                <th scope="col">{"Leave Type"}</th>
+                <th scope="col">{"Applied On"}</th>
+                <th scope="col">{"Start Date"}</th>
+                <th scope="col">{"End Date"}</th>
+                <th scope="col">{"Total Days"}</th>
+                <th scope="col">{"Leave Reason"}</th>
+                <th scope="col">{"Status"}</th>
                 <th scope="col">{"Action"}</th>
               </tr>
             </thead>

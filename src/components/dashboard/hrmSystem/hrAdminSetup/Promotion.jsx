@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
-import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import Select from "../../../common/modal/Select";
 import Input from "../../../common/modal/Input";
+import Select from "../../../common/modal/Select";
 import Textarea from "../../../common/modal/Textarea";
+import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 
 const Promotion = () => {
   const {
@@ -48,12 +48,12 @@ const Promotion = () => {
           <table className="table">
             <thead className="table-light table-border">
               <tr>
-                <th scope="col">{"EMPLOYEE NAME"}</th>
-                <th scope="col">{"DESCRIPTION"}</th>
-                <th scope="col">{"PROMOTION TITLE"}</th>
-                <th scope="col">{"PROMOTION DATE"}</th>
-                <th scope="col">{"DESCRIPTION"}</th>
-                <th scope="col">{"ACTION"}</th>
+                <th scope="col">{"Employee Name"}</th>
+                <th scope="col">{"Description"}</th>
+                <th scope="col">{"Promotion Title"}</th>
+                <th scope="col">{"Promotion Date"}</th>
+                <th scope="col">{"Description"}</th>
+                <th scope="col">{"Action"}</th>
               </tr>
             </thead>
             <tbody>
