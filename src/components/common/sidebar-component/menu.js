@@ -212,7 +212,7 @@ export const MENUITEMS = [
     icon: Box,
     type: "sub",
     active: false,
-    children: [           
+    children: [
       {
         title: "Project",
         type: "sub",
@@ -221,7 +221,7 @@ export const MENUITEMS = [
             title: "Default Team",
             type: "link",
             path: "/dashboard/hrm/salary",
-          }          
+          },
         ],
       },
       {
@@ -233,7 +233,11 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/sale",
           },
-          { title: "Sale Return", type: "link", path: "/dashboard/hrm/sale-return" },
+          {
+            title: "Sale Return",
+            type: "link",
+            path: "/dashboard/hrm/sale-return",
+          },
         ],
       },
       {
@@ -243,11 +247,23 @@ export const MENUITEMS = [
           {
             title: "Add Contacts ",
             type: "link",
-            path: "/dashboard/hrm/manage-indicator",
+            path: "/dashboard/hrm/add-contacts",
           },
-          { title: "Supplier", type: "link", path: "/dashboard/hrm/manage-appraisal" },
-          { title: "Customer", type: "link", path: "/dashboard/hrm/goal-tracking" },
-          { title: "Settings", type: "link", path: "/dashboard/hrm/goal-tracking" },
+          {
+            title: "Supplier",
+            type: "link",
+            path: "/dashboard/hrm/manage-appraisal",
+          },
+          {
+            title: "Customer",
+            type: "link",
+            path: "/dashboard/hrm/goal-tracking",
+          },
+          {
+            title: "Settings",
+            type: "link",
+            path: "/dashboard/hrm/goal-tracking",
+          },
         ],
       },
       {
@@ -259,27 +275,67 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/manage-training",
           },
-          { title: "Service", type: "link", path: "/dashboard/hrm/manage-trainer" },
-          { title: "Add Product", type: "link", path: "/dashboard/hrm/manage-trainer" },
-          { title: "Category", type: "link", path: "/dashboard/hrm/manage-trainer" },
-          { title: "Brand", type: "link", path: "/dashboard/hrm/manage-trainer" },
-          { title: "Model", type: "link", path: "/dashboard/hrm/manage-trainer" },
-          { title: "Unit Type", type: "link", path: "/dashboard/hrm/manage-trainer" },
-          { title: "Variant", type: "link", path: "/dashboard/hrm/manage-trainer" }
+          {
+            title: "Service",
+            type: "link",
+            path: "/dashboard/hrm/manage-trainer",
+          },
+          {
+            title: "Add Product",
+            type: "link",
+            path: "/dashboard/hrm/manage-trainer",
+          },
+          {
+            title: "Category",
+            type: "link",
+            path: "/dashboard/hrm/manage-trainer",
+          },
+          {
+            title: "Brand",
+            type: "link",
+            path: "/dashboard/hrm/manage-trainer",
+          },
+          {
+            title: "Model",
+            type: "link",
+            path: "/dashboard/hrm/manage-trainer",
+          },
+          {
+            title: "Unit Type",
+            type: "link",
+            path: "/dashboard/hrm/manage-trainer",
+          },
+          {
+            title: "Variant",
+            type: "link",
+            path: "/dashboard/hrm/manage-trainer",
+          },
         ],
       },
       {
         title: "Inventory",
         type: "sub",
         children: [
-          { title: "Add Opening Stock", type: "link", path: "/dashboard/hrm/recruitment-jobs" },
-          { title: "Recieve Your Product", type: "link", path: "/base/tabs/tab-line" },
+          {
+            title: "Add Opening Stock",
+            type: "link",
+            path: "/dashboard/hrm/recruitment-jobs",
+          },
+          {
+            title: "Recieve Your Product",
+            type: "link",
+            path: "/base/tabs/tab-line",
+          },
           {
             title: "Product Costing(Sales)",
             type: "link",
             path: "/base/tabs/tab-line",
           },
-          { title: "Stock Transfer", type: "link", path: "/base/tabs/tab-line" },
+          {
+            title: "Stock Transfer",
+            type: "link",
+            path: "/base/tabs/tab-line",
+          },
           {
             title: "Stock List",
             type: "link",
@@ -295,7 +351,11 @@ export const MENUITEMS = [
             type: "link",
             path: "/base/tabs/tab-line",
           },
-          { title: "Stock Adjustment", type: "link", path: "/base/tabs/tab-line" },
+          {
+            title: "Stock Adjustment",
+            type: "link",
+            path: "/base/tabs/tab-line",
+          },
           { title: "Product Info", type: "link", path: "/base/tabs/tab-line" },
         ],
       },
@@ -306,23 +366,23 @@ export const MENUITEMS = [
           {
             title: "Purchase Order",
             type: "link",
-            path: "/dashboard/admin/award"
+            path: "/dashboard/admin/award",
           },
           {
             title: "Stock Alert List",
             type: "link",
-            path: "/dashboard/admin/transfer"
+            path: "/dashboard/admin/transfer",
           },
           {
             title: "Purchase Return List",
             type: "link",
-            path: "/dashboard/admin/resignation"
+            path: "/dashboard/admin/resignation",
           },
           {
             title: "C&F",
             type: "link",
-            path: "/dashboard/admin/trip"
-          }
+            path: "/dashboard/admin/trip",
+          },
         ],
       },
       {
@@ -337,13 +397,13 @@ export const MENUITEMS = [
           {
             title: "Make A Transfer",
             type: "link",
-            path: "/dashboard/admin/award"
+            path: "/dashboard/admin/award",
           },
           {
             title: "Transfered Lists",
             type: "link",
-            path: "/dashboard/admin/transfer"
-          }
+            path: "/dashboard/admin/transfer",
+          },
         ],
       },
       {
@@ -353,17 +413,15 @@ export const MENUITEMS = [
           {
             title: "Branch",
             type: "link",
-            path: "/dashboard/admin/award"
+            path: "/dashboard/admin/award",
           },
           {
             title: "Warehouse",
             type: "link",
-            path: "/dashboard/admin/transfer"
-          }
+            path: "/dashboard/admin/transfer",
+          },
         ],
-      }
-
-    
+      },
     ],
   },
   {
