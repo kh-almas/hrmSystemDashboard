@@ -93,21 +93,24 @@ export const MENUITEMS = [
           {
             title: "Jobs",
             type: "link",
-            path: "/dashboard/hrm/recruitment-jobs",
+            path: "/dashboard/hrm/jobs",
           },
           { title: "Job Create",
             type: "link",
-            path: "/dashboard/hrm/recruitment-jobs/create" },
-          {
-            title: "Job Application",
-            type: "link",
-            path: "/base/tabs/tab-line",
+            path: "/dashboard/hrm/jobs/create"
           },
-          { title: "Job Candidate", type: "link", path: "/base/tabs/tab-line" },
+          { title: "Job Application",
+            type: "link",
+            path: "/dashboard/hrm/jobs/application"
+          },
+          {
+            title: "Job Candidate",
+            type: "link",
+            path: "/dashboard/hrm/jobs/candidates" },
           {
             title: "Job On-boarding",
             type: "link",
-            path: "/base/tabs/tab-line",
+            path: "/dashboard/hrm/jobs/on-boarding",
           },
           {
             title: "Custom Question",
