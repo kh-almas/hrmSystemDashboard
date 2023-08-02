@@ -56,7 +56,7 @@ const ManageMeeting = () => {
               <CommonSearchComponet />
               <div className="table-responsive ">
                 <table className="table ">
-                  <thead>
+                  <thead className="table-light table-border">
                     <tr className="">
                       <th scope="col">{"MEETING TITLE"}</th>
                       <th scope="col">{"MEETING DATE"}</th>
