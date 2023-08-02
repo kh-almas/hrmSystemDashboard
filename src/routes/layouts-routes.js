@@ -47,7 +47,6 @@ import ManageJobStage from "../components/dashboard/hrmSystem/hrmSystemSetup/Man
 import ManageLoanOption from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageLoanOption";
 import ManagePayslipType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePayslipType";
 import ManagePerformanceType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePerformanceType";
-// import Calendar2 from "../components/dashboard/hrmSystem/hrAdminSetup/Calendar2";
 import MeetingCalender from "../components/dashboard/MeetingCalender";
 import ManageTerminationType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTerminationType";
 import ManageTrainingType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTrainingType";
@@ -254,5 +253,4 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/sale-return`,
     Component: <SaleReturn />,
   },
-
 ];
