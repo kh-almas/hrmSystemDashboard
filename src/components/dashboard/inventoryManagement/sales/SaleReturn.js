@@ -30,7 +30,7 @@ const SaleReturn = () => {
               <CommonSearchComponet />
               <div className="table-responsive ">
                 <table className="table">
-                  <thead className="table-light ">
+                  <thead className="table-light table-border">
                     <tr className="">
                       <th scope="col">{"NO"}</th>
                       <th scope="col">{"INVOICE"}</th>

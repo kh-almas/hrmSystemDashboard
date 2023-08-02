@@ -158,7 +158,7 @@ const GoalTracking = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead>
+            <thead className="table-light table-border">
               <tr>
                 <th scope="col">{"GOAL TYPE"}</th>
                 <th scope="col">{"SUBJECT"}</th>
