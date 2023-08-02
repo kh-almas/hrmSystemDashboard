@@ -11,7 +11,7 @@ const Jobs = () => {
       <Breadcrumb parent="HRM System" title="Manage Job" />
         <div className="row" style={{ paddingBottom: "14px" }}>
             <div className="col-12 col-lg-4 ms-0">
-                <div className="card p-4 mb-0">
+                <div className="card p-4 mb-0 shadow">
                     <div className="d-flex align-items-center">
                         <div class="d-flex  align-items-center w-100">
                             <div className="px-3 pt-3 pb-2 me-2" style={{backgroundColor: "#A14088", color: "#ffffff", borderRadius: "18px"}}>
@@ -29,7 +29,7 @@ const Jobs = () => {
                 </div>
             </div>
             <div className="col-12 col-lg-4 ms-0">
-                <div className="card p-4 mb-0">
+                <div className="card p-4 mb-0 shadow">
                     <div className="d-flex align-items-center">
                         <div class="d-flex  align-items-center w-100">
                             <div className="px-3 pt-3 pb-2 me-2" style={{backgroundColor: "#3EC9D6", color: "#ffffff", borderRadius: "18px"}}>
@@ -47,7 +47,7 @@ const Jobs = () => {
                 </div>
             </div>
             <div className="col-12 col-lg-4 ms-0">
-                <div className="card p-4 mb-0">
+                <div className="card p-4 mb-0 shadow">
                     <div className="d-flex align-items-center">
                         <div class="d-flex  align-items-center w-100">
                             <div className="px-3 pt-3 pb-2 me-2 bg-info" style={{backgroundColor: "#FFA21D", color: "#ffffff", borderRadius: "18px"}}>
@@ -70,7 +70,7 @@ const Jobs = () => {
             <CommonSearchComponet />
             <div className="table-responsive">
                 <table className="table table-bordered">
-                    <thead className="table-info solid">
+                    <thead className="table-light table-border">
                     <tr className="">
                         <th scope="col">{"Branch"}</th>
                         <th scope="col">{"Branch"}</th>
@@ -81,46 +81,14 @@ const Jobs = () => {
                     </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>{"Branchy"}</td>
-                            <td>{"AWARD"}</td>
-                            <td>{"DATE"}</td>
-                            <td>{"GIFT"}</td>
-                            <td>{"DESCRIPTION"}</td>
-                            <td>{"ACTION"}</td>
-                        </tr>
-                        <tr>
-                            <td>{"Branch"}</td>
-                            <td>{"AWARD"}</td>
-                            <td>{"DATE"}</td>
-                            <td>{"GIFT"}</td>
-                            <td>{"DESCRIPTION"}</td>
-                            <td>{"ACTION"}</td>
-                        </tr>
-                        <tr>
-                            <td>{"Branch"}</td>
-                            <td>{"AWARD"}</td>
-                            <td>{"DATE"}</td>
-                            <td>{"GIFT"}</td>
-                            <td>{"DESCRIPTION"}</td>
-                            <td>{"ACTION"}</td>
-                        </tr>
-                        <tr>
-                            <td>{"Branch"}</td>
-                            <td>{"AWARD"}</td>
-                            <td>{"DATE"}</td>
-                            <td>{"GIFT"}</td>
-                            <td>{"DESCRIPTION"}</td>
-                            <td>{"ACTION"}</td>
-                        </tr>
-                        <tr>
-                            <td>{"Branch"}</td>
-                            <td>{"AWARD"}</td>
-                            <td>{"DATE"}</td>
-                            <td>{"GIFT"}</td>
-                            <td>{"DESCRIPTION"}</td>
-                            <td>{"ACTION"}</td>
-                        </tr>
+                        {/*<tr>*/}
+                        {/*    <td>{"Branchy"}</td>*/}
+                        {/*    <td>{"AWARD"}</td>*/}
+                        {/*    <td>{"DATE"}</td>*/}
+                        {/*    <td>{"GIFT"}</td>*/}
+                        {/*    <td>{"DESCRIPTION"}</td>*/}
+                        {/*    <td>{"ACTION"}</td>*/}
+                        {/*</tr>*/}
                     </tbody>
                 </table>
                 <p className="text-center p-t-10">No entries found</p>
