@@ -253,7 +253,7 @@ export const MENUITEMS = [
           {
             title: "Supplier",
             type: "link",
-            path: "/dashboard/hrm/manage-appraisal",
+            path: "/dashboard/hrm/supplier",
           },
           {
             title: "Customer",
@@ -425,8 +425,6 @@ export const MENUITEMS = [
       },
     ],
   },
-
-
 
   {
     path: "http://support.pixelstrap.com/help-center",
