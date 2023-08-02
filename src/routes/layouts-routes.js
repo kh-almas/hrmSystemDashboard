@@ -140,7 +140,7 @@ export const routes = [
     Component: <Jobs />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment-jobs`,
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment-jobs/create`,
     Component: <Jobs />,
   },
 
