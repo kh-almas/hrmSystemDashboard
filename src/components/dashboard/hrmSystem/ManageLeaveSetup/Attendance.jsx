@@ -121,7 +121,7 @@ const Attendance = () => {
                   </button>
                   <button
                     className="btn btn-danger btn-lg"
-                    style={{ padding: "5px 15px" }}
+                    style={{ padding: "5px 15px", borderRadius: "5px" }}
                   >
                     <i className="fa fa-trash-o"></i>
                   </button>

@@ -33,6 +33,7 @@ const GoalTracking = () => {
         <button
           onClick={toggle}
           className="btn btn-pill btn-info btn-air-info btn-air-info"
+          style={{ padding: "5px 10px", borderRadius: "5px" }}
         >
           <i className="fa fa-plus"></i>
         </button>
@@ -97,10 +98,10 @@ const GoalTracking = () => {
                     Description
                   </label>
                   <textarea
-                      className="form-control"
-                      id="exampleFormControlTextarea4"
-                      rows="7"
-                      placeholder="Enter Remark"
+                    className="form-control"
+                    id="exampleFormControlTextarea4"
+                    rows="7"
+                    placeholder="Enter Remark"
                   ></textarea>
                 </div>
               </div>
