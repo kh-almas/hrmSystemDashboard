@@ -5,6 +5,7 @@ import Input from "../../../common/modal/Input";
 import Select from "../../../common/modal/Select";
 import { Button } from "react-bootstrap";
 import Textarea from "../../../common/modal/Textarea";
+import CkEditorComponent from "../../../common/modal/CkEditorComponent";
 
 const AddContacts = () => {
   const {
@@ -162,7 +163,7 @@ const AddContacts = () => {
               />
             </div>
           </div>
-          <div className="row row-cols-1 row-cols-lg-1">
+          <div className="row row-cols-1 row-cols-lg-1 mb-2">
             <div>
               <Input
                 name={"address"}
@@ -172,6 +173,10 @@ const AddContacts = () => {
               />
             </div>
           </div>
+          <div className="row row-cols-1 row-cols-lg-1 mb-2">
+            <CkEditorComponent/>
+          </div>
+          
           <div className="d-flex justify-content-center">
             <Button
               color=""

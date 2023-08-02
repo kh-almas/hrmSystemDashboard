@@ -50,11 +50,11 @@ const DocumentSetup = () => {
                 <table className="table ">
                   <thead className="table-light table-border">
                     <tr className="">
-                      <th scope="col">{"NAME"}</th>
-                      <th scope="col">{"DOCUMENT"}</th>
-                      <th scope="col">{"ROLE"}</th>
-                      <th scope="col">{"DESCRIPTION"}</th>
-                      <th scope="col">{"ACTION"}</th>
+                      <th scope="col">{"Name"}</th>
+                      <th scope="col">{"Documents"}</th>
+                      <th scope="col">{"Role"}</th>
+                      <th scope="col">{"Description"}</th>
+                      <th scope="col">{"Action"}</th>
                     </tr>
                   </thead>
                   <tbody>

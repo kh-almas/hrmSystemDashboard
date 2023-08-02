@@ -51,11 +51,11 @@ const CompanyPolicy = () => {
                 <table className="table ">
                   <thead className="table-light table-border">
                     <tr className="">
-                      <th scope="col">{"BRANCH"}</th>
-                      <th scope="col">{"TITLE"}</th>
-                      <th scope="col">{"DESCRIPTION"}</th>
-                      <th scope="col">{"ATTACHMENT"}</th>
-                      <th scope="col">{"ACTION"}</th>
+                      <th scope="col">{"Branch"}</th>
+                      <th scope="col">{"Title"}</th>
+                      <th scope="col">{"Description"}</th>
+                      <th scope="col">{"Attachment"}</th>
+                      <th scope="col">{"Action"}</th>
                     </tr>
                   </thead>
                   {/* <tbody>
