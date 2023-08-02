@@ -39,19 +39,27 @@ const EmployeSetup = () => {
                       <td>{""}</td>
                       <td>{""}</td>
                       <td>
-                        <Link to="/dashboard/hrm/edit">
-                          <i className="icofont icofont-pencil-alt-5 custom-div rounded m-r-15 p-2"></i>
-                        </Link>
-                        <Link to="/dashboard/hrm/employee">
-                          {" "}
-                          <i
-                            style={{
-                              backgroundColor: "#ff3a6e",
-                              color: "#ffffff",
-                            }}
-                            className="icofont icofont-trash rounded p-2"
-                          ></i>
-                        </Link>
+                        <div className="d-flex justify-content-between">
+                          <Link to="/dashboard/hrm/edit">
+                            <i
+                              style={{
+                                backgroundColor: "skyblue",
+                                color: "#ffffff",
+                              }}
+                              className="icofont icofont-pencil-alt-5  rounded m-r-15 p-2"
+                            ></i>
+                          </Link>
+                          <Link to="/dashboard/hrm/employee">
+                            {" "}
+                            <i
+                              style={{
+                                backgroundColor: "#ff3a6e",
+                                color: "#ffffff",
+                              }}
+                              className="icofont icofont-trash rounded p-2"
+                            ></i>
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   </tbody>

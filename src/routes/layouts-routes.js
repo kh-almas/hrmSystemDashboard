@@ -56,7 +56,7 @@ import SetSalary from "../components/dashboard/hrmSystem/payrollSetup/setSalary"
 import Sale from "../components/dashboard/inventoryManagement/sales/Sale";
 import SaleReturn from "../components/dashboard/inventoryManagement/sales/SaleReturn";
 import SupportTicket from "../components/support-ticket/supportTicket";
-
+import AddContacts from "../components/dashboard/inventoryManagement/Contacts/AddContacts";
 
 export const routes = [
   {
@@ -140,22 +140,57 @@ export const routes = [
     Component: <Jobs />,
   },
 
-    //hr admin setup
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/award`, Component: <Award /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/transfer`, Component: <Transfer /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/resignation`, Component: <Resignation /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/trip`, Component: <Trip /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/promotion`, Component: <Promotion /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/complaints`, Component: <Complaints /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/warning`, Component: <Warning /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/termination`, Component: <Termination /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/announcement`, Component: <Announcement /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday`, Component: <Holiday /> },
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday-calender`, Component: <HolidayCalender /> },
-
+  //hr admin setup
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/award`,
+    Component: <Award />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/transfer`,
+    Component: <Transfer />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/resignation`,
+    Component: <Resignation />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/trip`,
+    Component: <Trip />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/promotion`,
+    Component: <Promotion />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/complaints`,
+    Component: <Complaints />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/warning`,
+    Component: <Warning />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/termination`,
+    Component: <Termination />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/announcement`,
+    Component: <Announcement />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday`,
+    Component: <Holiday />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday-calender`,
+    Component: <HolidayCalender />,
+  },
 
   //hr admin setup
-  { path: `${process.env.PUBLIC_URL}/dashboard/admin/event/setup`, Component: <EventSetup /> },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/event/setup`,
+    Component: <EventSetup />,
+  },
 
   {
     path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-branch`,
@@ -252,5 +287,9 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/sale-return`,
     Component: <SaleReturn />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/add-contacts`,
+    Component: <AddContacts />,
   },
 ];
