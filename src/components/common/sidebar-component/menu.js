@@ -95,7 +95,9 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/recruitment-jobs",
           },
-          { title: "Job Create", type: "link", path: "/base/tabs/tab-line" },
+          { title: "Job Create",
+            type: "link",
+            path: "/dashboard/hrm/recruitment-jobs/create" },
           {
             title: "Job Application",
             type: "link",
