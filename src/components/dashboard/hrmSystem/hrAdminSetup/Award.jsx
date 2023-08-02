@@ -3,10 +3,6 @@ import { useForm } from "react-hook-form";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-<<<<<<< HEAD
-import { Button, Modal, ModalBody,  ModalHeader } from "reactstrap";
-=======
->>>>>>> f9e687c40e36d8c9b713d5f39a400995e33ac94a
 import Input from "../../../modal/Input";
 import Select from "../../../modal/Select";
 import Textarea from "../../../modal/Textarea";

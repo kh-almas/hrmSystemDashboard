@@ -29,8 +29,8 @@ const SaleReturn = () => {
             <div className="card" style={{ padding: "20px" }}>
               <CommonSearchComponet />
               <div className="table-responsive ">
-                <table className="table ">
-                  <thead>
+                <table className="table">
+                  <thead className="table-light ">
                     <tr className="">
                       <th scope="col">{"NO"}</th>
                       <th scope="col">{"INVOICE"}</th>

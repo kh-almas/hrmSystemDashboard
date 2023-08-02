@@ -4,7 +4,7 @@ import Breadcrumb from "../../../common/breadcrumb";
 import Select from "../../../modal/Select";
 import Input from "../../../modal/Input";
 import Textarea from "../../../modal/Textarea";
-import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Button} from "reactstrap";
 
 const AddContacts = () => {
   const {
