@@ -1,15 +1,18 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../common/breadcrumb";
 import CommonSearchComponet from "../../common/salaryCard/CommonSearchComponet";
-import {Button, Modal, ModalBody, ModalHeader} from "reactstrap";
 import Input from "../../common/modal/Input";
 import Select from "../../common/modal/Select";
 import Textarea from "../../common/modal/Textarea";
-import {useForm} from "react-hook-form";
-
 
 const CompanyPolicy = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [modal, setModal] = useState();
 
   const toggle = () => {
@@ -23,8 +26,19 @@ const CompanyPolicy = () => {
   return (
     <>
       <Breadcrumb parent="HRM System" title="Manage Company Policy" />
-      <div style={{display: "flex", alignItems: "center", justifyContent: "flex-end", marginBottom: "20px",}}>
-        <button onClick={toggle} className="btn btn-pill btn-info btn-air-info btn-air-info">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          marginBottom: "20px",
+        }}
+      >
+        <button
+          onClick={toggle}
+          className="btn btn-pill btn-info btn-air-info btn-air-info"
+          style={{ padding: "7px 13px", borderRadius: "5px" }}
+        >
           <i className="fa fa-plus"></i>
         </button>
       </div>
@@ -66,17 +80,38 @@ const CompanyPolicy = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row row-cols-1 row-cols-lg-2">
               <div>
-                <Select name={"branch"} labelName={"Branch"} placeholder={"Select an option"} options={[]}/>
+                <Select
+                  name={"branch"}
+                  labelName={"Branch"}
+                  placeholder={"Select an option"}
+                  options={[]}
+                />
               </div>
               <div>
-                <Input labelName={'Title'} inputName={'title'} inputType={'text'} placeholder={'Enter title'} validation={{...register("title", { required: true })}}/>
+                <Input
+                  labelName={"Title"}
+                  inputName={"title"}
+                  inputType={"text"}
+                  placeholder={"Enter title"}
+                  validation={{ ...register("title", { required: true }) }}
+                />
               </div>
             </div>
             <div>
-              <Textarea labelName={"Description"} inputName={"description"} placeholder={"Enter Description"} height={"5"}/>
+              <Textarea
+                labelName={"Description"}
+                inputName={"description"}
+                placeholder={"Enter Description"}
+                height={"5"}
+              />
             </div>
             <div>
-              <Input labelName={'Attachment'} inputName={'file'} inputType={'file'}validation={{...register("file", { required: true })}}/>
+              <Input
+                labelName={"Attachment"}
+                inputName={"file"}
+                inputType={"file"}
+                validation={{ ...register("file", { required: true }) }}
+              />
             </div>
 
             <div className="d-flex justify-content-end">

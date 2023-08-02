@@ -24,6 +24,7 @@ const Overtime = () => {
           <button
             onClick={toggle}
             className="btn btn-pill btn-info btn-air-info btn-air-info"
+            style={{ padding: "5px 10px", borderRadius: "5px" }}
           >
             <i className="fa fa-plus"></i>
           </button>
