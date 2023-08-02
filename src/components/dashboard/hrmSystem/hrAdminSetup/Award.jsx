@@ -33,12 +33,12 @@ const Award = () => {
                     <table className="table">
                         <thead>
                         <tr>
-                            <th scope="col">{"Employee"}</th>
-                            <th scope="col">{"Award Type"}</th>
-                            <th scope="col">{"Date"}</th>
-                            <th scope="col">{"Gift"}</th>
-                            <th scope="col">{"Description"}</th>
-                            <th scope="col">{"Action"}</th>
+                            <th scope="col">{"EMPLOYEE"}</th>
+                            <th scope="col">{"AWARD TYPE"}</th>
+                            <th scope="col">{"DATE"}</th>
+                            <th scope="col">{"GIFT"}</th>
+                            <th scope="col">{"DESCRIPTION"}</th>
+                            <th scope="col">{"ACTION"}</th>
                         </tr>
                         </thead>
                         <tbody>

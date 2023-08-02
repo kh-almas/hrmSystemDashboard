@@ -77,7 +77,6 @@ const Holiday = () => {
                                 <Input labelName={'End Date'} inputName={'enddate'} inputType={'date'}  validation={{...register("enddate", { required: true })}} />
                             </div>
                         </div>
-
                         <div>
                             <input className="me-2 mt-1" id="checkbox-primary-2" type="checkbox" />
                             <label htmlFor="exampleFormControlSelect9">Synchronize in Google Calendar ?</label>

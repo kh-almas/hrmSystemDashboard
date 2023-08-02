@@ -48,6 +48,17 @@ import ManageJobStage from "../components/dashboard/hrmSystem/hrmSystemSetup/Man
 import ManageLoanOption from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageLoanOption";
 import ManagePayslipType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePayslipType";
 import ManagePerformanceType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePerformanceType";
+
+import ManageCompetencies from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageCompetencies";
+import CompanyPolicy from "../components/dashboard/hrmSystem/CompanyPolicy";
+import DocumentSetup from "../components/dashboard/hrmSystem/DocumentSetup";
+import EmployeesAssetSetup from "../components/dashboard/hrmSystem/EmployeesAssetSetup";
+import ManageMeeting from "../components/dashboard/hrmSystem/ManageMeeting";
+import Calendar2 from "../components/dashboard/hrmSystem/hrAdminSetup/Calendar2";
+import HolidayCalender from "../components/dashboard/hrmSystem/hrAdminSetup/HolidayCalender";
+import EventSetup from "../components/dashboard/hrmSystem/EventSetup";
+import MeetingCalender from "../components/dashboard/MeetingCalender";
+
 import SetSalary from "../components/dashboard/hrmSystem/payrollSetup/setSalary";
 import SalaryDetails from "../components/dashboard/hrmSystem/payrollSetup/salaryDetails";
 import Payslip from "../components/dashboard/hrmSystem/payrollSetup/payslip";
@@ -56,6 +67,7 @@ import ManageTrainingType from "../components/dashboard/hrmSystem/hrmSystemSetup
 import ManageTerminationType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTerminationType";
 import Sale from "../components/dashboard/inventoryManagement/sales/Sale";
 import SaleReturn from "../components/dashboard/inventoryManagement/sales/SaleReturn";
+
 
 export const routes = [
   {
@@ -223,20 +235,24 @@ export const routes = [
     Component: <ManageCompetencies />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/company-policy`,
-    Component: <CompanyPolicy />,
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-meeting`,
+    Component: <ManageMeeting />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/document-setup`,
-    Component: <DocumentSetup />,
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-meeting-calender`,
+    Component: <MeetingCalender />,
   },
   {
     path: `${process.env.PUBLIC_URL}/hrm/dashboard/employees-asset-setup`,
     Component: <EmployeesAssetSetup />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-meeting`,
-    Component: <ManageMeeting />,
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/document-setup`,
+    Component: <DocumentSetup />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/company-policy`,
+    Component: <CompanyPolicy />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/sale`,

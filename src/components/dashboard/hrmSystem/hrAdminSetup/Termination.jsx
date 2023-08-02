@@ -33,12 +33,12 @@ const Termination = () => {
                     <table className="table">
                         <thead>
                         <tr>
-                            <th scope="col">{"Employee Name"}</th>
-                            <th scope="col">{"Termination Type"}</th>
-                            <th scope="col">{"Notice Date"}</th>
-                            <th scope="col">{"Termination Date"}</th>
-                            <th scope="col">{"Description"}</th>
-                            <th scope="col">{"Action"}</th>
+                            <th scope="col">{"EMPLOYEE NAME"}</th>
+                            <th scope="col">{"TERMINATION TYPE"}</th>
+                            <th scope="col">{"NOTICE DATE"}</th>
+                            <th scope="col">{"TERMINATION DATE"}</th>
+                            <th scope="col">{"DESCRIPTION"}</th>
+                            <th scope="col">{"ACTION"}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -59,9 +59,15 @@ const Termination = () => {
                 <ModalHeader toggle={toggle}>Create New Termination</ModalHeader>
                 <ModalBody>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div>
-                            <Select name={"employee"} labelName={"Employee"} placeholder={"Select an option"} options={['Accountant',]} inputName={"employ"}/>
+                        <div className="row row-cols-1 row-cols-lg-2">
+                            <div>
+                                <Select name={"employee"} labelName={"Employee"} placeholder={"Select an option"} options={['Accountant',]}/>
+                            </div>
+                            <div>
+                                <Select name={"type"} labelName={"Termination Type"} placeholder={"Select an option"} options={[]}/>
+                            </div>
                         </div>
+
 
                         <div className="row row-cols-1 row-cols-lg-2">
                             <div>

@@ -33,12 +33,12 @@ const Promotion = () => {
                     <table className="table">
                         <thead>
                         <tr>
-                            <th scope="col">{"Employee Name"}</th>
-                            <th scope="col">{"Designation"}</th>
-                            <th scope="col">{"Promotion Title"}</th>
-                            <th scope="col">{"Promotion Date"}</th>
-                            <th scope="col">{"Description"}</th>
-                            <th scope="col">{"Action"}</th>
+                            <th scope="col">{"EMPLOYEE NAME"}</th>
+                            <th scope="col">{"DESCRIPTION"}</th>
+                            <th scope="col">{"PROMOTION TITLE"}</th>
+                            <th scope="col">{"PROMOTION DATE"}</th>
+                            <th scope="col">{"DESCRIPTION"}</th>
+                            <th scope="col">{"ACTION"}</th>
                         </tr>
                         </thead>
                         <tbody>

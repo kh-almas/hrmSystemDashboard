@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
-import Breadcrumb from "../../../common/breadcrumb";
-import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import {Button, Modal, ModalBody, ModalHeader} from "reactstrap";
-import Select from "../../../modal/Select";
-import Input from "../../../modal/Input";
-import Textarea from "../../../modal/Textarea";
-import {useForm} from "react-hook-form";
+import Breadcrumb from "../common/breadcrumb";
 import {Link} from "react-router-dom";
+import Input from "../modal/Input";
+import Calendar2 from "./hrmSystem/hrAdminSetup/Calendar2";
+import {Button, Modal, ModalBody, ModalHeader} from "reactstrap";
+import {useForm} from "react-hook-form";
+import Select from "../modal/Select";
+import Textarea from "../modal/Textarea";
 
-const Holiday = () => {
+const MeetingCalender = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [modal, setModal] = useState();
 
@@ -22,9 +22,9 @@ const Holiday = () => {
 
     return (
         <>
-            <Breadcrumb parent="HRM System" title="Manage Holiday" />
+            <Breadcrumb parent="HRM System" title="Manage Meeting" />
             <div style={{display: "flex", alignItems: "center", justifyContent: "flex-end", marginBottom: "20px",}}>
-                <Link to={'/dashboard/admin/holiday-calender'} className="btn btn-pill btn-info btn-air-info btn-air-info me-2">
+                <Link to={'/hrm/dashboard/manage-meeting'} className="btn btn-pill btn-info btn-air-info btn-air-info me-2">
                     <i class="fa fa-calendar"></i>
                 </Link>
                 <button onClick={toggle} className="btn btn-pill btn-info btn-air-info btn-air-info">
@@ -55,49 +55,36 @@ const Holiday = () => {
                 </div>
             </div>
 
-            <div className="card" style={{ padding: "20px" }}>
-                <CommonSearchComponet />
-                <div className="table-responsive">
-                    <table className="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">{"OCCASION"}</th>
-                            <th scope="col">{"START DATE"}</th>
-                            <th scope="col">{"END DATE"}</th>
-                            <th scope="col">{"ACTION"}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {/* <tr>
-                <th scope="row">{""}</th>
-                <td>{""}</td>
-                <td>{""}</td>
-                <td>{""}</td>
-              </tr> */}
-                        </tbody>
-                    </table>
-                    <p className="text-center p-t-10">No entries found</p>
-                </div>
+            <div>
+                <Calendar2 />
             </div>
-
-
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Create New Holiday</ModalHeader>
+                <ModalHeader toggle={toggle}>Create New Trip</ModalHeader>
                 <ModalBody>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
-                            <Input labelName={'Occasion'} inputName={'occasion'} inputType={'text'} placeholder={'Enter occasion name'} validation={{...register("occasion", { required: true })}}/>
+                            <Select name={"branch"} labelName={"Branch"} placeholder={"Select an option"} options={['All branch',]}/>
                         </div>
-
+                        <div>
+                            <Select name={"department"} labelName={"Department"} placeholder={"Select an option"} options={[]}/>
+                        </div>
+                        <div>
+                            <Select name={"employee"} labelName={"Employee"} placeholder={"Select an option"} options={[]}/>
+                        </div>
+                        <div>
+                            <Input labelName={'Meeting Title'} inputName={'title'} inputType={'text'} placeholder={'Enter a title'} validation={{...register("title", { required: true })}}/>
+                        </div>
                         <div className="row row-cols-1 row-cols-lg-2">
                             <div>
-                                <Input labelName={'Start Date'} inputName={'startdate'} inputType={'date'}  validation={{...register("startdate", { required: true })}} />
+                                <Input labelName={'Meeting Date'} inputName={'date'} inputType={'date'}  validation={{...register("date", { required: true })}} />
                             </div>
                             <div>
-                                <Input labelName={'End Date'} inputName={'enddate'} inputType={'date'}  validation={{...register("enddate", { required: true })}} />
+                                <Input labelName={'Meeting Time'} inputName={'time'} inputType={'time'}  validation={{...register("time", { required: true })}} />
                             </div>
                         </div>
-
+                        <div>
+                            <Textarea labelName={"Description"} inputName={"description"} placeholder={"Enter Description"} height={"5"}/>
+                        </div>
                         <div>
                             <input className="me-2 mt-1" id="checkbox-primary-2" type="checkbox" />
                             <label htmlFor="exampleFormControlSelect9">Synchronize in Google Calendar ?</label>
@@ -118,4 +105,4 @@ const Holiday = () => {
     );
 };
 
-export default Holiday;
+export default MeetingCalender;

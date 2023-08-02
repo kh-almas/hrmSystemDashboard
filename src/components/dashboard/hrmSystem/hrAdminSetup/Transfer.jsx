@@ -32,12 +32,12 @@ const Transfer = () => {
                     <table className="table">
                         <thead>
                         <tr>
-                            <th scope="col">{"Employee Name"}</th>
-                            <th scope="col">{"Branch"}</th>
-                            <th scope="col">{"Department"}</th>
-                            <th scope="col">{"Transfer Date"}</th>
-                            <th scope="col">{"Description"}</th>
-                            <th scope="col">{"Action"}</th>
+                            <th scope="col">{"EMPLOYEE NAME"}</th>
+                            <th scope="col">{"BRANCH"}</th>
+                            <th scope="col">{"DEPARTMENT"}</th>
+                            <th scope="col">{"TRANSFER DATE"}</th>
+                            <th scope="col">{"DESCRIPTION"}</th>
+                            <th scope="col">{"ACTION"}</th>
                         </tr>
                         </thead>
                         <tbody>
