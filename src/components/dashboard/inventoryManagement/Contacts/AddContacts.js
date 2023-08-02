@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Breadcrumb from "../../../common/breadcrumb";
-import Select from "../../../modal/Select";
-import Input from "../../../modal/Input";
-import Textarea from "../../../modal/Textarea";
-import { Button} from "reactstrap";
+import Input from "../../../common/modal/Input";
+import Select from "../../../common/modal/Select";
+import { Button } from "react-bootstrap";
+import Textarea from "../../../common/modal/Textarea";
 
 const AddContacts = () => {
   const {
@@ -144,7 +144,7 @@ const AddContacts = () => {
           </div>
 
           <div className="row row-cols-1 row-cols-lg-2">
-          <div>
+            <div>
               <Select
                 name={"state"}
                 labelName={"State"}
@@ -152,7 +152,7 @@ const AddContacts = () => {
                 options={["", "India", "Australia"]}
               />
             </div>
-          
+
             <div>
               <Select
                 name={"country"}
@@ -163,14 +163,14 @@ const AddContacts = () => {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <Textarea
               labelName={"Description"}
               inputName={"description"}
               placeholder={"Enter Description"}
               height={"5"}
             />
-          </div>
+          </div> */}
 
           <div className="d-flex justify-content-end">
             <Button color="" className="me-2">
