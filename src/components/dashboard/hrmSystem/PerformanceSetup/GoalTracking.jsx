@@ -185,7 +185,7 @@ const GoalTracking = () => {
               </tr> */}
             </tbody>
           </table>
-          <p className="text-center p-t-10">No entries found</p>
+          <p className="text-center p-t-10 table-text">No entries found</p>
         </div>
         {/* <p>Showing 1 to 1 of 1 entries</p> */}
       </div>

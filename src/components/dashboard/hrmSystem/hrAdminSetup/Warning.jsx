@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import Input from "../../../modal/Input";
-import Select from "../../../modal/Select";
-import Textarea from "../../../modal/Textarea";
+import Select from "../../../common/modal/Select";
+import Input from "../../../common/modal/Input";
+import Textarea from "../../../common/modal/Textarea";
 
 const Warning = () => {
   const {
@@ -46,7 +46,7 @@ const Warning = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead>
+            <thead className="table-light table-border">
               <tr>
                 <th scope="col">{"WARNING BY"}</th>
                 <th scope="col">{"WARNING TO"}</th>
@@ -67,7 +67,7 @@ const Warning = () => {
               </tr> */}
             </tbody>
           </table>
-          <p className="text-center p-t-10">No entries found</p>
+          <p className="text-center p-t-10 table-text">No entries found</p>
         </div>
       </div>
 

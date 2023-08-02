@@ -30,7 +30,7 @@ const EmployeSetup = () => {
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">{"#EMP0000001"}</th>
+                      <td>{"#EMP0000001"}</td>
                       <td>{"accountant"}</td>
                       <td>{"accountant@example.com"}</td>
                       <td>{""}</td>

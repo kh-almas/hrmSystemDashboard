@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import Input from "../../../modal/Input";
+import Select from "../../../common/modal/Select";
+import Input from "../../../common/modal/Input";
+import Textarea from "../../../common/modal/Textarea";
 
 const Holiday = () => {
   const {
@@ -92,7 +94,7 @@ const Holiday = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead>
+            <thead className="table-light table-border">
               <tr>
                 <th scope="col">{"OCCASION"}</th>
                 <th scope="col">{"START DATE"}</th>

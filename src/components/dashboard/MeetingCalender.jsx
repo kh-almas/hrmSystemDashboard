@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../common/breadcrumb";
-import Input from "../modal/Input";
-import Select from "../modal/Select";
-import Textarea from "../modal/Textarea";
+import Input from "../common/modal/Input";
 import Calendar2 from "./hrmSystem/hrAdminSetup/Calendar2";
+import Select from "../common/modal/Select";
+import Textarea from "../common/modal/Textarea";
 
 const MeetingCalender = () => {
   const {

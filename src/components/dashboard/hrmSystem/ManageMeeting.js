@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../common/breadcrumb";
 import CommonSearchComponet from "../../common/salaryCard/CommonSearchComponet";
-import Input from "../../modal/Input";
-import Select from "../../modal/Select";
-import Textarea from "../../modal/Textarea";
+import Select from "../../common/modal/Select";
+import Input from "../../common/modal/Input";
+import Textarea from "../../common/modal/Textarea";
 
 const ManageMeeting = () => {
   const {

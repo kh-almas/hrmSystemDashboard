@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import Input from "../../../modal/Input";
-import Select from "../../../modal/Select";
-import Textarea from "../../../modal/Textarea";
+import Select from "../../../common/modal/Select";
+import Input from "../../../common/modal/Input";
+import Textarea from "../../../common/modal/Textarea";
 
 const Termination = () => {
   const {
@@ -46,7 +46,7 @@ const Termination = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead>
+            <thead className="table-light table-border">
               <tr>
                 <th scope="col">{"EMPLOYEE NAME"}</th>
                 <th scope="col">{"TERMINATION TYPE"}</th>
@@ -67,7 +67,7 @@ const Termination = () => {
               </tr> */}
             </tbody>
           </table>
-          <p className="text-center p-t-10">No entries found</p>
+          <p className="text-center p-t-10 table-text">No entries found</p>
         </div>
       </div>
       <Modal isOpen={modal} toggle={toggle}>

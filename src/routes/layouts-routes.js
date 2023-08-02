@@ -47,7 +47,6 @@ import ManageJobStage from "../components/dashboard/hrmSystem/hrmSystemSetup/Man
 import ManageLoanOption from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageLoanOption";
 import ManagePayslipType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePayslipType";
 import ManagePerformanceType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePerformanceType";
-// import Calendar2 from "../components/dashboard/hrmSystem/hrAdminSetup/Calendar2";
 import MeetingCalender from "../components/dashboard/MeetingCalender";
 import ManageTerminationType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTerminationType";
 import ManageTrainingType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTrainingType";
@@ -57,7 +56,6 @@ import SetSalary from "../components/dashboard/hrmSystem/payrollSetup/setSalary"
 import Sale from "../components/dashboard/inventoryManagement/sales/Sale";
 import SaleReturn from "../components/dashboard/inventoryManagement/sales/SaleReturn";
 import SupportTicket from "../components/support-ticket/supportTicket";
-import AddContacts from "../components/dashboard/inventoryManagement/Contacts/AddContacts";
 
 
 export const routes = [
@@ -130,14 +128,16 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-trainer`,
     Component: <ManageTrainer />,
   },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment-jobs`,
-    Component: <Jobs />,
-  },
 
   {
     path: `${process.env.PUBLIC_URL}/support-ticket/supportTicket`,
     Component: <SupportTicket />,
+  },
+
+  //Recruitment Setup
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment-jobs`,
+    Component: <Jobs />,
   },
 
     //hr admin setup
@@ -252,9 +252,5 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/sale-return`,
     Component: <SaleReturn />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/add-contacts`,
-    Component: <AddContacts />,
   },
 ];

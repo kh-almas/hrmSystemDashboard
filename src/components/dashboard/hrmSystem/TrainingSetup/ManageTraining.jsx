@@ -135,7 +135,7 @@ const ManageTraining = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead>
+            <thead className="table-light table-border">
               <tr>
                 <th scope="col">{"BRANCH"}</th>
                 <th scope="col">{"TRAINING TYPE"}</th>

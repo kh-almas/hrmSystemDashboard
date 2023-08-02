@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Button, Label, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../common/breadcrumb";
-import Input from "../../modal/Input";
-import Select from "../../modal/Select";
-import Textarea from "../../modal/Textarea";
+import Select from "../../common/modal/Select";
+import Input from "../../common/modal/Input";
+import Textarea from "../../common/modal/Textarea";
 import Calendar2 from "./hrAdminSetup/Calendar2";
 
 const EventSetup = () => {
