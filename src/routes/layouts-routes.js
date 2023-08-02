@@ -60,6 +60,7 @@ import AddContacts from "../components/dashboard/inventoryManagement/Contacts/Ad
 import Supplier from "../components/dashboard/inventoryManagement/Contacts/Supplier";
 import CreateJob from "../components/dashboard/hrmSystem/RecruitmentSetup/CreateJob";
 
+
 export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/default`,

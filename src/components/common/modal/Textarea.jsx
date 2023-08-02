@@ -2,6 +2,9 @@ import React from "react";
 import { FormGroup } from "reactstrap";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7db7fbe678ce7694d3b7cfff7000803252d11be8
 const Textarea = ({
   labelName,
   inputName,
@@ -26,6 +29,7 @@ const Textarea = ({
       ></textarea>
     </FormGroup>
   );
+<<<<<<< HEAD
 =======
 const Textarea = ({labelName, inputName, placeholder, errors, defaultValue, validation, height}) => {
     return (
@@ -35,6 +39,9 @@ const Textarea = ({labelName, inputName, placeholder, errors, defaultValue, vali
         </FormGroup>
     );
 >>>>>>> 1701e1d91a46f0629aa91b230152c19d8f8f7d5d
+=======
+
+>>>>>>> 7db7fbe678ce7694d3b7cfff7000803252d11be8
 };
 
 export default Textarea;

@@ -2,6 +2,10 @@ import React from "react";
 import { FormGroup, Label } from "reactstrap";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7db7fbe678ce7694d3b7cfff7000803252d11be8
 const Select = ({
   labelName,
   name,
@@ -36,6 +40,7 @@ const Select = ({
       </FormGroup>
     </>
   );
+<<<<<<< HEAD
 =======
 const Select = ({labelName, name, options, placeholder, inputType, errors, defaultValue, validation}) => {
     return (
@@ -52,6 +57,9 @@ const Select = ({labelName, name, options, placeholder, inputType, errors, defau
         </>
     );
 >>>>>>> 1701e1d91a46f0629aa91b230152c19d8f8f7d5d
+=======
+
+>>>>>>> 7db7fbe678ce7694d3b7cfff7000803252d11be8
 };
 
 export default Select;
