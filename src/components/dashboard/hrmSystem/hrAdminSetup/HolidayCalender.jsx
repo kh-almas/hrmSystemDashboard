@@ -3,7 +3,10 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
-import Input from "../../../modal/Input";
+import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
+import Select from "../../../common/modal/Select";
+import Input from "../../../common/modal/Input";
+import Textarea from "../../../common/modal/Textarea";
 import Calendar2 from "./Calendar2";
 
 const Holiday = () => {

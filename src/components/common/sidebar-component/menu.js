@@ -85,6 +85,7 @@ export const MENUITEMS = [
           },
         ],
       },
+      //Recruitment Setup
       {
         title: "Recruitment Setup",
         type: "sub",
@@ -424,6 +425,9 @@ export const MENUITEMS = [
       },
     ],
   },
+
+
+
   {
     path: "http://support.pixelstrap.com/help-center",
     title: "Raise Support",
