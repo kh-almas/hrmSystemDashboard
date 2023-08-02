@@ -139,6 +139,10 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment-jobs`,
     Component: <Jobs />,
   },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment-jobs`,
+    Component: <Jobs />,
+  },
 
     //hr admin setup
   { path: `${process.env.PUBLIC_URL}/dashboard/admin/award`, Component: <Award /> },
