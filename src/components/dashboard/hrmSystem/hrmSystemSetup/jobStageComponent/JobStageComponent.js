@@ -10,7 +10,13 @@ const JobStageComponent = ({ stage }) => {
           <p className="fs-5 mt-3 m-l-10">{stage.name}</p>
         </div>
         <div className="d-flex align-items-center">
-          <i className="icofont icofont-pencil-alt-5 custom-div rounded m-r-15 p-2"></i>
+          <i
+            style={{
+              backgroundColor: "skyblue",
+              color: "#ffffff",
+            }}
+            className="icofont icofont-pencil-alt-5 rounded m-r-15 p-2"
+          ></i>
           <i
             style={{ backgroundColor: "#ff3a6e", color: "#ffffff" }}
             className="icofont icofont-trash rounded p-2"

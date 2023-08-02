@@ -33,7 +33,13 @@ const SetSalary = () => {
                       <td>{""}</td>
                       <td>
                         <Link to="/dashboard/hrm/salary-details">
-                          <i className="icofont icofont-pencil-alt-5 custom-div rounded m-r-15 p-2"></i>
+                          <i
+                            style={{
+                              backgroundColor: "skyblue",
+                              color: "#ffffff",
+                            }}
+                            className="icofont icofont-pencil-alt-5 rounded m-r-15 p-2"
+                          ></i>
                         </Link>
                       </td>
                     </tr>
