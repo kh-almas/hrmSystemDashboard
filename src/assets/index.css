@@ -1,8 +1,9 @@
 .table-border th {
-    border-right: 1px solid #ccc;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     text-transform: capitalize !important;
+    background-color: #4c2fbf !important;
+    color: #fff !important;
 }
 
 .table-text {

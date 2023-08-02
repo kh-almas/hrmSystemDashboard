@@ -1,5 +1,6 @@
 .custom-div {
   color: aliceblue;
-
-  background-image: linear-gradient(to right, #614599, #a04489);
+  background-color: #4c2fbf !important;
+  border-radius: 5px;
+  font-weight: 700 !important;
 }
