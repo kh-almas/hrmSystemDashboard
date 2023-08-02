@@ -15,7 +15,12 @@ const Input = ({
   return (
     <>
       <FormGroup className="mb-3">
-        <label className="text-muted" htmlFor={inputName}>{labelName}</label>
+        <label
+          style={{ color: "#8990b6", fontSize: "16px" }}
+          htmlFor={inputName}
+        >
+          {labelName}
+        </label>
         <input
           className={`form-control ${errors?.inputName && "is-invalid"}`}
           id={inputName}

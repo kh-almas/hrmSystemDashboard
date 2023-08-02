@@ -38,7 +38,7 @@ const SetSalary = () => {
                               backgroundColor: "skyblue",
                               color: "#ffffff",
                             }}
-                            className="icofont icofont-pencil-alt-5 rounded m-r-15 p-2"
+                            className="icofont icofont-eye-alt rounded m-r-15 p-2"
                           ></i>
                         </Link>
                       </td>

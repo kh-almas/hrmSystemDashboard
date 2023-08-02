@@ -58,7 +58,7 @@ const AddContacts = () => {
             </div>
           </div>
 
-          <div className="row row-cols-1 row-cols-lg-3 mb-3">
+          <div className="row row-cols-1 row-cols-lg-3 mb-2">
             <div>
               <Input
                 name={"businessName"}
@@ -87,7 +87,7 @@ const AddContacts = () => {
             </div>
           </div>
 
-          <div className="row row-cols-1 row-cols-lg-3 mb-3">
+          <div className="row row-cols-1 row-cols-lg-3 mb-2">
             <div>
               <Input
                 labelName={"Name"}
@@ -114,7 +114,7 @@ const AddContacts = () => {
             </div>
           </div>
 
-          <div className="row row-cols-1 row-cols-lg-3 mb-3">
+          <div className="row row-cols-1 row-cols-lg-3 mb-2">
             <div>
               <Input
                 labelName={"Mobile Number"}
@@ -143,13 +143,13 @@ const AddContacts = () => {
             </div>
           </div>
 
-          <div className="row row-cols-1 row-cols-lg-2">
+          <div className="row row-cols-1 row-cols-lg-2 mb-2">
             <div>
               <Select
                 name={"state"}
                 labelName={"State"}
                 placeholder={"Select State"}
-                options={["", "India", "Australia"]}
+                options={["India", "Australia"]}
               />
             </div>
 
@@ -162,22 +162,22 @@ const AddContacts = () => {
               />
             </div>
           </div>
-
-          {/* <div>
-            <Textarea
-              labelName={"Description"}
-              inputName={"description"}
-              placeholder={"Enter Description"}
-              height={"5"}
-            />
-          </div> */}
-
-          <div className="d-flex justify-content-end">
-            <Button color="" className="me-2">
-              Cancel
-            </Button>
-            <Button color="primary" type="submit">
-              Create
+          <div className="row row-cols-1 row-cols-lg-1">
+            <div>
+              <Input
+                name={"address"}
+                labelName={"Address"}
+                inputType={"text"}
+                validation={{ ...register("name", { required: true }) }}
+              />
+            </div>
+          </div>
+          <div className="d-flex justify-content-center">
+            <Button
+              color=""
+              className="me-2 btn btn-pill btn-info btn-air-info btn-info-gradien px-4"
+            >
+              Add Contact
             </Button>
           </div>
         </form>

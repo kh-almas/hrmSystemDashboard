@@ -3,14 +3,11 @@ import Breadcrumb from "../../../common/breadcrumb";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 
-const SaleReturn = () => {
+const Supplier = () => {
   return (
     <div>
-      <Breadcrumb parent="Inventory management" title="Sale Return" />
-      <div
-        style={{ padding: "0px 20px" }}
-        className="d-flex justify-content-between align-items-center pb-3"
-      >
+      <Breadcrumb parent="Inventory management" title="Supplier" />
+      <div className="d-flex justify-content-between align-items-center pb-3">
         <div
           style={{
             display: "flex",
@@ -20,7 +17,7 @@ const SaleReturn = () => {
           }}
         >
           <button className="btn btn-pill btn-info btn-air-info btn-air-info">
-            Create Sale Return
+            New Sale
           </button>
         </div>
 
@@ -32,31 +29,30 @@ const SaleReturn = () => {
             <div className="card" style={{ padding: "20px" }}>
               <CommonSearchComponet />
               <div className="table-responsive ">
-                <table className="table">
-                  <thead className="table-light table-border">
+                <table className="table ">
+                  <thead className="table-light table-border ">
                     <tr className="">
-                      <th scope="col">{"No"}</th>
-                      <th scope="col">{"Invoice"}</th>
-                      <th scope="col">{"Branch"}</th>
-                      <th scope="col">{"Biller"}</th>
-                      <th scope="col">{"Customer"}</th>
-                      <th scope="col">{"Quantity"}</th>
-                      <th scope="col">{"Total Amount"}</th>
-                      <th scope="col">{"Return Amount"}</th>
-                      <th scope="col">{"Status"}</th>
+                      <th scope="col">{"Sl"}</th>
+                      <th scope="col">{"Ccntact ID"}</th>
+                      <th scope="col">{"Supplier Name"}</th>
+                      <th scope="col">{"Email"}</th>
+                      <th scope="col">{"Phone"}</th>
+                      <th scope="col">{"Pay Term"}</th>
+                      <th scope="col">{"Tex Number"}</th>
+                      <th scope="col">{"Active"}</th>
                       <th scope="col">{"Action"}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {/* <tr>
+                    <tr>
                       <td>{"1"}</td>
-                      <td>{"24th Jul, 2023"}</td>
-                      <td>{"INV-230712"}</td>
+                      <td>{"SUP-200002"}</td>
+                      <td>{"Supplier-01"}</td>
                       <td>{"Super admin"}</td>
-                      <td>{"	kjdsghddsfbdsf"}</td>
-                      <td>{"	$ 6,000.00"}</td>
-                      <td>{"	$ 0.00"}</td>
-                      <td>{"	$ 6,000.00"}</td>
+                      <td>{""}</td>
+                      <td>{""}</td>
+                      <td>{""}</td>
+                      <td>{"Months"}</td>
                       <td className="text-success">{"Approved"}</td>
                       <td>
                         <button
@@ -66,17 +62,16 @@ const SaleReturn = () => {
                           Select
                         </button>
                       </td>
-                    </tr> */}
+                    </tr>
                   </tbody>
                 </table>
-                <p className="text-center p-t-10">No data available in table</p>
               </div>
             </div>
             <div className="d-flex justify-content-between align-items-center">
               <p style={{ fontSize: "13px" }}>Showing page 1 of 1</p>
               <div className="d-flex justify-content-between align-items-center">
                 <button
-                  class="btn btn-pill btn-outline-warning btn-xs"
+                  class="btn btn-pill btn-outline-secondary btn-xs"
                   type="button"
                 >
                   <i
@@ -87,12 +82,12 @@ const SaleReturn = () => {
 
                 <p
                   style={{ fontSize: "13px" }}
-                  className="p-1 px-2 btn-warning-gradien mt-3 mx-2 rounded text-light"
+                  className="p-1 px-2 btn-primary-gradien mt-3 mx-2 rounded text-light"
                 >
                   1
                 </p>
                 <button
-                  class="btn btn-pill btn-outline-warning btn-xs"
+                  class="btn btn-pill btn-outline-secondary btn-xs"
                   type="button"
                 >
                   <i
@@ -109,4 +104,4 @@ const SaleReturn = () => {
   );
 };
 
-export default SaleReturn;
+export default Supplier;
