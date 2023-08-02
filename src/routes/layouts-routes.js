@@ -57,6 +57,7 @@ import Sale from "../components/dashboard/inventoryManagement/sales/Sale";
 import SaleReturn from "../components/dashboard/inventoryManagement/sales/SaleReturn";
 import SupportTicket from "../components/support-ticket/supportTicket";
 import AddContacts from "../components/dashboard/inventoryManagement/Contacts/AddContacts";
+import CreateJob from "../components/dashboard/hrmSystem/RecruitmentSetup/CreateJob";
 
 export const routes = [
   {
@@ -141,7 +142,7 @@ export const routes = [
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment-jobs/create`,
-    Component: <Jobs />,
+    Component: <CreateJob />,
   },
 
   //hr admin setup
