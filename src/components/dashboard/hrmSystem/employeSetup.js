@@ -11,11 +11,11 @@ const EmployeSetup = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-12">
-            <div className="card" style={{padding: "20px"}}>
+            <div className="card" style={{ padding: "20px" }}>
               <CommonSearchComponet />
               <div className="table-responsive">
                 <table className="table">
-                  <thead>
+                  <thead className="table-light table-border">
                     <tr>
                       <th scope="col">{"EMPLOYEE ID"}</th>
                       <th scope="col">{"NAME"}</th>
@@ -39,10 +39,21 @@ const EmployeSetup = () => {
                       <td>{""}</td>
                       <td>{""}</td>
                       <td>
-                      <Link to="/dashboard/hrm/edit" className="btn btn-pill btn-outline-light btn-xs txt-dark">edit</Link>
-                      <button className="btn btn-pill btn-outline-light btn-xs txt-dark">delete</button>
-                      </td>                     
-                    </tr>                    
+                        <Link to="/dashboard/hrm/edit">
+                          <i className="icofont icofont-pencil-alt-5 custom-div rounded m-r-15 p-2"></i>
+                        </Link>
+                        <Link to="/dashboard/hrm/employee">
+                          {" "}
+                          <i
+                            style={{
+                              backgroundColor: "#ff3a6e",
+                              color: "#ffffff",
+                            }}
+                            className="icofont icofont-trash rounded p-2"
+                          ></i>
+                        </Link>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
