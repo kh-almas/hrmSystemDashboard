@@ -36,7 +36,6 @@ const Select = ({
       </FormGroup>
     </>
   );
-
 };
 
 export default Select;
