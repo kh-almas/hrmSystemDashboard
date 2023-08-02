@@ -49,7 +49,7 @@ const CompanyPolicy = () => {
               <CommonSearchComponet />
               <div className="table-responsive ">
                 <table className="table ">
-                  <thead>
+                  <thead className="table-light table-border">
                     <tr className="">
                       <th scope="col">{"BRANCH"}</th>
                       <th scope="col">{"TITLE"}</th>
