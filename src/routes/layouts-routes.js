@@ -6,7 +6,6 @@ import ServerComponent from "../components/dashboard/server/serverComponent";
 import University from "../components/dashboard/university";
 
 // sample page
-
 import CompanyPolicy from "../components/dashboard/hrmSystem/CompanyPolicy";
 import DocumentSetup from "../components/dashboard/hrmSystem/DocumentSetup";
 import EmployeesAssetSetup from "../components/dashboard/hrmSystem/EmployeesAssetSetup";
@@ -48,25 +47,16 @@ import ManageJobStage from "../components/dashboard/hrmSystem/hrmSystemSetup/Man
 import ManageLoanOption from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageLoanOption";
 import ManagePayslipType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePayslipType";
 import ManagePerformanceType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManagePerformanceType";
-
-import ManageCompetencies from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageCompetencies";
-import CompanyPolicy from "../components/dashboard/hrmSystem/CompanyPolicy";
-import DocumentSetup from "../components/dashboard/hrmSystem/DocumentSetup";
-import EmployeesAssetSetup from "../components/dashboard/hrmSystem/EmployeesAssetSetup";
-import ManageMeeting from "../components/dashboard/hrmSystem/ManageMeeting";
-import Calendar2 from "../components/dashboard/hrmSystem/hrAdminSetup/Calendar2";
-import HolidayCalender from "../components/dashboard/hrmSystem/hrAdminSetup/HolidayCalender";
-import EventSetup from "../components/dashboard/hrmSystem/EventSetup";
+// import Calendar2 from "../components/dashboard/hrmSystem/hrAdminSetup/Calendar2";
 import MeetingCalender from "../components/dashboard/MeetingCalender";
-
-import SetSalary from "../components/dashboard/hrmSystem/payrollSetup/setSalary";
-import SalaryDetails from "../components/dashboard/hrmSystem/payrollSetup/salaryDetails";
-import Payslip from "../components/dashboard/hrmSystem/payrollSetup/payslip";
-import SupportTicket from "../components/support-ticket/supportTicket";
-import ManageTrainingType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTrainingType";
 import ManageTerminationType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTerminationType";
+import ManageTrainingType from "../components/dashboard/hrmSystem/hrmSystemSetup/ManageTrainingType";
+import Payslip from "../components/dashboard/hrmSystem/payrollSetup/payslip";
+import SalaryDetails from "../components/dashboard/hrmSystem/payrollSetup/salaryDetails";
+import SetSalary from "../components/dashboard/hrmSystem/payrollSetup/setSalary";
 import Sale from "../components/dashboard/inventoryManagement/sales/Sale";
 import SaleReturn from "../components/dashboard/inventoryManagement/sales/SaleReturn";
+import SupportTicket from "../components/support-ticket/supportTicket";
 
 
 export const routes = [
