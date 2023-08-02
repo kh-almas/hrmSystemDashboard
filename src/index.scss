@@ -1,6 +1,12 @@
 @import 'assets/scss/app.scss';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
 
 .fc-scroller{
   overflow: hidden !important;
+}
+
+th{
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 2px;
 }
   

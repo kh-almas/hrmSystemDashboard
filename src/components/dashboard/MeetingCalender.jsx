@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import Breadcrumb from "../common/breadcrumb";
 import {Link} from "react-router-dom";
-import Input from "../modal/Input";
+import Input from "../common/modal/Input";
 import Calendar2 from "./hrmSystem/hrAdminSetup/Calendar2";
 import {Button, Modal, ModalBody, ModalHeader} from "reactstrap";
 import {useForm} from "react-hook-form";
-import Select from "../modal/Select";
-import Textarea from "../modal/Textarea";
+import Select from "../common/modal/Select";
+import Textarea from "../common/modal/Textarea";
 
 const MeetingCalender = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();

@@ -129,14 +129,16 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-trainer`,
     Component: <ManageTrainer />,
   },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment-jobs`,
-    Component: <Jobs />,
-  },
 
   {
     path: `${process.env.PUBLIC_URL}/support-ticket/supportTicket`,
     Component: <SupportTicket />,
+  },
+
+  //Recruitment Setup
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment-jobs`,
+    Component: <Jobs />,
   },
 
     //hr admin setup
@@ -252,4 +254,5 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/sale-return`,
     Component: <SaleReturn />,
   },
+
 ];

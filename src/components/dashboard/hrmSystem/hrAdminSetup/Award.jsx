@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-import Input from "../../../modal/Input";
+import Input from "../../../common/modal/Input";
 import { useForm } from "react-hook-form";
-import Select from "../../../modal/Select";
-import Textarea from "../../../modal/Textarea";
+import Select from "../../../common/modal/Select";
+import Textarea from "../../../common/modal/Textarea";
 
 const Award = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -63,7 +63,7 @@ const Award = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="row row-cols-1 row-cols-lg-2">
                             <div>
-                                <Select name={"employee"} labelName={"Employee"} placeholder={"Select a option"} options={['Accountant',]}/>
+                                <Select name={"employee"} labelName={"Employee"} placeholder={"Select a option"} options={['Accountant','Accountant',]}/>
                             </div>
                             <div>
                                 <Select name={"award"} labelName={"Award Type"} placeholder={"Select a option"} options={[]}/>

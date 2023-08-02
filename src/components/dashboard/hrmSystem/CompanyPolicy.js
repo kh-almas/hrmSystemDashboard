@@ -2,9 +2,9 @@ import React, {useState} from "react";
 import Breadcrumb from "../../common/breadcrumb";
 import CommonSearchComponet from "../../common/salaryCard/CommonSearchComponet";
 import {Button, Modal, ModalBody, ModalHeader} from "reactstrap";
-import Input from "../../modal/Input";
-import Select from "../../modal/Select";
-import Textarea from "../../modal/Textarea";
+import Input from "../../common/modal/Input";
+import Select from "../../common/modal/Select";
+import Textarea from "../../common/modal/Textarea";
 import {useForm} from "react-hook-form";
 
 
