@@ -73,10 +73,11 @@ const Jobs = () => {
                     <thead className="table-light table-border">
                     <tr className="">
                         <th scope="col">{"Branch"}</th>
-                        <th scope="col">{"Branch"}</th>
-                        <th scope="col">{"DATE"}</th>
-                        <th scope="col">{"GIFT"}</th>
-                        <th scope="col">{"DESCRIPTION"}</th>
+                        <th scope="col">{"Title"}</th>
+                        <th scope="col">{"Start Date"}</th>
+                        <th scope="col">{"End Date"}</th>
+                        <th scope="col">{"Status"}</th>
+                        <th scope="col">{"Created At"}</th>
                         <th scope="col">{"ACTION"}</th>
                     </tr>
                     </thead>
@@ -86,6 +87,7 @@ const Jobs = () => {
                         {/*    <td>{"AWARD"}</td>*/}
                         {/*    <td>{"DATE"}</td>*/}
                         {/*    <td>{"GIFT"}</td>*/}
+                        {/*    <td>{"DESCRIPTION"}</td>*/}
                         {/*    <td>{"DESCRIPTION"}</td>*/}
                         {/*    <td>{"ACTION"}</td>*/}
                         {/*</tr>*/}

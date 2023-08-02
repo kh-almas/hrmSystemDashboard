@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../common/breadcrumb";
-import Select from "../../common/modal/Select";
 import Input from "../../common/modal/Input";
+import Select from "../../common/modal/Select";
 import Textarea from "../../common/modal/Textarea";
 import CommonSearchComponet from "../../common/salaryCard/CommonSearchComponet";
 const DocumentSetup = () => {

@@ -55,10 +55,13 @@ const Payslip = () => {
           </div>
           <div className="col-sm-12 col-xl-3">
             <button
-              className="btn btn-success"
               style={{
                 margin: "20px 0px 0px 30px",
-                padding: "10px 40px",
+                padding: "10px 20px",
+                backgroundColor: "#4c2fbf",
+                border: "none",
+                color: "white",
+                borderRadius: "5px",
               }}
             >
               Generate Payslip
@@ -117,10 +120,13 @@ const Payslip = () => {
           </div>
           <div className="col-sm-12 col-xl-2">
             <button
-              className="btn btn-success"
               style={{
                 margin: "20px 0px 0px 30px",
                 padding: "10px 60px",
+                backgroundColor: "#4c2fbf",
+                border: "none",
+                color: "white",
+                borderRadius: "5px",
               }}
             >
               Export
@@ -129,10 +135,13 @@ const Payslip = () => {
           <div className="col-sm-12 col-xl-2">
             <button
               onClick={toggle}
-              className="btn btn-success"
               style={{
                 margin: "20px 0px 0px 30px",
                 padding: "10px 20px",
+                backgroundColor: "#4c2fbf",
+                border: "none",
+                color: "white",
+                borderRadius: "5px",
               }}
             >
               Bulk Payment
