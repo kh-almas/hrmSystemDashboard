@@ -7,7 +7,10 @@ const Sale = () => {
   return (
     <div>
       <Breadcrumb parent="Inventory management" title="Sale" />
-      <div className="d-flex justify-content-between align-items-center pb-3">
+      <div
+        style={{ padding: "0px 20px" }}
+        className="d-flex justify-content-between align-items-center pb-3"
+      >
         <div
           style={{
             display: "flex",
@@ -23,6 +26,7 @@ const Sale = () => {
 
         <FilesComponent />
       </div>
+
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-12">
@@ -32,16 +36,16 @@ const Sale = () => {
                 <table className="table ">
                   <thead className="table-light table-border ">
                     <tr className="">
-                      <th scope="col">{"SL"}</th>
-                      <th scope="col">{"DATE"}</th>
-                      <th scope="col">{"INVOICE"}</th>
-                      <th scope="col">{"USER"}</th>
-                      <th scope="col">{"CUSTOMER"}</th>
-                      <th scope="col">{"TOTAL AMOUNT"}</th>
-                      <th scope="col">{"PAID"}</th>
-                      <th scope="col">{"DUE"}</th>
-                      <th scope="col">{"STATUS"}</th>
-                      <th scope="col">{"ACTION"}</th>
+                      <th scope="col">{"Sl"}</th>
+                      <th scope="col">{"Date"}</th>
+                      <th scope="col">{"Invoice"}</th>
+                      <th scope="col">{"User"}</th>
+                      <th scope="col">{"Customer"}</th>
+                      <th scope="col">{"Total Aount"}</th>
+                      <th scope="col">{"Paid"}</th>
+                      <th scope="col">{"Due"}</th>
+                      <th scope="col">{"Status"}</th>
+                      <th scope="col">{"Action"}</th>
                     </tr>
                   </thead>
                   <tbody>

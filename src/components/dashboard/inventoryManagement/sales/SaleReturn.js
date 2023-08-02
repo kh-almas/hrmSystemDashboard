@@ -7,7 +7,10 @@ const SaleReturn = () => {
   return (
     <div>
       <Breadcrumb parent="Inventory management" title="Sale Return" />
-      <div className="d-flex justify-content-between align-items-center pb-3">
+      <div
+        style={{ padding: "0px 20px" }}
+        className="d-flex justify-content-between align-items-center pb-3"
+      >
         <div
           style={{
             display: "flex",
@@ -32,16 +35,16 @@ const SaleReturn = () => {
                 <table className="table">
                   <thead className="table-light table-border">
                     <tr className="">
-                      <th scope="col">{"NO"}</th>
-                      <th scope="col">{"INVOICE"}</th>
-                      <th scope="col">{"BRANCH"}</th>
-                      <th scope="col">{"BILLER"}</th>
-                      <th scope="col">{"CUSTOMER"}</th>
-                      <th scope="col">{"QUANTITY"}</th>
-                      <th scope="col">{"TOTAL AMOUNT"}</th>
-                      <th scope="col">{"RETURN AMOUNT"}</th>
-                      <th scope="col">{"STATUS"}</th>
-                      <th scope="col">{"ACTION"}</th>
+                      <th scope="col">{"No"}</th>
+                      <th scope="col">{"Invoice"}</th>
+                      <th scope="col">{"Branch"}</th>
+                      <th scope="col">{"Biller"}</th>
+                      <th scope="col">{"Customer"}</th>
+                      <th scope="col">{"Quantity"}</th>
+                      <th scope="col">{"Total Amount"}</th>
+                      <th scope="col">{"Return Amount"}</th>
+                      <th scope="col">{"Status"}</th>
+                      <th scope="col">{"Action"}</th>
                     </tr>
                   </thead>
                   <tbody>

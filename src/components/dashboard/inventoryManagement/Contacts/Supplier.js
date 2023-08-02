@@ -32,15 +32,15 @@ const Supplier = () => {
                 <table className="table ">
                   <thead className="table-light table-border ">
                     <tr className="">
-                      <th scope="col">{"SL"}</th>
-                      <th scope="col">{"CONTACT ID"}</th>
-                      <th scope="col">{"SUPPLIER NAME"}</th>
-                      <th scope="col">{"EMAIL"}</th>
-                      <th scope="col">{"PHONE"}</th>
-                      <th scope="col">{"PAY TERM"}</th>
-                      <th scope="col">{"TEX NUMBER"}</th>
-                      <th scope="col">{"ACTIVE"}</th>
-                      <th scope="col">{"ACTION"}</th>
+                      <th scope="col">{"Sl"}</th>
+                      <th scope="col">{"Ccntact ID"}</th>
+                      <th scope="col">{"Supplier Name"}</th>
+                      <th scope="col">{"Email"}</th>
+                      <th scope="col">{"Phone"}</th>
+                      <th scope="col">{"Pay Term"}</th>
+                      <th scope="col">{"Tex Number"}</th>
+                      <th scope="col">{"Active"}</th>
+                      <th scope="col">{"Action"}</th>
                     </tr>
                   </thead>
                   <tbody>
