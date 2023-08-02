@@ -17,15 +17,15 @@ const EmployeSetup = () => {
                 <table className="table">
                   <thead className="table-light table-border">
                     <tr>
-                      <th scope="col">{"EMPLOYEE ID"}</th>
-                      <th scope="col">{"NAME"}</th>
-                      <th scope="col">{"EMAIL"}</th>
-                      <th scope="col">{"BRANCH"}</th>
-                      <th scope="col">{"DEPARTMENT"}</th>
-                      <th scope="col">{"DESIGMATION"}</th>
-                      <th scope="col">{"DATE OF JOINING"}</th>
-                      <th scope="col">{"LAST LOGIN"}</th>
-                      <th scope="col">{"ACTION"}</th>
+                      <th scope="col">{"Employee Id"}</th>
+                      <th scope="col">{"Name"}</th>
+                      <th scope="col">{"Email"}</th>
+                      <th scope="col">{"Branch"}</th>
+                      <th scope="col">{"Department"}</th>
+                      <th scope="col">{"Desigmation"}</th>
+                      <th scope="col">{"Date Of Joining"}</th>
+                      <th scope="col">{"Last Login"}</th>
+                      <th scope="col">{"Action"}</th>
                     </tr>
                   </thead>
                   <tbody>
