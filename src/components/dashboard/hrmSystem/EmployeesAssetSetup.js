@@ -1,15 +1,18 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../common/breadcrumb";
 import CommonSearchComponet from "../../common/salaryCard/CommonSearchComponet";
-import {Button, Label, Modal, ModalBody, ModalHeader} from "reactstrap";
-import Select from "../../modal/Select";
 import Input from "../../modal/Input";
+import Select from "../../modal/Select";
 import Textarea from "../../modal/Textarea";
-import {useForm} from "react-hook-form";
-import {Link} from "react-router-dom";
 
 const EmployeesAssetSetup = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [modal, setModal] = useState();
 
   const toggle = () => {
@@ -22,8 +25,19 @@ const EmployeesAssetSetup = () => {
   return (
     <>
       <Breadcrumb parent="HRM System" title="Assets" />
-      <div style={{display: "flex", alignItems: "center", justifyContent: "flex-end", marginBottom: "20px",}}>
-        <button onClick={toggle} className="btn btn-pill btn-info btn-air-info btn-air-info">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          marginBottom: "20px",
+        }}
+      >
+        <button
+          onClick={toggle}
+          className="btn btn-pill btn-info btn-air-info btn-air-info"
+          style={{ padding: "7px 13px", borderRadius: "5px" }}
+        >
           <i className="fa fa-plus"></i>
         </button>
       </div>
@@ -68,28 +82,64 @@ const EmployeesAssetSetup = () => {
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
-              <Select name={"employee"} labelName={"Employee"} placeholder={"Select an option"} options={['Accountant',]}/>
+              <Select
+                name={"employee"}
+                labelName={"Employee"}
+                placeholder={"Select an option"}
+                options={["Accountant"]}
+              />
             </div>
 
             <div className="row row-cols-1 row-cols-lg-2">
               <div>
-                <Input labelName={'Name'} inputName={'name'} inputType={'text'} placeholder={'Enter Name'} validation={{...register("name", { required: true })}}/>
+                <Input
+                  labelName={"Name"}
+                  inputName={"name"}
+                  inputType={"text"}
+                  placeholder={"Enter Name"}
+                  validation={{ ...register("name", { required: true }) }}
+                />
               </div>
               <div>
-                <Input labelName={'Amount'} inputName={'amount'} inputType={'text'} placeholder={'Enter Amount'} validation={{...register("amount", { required: true })}}/>
+                <Input
+                  labelName={"Amount"}
+                  inputName={"amount"}
+                  inputType={"text"}
+                  placeholder={"Enter Amount"}
+                  validation={{ ...register("amount", { required: true }) }}
+                />
               </div>
             </div>
             <div className="row row-cols-1 row-cols-lg-2">
               <div>
-                <Input labelName={'Purchase Date'} inputName={'purchasedate'} inputType={'date'}  validation={{...register("purchasedate", { required: true })}} />
+                <Input
+                  labelName={"Purchase Date"}
+                  inputName={"purchasedate"}
+                  inputType={"date"}
+                  validation={{
+                    ...register("purchasedate", { required: true }),
+                  }}
+                />
               </div>
               <div>
-                <Input labelName={'Supported Date'} inputName={'supporteddate'} inputType={'date'}  validation={{...register("supporteddate", { required: true })}} />
+                <Input
+                  labelName={"Supported Date"}
+                  inputName={"supporteddate"}
+                  inputType={"date"}
+                  validation={{
+                    ...register("supporteddate", { required: true }),
+                  }}
+                />
               </div>
             </div>
 
             <div>
-              <Textarea labelName={"Description"} inputName={"description"} placeholder={"Enter Description"} height={"5"}/>
+              <Textarea
+                labelName={"Description"}
+                inputName={"description"}
+                placeholder={"Enter Description"}
+                height={"5"}
+              />
             </div>
 
             <div className="d-flex justify-content-end">
