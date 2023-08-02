@@ -59,6 +59,9 @@ import SupportTicket from "../components/support-ticket/supportTicket";
 import AddContacts from "../components/dashboard/inventoryManagement/Contacts/AddContacts";
 import Supplier from "../components/dashboard/inventoryManagement/Contacts/Supplier";
 import CreateJob from "../components/dashboard/hrmSystem/RecruitmentSetup/CreateJob";
+import Application from "../components/dashboard/hrmSystem/RecruitmentSetup/Application";
+import Candidates from "../components/dashboard/hrmSystem/RecruitmentSetup/Candidates";
+import OnBoarding from "../components/dashboard/hrmSystem/RecruitmentSetup/OnBoarding";
 
 
 export const routes = [
@@ -139,12 +142,24 @@ export const routes = [
 
   //Recruitment Setup
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment-jobs`,
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs`,
     Component: <Jobs />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment-jobs/create`,
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/create`,
     Component: <CreateJob />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/application`,
+    Component: <Application />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/candidates`,
+    Component: <Candidates />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/on-boarding`,
+    Component: <OnBoarding />,
   },
 
   //hr admin setup
