@@ -23,6 +23,7 @@ const Commission = () => {
         <button
           onClick={toggle}
           className="btn btn-pill btn-info btn-air-info btn-air-info"
+          style={{ padding: "5px 10px", borderRadius: "5px" }}
         >
           <i className="fa fa-plus"></i>
         </button>
@@ -76,7 +77,7 @@ const Commission = () => {
         </ModalBody>
         <ModalFooter>
           <Button color="primary" type="submit">
-            SaveChanges
+            Create
           </Button>
           <Button color="secondary" onClick={toggle}>
             Cancel

@@ -32,11 +32,8 @@ const SetSalary = () => {
                       <td>{"0.66$"}</td>
                       <td>{""}</td>
                       <td>
-                        <Link
-                          to="/dashboard/hrm/salary-details"
-                          className="btn btn-pill btn-outline-light btn-xs txt-dark"
-                        >
-                          view
+                        <Link to="/dashboard/hrm/salary-details">
+                          <i className="icofont icofont-pencil-alt-5 custom-div rounded m-r-15 p-2"></i>
                         </Link>
                       </td>
                     </tr>
