@@ -231,9 +231,9 @@ export const MENUITEMS = [
           {
             title: "Sale",
             type: "link",
-            path: "/dashboard/hrm/manage-leave",
+            path: "/dashboard/hrm/sale",
           },
-          { title: "Sale Return", type: "link", path: "/dashboard/hrm/manage-attendance" },
+          { title: "Sale Return", type: "link", path: "/dashboard/hrm/sale-return" },
         ],
       },
       {
