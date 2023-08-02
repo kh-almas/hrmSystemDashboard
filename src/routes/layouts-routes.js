@@ -57,6 +57,7 @@ import SetSalary from "../components/dashboard/hrmSystem/payrollSetup/setSalary"
 import Sale from "../components/dashboard/inventoryManagement/sales/Sale";
 import SaleReturn from "../components/dashboard/inventoryManagement/sales/SaleReturn";
 import SupportTicket from "../components/support-ticket/supportTicket";
+import AddContacts from "../components/dashboard/inventoryManagement/Contacts/AddContacts";
 
 
 export const routes = [
@@ -251,5 +252,9 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/sale-return`,
     Component: <SaleReturn />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/add-contacts`,
+    Component: <AddContacts />,
   },
 ];

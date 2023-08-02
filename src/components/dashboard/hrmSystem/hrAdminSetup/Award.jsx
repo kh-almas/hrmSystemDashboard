@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import { Button, Modal, ModalBody,  ModalHeader } from "reactstrap";
 import Input from "../../../modal/Input";
 import { useForm } from "react-hook-form";
 import Select from "../../../modal/Select";

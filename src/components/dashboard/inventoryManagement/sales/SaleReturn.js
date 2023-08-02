@@ -6,7 +6,7 @@ import CommonSearchComponet from "../../../common/salaryCard/CommonSearchCompone
 const SaleReturn = () => {
   return (
     <div>
-      <Breadcrumb parent="Inventory management" title="Sale" />
+      <Breadcrumb parent="Inventory management" title="Sale Return" />
       <div className="d-flex justify-content-between align-items-center pb-3">
         <div
           style={{
@@ -17,7 +17,7 @@ const SaleReturn = () => {
           }}
         >
           <button className="btn btn-pill btn-info btn-air-info btn-air-info">
-            New Sale
+            Create Sale Return
           </button>
         </div>
 
