@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.scss";
 import "./i18n";
+import "./index.scss";
 import * as serviceWorker from "./serviceWorker";
 
 // ** Import custom components for redux **
 import { Provider } from "react-redux";
-import store from "./store";
 import MainRoutes from "./routes";
+import store from "./store";
 
 // setup fake backend
 

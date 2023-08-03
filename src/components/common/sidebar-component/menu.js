@@ -115,12 +115,12 @@ export const MENUITEMS = [
           {
             title: "Custom Question",
             type: "link",
-            path: "/base/tabs/tab-line",
+            path: "/dashboard/hrm/jobs/custom/question",
           },
           {
             title: "Interview Schedule",
             type: "link",
-            path: "/base/tabs/tab-line",
+            path: "/dashboard/hrm/jobs/interview/schedule",
           },
           { title: "Career", type: "link", path: "/base/tabs/tab-line" },
         ],
