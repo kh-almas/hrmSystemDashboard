@@ -175,7 +175,7 @@ class Calendar2 extends Component {
           </div>
           <div className="col-lg-4">
             <div className="card p-4">
-              <h2>Holiday List</h2>
+              <h2>List</h2>
               <div className="card text-center mt-3">
                 <p className="py-2 mb-0">No interview scheduled!</p>
               </div>
