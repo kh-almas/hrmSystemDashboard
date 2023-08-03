@@ -76,7 +76,7 @@ const SaleReturn = () => {
               <p style={{ fontSize: "13px" }}>Showing page 1 of 1</p>
               <div className="d-flex justify-content-between align-items-center">
                 <button
-                  class="btn btn-pill btn-outline-warning btn-xs"
+                  class="btn btn-pill btn-outline-secondary btn-xs"
                   type="button"
                 >
                   <i
@@ -87,12 +87,12 @@ const SaleReturn = () => {
 
                 <p
                   style={{ fontSize: "13px" }}
-                  className="p-1 px-2 btn-warning-gradien mt-3 mx-2 rounded text-light"
+                  className="p-1 px-2 btn-primary-gradien mt-3 mx-2 rounded text-light"
                 >
                   1
                 </p>
                 <button
-                  class="btn btn-pill btn-outline-warning btn-xs"
+                  class="btn btn-pill btn-outline-secondary btn-xs"
                   type="button"
                 >
                   <i

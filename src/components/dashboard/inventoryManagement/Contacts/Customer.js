@@ -3,10 +3,10 @@ import Breadcrumb from "../../../common/breadcrumb";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 
-const Supplier = () => {
+const Customer = () => {
   return (
     <div>
-      <Breadcrumb parent="Inventory management" title="Supplier" />
+      <Breadcrumb parent="Inventory management" title="Customers" />
       <div
         style={{ padding: "0px 20px" }}
         className="d-flex justify-content-between align-items-center pb-3"
@@ -39,8 +39,8 @@ const Supplier = () => {
                   <thead className="table-light table-border ">
                     <tr className="">
                       <th scope="col">{"Sl"}</th>
-                      <th scope="col">{"Contact ID"}</th>
-                      <th scope="col">{"Supplier Name"}</th>
+                      <th scope="col">{"Customer ID"}</th>
+                      <th scope="col">{"Customer Name"}</th>
                       <th scope="col">{"Email"}</th>
                       <th scope="col">{"Phone"}</th>
                       <th scope="col">{"Pay Term"}</th>
@@ -50,6 +50,24 @@ const Supplier = () => {
                     </tr>
                   </thead>
                   <tbody>
+                    <tr>
+                      <td>{"1"}</td>
+                      <td>{"SUP-200002"}</td>
+                      <td>{"Supplier-01"}</td>
+                      <td>{"Super admin"}</td>
+                      <td>{""}</td>
+                      <td>{""}</td>
+                      <td>{""}</td>
+                      <td>{""}</td>
+                      <td>
+                        <button
+                          class="btn btn-pill btn-outline-info btn-xs p-1 px-4"
+                          type="button"
+                        >
+                          Select
+                        </button>
+                      </td>
+                    </tr>
                     <tr>
                       <td>{"1"}</td>
                       <td>{"SUP-200002"}</td>
@@ -109,4 +127,4 @@ const Supplier = () => {
   );
 };
 
-export default Supplier;
+export default Customer;
