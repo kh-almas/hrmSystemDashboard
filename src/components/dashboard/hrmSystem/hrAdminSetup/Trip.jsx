@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Modal, ModalBody, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
-import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import Select from "../../../common/modal/Select";
 import Input from "../../../common/modal/Input";
+import Select from "../../../common/modal/Select";
 import Textarea from "../../../common/modal/Textarea";
+import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 
 const Trip = () => {
   const {
@@ -48,13 +48,13 @@ const Trip = () => {
           <table className="table">
             <thead className="table-light table-border">
               <tr>
-                <th scope="col">{"EMPLOYEE NAME"}</th>
-                <th scope="col">{"START DATE"}</th>
-                <th scope="col">{"END DATE"}</th>
-                <th scope="col">{"PURPOSE OF TRIP"}</th>
-                <th scope="col">{"COUNTRY"}</th>
-                <th scope="col">{"DESCRIPTION"}</th>
-                <th scope="col">{"ACTION"}</th>
+                <th scope="col">{"Employee Name"}</th>
+                <th scope="col">{"Start Date"}</th>
+                <th scope="col">{"End Date"}</th>
+                <th scope="col">{"Purpose Of Trip"}</th>
+                <th scope="col">{"Country"}</th>
+                <th scope="col">{"Description"}</th>
+                <th scope="col">{"Action"}</th>
               </tr>
             </thead>
             <tbody>

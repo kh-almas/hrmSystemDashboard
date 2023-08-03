@@ -177,14 +177,14 @@ const Attendance = () => {
           <table className="table">
             <thead className="table-light table-border">
               <tr>
-                <th scope="col">{"EMPLOYEE"}</th>
-                <th scope="col">{"DATE"}</th>
-                <th scope="col">{"STATUS"}</th>
-                <th scope="col">{"CLOCK IN"}</th>
-                <th scope="col">{"CLOCK OUT"}</th>
-                <th scope="col">{"LATE"}</th>
-                <th scope="col">{"EARLY LEAVING"}</th>
-                <th scope="col">{"OVERTIME"}</th>
+                <th scope="col">{"Employee"}</th>
+                <th scope="col">{"Date"}</th>
+                <th scope="col">{"Status"}</th>
+                <th scope="col">{"Clock In"}</th>
+                <th scope="col">{"Clock Out"}</th>
+                <th scope="col">{"Late"}</th>
+                <th scope="col">{"Early Leaving"}</th>
+                <th scope="col">{"Overtime"}</th>
                 <th scope="col">{"Action"}</th>
               </tr>
             </thead>

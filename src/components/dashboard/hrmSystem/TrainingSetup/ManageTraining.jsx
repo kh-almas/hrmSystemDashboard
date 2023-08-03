@@ -137,14 +137,14 @@ const ManageTraining = () => {
           <table className="table">
             <thead className="table-light table-border">
               <tr>
-                <th scope="col">{"BRANCH"}</th>
-                <th scope="col">{"TRAINING TYPE"}</th>
-                <th scope="col">{"STATUS"}</th>
-                <th scope="col">{"EMPLOYEE"}</th>
-                <th scope="col">{"TRAINER"}</th>
-                <th scope="col">{"TRAINING DURATION"}</th>
-                <th scope="col">{"COST"}</th>
-                <th scope="col">{"ACTION"}</th>
+                <th scope="col">{"Branch"}</th>
+                <th scope="col">{"Training Type"}</th>
+                <th scope="col">{"Status"}</th>
+                <th scope="col">{"Employee"}</th>
+                <th scope="col">{"Trainer"}</th>
+                <th scope="col">{"Training Duration"}</th>
+                <th scope="col">{"Cost"}</th>
+                <th scope="col">{"Action"}</th>
               </tr>
             </thead>
             <tbody>

@@ -19,7 +19,7 @@ const CreateJob = () => {
         console.log(data);
     };
     return (
-        <>
+        <div className="mb-3">
             <Breadcrumb parent="HRM System" title="Create Job" />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="row row-cols-1 row-cols-lg-2" style={{ padding: "20px" }}>
@@ -210,7 +210,7 @@ const CreateJob = () => {
                     </Button>
                 </div>
             </form>
-        </>
+        </div>
     );
 };
 

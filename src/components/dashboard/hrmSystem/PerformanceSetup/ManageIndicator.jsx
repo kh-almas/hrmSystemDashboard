@@ -86,13 +86,13 @@ const ManageIndicator = () => {
           <table className="table">
             <thead className="table-light table-border">
               <tr>
-                <th scope="col">{"BRANCH"}</th>
-                <th scope="col">{"DEPARTMENT"}</th>
-                <th scope="col">{"DESIGNATION"}</th>
-                <th scope="col">{"OVERALL RATING"}</th>
-                <th scope="col">{"ADDED BY"}</th>
-                <th scope="col">{"CREATED AT"}</th>
-                <th scope="col">{"ACTION"}</th>
+                <th scope="col">{"Branch"}</th>
+                <th scope="col">{"Department"}</th>
+                <th scope="col">{"Desigmation"}</th>
+                <th scope="col">{"Overall Rating"}</th>
+                <th scope="col">{"Added By"}</th>
+                <th scope="col">{"Created At"}</th>
+                <th scope="col">{"Action"}</th>
               </tr>
             </thead>
             <tbody>
