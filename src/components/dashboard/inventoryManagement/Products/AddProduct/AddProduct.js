@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
+import Breadcrumb from "../../../../common/breadcrumb";
 import { useForm } from "react-hook-form";
-import Breadcrumb from "../../../common/breadcrumb";
-import Input from "../../../common/modal/Input";
-import Select from "../../../common/modal/Select";
+import Select from "../../../../common/modal/Select";
+import Input from "../../../../common/modal/Input";
+import CkEditorComponent from "../../../../common/modal/CkEditorComponent";
 import { Button } from "react-bootstrap";
-import Textarea from "../../../common/modal/Textarea";
-import CkEditorComponent from "../../../common/modal/CkEditorComponent";
 
-const AddContacts = () => {
+const AddProduct = () => {
   const {
     register,
     handleSubmit,
@@ -19,42 +18,99 @@ const AddContacts = () => {
   };
 
   return (
-    <>
-      <Breadcrumb parent="Inventory management" title="Add Contact" />
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          marginBottom: "20px",
-        }}
-      ></div>
-
+    <div>
+      <Breadcrumb parent="Inventory management" title="Add New Product" />
       <div className="card p-30">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row row-cols-1 row-cols-lg-3 mb-3">
             <div>
               <Select
-                name={"contact-type"}
-                labelName={"Contact Type"}
+                name={"product-type"}
+                labelName={"Product-Type"}
                 placeholder={"Select a option"}
-                options={["SUPLIER", "CUSTOMER"]}
+                options={["Single", "Varient", "Combo", "Service"]}
               />
             </div>
             <div>
               <Input
-                labelName={"Name"}
-                inputName={"name"}
+                labelName={"Product Name"}
+                inputName={"product-name"}
                 inputType={"text"}
-                validation={{ ...register("name", { required: true }) }}
+                validation={{ ...register("product-name", { required: true }) }}
               />
             </div>
             <div>
               <Input
-                labelName={"Profile Picture"}
-                inputName={"file"}
-                inputType={"file"}
-                validation={{ ...register("file", { required: true }) }}
+                labelName={"Product Sku"}
+                inputName={"product-sku"}
+                inputType={"text"}
+                validation={{ ...register("product-sku", { required: true }) }}
+              />
+            </div>
+          </div>
+          <div
+            style={{ position: "relative" }}
+            className="row row-cols-1 row-cols-lg-3 mb-3 "
+          >
+            <p
+              style={{ position: "absolute", left: "280px", cursor: "pointer" }}
+              className="text-primary"
+            >
+              New Unit
+              <span>
+                <i className="icofont icofont-plus-circle"></i>
+              </span>
+            </p>
+
+            <div>
+              <Select
+                name={"select-unit"}
+                labelName={"Select Unit"}
+                placeholder={"Select a unit"}
+                options={["pcs piees(s)", "cft CFT(s)"]}
+              />
+            </div>
+            <div>
+              <Select
+                name={"barcode"}
+                labelName={"Barcode Type"}
+                placeholder={"Select Barcode"}
+                options={["Single", "Varient", "Combo", "Service"]}
+              />
+            </div>
+            <div>
+              <Select
+                name={"brand"}
+                labelName={"Brand"}
+                placeholder={"Select Brand"}
+                options={["LG"]}
+              />
+            </div>
+          </div>
+
+          <div className="row row-cols-1 row-cols-lg-3 mb-3">
+            <div>
+              <Select
+                name={"category"}
+                labelName={"Category"}
+                placeholder={"Select Category"}
+                options={["TV"]}
+              />
+            </div>
+            <div>
+              <Select
+                name={"sub-category"}
+                labelName={"Sub Category"}
+                placeholder={"Sub Category"}
+                options={["Single"]}
+              />
+            </div>
+            <div>
+              <Select
+                name={"model"}
+                labelName={"Model"}
+                placeholder={"Select Model"}
+                options={["19 Inch"]}
               />
             </div>
           </div>
@@ -174,23 +230,21 @@ const AddContacts = () => {
             </div>
           </div>
           <div className="row row-cols-1 row-cols-lg-1 mb-2">
-            < CkEditorComponent
-            label={"Note"}
-            />
+            <CkEditorComponent label={"Note"} />
           </div>
-          
+
           <div className="d-flex justify-content-center">
             <Button
               color=""
               className="me-2 btn btn-pill btn-info btn-air-info btn-info-gradien px-4"
             >
-              Add Contact
+              Add Product
             </Button>
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 
-export default AddContacts;
+export default AddProduct;

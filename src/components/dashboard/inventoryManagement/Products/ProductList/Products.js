@@ -1,0 +1,167 @@
+import React, { useState } from "react";
+import Breadcrumb from "../../../../common/breadcrumb";
+import FilesComponent from "../../../../common/filesComponent/FilesComponent";
+import CommonSearchComponet from "../../../../common/salaryCard/CommonSearchComponet";
+import { Link } from "react-router-dom";
+import ComboProduct from "./ComboProduct";
+
+const Products = () => {
+  const [item, setItem] = useState("products");
+
+  const handleCard = (cardName) => {
+    setItem(cardName);
+  };
+
+  return (
+    <div>
+      <Breadcrumb parent="Inventory management" title="Product List" />
+      <div
+        style={{ padding: "0px 18px" }}
+        className="d-flex justify-content-between align-items-center pb-3"
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "",
+            marginBottom: "20px",
+          }}
+        >
+          <button className="btn btn-pill btn-info btn-air-info btn-air-info mx-2">
+            New Contact
+          </button>
+          <button className="btn btn-pill btn-info btn-air-info btn-air-info">
+            Upload Via CSV
+          </button>
+        </div>
+
+        <FilesComponent />
+      </div>
+      <div className="mb-3 d-flex p-l-20">
+        <button
+          onClick={() => handleCard("product")}
+          className={`btn btn-square btn-light txt-white`}
+          style={{
+            fontSize: "14px",
+            fontWeight: "500",
+            marginRight: "12px",
+            width: "150px",
+          }}
+        >
+          Product
+        </button>
+
+        <button
+          onClick={() => handleCard("Combo product")}
+          className={`btn btn-square btn-light `}
+          style={{
+            fontSize: "14px",
+            fontWeight: "500",
+          }}
+        >
+          Combo Product
+        </button>
+      </div>
+
+      <div className="container-fluid">
+        {item && item == "product" ? (
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="card" style={{ padding: "20px" }}>
+                <CommonSearchComponet />
+                <div className="table-responsive">
+                  <table className="table ">
+                    <thead
+                      className="table-light table-border"
+                      style={{ whiteSpace: "nowrap" }}
+                    >
+                      <tr className="">
+                        <th scope="col">{"Sl"}</th>
+                        <th scope="col">{"Image"}</th>
+                        <th scope="col">{"Name"}</th>
+                        <th scope="col">{"Sku"}</th>
+                        <th scope="col">{"Brand"}</th>
+                        <th scope="col">{"Model"}</th>
+                        <th scope="col">{"Purchase Price"}</th>
+                        <th scope="col">{"Selling Price"}</th>
+                        <th scope="col">{"Min Price"}</th>
+                        <th scope="col">{"Stock"}</th>
+                        <th scope="col">{"Supplier"}</th>
+                        <th scope="col">{"Product Type"}</th>
+                        <th scope="col">{"Category"}</th>
+                        <th scope="col">{"Stock Alert"}</th>
+                        <th scope="col">{"Action"}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style={{ whiteSpace: "nowrap" }}>
+                        <td>{"1"}</td>
+                        <td>
+                          <img src="" alt="" />
+                        </td>
+                        <td>{"19 Inch LG TV"}</td>
+                        <td>{"hsdsdfds-1"}</td>
+                        <td>{"LG"}</td>
+                        <td>{"19 Inch"}</td>
+                        <td>{"$1,000.00"}</td>
+                        <td>{"$1,300.00"}</td>
+                        <td>{"$1,150.00"}</td>
+                        <td>{"90"}</td>
+                        <td>{"Supplier-01	"}</td>
+                        <td>{"Single"}</td>
+                        <td>{"TV"}</td>
+                        <td>{"20 pcs"}</td>
+                        <td>
+                          <button
+                            class="btn btn-pill btn-outline-info btn-xs p-1 px-4"
+                            type="button"
+                          >
+                            Select
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="d-flex justify-content-between align-items-center">
+                <p style={{ fontSize: "13px" }}>Showing page 1 of 1</p>
+                <div className="d-flex justify-content-between align-items-center">
+                  <button
+                    class="btn btn-pill btn-outline-secondary btn-xs"
+                    type="button"
+                  >
+                    <i
+                      style={{ fontSize: "24px" }}
+                      className="icofont icofont-swoosh-left"
+                    ></i>
+                  </button>
+
+                  <p
+                    style={{ fontSize: "13px" }}
+                    className="p-1 px-2 btn-primary-gradien mt-3 mx-2 rounded text-light"
+                  >
+                    1
+                  </p>
+                  <button
+                    class="btn btn-pill btn-outline-secondary btn-xs"
+                    type="button"
+                  >
+                    <i
+                      style={{ fontSize: "24px" }}
+                      className="icofont icofont-swoosh-right"
+                    ></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <ComboProduct />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Products;

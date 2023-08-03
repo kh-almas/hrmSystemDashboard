@@ -95,18 +95,21 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/jobs",
           },
-          { title: "Job Create",
+          {
+            title: "Job Create",
             type: "link",
-            path: "/dashboard/hrm/jobs/create"
+            path: "/dashboard/hrm/jobs/create",
           },
-          { title: "Job Application",
+          {
+            title: "Job Application",
             type: "link",
-            path: "/dashboard/hrm/jobs/application"
+            path: "/dashboard/hrm/jobs/application",
           },
           {
             title: "Job Candidate",
             type: "link",
-            path: "/dashboard/hrm/jobs/candidates" },
+            path: "/dashboard/hrm/jobs/candidates",
+          },
           {
             title: "Job On-boarding",
             type: "link",
@@ -263,12 +266,12 @@ export const MENUITEMS = [
           {
             title: "Customer",
             type: "link",
-            path: "/dashboard/hrm/goal-tracking",
+            path: "/dashboard/hrm/customer",
           },
           {
             title: "Settings",
             type: "link",
-            path: "/dashboard/hrm/goal-tracking",
+            path: "/dashboard/hrm/settings",
           },
         ],
       },
@@ -279,17 +282,17 @@ export const MENUITEMS = [
           {
             title: "Product List",
             type: "link",
-            path: "/dashboard/hrm/manage-training",
+            path: "/dashboard/hrm/products",
           },
           {
             title: "Service",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "dashboard/hrm/services",
           },
           {
             title: "Add Product",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "/dashboard/hrm/add-product",
           },
           {
             title: "Category",
