@@ -48,7 +48,20 @@ const AddProduct = () => {
               />
             </div>
           </div>
-          <div className="row row-cols-1 row-cols-lg-3 mb-3">
+          <div
+            style={{ position: "relative" }}
+            className="row row-cols-1 row-cols-lg-3 mb-3 "
+          >
+            <p
+              style={{ position: "absolute", left: "280px", cursor: "pointer" }}
+              className="text-primary"
+            >
+              New Unit
+              <span>
+                <i className="icofont icofont-plus-circle"></i>
+              </span>
+            </p>
+
             <div>
               <Select
                 name={"select-unit"}
@@ -75,14 +88,13 @@ const AddProduct = () => {
             </div>
           </div>
 
-
           <div className="row row-cols-1 row-cols-lg-3 mb-3">
             <div>
               <Select
                 name={"category"}
                 labelName={"Category"}
                 placeholder={"Select Category"}
-                options={["TV", ]}
+                options={["TV"]}
               />
             </div>
             <div>
@@ -90,7 +102,7 @@ const AddProduct = () => {
                 name={"sub-category"}
                 labelName={"Sub Category"}
                 placeholder={"Sub Category"}
-                options={["Single",]}
+                options={["Single"]}
               />
             </div>
             <div>
@@ -102,9 +114,6 @@ const AddProduct = () => {
               />
             </div>
           </div>
-
-
-
 
           <div className="row row-cols-1 row-cols-lg-3 mb-2">
             <div>
