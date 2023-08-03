@@ -9,4 +9,47 @@ th{
   font-family: 'Roboto', sans-serif;
   letter-spacing: 2px;
 }
+
+
+//60, 95
+
+.my-primary-card {
+  border: 1px solid #3333ff !important;
+}
+
+.my-primary-card .card-header{
+  background-color: #e6e6ff  !important;
+}
+
+.my-secondary-card{
+  border: 1px solid #999999 !important;
+}
+
+.my-secondary-card .card-header{
+  background-color: #e6e6e6 !important;
+}
+
+.my-success-card{
+  border: 1px solid #96ff33 !important;
+}
+
+.my-success-card .card-header{
+  background-color: #f2ffe6 !important;
+}
+
+.my-info-card{
+  border: 1px solid #008080 !important;
+}
+
+.my-info-card .card-header{
+  background-color: #4dffff !important;
+}
+
+.my-danger-card{
+  border: 1px solid #ff1a1a !important;
+}
+
+.my-danger-card .card-header{
+  background-color: #ffcccc  !important;
+}
   

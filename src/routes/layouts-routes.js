@@ -62,6 +62,8 @@ import CreateJob from "../components/dashboard/hrmSystem/RecruitmentSetup/Create
 import Application from "../components/dashboard/hrmSystem/RecruitmentSetup/Application";
 import Candidates from "../components/dashboard/hrmSystem/RecruitmentSetup/Candidates";
 import OnBoarding from "../components/dashboard/hrmSystem/RecruitmentSetup/OnBoarding";
+import CustomQuestion from "../components/dashboard/hrmSystem/RecruitmentSetup/CustomQuestion";
+import InterviewSchedule from "../components/dashboard/hrmSystem/RecruitmentSetup/InterviewSchedule";
 
 
 export const routes = [
@@ -160,6 +162,14 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/on-boarding`,
     Component: <OnBoarding />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/custom/question`,
+    Component: <CustomQuestion />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/interview/schedule`,
+    Component: <InterviewSchedule />,
   },
 
   //hr admin setup
