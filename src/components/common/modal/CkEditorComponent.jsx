@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import CKEditors from "react-ckeditor-component";
 
 const CkEditorComponent = ({ label, fieldContent }) => {
-  const [content, setContent] = useState("content");
+  const [content, setContent] = useState(fieldContent);
   const onChange = (evt) => {
     const newContent = evt.editor.getData();
     setContent(newContent);
@@ -21,7 +21,8 @@ const CkEditorComponent = ({ label, fieldContent }) => {
             <div className="card">
               <CKEditors
                 activeclassName="p10"
-                content={fieldContent}
+                fontSize_defaultLabel = '44px'
+                content={content}
                 events={{
                   change: onChange,
                 }}
