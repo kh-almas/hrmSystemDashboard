@@ -11,7 +11,7 @@ const Candidates = () => {
             <div className="card" style={{ padding: "20px" }}>
                 <CommonSearchComponet />
                 <div className="table-responsive">
-                    <table className="table table-bordered">
+                    <table className="table">
                         <thead className="table-light table-border">
                         <tr className="">
                             <th scope="col">{"Name"}</th>
