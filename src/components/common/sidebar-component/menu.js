@@ -287,12 +287,12 @@ export const MENUITEMS = [
           {
             title: "Service",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "dashboard/hrm/services",
           },
           {
             title: "Add Product",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "/dashboard/hrm/add-product",
           },
           {
             title: "Category",

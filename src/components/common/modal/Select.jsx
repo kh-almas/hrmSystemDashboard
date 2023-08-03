@@ -1,7 +1,6 @@
 import React from "react";
 import { FormGroup, Label } from "reactstrap";
 
-
 const Select = ({
   labelName,
   name,

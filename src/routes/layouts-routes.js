@@ -66,6 +66,8 @@ import Customer from "../components/dashboard/inventoryManagement/Contacts/Custo
 import Settings from "../components/dashboard/inventoryManagement/Contacts/Settings";
 import Products from "../components/dashboard/inventoryManagement/Products/ProductList/Products";
 import ComboProduct from "../components/dashboard/inventoryManagement/Products/ProductList/ComboProduct";
+import Service from "../components/dashboard/inventoryManagement/Products/Service/Service";
+import AddProduct from "../components/dashboard/inventoryManagement/Products/AddProduct/AddProduct";
 
 export const routes = [
   {
@@ -336,5 +338,13 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/products`,
     Component: <ComboProduct />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/services`,
+    Component: <Service />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/add-product`,
+    Component: <AddProduct />,
   },
 ];
