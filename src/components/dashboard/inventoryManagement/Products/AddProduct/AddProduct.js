@@ -48,27 +48,30 @@ const AddProduct = () => {
               />
             </div>
           </div>
-          <div
-            style={{ position: "relative" }}
-            className="row row-cols-1 row-cols-lg-3 mb-3 "
-          >
-            <p
-              style={{ position: "absolute", left: "280px", cursor: "pointer" }}
-              className="text-primary"
-            >
-              New Unit
-              <span>
-                <i className="icofont icofont-plus-circle"></i>
-              </span>
-            </p>
+          <div className="row row-cols-1 row-cols-lg-3 mb-3 ">
+            <div style={{ position: "relative" }}>
+              <p
+                style={{
+                  position: "absolute",
+                  left: "280px",
+                  cursor: "pointer",
+                }}
+                className="text-primary"
+              >
+                New Unit
+                <span>
+                  <i className="icofont icofont-plus-circle"></i>
+                </span>
+              </p>
 
-            <div>
-              <Select
-                name={"select-unit"}
-                labelName={"Select Unit"}
-                placeholder={"Select a unit"}
-                options={["pcs piees(s)", "cft CFT(s)"]}
-              />
+              <div>
+                <Select
+                  name={"select-unit"}
+                  labelName={"Select Unit"}
+                  placeholder={"Select a unit"}
+                  options={["pcs piees(s)", "cft CFT(s)"]}
+                />
+              </div>
             </div>
             <div>
               <Select
@@ -78,58 +81,124 @@ const AddProduct = () => {
                 options={["Single", "Varient", "Combo", "Service"]}
               />
             </div>
-            <div>
-              <Select
-                name={"brand"}
-                labelName={"Brand"}
-                placeholder={"Select Brand"}
-                options={["LG"]}
-              />
+            <div style={{ position: "relative" }}>
+              <p
+                style={{
+                  position: "absolute",
+                  left: "280px",
+                  cursor: "pointer",
+                }}
+                className="text-primary"
+              >
+                New Brand
+                <span>
+                  <i className="icofont icofont-plus-circle"></i>
+                </span>
+              </p>
+
+              <div>
+                <Select
+                  name={"select-brand"}
+                  labelName={"Select Brand"}
+                  placeholder={"Select Brand"}
+                  options={["LG"]}
+                />
+              </div>
             </div>
           </div>
 
           <div className="row row-cols-1 row-cols-lg-3 mb-3">
-            <div>
-              <Select
-                name={"category"}
-                labelName={"Category"}
-                placeholder={"Select Category"}
-                options={["TV"]}
-              />
+            <div style={{ position: "relative" }}>
+              <p
+                style={{
+                  position: "absolute",
+                  left: "250px",
+                  cursor: "pointer",
+                }}
+                className="text-primary"
+              >
+                New Category
+                <span>
+                  <i className="icofont icofont-plus-circle"></i>
+                </span>
+              </p>
+
+              <div>
+                <Select
+                  name={"category"}
+                  labelName={"Select Category"}
+                  placeholder={"Select Category"}
+                  options={["TV"]}
+                />
+              </div>
             </div>
-            <div>
-              <Select
-                name={"sub-category"}
-                labelName={"Sub Category"}
-                placeholder={"Sub Category"}
-                options={["Single"]}
-              />
+            <div style={{ position: "relative" }}>
+              <p
+                style={{
+                  position: "absolute",
+                  left: "250px",
+                  cursor: "pointer",
+                }}
+                className="text-primary"
+              >
+                Sub Category
+                <span>
+                  <i className="icofont icofont-plus-circle"></i>
+                </span>
+              </p>
+
+              <div>
+                <Select
+                  name={"sub-category"}
+                  labelName={"Sub-Category"}
+                  placeholder={"Sub Category"}
+                  options={["TV"]}
+                />
+              </div>
             </div>
-            <div>
-              <Select
-                name={"model"}
-                labelName={"Model"}
-                placeholder={"Select Model"}
-                options={["19 Inch"]}
-              />
+            <div style={{ position: "relative" }}>
+              <p
+                style={{
+                  position: "absolute",
+                  left: "310px",
+                  cursor: "pointer",
+                }}
+                className="text-primary"
+              >
+                Model
+                <span>
+                  <i className="icofont icofont-plus-circle"></i>
+                </span>
+              </p>
+
+              <div>
+                <Select
+                  name={"model"}
+                  labelName={"Model"}
+                  placeholder={"Model"}
+                  options={["19 Inch"]}
+                />
+              </div>
             </div>
           </div>
 
           <div className="row row-cols-1 row-cols-lg-3 mb-2">
             <div>
               <Input
-                name={"businessName"}
-                labelName={"Business Name"}
-                inputType={"text"}
-                validation={{ ...register("businessName", { required: true }) }}
+                name={"hsn"}
+                labelName={"HSN"}
+                inputType={"HSN"}
+                placeholder={"HSN"}
+                validation={{ ...register("hsn", { required: true }) }}
               />
             </div>
             <div>
               <Input
-                labelName={"Tax Number"}
-                inputName={"taxNumber"}
+                labelName={"Length"}
+                inputName={"length"}
                 inputType={"text"}
-                validation={{ ...register("taxNumber", { required: true }) }}
+                placeholder={"length"}
+                validation={{ ...register("length", { required: true }) }}
               />
             </div>
             <div>

@@ -2,7 +2,6 @@ import React from "react";
 
 import { FormGroup, Label } from "reactstrap";
 
-
 const Select = ({
   labelName,
   name,
@@ -23,7 +22,7 @@ const Select = ({
           {labelName}
         </label>
         <select
-          style={{ fontSize: "14px" }}
+          style={{ fontSize: "16px" }}
           name={name}
           className="form-control digits"
           id="exampleFormControlSelect9"
