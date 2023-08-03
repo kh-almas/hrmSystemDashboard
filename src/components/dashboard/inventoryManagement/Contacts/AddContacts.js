@@ -174,7 +174,9 @@ const AddContacts = () => {
             </div>
           </div>
           <div className="row row-cols-1 row-cols-lg-1 mb-2">
-            <CkEditorComponent/>
+            < CkEditorComponent
+            label={"Note"}
+            />
           </div>
           
           <div className="d-flex justify-content-center">

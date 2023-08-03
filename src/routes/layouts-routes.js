@@ -62,7 +62,10 @@ import CreateJob from "../components/dashboard/hrmSystem/RecruitmentSetup/Create
 import Application from "../components/dashboard/hrmSystem/RecruitmentSetup/Application";
 import Candidates from "../components/dashboard/hrmSystem/RecruitmentSetup/Candidates";
 import OnBoarding from "../components/dashboard/hrmSystem/RecruitmentSetup/OnBoarding";
-
+import Customer from "../components/dashboard/inventoryManagement/Contacts/Customer";
+import Settings from "../components/dashboard/inventoryManagement/Contacts/Settings";
+import Products from "../components/dashboard/inventoryManagement/Products/ProductList/Products";
+import ComboProduct from "../components/dashboard/inventoryManagement/Products/ProductList/ComboProduct";
 
 export const routes = [
   {
@@ -317,5 +320,21 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/supplier`,
     Component: <Supplier />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/customer`,
+    Component: <Customer />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/settings`,
+    Component: <Settings />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/products`,
+    Component: <Products />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/products`,
+    Component: <ComboProduct />,
   },
 ];
