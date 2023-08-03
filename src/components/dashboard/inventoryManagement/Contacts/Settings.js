@@ -12,38 +12,37 @@ const Settings = () => {
               <CommonSearchComponet />
 
               <div
-                className="d-flex justify-content-evenly align-items-center"
+                className="  d-flex flex-column flex-md-row justify-content-evenly align-items-center"
                 style={{ margin: "10px 0px" }}
               >
-                <p>Login Permission</p>
-                <div class="btn-radio">
-                  <div class="btn-group" data-toggle="buttons">
-                    <div class="btn ">
-                      <div class="radio radio-secondary">
-                        <input
-                          id="radio11"
-                          type="radio"
-                          name="radio2"
-                          value="option1"
-                        />
-                        <label for="radio11">Enable</label>
-                      </div>
-                    </div>
-                    <div class="btn  active border-0">
-                      <div class="radio radio-secondary">
-                        <input
-                          id="radio12"
-                          type="radio"
-                          name="radio2"
-                          value="option1"
-                          checked=""
-                        />
-                        <label for="radio12">Disable</label>
-                      </div>
-                    </div>
+                <p className="pb-2">Login Permission</p>
+                <div className="pb-2">
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="inlineRadioOptions"
+                      id="inlineRadio1"
+                      value="option1"
+                    />
+                    <label class="form-check-label" for="inlineRadio1">
+                      Enable
+                    </label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="inlineRadioOptions"
+                      id="inlineRadio2"
+                      value="option2"
+                    />
+                    <label class="form-check-label" for="inlineRadio2">
+                      Disable
+                    </label>
                   </div>
                 </div>
-                <button class="btn btn-info" type="button">
+                <button class="btn btn-info mb-2" type="button">
                   <span className="p-r-5">
                     <i className="icofont icofont-check-alt"></i>
                   </span>
