@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Breadcrumb from "../../../../common/breadcrumb";
 import { useForm } from "react-hook-form";
 import Select from "../../../../common/modal/Select";
@@ -7,10 +7,6 @@ import CkEditorComponent from "../../../../common/modal/CkEditorComponent";
 import { Button } from "react-bootstrap";
 
 const AddProduct = () => {
-const [single,setSingle]=useState("single");
-
-
-
   const {
     register,
     handleSubmit,
