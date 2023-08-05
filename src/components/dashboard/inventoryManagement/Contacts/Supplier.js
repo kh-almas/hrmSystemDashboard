@@ -2,6 +2,7 @@ import React from "react";
 import Breadcrumb from "../../../common/breadcrumb";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
+import {Link} from "react-router-dom";
 
 const Supplier = () => {
   return (
@@ -19,9 +20,9 @@ const Supplier = () => {
             marginBottom: "20px",
           }}
         >
-          <button className="btn btn-pill btn-info btn-air-info btn-air-info mx-2">
+          <Link to={"/dashboard/hrm/add-contacts"} className="btn btn-pill btn-info btn-air-info btn-air-info mx-2">
             New Contact
-          </button>
+          </Link>
           <button className="btn btn-pill btn-info btn-air-info btn-air-info">
             Upload Via CSV
           </button>
