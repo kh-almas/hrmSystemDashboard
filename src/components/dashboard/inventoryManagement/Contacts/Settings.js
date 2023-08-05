@@ -12,37 +12,37 @@ const Settings = () => {
               <CommonSearchComponet />
 
               <div
-                className="  d-flex flex-column flex-md-row justify-content-evenly align-items-center"
+                className="  d-flex flex-column flex-md-row justify-content-between align-items-center"
                 style={{ margin: "10px 0px" }}
               >
                 <p className="pb-2">Login Permission</p>
                 <div className="pb-2">
                   <div class="form-check form-check-inline">
                     <input
-                      class="form-check-input"
+                      className="form-check-input"
                       type="radio"
                       name="inlineRadioOptions"
                       id="inlineRadio1"
                       value="option1"
                     />
-                    <label class="form-check-label" for="inlineRadio1">
+                    <label className="form-check-label" for="inlineRadio1">
                       Enable
                     </label>
                   </div>
                   <div class="form-check form-check-inline">
                     <input
-                      class="form-check-input"
+                        className="form-check-input"
                       type="radio"
                       name="inlineRadioOptions"
                       id="inlineRadio2"
                       value="option2"
                     />
-                    <label class="form-check-label" for="inlineRadio2">
+                    <label className="form-check-label" for="inlineRadio2">
                       Disable
                     </label>
                   </div>
                 </div>
-                <button class="btn btn-info mb-2" type="button">
+                <button className="btn btn-info mb-2" type="button">
                   <span className="p-r-5">
                     <i className="icofont icofont-check-alt"></i>
                   </span>
