@@ -6,6 +6,7 @@ import Select from "../../../common/modal/Select";
 import { Button } from "react-bootstrap";
 import Textarea from "../../../common/modal/Textarea";
 import CkEditorComponent from "../../../common/modal/CkEditorComponent";
+import Submitbtn from "../../../common/button/Submitbtn";
 
 const AddContacts = () => {
   const {
@@ -178,15 +179,8 @@ const AddContacts = () => {
             label={"Note"}
             />
           </div>
-          
-          <div className="d-flex justify-content-center">
-            <Button
-              color=""
-              className="me-2 btn btn-pill btn-info btn-air-info btn-info-gradien px-4"
-            >
-              Add Contact
-            </Button>
-          </div>
+
+          <Submitbtn />
         </form>
       </div>
     </>
