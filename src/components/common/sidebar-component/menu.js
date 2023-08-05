@@ -321,6 +321,7 @@ export const MENUITEMS = [
           },
         ],
       },
+        //inventory
       {
         title: "Inventory",
         type: "sub",
@@ -328,7 +329,7 @@ export const MENUITEMS = [
           {
             title: "Add Opening Stock",
             type: "link",
-            path: "/dashboard/hrm/recruitment-jobs",
+            path: "/dashboard/hrm/inventory/stock",
           },
           {
             title: "Recieve Your Product",
