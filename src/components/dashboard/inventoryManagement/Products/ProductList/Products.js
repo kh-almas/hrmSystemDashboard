@@ -37,34 +37,41 @@ const Products = () => {
 
         <FilesComponent />
       </div>
-      <div className="mb-3 d-flex p-l-20">
-        <button
-          onClick={() => handleCard("product")}
-          className={`btn btn-square btn-light txt-white`}
-          style={{
-            fontSize: "14px",
-            fontWeight: "500",
-            marginRight: "12px",
-            width: "150px",
-          }}
+      <div className="mb-3 p-l-20 ">
+        <div
+          className="btn-group btn-group-square"
+          role="group"
+          aria-label="Basic example"
         >
-          Product
-        </button>
-
-        <button
-          onClick={() => handleCard("Combo product")}
-          className={`btn btn-square btn-light `}
-          style={{
-            fontSize: "14px",
-            fontWeight: "500",
-          }}
-        >
-          Combo Product
-        </button>
+          <button
+            onClick={() => handleCard("products")}
+            style={{
+              fontSize: "14px",
+              fontWeight: "500",
+              marginRight: "12px",
+              width: "150px",
+            }}
+            className={`btn btn-outline-primary mr-2 ${item=="products"?"active":""}`}
+            type="button"
+          >
+            Product
+          </button>
+          <button
+            onClick={() => handleCard("Combo product")}
+            style={{
+              fontSize: "14px",
+              fontWeight: "500",
+            }}
+            class="btn btn-outline-primary"
+            type="button"
+          >
+            Combo Product
+          </button>
+        </div>
       </div>
 
       <div className="container-fluid">
-        {item && item == "product" ? (
+        {item && item == "products" ? (
           <div className="row">
             <div className="col-sm-12">
               <div className="card" style={{ padding: "20px" }}>
