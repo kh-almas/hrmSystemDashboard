@@ -9,6 +9,7 @@ import Textarea from "../../../common/modal/Textarea";
 import Submitbtn from "../../../common/button/Submitbtn";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
+import Paginationbtn from "../../../common/Paginationbtn";
 
 const OpeningStock = () => {
     const {
@@ -108,24 +109,24 @@ const OpeningStock = () => {
                 </div>
             </div>
 
-            <div className="card" style={{ padding: "20px" }}>
+            <div className="card mb-0" style={{ padding: "20px" }}>
                 <CommonSearchComponet />
                 <div className="table-responsive">
                     <table className="table">
                         <thead className="table-light table-border">
-                        <tr>
-                            <th scope="col">{"Sl"}</th>
-                            <th scope="col">{"Date"}</th>
-                            <th scope="col">{"Name"}</th>
-                            <th scope="col">{"SKU"}</th>
-                            <th scope="col">{"Model"}</th>
-                            <th scope="col">{"Brand"}</th>
-                            <th scope="col">{"Branch"}</th>
-                            <th scope="col">{"Purchase Price"}</th>
-                            <th scope="col">{"Selling Price"}</th>
-                            <th scope="col">{"Stock"}</th>
-                            <th scope="col">{"Created User"}</th>
-                        </tr>
+                            <tr>
+                                <th scope="col">{"Sl"}</th>
+                                <th scope="col">{"Date"}</th>
+                                <th scope="col">{"Name"}</th>
+                                <th scope="col">{"SKU"}</th>
+                                <th scope="col">{"Model"}</th>
+                                <th scope="col">{"Brand"}</th>
+                                <th scope="col">{"Branch"}</th>
+                                <th scope="col">{"Purchase Price"}</th>
+                                <th scope="col">{"Selling Price"}</th>
+                                <th scope="col">{"Stock"}</th>
+                                <th scope="col">{"Created User"}</th>
+                            </tr>
                         </thead>
                         <tbody>
                         {/* <tr>
@@ -141,6 +142,7 @@ const OpeningStock = () => {
                     <p className="text-center p-t-10">No entries found</p>
                 </div>
             </div>
+            <Paginationbtn />
         </>
     );
 };
