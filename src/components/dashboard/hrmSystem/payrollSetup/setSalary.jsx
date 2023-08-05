@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
+import Editbtn from "../../../common/button/Editbtn";
 
 const SetSalary = () => {
   return (
@@ -32,15 +33,7 @@ const SetSalary = () => {
                       <td>{"0.66$"}</td>
                       <td>{""}</td>
                       <td>
-                        <Link to="/dashboard/hrm/salary-details">
-                          <i
-                            style={{
-                              backgroundColor: "skyblue",
-                              color: "#ffffff",
-                            }}
-                            className="icofont icofont-eye-alt rounded m-r-15 p-2"
-                          ></i>
-                        </Link>
+                        <Editbtn />
                       </td>
                     </tr>
                   </tbody>

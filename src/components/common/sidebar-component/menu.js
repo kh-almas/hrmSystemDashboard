@@ -332,9 +332,9 @@ export const MENUITEMS = [
             path: "/dashboard/hrm/inventory/stock",
           },
           {
-            title: "Recieve Your Product",
+            title: "Receive Your Product",
             type: "link",
-            path: "/base/tabs/tab-line",
+            path: "/dashboard/hrm/inventory/product/receive",
           },
           {
             title: "Product Costing(Sales)",

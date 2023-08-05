@@ -73,6 +73,7 @@ import AddProduct from "../components/dashboard/inventoryManagement/Products/Add
 import CustomQuestion from "../components/dashboard/hrmSystem/RecruitmentSetup/CustomQuestion";
 import InterviewSchedule from "../components/dashboard/hrmSystem/RecruitmentSetup/InterviewSchedule";
 import OpeningStock from "../components/dashboard/inventoryManagement/Inventory/OpeningStock";
+import ReceiveYourProduct from "../components/dashboard/inventoryManagement/Inventory/ReceiveYourProduct";
 
 
 
@@ -365,5 +366,9 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/stock`,
     Component: <OpeningStock />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/product/receive`,
+    Component: <ReceiveYourProduct />,
   },
 ];
