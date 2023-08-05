@@ -368,13 +368,15 @@ const AddProduct = () => {
                 }}
               />
 
-              <div className="col-md-2 d-flex align-items-center mx-2 mt-4 px-4">
-                <p
-                  style={{ padding: "10px" }}
-                  className="border rounded-5 text-center px-4"
-                >
-                  %
-                </p>
+              <div className="col-md-3 d-flex align-items-center mt-3 text-center mx-4">
+                <input
+                  className="form-control text-center rounded-4"
+                  type="text"
+                  name=""
+                  placeholder="%"
+                  value=""
+                  readOnly
+                />
               </div>
             </div>
           </div>
