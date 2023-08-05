@@ -187,7 +187,7 @@ const AddProduct = () => {
               <Input
                 name={"hsn"}
                 labelName={"HSN"}
-                inputType={"HSN"}
+                inputType={"text"}
                 placeholder={"HSN"}
                 validation={{ ...register("hsn", { required: true }) }}
               />
@@ -197,17 +197,18 @@ const AddProduct = () => {
                 labelName={"Length"}
                 inputName={"length"}
                 inputType={"text"}
-                placeholder={"length"}
+                placeholder={"Length"}
                 validation={{ ...register("length", { required: true }) }}
               />
             </div>
             <div>
               <Input
-                labelName={"Opening Balance"}
-                inputName={"opening-balance"}
+                labelName={"Height"}
+                inputName={"height"}
                 inputType={"text"}
+                placeholder={"height"}
                 validation={{
-                  ...register("opening-balance", { required: true }),
+                  ...register("height", { required: true }),
                 }}
               />
             </div>
@@ -216,26 +217,31 @@ const AddProduct = () => {
           <div className="row row-cols-1 row-cols-lg-3 mb-2">
             <div>
               <Input
-                labelName={"Name"}
-                inputName={"name"}
+                labelName={"Zip Length"}
+                inputName={"zip-length"}
                 inputType={"text"}
-                validation={{ ...register("name", { required: true }) }}
-              />
-            </div>
-            <div>
-              <Select
-                name={"contact-type"}
-                labelName={"Pay Term Condition"}
-                placeholder={"Select a option"}
-                options={["Months", "Days"]}
+                placeholder={"Zip Length"}
+                validation={{ ...register("zip-length", { required: true }) }}
               />
             </div>
             <div>
               <Input
-                labelName={"Email"}
-                inputName={"email"}
-                inputType={"email"}
-                validation={{ ...register("email", { required: true }) }}
+                labelName={"Flap Length"}
+                inputName={"flap-length"}
+                inputType={"text"}
+                placeholder={"Flap Length"}
+                validation={{ ...register("flap-length", { required: true }) }}
+              />
+            </div>
+            <div>
+              <Input
+                labelName={"Stitches"}
+                inputName={"stitches"}
+                inputType={"text"}
+                placeholder={"Stitches"}
+                validation={{
+                  ...register("stitches", { required: true }),
+                }}
               />
             </div>
           </div>
@@ -243,51 +249,138 @@ const AddProduct = () => {
           <div className="row row-cols-1 row-cols-lg-3 mb-2">
             <div>
               <Input
-                labelName={"Mobile Number"}
-                inputName={"number"}
+                labelName={"Fabrics"}
+                inputName={"fabrics"}
                 inputType={"text"}
-                validation={{ ...register("number", { required: true }) }}
+                placeholder={"Fabrics"}
+                validation={{ ...register("Fabrics", { required: true }) }}
               />
             </div>
             <div>
               <Input
-                labelName={"Alternate Cotact No"}
-                inputName={"al"}
-                inputType={"alternate-number"}
+                labelName={"Front Sheet"}
+                inputName={"front sheet"}
+                inputType={"text"}
+                placeholder={"Front Sheet"}
+                validation={{ ...register("front sheet", { required: true }) }}
+              />
+            </div>
+            <div>
+              <Input
+                labelName={"Wall"}
+                inputName={"wall"}
+                inputType={"text"}
+                placeholder={"Wall"}
                 validation={{
-                  ...register("alternate-number", { required: true }),
+                  ...register("wall", { required: true }),
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="row row-cols-1 row-cols-lg-3 mb-2">
+            <div>
+              <Input
+                labelName={"Zipper"}
+                inputName={"zipper"}
+                inputType={"text"}
+                placeholder={"Zipper"}
+                validation={{ ...register("zipper", { required: true }) }}
+              />
+            </div>
+            <div>
+              <Input
+                labelName={"Alert Quantity"}
+                inputName={"alert quantity"}
+                inputType={"text"}
+                validation={{
+                  ...register("alert quantity", { required: true }),
                 }}
               />
             </div>
             <div>
-              <Select
-                name={"country"}
-                labelName={"Country"}
-                placeholder={"Select Country"}
-                options={["Bangladesh", "India", "Australia"]}
+              <Input
+                labelName={"Product Image"}
+                inputName={"product image"}
+                inputType={"file"}
+                placeholder={"Product Image"}
+                validation={{
+                  ...register("product image", { required: true }),
+                }}
               />
             </div>
           </div>
-
-          <div className="row row-cols-1 row-cols-lg-2 mb-2">
+          <div className="row row-cols-1 row-cols-lg-3 mb-2">
             <div>
-              <Select
-                name={"state"}
-                labelName={"State"}
-                placeholder={"Select State"}
-                options={["India", "Australia"]}
+              <Input
+                labelName={"Purchase Price"}
+                inputName={"purchase price"}
+                inputType={"number"}
+                placeholder={"0"}
+                validation={{
+                  ...register("purchase price", { required: true }),
+                }}
               />
             </div>
-
             <div>
-              <Select
-                name={"country"}
-                labelName={"Select City"}
-                placeholder={"Select City"}
-                options={["Dhaka"]}
+              <Input
+                labelName={"Selling Price*"}
+                inputName={"purchase price"}
+                inputType={"number"}
+                placeholder={"0"}
+                validation={{
+                  ...register("purchase price", { required: true }),
+                }}
+              />
+            </div>
+            <div>
+              <Input
+                labelName={"Min. Selling Price"}
+                inputName={"min-selling-price"}
+                inputType={"number"}
+                placeholder={"0"}
+                validation={{
+                  ...register("min-selling-price", { required: true }),
+                }}
               />
             </div>
           </div>
+          <div className="row row-cols-1 row-cols-lg-3 mb-2">
+            <div>
+              <Input
+                labelName={"Purchase Price"}
+                inputName={"purchase price"}
+                inputType={"number"}
+                placeholder={"0"}
+                validation={{
+                  ...register("purchase price", { required: true }),
+                }}
+              />
+            </div>
+            <div className="d-flex ">
+              <Input
+                labelName={"Selling Price*"}
+                inputName={"purchase price"}
+                inputType={"number"}
+                placeholder={"0"}
+                validation={{
+                  ...register("purchase price", { required: true }),
+                }}
+              />
+
+              <div className="col-md-3 d-flex align-items-center mt-3 text-center mx-4">
+                <input
+                  className="form-control text-center rounded-4"
+                  type="text"
+                  name=""
+                  placeholder="%"
+                  value=""
+                  readOnly
+                />
+              </div>
+            </div>
+          </div>
+
           <div className="row row-cols-1 row-cols-lg-1 mb-2">
             <div>
               <Input
