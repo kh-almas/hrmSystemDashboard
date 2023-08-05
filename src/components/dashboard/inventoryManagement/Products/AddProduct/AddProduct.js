@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Breadcrumb from "../../../../common/breadcrumb";
 import { useForm } from "react-hook-form";
 import Select from "../../../../common/modal/Select";
@@ -7,6 +7,10 @@ import CkEditorComponent from "../../../../common/modal/CkEditorComponent";
 import { Button } from "react-bootstrap";
 
 const AddProduct = () => {
+const [single,setSingle]=useState("single");
+
+
+
   const {
     register,
     handleSubmit,
@@ -381,16 +385,6 @@ const AddProduct = () => {
             </div>
           </div>
 
-          <div className="row row-cols-1 row-cols-lg-1 mb-2">
-            <div>
-              <Input
-                name={"address"}
-                labelName={"Address"}
-                inputType={"text"}
-                validation={{ ...register("name", { required: true }) }}
-              />
-            </div>
-          </div>
           <div className="row row-cols-1 row-cols-lg-1 mb-2">
             <CkEditorComponent label={"Note"} />
           </div>
