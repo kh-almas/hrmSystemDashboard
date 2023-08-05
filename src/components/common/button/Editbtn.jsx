@@ -1,12 +1,10 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import {UncontrolledTooltip} from "reactstrap";
 
 const Editbtn = () => {
     return (
         <>
-            <button className="btn btn-primary" type="button" id="offsetRight" data-toggle="m-tooltip" data-bs-title="Tooltip on bottom"
-                    data-placement="right">20px 0px
-            </button>
             <Link to="/dashboard/hrm/salary-details">
                 <i
                     style={{
@@ -14,8 +12,12 @@ const Editbtn = () => {
                         color: "#ffffff",
                     }}
                     className="icofont icofont-eye-alt rounded m-r-15 p-2"
+                    id="TooltipBottom" data-placement="bottom"
                 ></i>
             </Link>
+            <UncontrolledTooltip className="mt-2" placement="bottom" target="TooltipBottom">
+                {"Edit"}
+            </UncontrolledTooltip>
         </>
     );
 };
