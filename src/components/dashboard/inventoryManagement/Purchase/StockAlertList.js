@@ -39,7 +39,7 @@ const StockAlertList = () => {
               <CommonSearchComponet />
               <div className="table-responsive ">
                 <table className="table">
-                  <thead className="table-light table-border">
+                  <thead className=" table-border">
                     <tr className="">
                       <th scope="col">{"No"}</th>
                       <th scope="col">{"Image"}</th>
@@ -49,7 +49,6 @@ const StockAlertList = () => {
                       <th scope="col">{"Brand"}</th>
                       <th scope="col">{"Current QTY"}</th>
                       <th scope="col">{"Alert QTY"}</th>
-             
                     </tr>
                   </thead>
                   <tbody>

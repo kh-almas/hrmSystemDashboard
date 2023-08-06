@@ -37,7 +37,7 @@ const ManageMeeting = () => {
         <Link
           to={"/hrm/dashboard/manage-meeting-calender"}
           className="btn btn-pill btn-info btn-air-info btn-air-info me-2"
-          style={{ padding: "7px 13px", borderRadius: "5px" }}          
+          style={{ padding: "7px 13px", borderRadius: "5px" }}
         >
           <i class="fa fa-calendar"></i>
         </Link>
@@ -56,7 +56,7 @@ const ManageMeeting = () => {
               <CommonSearchComponet />
               <div className="table-responsive ">
                 <table className="table ">
-                  <thead className="table-light table-border">
+                  <thead className=" table-border">
                     <tr className="">
                       <th scope="col">{"Meeting Title"}</th>
                       <th scope="col">{"Meeting Date"}</th>

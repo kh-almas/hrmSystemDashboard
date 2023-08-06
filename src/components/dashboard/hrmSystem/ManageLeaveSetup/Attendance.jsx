@@ -175,7 +175,7 @@ const Attendance = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead className="table-light table-border">
+            <thead className=" table-border">
               <tr>
                 <th scope="col">{"Employee"}</th>
                 <th scope="col">{"Date"}</th>

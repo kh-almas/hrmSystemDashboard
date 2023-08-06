@@ -34,7 +34,7 @@ const Category = () => {
               <CommonSearchComponet />
               <div className="table-responsive ">
                 <table className="table">
-                  <thead className="table-light table-border">
+                  <thead className=" table-border">
                     <tr className="">
                       <th scope="col">{"Id"}</th>
                       <th scope="col">{"Name"}</th>

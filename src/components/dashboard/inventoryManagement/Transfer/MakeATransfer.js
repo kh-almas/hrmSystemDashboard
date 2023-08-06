@@ -35,6 +35,20 @@ const MakeATransfer = () => {
         <div className="card p-30">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row row-cols-1 row-cols-lg-2 ">
+              {type === "Bank Transfer" ? (
+                <div>
+                  <Input
+                    labelName={"Date"}
+                    inputName={"date"}
+                    inputType={"date"}
+                    validation={{
+                      ...register("date", { required: true }),
+                    }}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
               <div>
                 <label
                   style={{ color: "#8990b6", fontSize: "16px" }}
@@ -50,24 +64,11 @@ const MakeATransfer = () => {
                   id="exampleFormControlSelect9"
                   defaultValue="1"
                 >
-                  <option value="Supplier">Supplier</option>
-                  <option value="Customer">Customer</option>
+                  <option value="Cash Transfer">Cash Transfer</option>
+                  <option value="Bank Transfer">Bank Transfer</option>
                 </select>
               </div>
-              {type === "Supplier" || type === "Customer" ? (
-                <div>
-                  <Input
-                    labelName={"Name"}
-                    inputName={"name"}
-                    inputType={"text"}
-                    validation={{
-                      ...register("name", { required: true }),
-                    }}
-                  />
-                </div>
-              ) : (
-                ""
-              )}
+
               {type === "Supplier" || type === "Customer" ? (
                 <div>
                   <Input

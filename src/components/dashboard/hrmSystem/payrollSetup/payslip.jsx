@@ -170,7 +170,7 @@ const Payslip = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead className="table-light table-border">
+            <thead className=" table-border">
               <tr>
                 <th scope="col">{"Employee ID"}</th>
                 <th scope="col">{"Name"}</th>

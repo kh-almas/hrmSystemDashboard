@@ -2,7 +2,7 @@ import React from "react";
 import Breadcrumb from "../../../common/breadcrumb";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Customer = () => {
   return (
@@ -20,7 +20,10 @@ const Customer = () => {
             marginBottom: "20px",
           }}
         >
-          <Link to={"/dashboard/hrm/add-contacts"} className="btn btn-pill btn-info btn-air-info btn-air-info mx-2">
+          <Link
+            to={"/dashboard/hrm/add-contacts"}
+            className="btn btn-pill btn-info btn-air-info btn-air-info mx-2"
+          >
             New Contact
           </Link>
           <button className="btn btn-pill btn-info btn-air-info btn-air-info">
@@ -37,7 +40,7 @@ const Customer = () => {
               <CommonSearchComponet />
               <div className="table-responsive ">
                 <table className="table ">
-                  <thead className="table-light table-border ">
+                  <thead className=" table-border ">
                     <tr className="">
                       <th scope="col">{"Sl"}</th>
                       <th scope="col">{"Customer ID"}</th>

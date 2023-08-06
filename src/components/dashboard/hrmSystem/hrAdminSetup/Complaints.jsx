@@ -46,7 +46,7 @@ const Complaints = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead className="table-light table-border">
+            <thead className=" table-border">
               <tr>
                 <th scope="col">{"Complaint Form"}</th>
                 <th scope="col">{"Complaint Against"}</th>

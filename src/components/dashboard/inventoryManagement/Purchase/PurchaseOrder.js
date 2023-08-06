@@ -35,7 +35,7 @@ const PurchaseOrder = () => {
               <CommonSearchComponet />
               <div className="table-responsive ">
                 <table className="table">
-                  <thead className="table-light table-border">
+                  <thead className=" table-border">
                     <tr className="">
                       <th scope="col">{"No"}</th>
                       <th scope="col">{"Date"}</th>
@@ -64,7 +64,6 @@ const PurchaseOrder = () => {
                     </tr>
                   </tbody>
                 </table>
-             
               </div>
             </div>
             <Paginationbtn />

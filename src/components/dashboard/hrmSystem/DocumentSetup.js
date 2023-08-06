@@ -48,7 +48,7 @@ const DocumentSetup = () => {
               <CommonSearchComponet />
               <div className="table-responsive ">
                 <table className="table ">
-                  <thead className="table-light table-border">
+                  <thead className=" table-border">
                     <tr className="">
                       <th scope="col">{"Name"}</th>
                       <th scope="col">{"Documents"}</th>
