@@ -77,6 +77,9 @@ import ReceiveYourProduct from "../components/dashboard/inventoryManagement/Inve
 import Category from "../components/dashboard/inventoryManagement/Products/Category/Category";
 import Brand from "../components/dashboard/inventoryManagement/Products/Brand/Brand";
 import Model from "../components/dashboard/inventoryManagement/Products/Model/Model";
+import UnitType from "../components/dashboard/inventoryManagement/Products/UnitType/UnitType";
+import Variant from "../components/dashboard/inventoryManagement/Products/Variant/Variant";
+import PurchaseOrder from "../components/dashboard/inventoryManagement/Purchase/PurchaseOrder";
 
 export const routes = [
   {
@@ -377,6 +380,14 @@ export const routes = [
     Component: <Model />,
   },
   {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/unit-type`,
+    Component: <UnitType />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/variant`,
+    Component: <Variant />,
+  },
+  {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/stock`,
     Component: <OpeningStock />,
   },
@@ -384,4 +395,9 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/product/receive`,
     Component: <ReceiveYourProduct />,
   },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/purchase_order`,
+    Component: <PurchaseOrder />,
+  },
+
 ];

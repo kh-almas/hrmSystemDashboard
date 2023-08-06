@@ -312,16 +312,16 @@ export const MENUITEMS = [
           {
             title: "Unit Type",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "/dashboard/hrm/unit-type",
           },
           {
             title: "Variant",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "/dashboard/hrm/variant",
           },
         ],
       },
-        //inventory
+      //inventory
       {
         title: "Inventory",
         type: "sub",
@@ -369,6 +369,8 @@ export const MENUITEMS = [
           { title: "Product Info", type: "link", path: "/base/tabs/tab-line" },
         ],
       },
+
+      //Purchase
       {
         title: "Purchase",
         type: "sub",
@@ -376,7 +378,7 @@ export const MENUITEMS = [
           {
             title: "Purchase Order",
             type: "link",
-            path: "/dashboard/admin/award",
+            path: "/dashboard/hrm/purchase/purchase_order",
           },
           {
             title: "Stock Alert List",
