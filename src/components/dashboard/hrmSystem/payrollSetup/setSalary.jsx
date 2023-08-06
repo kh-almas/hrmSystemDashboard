@@ -8,14 +8,14 @@ const SetSalary = () => {
   return (
     <div>
       <Breadcrumb parent="HRM System" title="Manage Employee Salary" />
-      <div className="container-fluid">
+      <div className="container-fluid dark-sidebar-body-mix">
         <div className="row">
           <div className="col-sm-12">
             <div className="card" style={{ padding: "20px" }}>
               <CommonSearchComponet />
               <div className="table-responsive">
                 <table className="table">
-                  <thead className="table-light table-border">
+                  <thead className="table-border">
                     <tr>
                       <th scope="col">{"Employee ID"}</th>
                       <th scope="col">{"Name"}</th>
@@ -27,7 +27,7 @@ const SetSalary = () => {
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">{"#EMP0000001"}</th>
+                      <td>{"#EMP0000001"}</td>
                       <td>{"accountant"}</td>
                       <td>{""}</td>
                       <td>{"0.66$"}</td>

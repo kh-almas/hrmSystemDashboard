@@ -61,6 +61,8 @@ $font-ICO: IcoFont;
 
 // dark layout variables
 $dark-body-background: #293240;
+$dark-table-background: #435670;
+$dark-table-header-color: #ffffff;
 $dark-card-background: #2f3c4e;
 $dark-small-font-color: #98a6ad;
 $dark-all-font-color: rgba(255, 255, 255, 0.85);
@@ -105,7 +107,8 @@ $list-group-margin: 10px;
 // Tables settings
 $horizontal-border-color: #dee2e6;
 $table-b-margin: 0px;
-$table-heading-color: $theme-body-font-color;
+//$table-heading-color: $theme-body-font-color;
+$table-heading-color: #ffffff;
 $table-row-color: $theme-body-font-color;
 $table-footer-font-weight: bold;
 $table-inverse-color: $white;
