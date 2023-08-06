@@ -8974,7 +8974,7 @@ body {
 				}
 				/* sidebar end */
 				.page-body {
-					///almas
+					/* almas */
 					.card {
 						> * {
 							color: $dark-small-font-color;
@@ -9256,7 +9256,9 @@ body {
 						.table {
 							th,
 							td {
+								/* almas */
 								color: $dark-all-font-color;
+								background-color: #6da5f8;
 							}
 							thead {
 								th {
