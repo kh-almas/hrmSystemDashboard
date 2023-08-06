@@ -3,29 +3,33 @@ import Breadcrumb from "../../../common/breadcrumb";
 import Paginationbtn from "../../../common/Paginationbtn";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import Dropdownbtn from "../../../common/button/Dropdownbtn";
 
-const PurchaseOrder = () => {
+import Dropdownbtn from "../../../common/button/Dropdownbtn";
+import Select from "../../../common/modal/Select";
+const StockAlertList = () => {
   return (
     <div>
-      <Breadcrumb parent="Inventory management" title="Purchase Order" />
+      <Breadcrumb parent="Inventory management" title="Stock Alert List" />
+      <div className="card p-4 py-4  ">
+        <div className=" d-flex align-items-center justify-content-around">
+          <h3 style={{ fontSize: "25px", fontWeight: "500" }}>
+            Stock Alert List
+          </h3>
+
+          <div className="w-25 text-center">
+            <Select
+              name={"select supplier"}
+              placeholder={"Select Supplier"}
+              options={[""]}
+            />
+          </div>
+        </div>
+      </div>
+
       <div
         style={{ padding: "0px 20px" }}
-        className="d-flex justify-content-between align-items-center pb-3"
+        className="d-flex justify-content-end align-items-center pb-3"
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "",
-            marginBottom: "20px",
-          }}
-        >
-          <button className="btn btn-pill btn-info btn-air-info btn-air-info">
-            New Order
-          </button>
-        </div>
-
         <FilesComponent />
       </div>
       <div className="container-fluid">
@@ -38,18 +42,18 @@ const PurchaseOrder = () => {
                   <thead className="table-light table-border">
                     <tr className="">
                       <th scope="col">{"No"}</th>
-                      <th scope="col">{"Date"}</th>
-                      <th scope="col">{"Supplier Name"}</th>
-                      <th scope="col">{"Invoice No"}</th>
-                      <th scope="col">{"Total Amount"}</th>
-                      <th scope="col">{"Paid Amount"}</th>
-                      <th scope="col">{" Amount"}</th>
-                      <th scope="col">{"Due Amount"}</th>
-                      <th scope="col">{"Is Approved"}</th>
+                      <th scope="col">{"Image"}</th>
+                      <th scope="col">{"Supplier"}</th>
+                      <th scope="col">{"Products"}</th>
+                      <th scope="col">{"Model"}</th>
+                      <th scope="col">{"Brand"}</th>
+                      <th scope="col">{"Current QTY"}</th>
+                      <th scope="col">{"Alert QTY"}</th>
+             
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    {/* <tr>
                       <td>{"1"}</td>
                       <td>{"26th Jul, 2023"}</td>
                       <td>{"Supplier-01"}</td>
@@ -61,10 +65,12 @@ const PurchaseOrder = () => {
                       <td>
                         <Dropdownbtn />
                       </td>
-                    </tr>
+                    </tr> */}
                   </tbody>
                 </table>
-             
+                <p className="text-center p-t-10 text-secondary">
+                  No data available in table
+                </p>
               </div>
             </div>
             <Paginationbtn />
@@ -75,4 +81,4 @@ const PurchaseOrder = () => {
   );
 };
 
-export default PurchaseOrder;
+export default StockAlertList;

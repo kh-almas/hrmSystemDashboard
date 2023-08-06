@@ -80,6 +80,9 @@ import Model from "../components/dashboard/inventoryManagement/Products/Model/Mo
 import UnitType from "../components/dashboard/inventoryManagement/Products/UnitType/UnitType";
 import Variant from "../components/dashboard/inventoryManagement/Products/Variant/Variant";
 import PurchaseOrder from "../components/dashboard/inventoryManagement/Purchase/PurchaseOrder";
+import StockAlertList from "../components/dashboard/inventoryManagement/Purchase/StockAlertList";
+import PurchaseReturnList from "../components/dashboard/inventoryManagement/Purchase/PurchaseReturnList";
+import CAndF from "../components/dashboard/inventoryManagement/Purchase/CAndF";
 
 export const routes = [
   {
@@ -399,5 +402,15 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/purchase_order`,
     Component: <PurchaseOrder />,
   },
-
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/stock-alert-list`,
+    Component: <StockAlertList />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/purchase-return-list`,
+    Component: <PurchaseReturnList />,
+  }, {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/c&f`,
+    Component: <CAndF />,
+  },
 ];

@@ -383,17 +383,17 @@ export const MENUITEMS = [
           {
             title: "Stock Alert List",
             type: "link",
-            path: "/dashboard/admin/transfer",
+            path: "/dashboard/hrm/purchase/stock-alert-list",
           },
           {
             title: "Purchase Return List",
             type: "link",
-            path: "/dashboard/admin/resignation",
+            path: "/dashboard/hrm/purchase/purchase-return-list",
           },
           {
             title: "C&F",
             type: "link",
-            path: "/dashboard/admin/trip",
+            path: "/dashboard/hrm/purchase/c&f",
           },
         ],
       },
