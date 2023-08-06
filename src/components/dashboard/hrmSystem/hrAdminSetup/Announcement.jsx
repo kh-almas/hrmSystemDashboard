@@ -46,7 +46,7 @@ const Announcement = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead className="table-light table-border">
+            <thead className="table-border">
               <tr>
                 <th scope="col">{"Title"}</th>
                 <th scope="col">{"Start Date"}</th>
