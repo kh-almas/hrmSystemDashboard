@@ -74,8 +74,9 @@ import CustomQuestion from "../components/dashboard/hrmSystem/RecruitmentSetup/C
 import InterviewSchedule from "../components/dashboard/hrmSystem/RecruitmentSetup/InterviewSchedule";
 import OpeningStock from "../components/dashboard/inventoryManagement/Inventory/OpeningStock";
 import ReceiveYourProduct from "../components/dashboard/inventoryManagement/Inventory/ReceiveYourProduct";
-
-
+import Category from "../components/dashboard/inventoryManagement/Products/Category/Category";
+import Brand from "../components/dashboard/inventoryManagement/Products/Brand/Brand";
+import Model from "../components/dashboard/inventoryManagement/Products/Model/Model";
 
 export const routes = [
   {
@@ -362,6 +363,18 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/add-product`,
     Component: <AddProduct />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/category`,
+    Component: <Category />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/brand`,
+    Component: <Brand />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/model`,
+    Component: <Model />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/stock`,

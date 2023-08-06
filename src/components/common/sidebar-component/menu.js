@@ -297,17 +297,17 @@ export const MENUITEMS = [
           {
             title: "Category",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "/dashboard/hrm/category",
           },
           {
             title: "Brand",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "/dashboard/hrm/brand",
           },
           {
             title: "Model",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "/dashboard/hrm/model",
           },
           {
             title: "Unit Type",
