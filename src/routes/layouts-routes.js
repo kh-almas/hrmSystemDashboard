@@ -85,6 +85,7 @@ import PurchaseReturnList from "../components/dashboard/inventoryManagement/Purc
 import CAndF from "../components/dashboard/inventoryManagement/Purchase/CAndF";
 import Quotation from "../components/dashboard/inventoryManagement/Quotation/Quotation";
 import MakeATransfer from "../components/dashboard/inventoryManagement/Transfer/MakeATransfer";
+import TransferedLists from "../components/dashboard/inventoryManagement/Transfer/TransferedLists";
 
 export const routes = [
   {
@@ -423,5 +424,9 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/admin/make-a-transfer`,
     Component: <MakeATransfer />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/transfered-lists`,
+    Component: <TransferedLists />,
   },
 ];

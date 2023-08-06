@@ -416,7 +416,7 @@ export const MENUITEMS = [
           {
             title: "Transfered Lists",
             type: "link",
-            path: "/dashboard/admin/transfer",
+            path: "/dashboard/admin/transfered-lists",
           },
         ],
       },

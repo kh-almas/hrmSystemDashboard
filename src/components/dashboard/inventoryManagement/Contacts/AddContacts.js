@@ -291,7 +291,7 @@ const AddContacts = () => {
           <div className="row row-cols-1 row-cols-lg-1 mb-2">
             <CkEditorComponent label={"Note"} />
           </div>
-          <Submitbtn name={"Add Product"} />
+          <Submitbtn name={"Add Contact"} />
         </form>
       </div>
     </>
