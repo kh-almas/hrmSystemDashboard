@@ -411,7 +411,7 @@ export const MENUITEMS = [
           {
             title: "Make A Transfer",
             type: "link",
-            path: "/dashboard/admin/award",
+            path: "/dashboard/admin/make-a-transfer",
           },
           {
             title: "Transfered Lists",

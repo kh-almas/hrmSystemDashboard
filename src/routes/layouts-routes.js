@@ -84,6 +84,7 @@ import StockAlertList from "../components/dashboard/inventoryManagement/Purchase
 import PurchaseReturnList from "../components/dashboard/inventoryManagement/Purchase/PurchaseReturnList";
 import CAndF from "../components/dashboard/inventoryManagement/Purchase/CAndF";
 import Quotation from "../components/dashboard/inventoryManagement/Quotation/Quotation";
+import MakeATransfer from "../components/dashboard/inventoryManagement/Transfer/MakeATransfer";
 
 export const routes = [
   {
@@ -418,5 +419,9 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/hrm/dashboard/quotation`,
     Component: <Quotation />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/make-a-transfer`,
+    Component: <MakeATransfer />,
   },
 ];
