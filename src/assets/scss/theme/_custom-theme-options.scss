@@ -8974,6 +8974,32 @@ body {
 				}
 				/* sidebar end */
 				.page-body {
+					///almas
+					.card {
+						> * {
+							color: $dark-small-font-color;
+						}
+						table {
+							background-color: #293240 !important;
+						}
+						table {
+							thead {
+								tr {
+									th {
+										color: white !important;
+									}
+								}
+							}
+							tbody{
+								tr {
+									td {
+										color: white !important;
+									}
+								}
+							}
+						}
+					}
+
 					.topper-lists {
 						table {
 							tbody {
