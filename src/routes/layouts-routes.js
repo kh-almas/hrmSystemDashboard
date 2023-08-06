@@ -83,6 +83,7 @@ import PurchaseOrder from "../components/dashboard/inventoryManagement/Purchase/
 import StockAlertList from "../components/dashboard/inventoryManagement/Purchase/StockAlertList";
 import PurchaseReturnList from "../components/dashboard/inventoryManagement/Purchase/PurchaseReturnList";
 import CAndF from "../components/dashboard/inventoryManagement/Purchase/CAndF";
+import Quotation from "../components/dashboard/inventoryManagement/Quotation/Quotation";
 
 export const routes = [
   {
@@ -409,8 +410,13 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/purchase-return-list`,
     Component: <PurchaseReturnList />,
-  }, {
+  },
+  {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/c&f`,
     Component: <CAndF />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/quotation`,
+    Component: <Quotation />,
   },
 ];

@@ -397,11 +397,13 @@ export const MENUITEMS = [
           },
         ],
       },
+
       {
-        path: "/hrm/dashboard/manage-branch",
+        path: "/hrm/dashboard/quotation",
         title: "Quotation",
         type: "link",
       },
+
       {
         title: "Transfer",
         type: "sub",
