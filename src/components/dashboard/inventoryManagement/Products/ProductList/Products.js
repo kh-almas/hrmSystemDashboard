@@ -80,7 +80,6 @@ const Products = () => {
                   <table className="table ">
                     <thead
                       className="table-light table-border"
-                      style={{ whiteSpace: "nowrap" }}
                     >
                       <tr className="">
                         <th scope="col">{"Sl"}</th>

@@ -9,6 +9,11 @@ import CkEditorComponent from "../../../common/modal/CkEditorComponent";
 import Submitbtn from "../../../common/button/Submitbtn";
 
 const AddContacts = () => {
+  const [type, setType] = useState("Supplier");
+
+  const handleTypeChange = (type) => {
+    setType(type);
+  };
   const {
     register,
     handleSubmit,
@@ -33,154 +38,260 @@ const AddContacts = () => {
 
       <div className="card p-30">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="row row-cols-1 row-cols-lg-3 mb-3">
+          <div className="row row-cols-1 row-cols-lg-3 ">
             <div>
-              <Select
-                name={"contact-type"}
-                labelName={"Contact Type"}
-                placeholder={"Select a option"}
-                options={["SUPLIER", "CUSTOMER"]}
-              />
+              <label
+                style={{ color: "#8990b6", fontSize: "16px" }}
+                htmlFor="exampleFormControlSelect9"
+              >
+                Product-Type
+              </label>
+              <select
+                onChange={(e) => handleTypeChange(e.target.value)}
+                style={{ fontSize: "16px" }}
+                name="product-type"
+                className="form-control digits"
+                id="exampleFormControlSelect9"
+                defaultValue="1"
+              >
+                <option value="Supplier">Supplier</option>
+                <option value="Customer">Customer</option>
+              </select>
             </div>
-            <div>
-              <Input
-                labelName={"Name"}
-                inputName={"name"}
-                inputType={"text"}
-                validation={{ ...register("name", { required: true }) }}
-              />
-            </div>
-            <div>
-              <Input
-                labelName={"Profile Picture"}
-                inputName={"file"}
-                inputType={"file"}
-                validation={{ ...register("file", { required: true }) }}
-              />
-            </div>
-          </div>
+            {type === "Supplier" || type === "Customer" ? (
+              <div>
+                <Input
+                  labelName={"Name"}
+                  inputName={"name"}
+                  inputType={"text"}
+                  validation={{
+                    ...register("name", { required: true }),
+                  }}
+                />
+              </div>
+            ) : (
+              ""
+            )}
+            {type === "Supplier" || type === "Customer" ? (
+              <div>
+                <Input
+                  labelName={"Profile Picture"}
+                  inputName={"profilePicture"}
+                  inputType={"file"}
+                  validation={{
+                    ...register("profilePicture", { required: true }),
+                  }}
+                />
+              </div>
+            ) : (
+              ""
+            )}
 
-          <div className="row row-cols-1 row-cols-lg-3 mb-2">
-            <div>
-              <Input
-                name={"businessName"}
-                labelName={"Business Name"}
-                inputType={"text"}
-                validation={{ ...register("businessName", { required: true }) }}
-              />
-            </div>
-            <div>
-              <Input
-                labelName={"Tax Number"}
-                inputName={"taxNumber"}
-                inputType={"text"}
-                validation={{ ...register("taxNumber", { required: true }) }}
-              />
-            </div>
-            <div>
-              <Input
-                labelName={"Opening Balance"}
-                inputName={"opening-balance"}
-                inputType={"text"}
-                validation={{
-                  ...register("opening-balance", { required: true }),
-                }}
-              />
-            </div>
-          </div>
+            {type === "Supplier" || type === "Customer" ? (
+              <div>
+                <div>
+                  <Input
+                    labelName={"Business Name"}
+                    inputName={"business-name"}
+                    inputType={"text"}
+                    validation={{
+                      ...register("business-name", { required: true }),
+                    }}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
 
-          <div className="row row-cols-1 row-cols-lg-3 mb-2">
-            <div>
-              <Input
-                labelName={"Name"}
-                inputName={"name"}
-                inputType={"text"}
-                validation={{ ...register("name", { required: true }) }}
-              />
-            </div>
-            <div>
-              <Select
-                name={"contact-type"}
-                labelName={"Pay Term Condition"}
-                placeholder={"Select a option"}
-                options={["Months", "Days"]}
-              />
-            </div>
-            <div>
-              <Input
-                labelName={"Email"}
-                inputName={"email"}
-                inputType={"email"}
-                validation={{ ...register("email", { required: true }) }}
-              />
-            </div>
-          </div>
+            {type === "Supplier" || type === "Customer" ? (
+              <div>
+                <div>
+                  <Input
+                    labelName={"Tax Number"}
+                    inputName={"tex-number"}
+                    inputType={"text"}
+                    placeholder={"0"}
+                    validation={{
+                      ...register("tex-number", { required: true }),
+                    }}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
 
-          <div className="row row-cols-1 row-cols-lg-3 mb-2">
-            <div>
-              <Input
-                labelName={"Mobile Number"}
-                inputName={"number"}
-                inputType={"text"}
-                validation={{ ...register("number", { required: true }) }}
-              />
-            </div>
-            <div>
-              <Input
-                labelName={"Alternate Cotact No"}
-                inputName={"al"}
-                inputType={"alternate-number"}
-                validation={{
-                  ...register("alternate-number", { required: true }),
-                }}
-              />
-            </div>
-            <div>
-              <Select
-                name={"country"}
-                labelName={"Country"}
-                placeholder={"Select Country"}
-                options={["Bangladesh", "India", "Australia"]}
-              />
-            </div>
-          </div>
+            {type === "Supplier" || type === "Customer" ? (
+              <div>
+                <div>
+                  <Input
+                    labelName={"Openning Balance"}
+                    inputName={"opennibg-balance"}
+                    inputType={"text"}
+                    validation={{
+                      ...register("opennibg-balance", { required: true }),
+                    }}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
 
-          <div className="row row-cols-1 row-cols-lg-2 mb-2">
-            <div>
-              <Select
-                name={"state"}
-                labelName={"State"}
-                placeholder={"Select State"}
-                options={["India", "Australia"]}
-              />
-            </div>
+            {type === "Supplier" || type === "Customer" ? (
+              <div>
+                <div>
+                  <Input
+                    labelName={"Pay Term"}
+                    inputName={"pay-term"}
+                    inputType={"text"}
+                    validation={{
+                      ...register("pay-term", { required: true }),
+                    }}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
 
-            <div>
-              <Select
-                name={"country"}
-                labelName={"Select City"}
-                placeholder={"Select City"}
-                options={["Dhaka"]}
-              />
-            </div>
+            {type == "Supplier" || type === "Customer" ? (
+              <div style={{ position: "relative" }}>
+                <div>
+                  <Select
+                    name={"pay-term-condition"}
+                    labelName={"Pay-Term-Condition"}
+                    placeholder={"Select condition"}
+                    options={["Days", "Months"]}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {type == "Supplier" || type === "Customer" ? (
+              <div>
+                <div>
+                  <Input
+                    labelName={"Email"}
+                    inputName={"email"}
+                    inputType={"email"}
+                    placeholder={"Email"}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {type == "Customer" ? (
+              <div>
+                <div>
+                  <Input
+                    labelName={"Credit Limit"}
+                    inputName={"credit limit"}
+                    inputType={"text"}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {type == "Supplier" || type === "Customer" ? (
+              <div>
+                <div>
+                  <Input
+                    labelName={"Mobile"}
+                    inputName={"mobile"}
+                    inputType={"text"}
+                    placeholder={"Mobile"}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {type == "Supplier" || type === "Customer" ? (
+              <div>
+                <div>
+                  <Input
+                    labelName={"Alternate Contact No"}
+                    inputName={"alternate-contact-no"}
+                    inputType={"text"}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {type == "Supplier" || type === "Customer" ? (
+              <div>
+                <div>
+                  <Select
+                    name={"country"}
+                    labelName={"Country"}
+                    placeholder={"Select country"}
+                    options={["Bangladesh", "Australia"]}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {type == "Supplier" || type === "Customer" ? (
+              <div>
+                <div>
+                  <Select
+                    name={"state"}
+                    labelName={"State"}
+                    placeholder={"Select State"}
+                    options={[""]}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {type == "Supplier" || type === "Customer" ? (
+              <div>
+                <div>
+                  <Select
+                    name={"city"}
+                    labelName={"City"}
+                    placeholder={"Select City"}
+                    options={[""]}
+                  />
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {type == "Supplier" || type === "Customer" ? (
+              <div>
+                <Input
+                  labelName={"Address"}
+                  inputName={"address"}
+                  inputType={"text"}
+                  placeholder={""}
+                  validation={{ ...register("address", { required: true }) }}
+                />
+              </div>
+            ) : (
+              ""
+            )}
           </div>
           <div className="row row-cols-1 row-cols-lg-1 mb-2">
-            <div>
-              <Input
-                name={"address"}
-                labelName={"Address"}
-                inputType={"text"}
-                validation={{ ...register("name", { required: true }) }}
-              />
-            </div>
+            <CkEditorComponent label={"Note"} />
           </div>
-          <div className="row row-cols-1 row-cols-lg-1 mb-2">
-            < CkEditorComponent
-            label={"Note"}
-            />
-          </div>
-
-          <Submitbtn />
+          <Submitbtn name={"Add Product"} />
         </form>
       </div>
     </>

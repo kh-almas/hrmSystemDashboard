@@ -74,8 +74,17 @@ import CustomQuestion from "../components/dashboard/hrmSystem/RecruitmentSetup/C
 import InterviewSchedule from "../components/dashboard/hrmSystem/RecruitmentSetup/InterviewSchedule";
 import OpeningStock from "../components/dashboard/inventoryManagement/Inventory/OpeningStock";
 import ReceiveYourProduct from "../components/dashboard/inventoryManagement/Inventory/ReceiveYourProduct";
-
-
+import Category from "../components/dashboard/inventoryManagement/Products/Category/Category";
+import Brand from "../components/dashboard/inventoryManagement/Products/Brand/Brand";
+import Model from "../components/dashboard/inventoryManagement/Products/Model/Model";
+import UnitType from "../components/dashboard/inventoryManagement/Products/UnitType/UnitType";
+import Variant from "../components/dashboard/inventoryManagement/Products/Variant/Variant";
+import PurchaseOrder from "../components/dashboard/inventoryManagement/Purchase/PurchaseOrder";
+import StockAlertList from "../components/dashboard/inventoryManagement/Purchase/StockAlertList";
+import PurchaseReturnList from "../components/dashboard/inventoryManagement/Purchase/PurchaseReturnList";
+import CAndF from "../components/dashboard/inventoryManagement/Purchase/CAndF";
+import Quotation from "../components/dashboard/inventoryManagement/Quotation/Quotation";
+import MakeATransfer from "../components/dashboard/inventoryManagement/Transfer/MakeATransfer";
 
 export const routes = [
   {
@@ -364,11 +373,55 @@ export const routes = [
     Component: <AddProduct />,
   },
   {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/category`,
+    Component: <Category />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/brand`,
+    Component: <Brand />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/model`,
+    Component: <Model />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/unit-type`,
+    Component: <UnitType />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/variant`,
+    Component: <Variant />,
+  },
+  {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/stock`,
     Component: <OpeningStock />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/product/receive`,
     Component: <ReceiveYourProduct />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/purchase_order`,
+    Component: <PurchaseOrder />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/stock-alert-list`,
+    Component: <StockAlertList />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/purchase-return-list`,
+    Component: <PurchaseReturnList />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/c&f`,
+    Component: <CAndF />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/hrm/dashboard/quotation`,
+    Component: <Quotation />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/admin/make-a-transfer`,
+    Component: <MakeATransfer />,
   },
 ];

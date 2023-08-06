@@ -297,31 +297,31 @@ export const MENUITEMS = [
           {
             title: "Category",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "/dashboard/hrm/category",
           },
           {
             title: "Brand",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "/dashboard/hrm/brand",
           },
           {
             title: "Model",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "/dashboard/hrm/model",
           },
           {
             title: "Unit Type",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "/dashboard/hrm/unit-type",
           },
           {
             title: "Variant",
             type: "link",
-            path: "/dashboard/hrm/manage-trainer",
+            path: "/dashboard/hrm/variant",
           },
         ],
       },
-        //inventory
+      //inventory
       {
         title: "Inventory",
         type: "sub",
@@ -369,6 +369,8 @@ export const MENUITEMS = [
           { title: "Product Info", type: "link", path: "/base/tabs/tab-line" },
         ],
       },
+
+      //Purchase
       {
         title: "Purchase",
         type: "sub",
@@ -376,30 +378,32 @@ export const MENUITEMS = [
           {
             title: "Purchase Order",
             type: "link",
-            path: "/dashboard/admin/award",
+            path: "/dashboard/hrm/purchase/purchase_order",
           },
           {
             title: "Stock Alert List",
             type: "link",
-            path: "/dashboard/admin/transfer",
+            path: "/dashboard/hrm/purchase/stock-alert-list",
           },
           {
             title: "Purchase Return List",
             type: "link",
-            path: "/dashboard/admin/resignation",
+            path: "/dashboard/hrm/purchase/purchase-return-list",
           },
           {
             title: "C&F",
             type: "link",
-            path: "/dashboard/admin/trip",
+            path: "/dashboard/hrm/purchase/c&f",
           },
         ],
       },
+
       {
-        path: "/hrm/dashboard/manage-branch",
+        path: "/hrm/dashboard/quotation",
         title: "Quotation",
         type: "link",
       },
+
       {
         title: "Transfer",
         type: "sub",
@@ -407,7 +411,7 @@ export const MENUITEMS = [
           {
             title: "Make A Transfer",
             type: "link",
-            path: "/dashboard/admin/award",
+            path: "/dashboard/admin/make-a-transfer",
           },
           {
             title: "Transfered Lists",
