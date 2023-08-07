@@ -15,7 +15,6 @@
     /*color: #939393;*/
 }
 
-
 .fc-scroller{
     overflow: hidden !important;
 }
@@ -24,9 +23,6 @@ th{
     font-family: 'Roboto', sans-serif;
     letter-spacing: 2px;
 }
-
-
-//60, 95
 
 .my-primary-card {
     border: 1px solid #3333ff !important;
