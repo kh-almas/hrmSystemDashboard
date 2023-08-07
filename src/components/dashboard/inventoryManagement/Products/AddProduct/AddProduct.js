@@ -61,6 +61,7 @@ const AddProduct = () => {
                   labelName={"Product Name"}
                   inputName={"product-name"}
                   inputType={"text"}
+                  placeholder={"Product Name"}
                   validation={{
                     ...register("product-name", { required: true }),
                   }}
@@ -74,6 +75,7 @@ const AddProduct = () => {
                 <Input
                   labelName={"Product Sku"}
                   inputName={"product-sku"}
+                  placeholder={"Product-Sku"}
                   inputType={"text"}
                   validation={{
                     ...register("product-sku", { required: true }),
@@ -110,7 +112,7 @@ const AddProduct = () => {
                 </div>
               </div>
             ) : (
-              ""
+              " "
             )}
 
             {type === "Single" || type === "Varient" || type === "Combo" ? (

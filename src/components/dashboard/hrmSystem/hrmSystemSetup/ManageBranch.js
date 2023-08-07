@@ -4,6 +4,7 @@ import HrmManageCard from "../../../common/HrmManageCard";
 import Breadcrumb from "../../../common/breadcrumb";
 import "./CustomCss/Custom-Style.css";
 import ManageJobStage from "./ManageJobStage";
+import { Link } from "react-router-dom";
 
 const ManageBranch = () => {
   const [pItem, setPItem] = useState(data.find((item) => item.id == "1"));
@@ -20,7 +21,7 @@ const ManageBranch = () => {
 
       <div className="row">
         <div
-          className="col-sm-12 col-xl-3 shadow bg-white "
+          className="col-sm-12 col-xl-3 shadow sidebar-menu"
           style={{ cursor: "pointer" }}
         >
           {data?.map((item, index) => (
@@ -31,8 +32,8 @@ const ManageBranch = () => {
               }`}
               key={index}
             >
-              <button
-                className={`border-0 bg-white  ${
+              <Link
+                className={`sidebar-header active  ${
                   pItem.id == item.id ? "custom-div" : ""
                 }`}
                 style={{
@@ -41,7 +42,7 @@ const ManageBranch = () => {
                 }}
               >
                 {item.cetagory}
-              </button>
+              </Link>
               <span>
                 <i
                   className={`icofont icofont-thin-right ${

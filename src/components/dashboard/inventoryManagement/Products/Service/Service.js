@@ -3,6 +3,7 @@ import Breadcrumb from "../../../../common/breadcrumb";
 import FilesComponent from "../../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../../common/salaryCard/CommonSearchComponet";
 import Paginationbtn from "../../../../common/Paginationbtn";
+import { Link } from "react-router-dom";
 
 const Service = () => {
   return (
@@ -21,7 +22,12 @@ const Service = () => {
           }}
         >
           <button className="btn btn-pill btn-info btn-air-info btn-air-info">
-            New Product
+            <Link
+              className="btn btn-pill btn-info btn-air-info btn-air-info mx-2"
+              to="/dashboard/hrm/add-product"
+            >
+              New Product
+            </Link>
           </button>
         </div>
 

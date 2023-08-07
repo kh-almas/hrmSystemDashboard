@@ -64,6 +64,7 @@ const AddContacts = () => {
                   labelName={"Name"}
                   inputName={"name"}
                   inputType={"text"}
+                  placeholder={"Name"}
                   validation={{
                     ...register("name", { required: true }),
                   }}
@@ -78,6 +79,7 @@ const AddContacts = () => {
                   labelName={"Profile Picture"}
                   inputName={"profilePicture"}
                   inputType={"file"}
+                  placeholder={"Profile Picture"}
                   validation={{
                     ...register("profilePicture", { required: true }),
                   }}
@@ -93,6 +95,7 @@ const AddContacts = () => {
                   <Input
                     labelName={"Business Name"}
                     inputName={"business-name"}
+                    placeholder={"Business Name"}
                     inputType={"text"}
                     validation={{
                       ...register("business-name", { required: true }),
@@ -129,6 +132,7 @@ const AddContacts = () => {
                     labelName={"Openning Balance"}
                     inputName={"opennibg-balance"}
                     inputType={"text"}
+                    placeholder={"Openning Balance"}
                     validation={{
                       ...register("opennibg-balance", { required: true }),
                     }}
@@ -146,6 +150,7 @@ const AddContacts = () => {
                     labelName={"Pay Term"}
                     inputName={"pay-term"}
                     inputType={"text"}
+                    placeholder={"Pay Term"}
                     validation={{
                       ...register("pay-term", { required: true }),
                     }}
@@ -193,6 +198,7 @@ const AddContacts = () => {
                     labelName={"Credit Limit"}
                     inputName={"credit limit"}
                     inputType={"text"}
+                    placeholder={"Credit Limit"}
                   />
                 </div>
               </div>
@@ -222,6 +228,7 @@ const AddContacts = () => {
                     labelName={"Alternate Contact No"}
                     inputName={"alternate-contact-no"}
                     inputType={"text"}
+                    placeholder={"Alternate Contact No"}
                   />
                 </div>
               </div>
@@ -280,7 +287,7 @@ const AddContacts = () => {
                   labelName={"Address"}
                   inputName={"address"}
                   inputType={"text"}
-                  placeholder={""}
+                  placeholder={"Address"}
                   validation={{ ...register("address", { required: true }) }}
                 />
               </div>
