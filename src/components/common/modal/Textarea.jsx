@@ -12,7 +12,7 @@ const Textarea = ({
 }) => {
   return (
     <FormGroup className="mb-3">
-      <label style={{ color: "#8990b6", fontSize: "16px" }} htmlFor={inputName}>
+      <label htmlFor={inputName}>
         {labelName}
       </label>
       <textarea

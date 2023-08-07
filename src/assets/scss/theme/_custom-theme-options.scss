@@ -3482,7 +3482,7 @@ body {
 					background-color: $dark-body-background;
 					color: $dark-all-font-color;
 					&::-webkit-input-placeholder {
-						color: $dark-small-font-color;
+						color: $placeholder-color;
 					}
 				}
 				.form-control {
@@ -6812,7 +6812,7 @@ body {
 					background-color: $dark-body-background;
 					color: $dark-all-font-color;
 					&::-webkit-input-placeholder {
-						color: $dark-small-font-color;
+						color: $placeholder-color;
 					}
 				}
 				.form-control {
@@ -10663,7 +10663,8 @@ body {
 					background-color: $dark-body-background;
 					color: $dark-all-font-color;
 					&::-webkit-input-placeholder {
-						color: $dark-small-font-color;
+						color: $placeholder-color;
+						font-size: 12px;
 					}
 				}
 				.form-control {

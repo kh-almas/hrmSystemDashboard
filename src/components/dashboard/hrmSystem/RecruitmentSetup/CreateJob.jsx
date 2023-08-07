@@ -21,9 +21,10 @@ const CreateJob = () => {
     return (
         <div className="mb-3">
             <Breadcrumb parent="HRM System" title="Create Job" />
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="row row-cols-1 row-cols-lg-2" style={{ padding: "20px" }}>
-                    <div className="card mb-0 p-4 h-100">
+            <form onSubmit={handleSubmit(onSubmit)} className="">
+                <div className="row row-cols-1 row-cols-lg-2 g-4" style={{ padding: "20px" }}>
+                    <div>
+                        <div className="card mb-0 p-4 h-100">
                             <div>
                                 <Input
                                     labelName={"Job title"}
@@ -107,6 +108,7 @@ const CreateJob = () => {
                                     }}
                                 />
                             </div>
+                        </div>
                     </div>
                     <div>
                         <div className="card p-4 h-100">
@@ -191,8 +193,6 @@ const CreateJob = () => {
                             <p>Custom Question</p>
                         </div>
                     </div>
-                </div>
-                <div className="row row-cols-1 row-cols-lg-2">
                     <div>
                         <div className="card p-4">
                             <CkEditorComponent label={"Job Description"} fieldContent={"Enter job description"}/>
