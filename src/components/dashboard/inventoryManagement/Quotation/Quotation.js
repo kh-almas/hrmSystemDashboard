@@ -1,22 +1,12 @@
 import React from "react";
 import Breadcrumb from "../../../common/breadcrumb";
-import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
-import Dropdownbtn from "../../../common/button/Dropdownbtn";
+import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import Paginationbtn from "../../../common/Paginationbtn";
-
-const Sale = () => {
-  const menu = {
-    item1: "Action",
-    item2: "Another Action",
-    item3: "Something Else Here",
-    item4: "Separated Link",
-    btncolor: "primary",
-    btntext: "Primary Button",
-  };
+const Quotation = () => {
   return (
     <div>
-      <Breadcrumb parent="Inventory management" title="Sale" />
+      <Breadcrumb parent="Inventory management" title="Quotations" />
       <div
         style={{ padding: "0px 20px" }}
         className="d-flex justify-content-between align-items-center pb-3"
@@ -30,52 +20,33 @@ const Sale = () => {
           }}
         >
           <button className="btn btn-pill btn-info btn-air-info btn-air-info">
-            New Sale
+            Create Quotations
           </button>
         </div>
 
         <FilesComponent />
       </div>
-
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-12">
-            <div className="card" style={{ padding: "20px", zIndex: "0" }}>
+            <div className="card" style={{ padding: "20px" }}>
               <CommonSearchComponet />
               <div className="table-responsive ">
-                <table className="table ">
-                  <thead className="table-light table-border ">
+                <table className="table">
+                  <thead className=" table-border">
                     <tr className="">
-                      <th scope="col">{"Sl"}</th>
+                      <th scope="col">{"No"}</th>
                       <th scope="col">{"Date"}</th>
-                      <th scope="col">{"Invoice"}</th>
-                      <th scope="col">{"User"}</th>
+                      <th scope="col">{"Reference No"}</th>
                       <th scope="col">{"Customer"}</th>
-                      <th scope="col">{"Total Aount"}</th>
-                      <th scope="col">{"Paid"}</th>
-                      <th scope="col">{"Due"}</th>
-                      <th scope="col">{"Status"}</th>
+                      <th scope="col">{"Branch"}</th>
+                      <th scope="col">{"User"}</th>
+                      <th scope="col">{"Convert Status"}</th>
                       <th scope="col">{"Action"}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>{"1"}</td>
-                      <td>{"24th Jul, 2023"}</td>
-                      <td>{"INV-230712"}</td>
-                      <td>{"Super admin"}</td>
-                      <td>{"	kjdsjhdahghjgh"}</td>
-                      <td>{"	$ 6,000.00"}</td>
-                      <td>{"	$ 0.00"}</td>
-                      <td>{"	$ 6,000.00"}</td>
-                      <td className="text-success">{"Approved"}</td>
-                      <td>
-                        <div style={{ zIndex: "90" }}>
-                          <Dropdownbtn />
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
+                    {/* <tr>
                       <td>{"1"}</td>
                       <td>{"24th Jul, 2023"}</td>
                       <td>{"INV-230712"}</td>
@@ -87,15 +58,16 @@ const Sale = () => {
                       <td className="text-success">{"Approved"}</td>
                       <td>
                         <button
-                          className="btn btn-pill btn-outline-info btn-xs p-1 px-4"
+                          class="btn btn-pill btn-outline-info btn-xs p-1 px-4"
                           type="button"
                         >
                           Select
                         </button>
                       </td>
-                    </tr>
+                    </tr> */}
                   </tbody>
                 </table>
+                <p className="text-center p-t-10">No data available in table</p>
               </div>
             </div>
             <Paginationbtn />
@@ -106,4 +78,4 @@ const Sale = () => {
   );
 };
 
-export default Sale;
+export default Quotation;
