@@ -2,7 +2,7 @@ import React from "react";
 import CommonSearchComponet from "./salaryCard/CommonSearchComponet";
 
 const HrmManageCard = ({ data }) => {
-  console.log(data);
+ 
   return (
     <div>
       <div className="card" style={{ padding: "20px" }}>
