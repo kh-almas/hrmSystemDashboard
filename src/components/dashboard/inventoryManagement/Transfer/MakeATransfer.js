@@ -35,7 +35,7 @@ const MakeATransfer = () => {
         <div className="card p-30">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row row-cols-1 row-cols-lg-2 ">
-              {type === "Bank Transfer" ? (
+              {type === "Cash Transfer" || type === "Bank Transfer" ? (
                 <div>
                   <Input
                     labelName={"Date"}
@@ -54,12 +54,12 @@ const MakeATransfer = () => {
                   style={{ color: "#8990b6", fontSize: "16px" }}
                   htmlFor="exampleFormControlSelect9"
                 >
-                  Product-Type
+                  Payment From
                 </label>
                 <select
                   onChange={(e) => handleTypeChange(e.target.value)}
                   style={{ fontSize: "16px" }}
-                  name="product-type"
+                  name="payment from"
                   className="form-control digits"
                   id="exampleFormControlSelect9"
                   defaultValue="1"
@@ -68,225 +68,152 @@ const MakeATransfer = () => {
                   <option value="Bank Transfer">Bank Transfer</option>
                 </select>
               </div>
-
-              {type === "Supplier" || type === "Customer" ? (
+              {type === "Cash Transfer" || type === "Bank Transfer" ? (
                 <div>
                   <Input
-                    labelName={"Profile Picture"}
-                    inputName={"profilePicture"}
-                    inputType={"file"}
+                    labelName={"Narration"}
+                    inputName={"narration"}
+                    inputType={"text"}
+                    placeholder={"Narration"}
                     validation={{
-                      ...register("profilePicture", { required: true }),
+                      ...register("narration", { required: true }),
                     }}
                   />
                 </div>
               ) : (
                 ""
               )}
-
-              {type === "Supplier" || type === "Customer" ? (
+              {type === "Cash Transfer" || type === "Bank Transfer" ? (
                 <div>
-                  <div>
-                    <Input
-                      labelName={"Business Name"}
-                      inputName={"business-name"}
-                      inputType={"text"}
-                      validation={{
-                        ...register("business-name", { required: true }),
-                      }}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {type === "Supplier" || type === "Customer" ? (
-                <div>
-                  <div>
-                    <Input
-                      labelName={"Tax Number"}
-                      inputName={"tex-number"}
-                      inputType={"text"}
-                      placeholder={"0"}
-                      validation={{
-                        ...register("tex-number", { required: true }),
-                      }}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {type === "Supplier" || type === "Customer" ? (
-                <div>
-                  <div>
-                    <Input
-                      labelName={"Openning Balance"}
-                      inputName={"opennibg-balance"}
-                      inputType={"text"}
-                      validation={{
-                        ...register("opennibg-balance", { required: true }),
-                      }}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {type === "Supplier" || type === "Customer" ? (
-                <div>
-                  <div>
-                    <Input
-                      labelName={"Pay Term"}
-                      inputName={"pay-term"}
-                      inputType={"text"}
-                      validation={{
-                        ...register("pay-term", { required: true }),
-                      }}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {type == "Supplier" || type === "Customer" ? (
-                <div style={{ position: "relative" }}>
-                  <div>
-                    <Select
-                      name={"pay-term-condition"}
-                      labelName={"Pay-Term-Condition"}
-                      placeholder={"Select condition"}
-                      options={["Days", "Months"]}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {type == "Supplier" || type === "Customer" ? (
-                <div>
-                  <div>
-                    <Input
-                      labelName={"Email"}
-                      inputName={"email"}
-                      inputType={"email"}
-                      placeholder={"Email"}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {type == "Customer" ? (
-                <div>
-                  <div>
-                    <Input
-                      labelName={"Credit Limit"}
-                      inputName={"credit limit"}
-                      inputType={"text"}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {type == "Supplier" || type === "Customer" ? (
-                <div>
-                  <div>
-                    <Input
-                      labelName={"Mobile"}
-                      inputName={"mobile"}
-                      inputType={"text"}
-                      placeholder={"Mobile"}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {type == "Supplier" || type === "Customer" ? (
-                <div>
-                  <div>
-                    <Input
-                      labelName={"Alternate Contact No"}
-                      inputName={"alternate-contact-no"}
-                      inputType={"text"}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {type == "Supplier" || type === "Customer" ? (
-                <div>
-                  <div>
-                    <Select
-                      name={"country"}
-                      labelName={"Country"}
-                      placeholder={"Select country"}
-                      options={["Bangladesh", "Australia"]}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {type == "Supplier" || type === "Customer" ? (
-                <div>
-                  <div>
-                    <Select
-                      name={"state"}
-                      labelName={"State"}
-                      placeholder={"Select State"}
-                      options={[""]}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {type == "Supplier" || type === "Customer" ? (
-                <div>
-                  <div>
-                    <Select
-                      name={"city"}
-                      labelName={"City"}
-                      placeholder={"Select City"}
-                      options={[""]}
-                    />
-                  </div>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {type == "Supplier" || type === "Customer" ? (
-                <div>
-                  <Input
-                    labelName={"Address"}
-                    inputName={"address"}
-                    inputType={"text"}
-                    placeholder={""}
-                    validation={{ ...register("address", { required: true }) }}
+                  <Select
+                    name={"payment-from-account"}
+                    labelName={"Payment From Account*"}
+                    placeholder={"Select a option"}
+                    options={["Cash-Account", "Main Branch Cash"]}
                   />
                 </div>
               ) : (
                 ""
               )}
+              {type === "Cash Transfer" || type === "Bank Transfer" ? (
+                <div>
+                  <Select
+                    name={"payment-to"}
+                    labelName={"Payment To*"}
+                    placeholder={"Select a option"}
+                    options={["Main Branch Cash"]}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+              {type === "Cash Transfer" || type === "Bank Transfer" ? (
+                <div>
+                  <div>
+                    <Input
+                      labelName={"Amount*"}
+                      inputName={"amount"}
+                      inputType={"text"}
+                      placeholder={"Amount"}
+                      validation={{
+                        ...register("amount", { required: true }),
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
+              {type === "Bank Transfer" ? (
+                <div>
+                  <div>
+                    <Input
+                      labelName={"Cheque Number *"}
+                      inputName={"cheque_number"}
+                      inputType={"text"}
+                      placeholder={"Cheque Number"}
+                      validation={{
+                        ...register("cheque_number", { required: true }),
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
+              {type === "Bank Transfer" ? (
+                <div>
+                  <div>
+                    <Input
+                      labelName={"Cheque Date*"}
+                      inputName={"cheque_date"}
+                      inputType={"date"}
+                      placeholder={"Cheque Date"}
+                      validation={{
+                        ...register("cheque_date", { required: true }),
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}{" "}
+              {type === "Bank Transfer" ? (
+                <div>
+                  <div>
+                    <Input
+                      labelName={"Bank Name*"}
+                      inputName={"bank-name"}
+                      inputType={"text"}
+                      placeholder={"Bank Name"}
+                      validation={{
+                        ...register("bank-name", { required: true }),
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}{" "}
+              {type === "Bank Transfer" ? (
+                <div>
+                  <div>
+                    <Input
+                      labelName={"Bank Branch*"}
+                      inputName={"bank-branch"}
+                      inputType={"text"}
+                      placeholder={"Bank Branch"}
+                      validation={{
+                        ...register("bank-branch", { required: true }),
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
-
             <Submitbtn name={"Save"} />
+
+            <div className="row row-cols-1 row-cols-lg-1 ">
+              {type === "Cash Transfer" || type === "Bank Transfer" ? (
+                <div>
+                  <div>
+                    <Input
+                      labelName={"Total Amount*"}
+                      inputName={"total-amount"}
+                      inputType={"text"}
+                      placeholder={"Total Amount"}
+                      validation={{
+                        ...register("total-amount", { required: true }),
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
           </form>
         </div>
       </>
