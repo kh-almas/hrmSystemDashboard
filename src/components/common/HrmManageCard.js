@@ -9,7 +9,7 @@ const HrmManageCard = ({ data }) => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-          <thead className="table-light table-border">
+            <thead className=" table-border">
               <tr className={`bg-gray `}>
                 {/* d-flex justify-content-between align-items-center */}
                 {/* ${

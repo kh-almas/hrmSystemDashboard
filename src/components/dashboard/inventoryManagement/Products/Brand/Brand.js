@@ -39,7 +39,7 @@ const Brand = () => {
               <div className="table-responsive">
                 <table className="table ">
                   <thead
-                    className="table-light table-border"
+                    className=" table-border"
                     style={{ whiteSpace: "nowrap" }}
                   >
                     <tr className="">

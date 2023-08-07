@@ -51,7 +51,9 @@ const Products = () => {
               marginRight: "12px",
               width: "150px",
             }}
-            className={`btn btn-outline-primary mr-2 ${item=="products"?"active":""}`}
+            className={`btn btn-outline-primary mr-2 ${
+              item == "products" ? "active" : ""
+            }`}
             type="button"
           >
             Product
@@ -78,9 +80,7 @@ const Products = () => {
                 <CommonSearchComponet />
                 <div className="table-responsive">
                   <table className="table ">
-                    <thead
-                      className="table-light table-border"
-                    >
+                    <thead className=" table-border">
                       <tr className="">
                         <th scope="col">{"Sl"}</th>
                         <th scope="col">{"Image"}</th>

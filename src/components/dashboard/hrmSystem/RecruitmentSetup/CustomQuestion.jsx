@@ -48,7 +48,7 @@ const CustomQuestion = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead className="table-light table-border">
+            <thead className=" table-border">
               <tr className="">
                 <th scope="col">{"Question"}</th>
                 <th scope="col">{"Is Required"}</th>

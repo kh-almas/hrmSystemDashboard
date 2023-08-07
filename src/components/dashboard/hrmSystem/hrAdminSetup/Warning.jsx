@@ -46,7 +46,7 @@ const Warning = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead className="table-light table-border">
+            <thead className=" table-border">
               <tr>
                 <th scope="col">{"Warning By"}</th>
                 <th scope="col">{"Warning To"}</th>

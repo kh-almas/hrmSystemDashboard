@@ -100,7 +100,7 @@ const Appraisal = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead className="table-light table-border">
+            <thead className=" table-border">
               <tr>
                 <th scope="col">{"Branch"}</th>
                 <th scope="col">{"Department"}</th>
