@@ -112,7 +112,7 @@ const AddProduct = () => {
                 </div>
               </div>
             ) : (
-              ""
+              " "
             )}
 
             {type === "Single" || type === "Varient" || type === "Combo" ? (
