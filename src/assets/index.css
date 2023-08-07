@@ -15,7 +15,6 @@
     /*color: #939393;*/
 }
 
-
 .fc-scroller {
     overflow: hidden !important;
 }
@@ -25,7 +24,10 @@ th {
     letter-spacing: 2px;
 }
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 95557e7a2bb6c309092129a477cc23b09ad02334
 .my-primary-card {
     border: 1px solid #3333ff !important;
 }
