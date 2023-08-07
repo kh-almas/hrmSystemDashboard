@@ -5,7 +5,7 @@ import Select from "../../../common/modal/Select";
 import Submitbtn from "../../../common/button/Submitbtn";
 import { useForm } from "react-hook-form";
 const MakeATransfer = () => {
-  const [type, setType] = useState("Supplier");
+  const [type, setType] = useState("Cash Transfer");
 
   const handleTypeChange = (type) => {
     setType(type);
