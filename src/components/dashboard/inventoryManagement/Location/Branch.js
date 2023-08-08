@@ -68,7 +68,7 @@ const Branch = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    {/* <tr>
                       <td>{"1"}</td>
                       <td>{"Main Brnch"}</td>
                       <td>{""}</td>
@@ -79,7 +79,7 @@ const Branch = () => {
                       </td>
                       <td>
                       </td>
-                    </tr>
+                    </tr> */}
                   </tbody>
                 </table>
               </div>

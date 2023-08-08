@@ -125,7 +125,11 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/jobs/interview/schedule",
           },
-          { title: "Career", type: "link", path: "/base/tabs/tab-line" },
+          {
+            title: "Career",
+            type: "link",
+            path: "dashboard/hrm/recruitment/career",
+          },
         ],
       },
       {
@@ -190,27 +194,27 @@ export const MENUITEMS = [
         type: "link",
       },
       {
-        path: "/hrm/dashboard/manage-meeting",
+        path: "/dashboard/hrm/manage-meeting-calender",
         title: "Meeting",
         type: "link",
       },
       {
-        path: "/hrm/dashboard/employees-asset-setup",
+        path: "/dashboard/hrm/employees-asset-setup",
         title: "Employees Asset Setup ",
         type: "link",
       },
       {
-        path: "/hrm/dashboard/document-setup",
+        path: "/dashboard/hrm/document-setup",
         title: "Document Setup",
         type: "link",
       },
       {
-        path: "/hrm/dashboard/company-policy",
+        path: "/dashboard/hrm/company-policy",
         title: "Company policy",
         type: "link",
       },
       {
-        path: "/hrm/dashboard/manage-branch",
+        path: "/dashboard/hrm/hrm-system-setup/manage-branch",
         title: "HRM System Setup",
         type: "link",
       },
@@ -229,7 +233,7 @@ export const MENUITEMS = [
           {
             title: "Default Team",
             type: "link",
-            path: "/dashboard/hrm/salary",
+            path: "/dashboard/inventory-management/default-team",
           },
         ],
       },
@@ -386,6 +390,7 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/inventory-management/purchase/order",
           },
+
           {
             title: "Stock Alert List",
             type: "link",

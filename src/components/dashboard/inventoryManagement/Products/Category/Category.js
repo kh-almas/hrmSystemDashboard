@@ -3,7 +3,6 @@ import Breadcrumb from "../../../../common/breadcrumb";
 import FilesComponent from "../../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../../common/salaryCard/CommonSearchComponet";
 import Paginationbtn from "../../../../common/Paginationbtn";
-import Dropdownbtn from "../../../../common/button/Dropdownbtn";
 const Category = () => {
   return (
     <div>
