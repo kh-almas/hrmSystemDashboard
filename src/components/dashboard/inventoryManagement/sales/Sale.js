@@ -68,7 +68,13 @@ const Sale = () => {
                       <td>{"	$ 6,000.00"}</td>
                       <td>{"	$ 0.00"}</td>
                       <td>{"	$ 6,000.00"}</td>
-                      <td className="text-success">{"Approved"}</td>
+                      <td>
+                        {" "}
+                        <span className="badge text-bg-success">
+                          {" "}
+                          {"Approved"}
+                        </span>
+                      </td>
                       <td>
                         <div style={{ zIndex: "90" }}>
                           <Dropdownbtn />
@@ -84,7 +90,13 @@ const Sale = () => {
                       <td>{"	$ 6,000.00"}</td>
                       <td>{"	$ 0.00"}</td>
                       <td>{"	$ 6,000.00"}</td>
-                      <td className="text-success">{"Approved"}</td>
+                      <td>
+                        {" "}
+                        <span className="badge text-bg-success">
+                          {" "}
+                          {"Approved"}
+                        </span>
+                      </td>
                       <td>
                         <button
                           className="btn btn-pill btn-outline-info btn-xs p-1 px-4"

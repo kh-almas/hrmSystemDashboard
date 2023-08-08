@@ -59,7 +59,7 @@ const Branch = () => {
                       <td>{""}</td>
                       <td>{""}</td>
                       <td>{""}</td>
-                      <td className="text-success">{"Active"}</td>
+                      <td className="badge text-bg-success">{"Active"}</td>
                       <td>
                         <Dropdownbtn />
                       </td>

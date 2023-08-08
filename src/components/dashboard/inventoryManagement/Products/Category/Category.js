@@ -52,7 +52,13 @@ const Category = () => {
                       <td>{"CATE-001"}</td>
                       <td>{"N/A"}</td>
                       <td>{"Television"}</td>
-                      <td className="text-success">{"Active"}</td>
+                      <td>
+                        {" "}
+                        <span className="badge text-bg-success">
+                          {" "}
+                          {"Active"}
+                        </span>
+                      </td>
                       <td>
                         <Dropdownbtn />
                       </td>

@@ -88,6 +88,9 @@ import MakeATransfer from "../components/dashboard/inventoryManagement/Transfer/
 import TransferedLists from "../components/dashboard/inventoryManagement/Transfer/TransferedLists";
 import Branch from "../components/dashboard/inventoryManagement/Location/Branch";
 import Warehouse from "../components/dashboard/inventoryManagement/Location/Warehouse";
+import ProductCosting from "../components/dashboard/inventoryManagement/Inventory/ProductCosting";
+import StockTransfer from "../components/dashboard/inventoryManagement/Inventory/StockTransfer";
+import StockList from "../components/dashboard/inventoryManagement/Inventory/StockList";
 
 export const routes = [
   {
@@ -403,6 +406,19 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/product/receive`,
     Component: <ReceiveYourProduct />,
   },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/product-costing`,
+    Component: <ProductCosting />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/stock-transfer`,
+    Component: <StockTransfer />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/stock-list`,
+    Component: <StockList />,
+  },
+
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/purchase_order`,
     Component: <PurchaseOrder />,
