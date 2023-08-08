@@ -21,14 +21,12 @@ const Service = () => {
             marginBottom: "20px",
           }}
         >
-          <button className="btn btn-pill btn-info btn-air-info btn-air-info">
-            <Link
+          <Link
               className="btn btn-pill btn-info btn-air-info btn-air-info mx-2"
-              to="/dashboard/hrm/add-product"
-            >
-              New Product
-            </Link>
-          </button>
+              to="/dashboard/inventory-management/products/add-product"
+          >
+            New Product
+          </Link>
         </div>
 
         <FilesComponent />

@@ -9,20 +9,8 @@ const TransferedLists = () => {
       <Breadcrumb parent="Inventory management" title="Transfered Lists" />
       <div
         style={{ padding: "0px 20px" }}
-        className="d-flex justify-content-between align-items-center pb-3"
+        className="d-flex justify-content-end pb-3"
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "",
-            marginBottom: "20px",
-          }}
-        >
-          <button className="btn btn-pill btn-info btn-air-info btn-air-info">
-            Create Quotations
-          </button>
-        </div>
 
         <FilesComponent />
       </div>

@@ -20,7 +20,7 @@ const StockAlertList = () => {
             <Select
               name={"select supplier"}
               placeholder={"Select Supplier"}
-              options={[""]}
+              options={["Supplier1"]}
             />
           </div>
         </div>

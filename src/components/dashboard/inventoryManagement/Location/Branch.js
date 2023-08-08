@@ -1,14 +1,34 @@
-import React from "react";
+import React, {useState} from "react";
 import Breadcrumb from "../../../common/breadcrumb";
 import { Link } from "react-router-dom";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import Paginationbtn from "../../../common/Paginationbtn";
 import Dropdownbtn from "../../../common/button/Dropdownbtn";
+import {useForm} from "react-hook-form";
+import {Button, Modal, ModalBody, ModalHeader} from "reactstrap";
+import Input from "../../../common/modal/Input";
+import Select from "../../../common/modal/Select";
+import Textarea from "../../../common/modal/Textarea";
 
 const Branch = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [modal, setModal] = useState();
+
+  const toggle = () => {
+    setModal(!modal);
+  };
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
-    <div>
+    <>
       <Breadcrumb parent="Inventory management" title="Branch List" />
       <div
         style={{ padding: "0px 20px" }}
@@ -22,13 +42,8 @@ const Branch = () => {
             marginBottom: "20px",
           }}
         >
-          <button className="btn btn-pill btn-info btn-air-info btn-air-info">
-            <Link
-              className="btn btn-pill btn-info btn-air-info btn-air-info mx-2"
-              to="/dashboard/hrm/add-product"
-            >
-              Add New Branch
-            </Link>
+          <button onClick={toggle} className="btn btn-pill btn-info btn-air-info btn-air-info">
+            Add New Branch
           </button>
         </div>
 
@@ -63,7 +78,6 @@ const Branch = () => {
                         <span className="badge text-bg-success">Active</span>
                       </td>
                       <td>
-                        <Dropdownbtn />
                       </td>
                     </tr> */}
                   </tbody>
@@ -74,7 +88,73 @@ const Branch = () => {
           </div>
         </div>
       </div>
-    </div>
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}>Add New Branch</ModalHeader>
+        <ModalBody>
+          <form onSubmit={handleSubmit(onSubmit)}>
+
+            <div className="row row-cols-1 row-cols-lg-2">
+              <div>
+                <Input
+                    labelName={"Name"}
+                    inputName={"name"}
+                    inputType={"text"}
+                    placeholder={"Enter warehouse name"}
+                    validation={{
+                      ...register("name", { required: true }),
+                    }}
+                />
+              </div>
+              <div>
+                <Input
+                    labelName={"Email"}
+                    inputName={"email"}
+                    inputType={"text"}
+                    placeholder={"Enter warehouse email"}
+                    validation={{ ...register("email", { required: true }) }}
+                />
+              </div>
+            </div>
+            <div className="row row-cols-1 row-cols-lg-2">
+              <div>
+                <Input
+                    labelName={"Phone"}
+                    inputName={"phone"}
+                    inputType={"text"}
+                    placeholder={"Enter warehouse phone number"}
+                    validation={{ ...register("email", { required: true }) }}
+                />
+              </div>
+              <div>
+                <Select
+                    name={"status"}
+                    labelName={"Status"}
+                    placeholder={"Select an option"}
+                    options={["Active", "Inactive"]}
+                />
+              </div>
+            </div>
+
+            <div>
+              <Textarea
+                  labelName={"Description"}
+                  inputName={"description"}
+                  height={"5"}
+              />
+            </div>
+
+            <div className="d-flex justify-content-end">
+              <Button color="danger" onClick={toggle} className="me-2">
+                Cancel
+              </Button>
+              <Button color="primary" type="submit">
+                Create
+              </Button>
+            </div>
+          </form>
+        </ModalBody>
+      </Modal>
+    </>
   );
 };
 

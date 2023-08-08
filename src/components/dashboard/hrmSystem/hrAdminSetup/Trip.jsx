@@ -138,7 +138,7 @@ const Trip = () => {
             </div>
 
             <div className="d-flex justify-content-end">
-              <Button color="" onClick={toggle} className="me-2">
+              <Button color="danger" onClick={toggle} className="me-2">
                 Cancel
               </Button>
               <Button color="primary" type="submit">
