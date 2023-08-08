@@ -22,6 +22,7 @@ const Input = ({
             {labelName}
           </label>
           <input
+              style={{fontSize: "10px", height: "34px"}}
               className={`form-control ${errors?.inputName && "is-invalid"}`}
               id={inputName}
               type={inputType}
@@ -31,7 +32,7 @@ const Input = ({
               {...validation}
           />
           <span className="text-danger">
-          {errors?.inputName && "Password is required"}
+          {errors?.inputName && `${errors?.inputName} is required`}
         </span>
         </div>
       </div>

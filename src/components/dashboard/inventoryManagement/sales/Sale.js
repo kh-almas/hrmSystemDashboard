@@ -40,9 +40,9 @@ const Sale = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-12">
-            <div className="card" style={{ padding: "20px", zIndex: "0" }}>
+            <div className="card" style={{ padding: "20px", zIndex: "1 !important" }}>
               <CommonSearchComponet />
-              <div className="table-responsive ">
+              <div className="table-responsive" style={{ padding: "20px", zIndex: "1 !important" }}>
                 <table className="table ">
                   <thead className=" table-border ">
                     <tr className="">
