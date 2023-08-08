@@ -91,6 +91,10 @@ import Warehouse from "../components/dashboard/inventoryManagement/Location/Ware
 import ProductCosting from "../components/dashboard/inventoryManagement/Inventory/ProductCosting";
 import StockTransfer from "../components/dashboard/inventoryManagement/Inventory/StockTransfer";
 import StockList from "../components/dashboard/inventoryManagement/Inventory/StockList";
+import StockReport from "../components/dashboard/inventoryManagement/Inventory/StockReport";
+import ProductMovement from "../components/dashboard/inventoryManagement/Inventory/ProductMovement";
+import StockAdjustments from "../components/dashboard/inventoryManagement/Inventory/StockAdjustments";
+import ProductInformation from "../components/dashboard/inventoryManagement/Inventory/ProductInformation";
 
 export const routes = [
   {
@@ -338,121 +342,143 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/hrm/dashboard/company-policy`,
     Component: <CompanyPolicy />,
   },
+
+
+
+
+
+
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/sale`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/sales`,
     Component: <Sale />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/sale-return`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sareturn`,
     Component: <SaleReturn />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/add-contacts`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/add-contacts`,
     Component: <AddContacts />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/supplier`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/supplier`,
     Component: <Supplier />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/customer`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/customer`,
     Component: <Customer />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/settings`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/settings`,
     Component: <Settings />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/products`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products`,
     Component: <Products />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/products`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products`,
     Component: <ComboProduct />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/services`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/services`,
     Component: <Service />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/add-product`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/add-product`,
     Component: <AddProduct />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/category`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/category`,
     Component: <Category />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/brand`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/brand`,
     Component: <Brand />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/model`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/model`,
     Component: <Model />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/unit-type`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/unit-type`,
     Component: <UnitType />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/variant`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/variant`,
     Component: <Variant />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/stock`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/add-opening-stock`,
     Component: <OpeningStock />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/product/receive`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-receive`,
     Component: <ReceiveYourProduct />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/product-costing`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-costing`,
     Component: <ProductCosting />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/stock-transfer`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-transfer`,
     Component: <StockTransfer />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/inventory/stock-list`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-list`,
     Component: <StockList />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-report`,
+    Component: <StockReport />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-movement`,
+    Component: <ProductMovement />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-adjustment`,
+    Component: <StockAdjustments />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-info`,
+    Component: <ProductInformation />,
   },
 
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/purchase_order`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/order`,
     Component: <PurchaseOrder />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/stock-alert-list`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/stock-alert-list`,
     Component: <StockAlertList />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/purchase-return-list`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/return-list`,
     Component: <PurchaseReturnList />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/purchase/c&f`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/c&f`,
     Component: <CAndF />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/quotation`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/quotation`,
     Component: <Quotation />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/make-a-transfer`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/transfer/make-transfer`,
     Component: <MakeATransfer />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/transfered-lists`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/transfer/transfered-list`,
     Component: <TransferedLists />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/location/branch`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/location/branch`,
     Component: <Branch />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/location/warehouse`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/location/warehouse`,
     Component: <Warehouse />,
   },
 ];
