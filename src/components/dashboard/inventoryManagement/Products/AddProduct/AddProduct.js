@@ -91,7 +91,7 @@ const AddProduct = () => {
                 <p
                   style={{
                     position: "absolute",
-                    left: "280px",
+                    left: "285px",
                     cursor: "pointer",
                   }}
                   className="text-primary"
@@ -161,7 +161,7 @@ const AddProduct = () => {
                 <p
                   style={{
                     position: "absolute",
-                    left: "250px",
+                    left: "265px",
                     cursor: "pointer",
                   }}
                   className="text-primary"
@@ -186,7 +186,7 @@ const AddProduct = () => {
             )}
 
             {type == "Combo" ? (
-              <div style={{ position: "relative" }}>
+              <div>
                 <div>
                   <Select
                     name={"select-product"}
@@ -201,7 +201,7 @@ const AddProduct = () => {
             )}
 
             {type == "Service" ? (
-              <div style={{ position: "relative" }}>
+              <div>
                 <div>
                   <Input
                     labelName={"Hourly Rate"}
@@ -220,7 +220,7 @@ const AddProduct = () => {
                 <p
                   style={{
                     position: "absolute",
-                    left: "250px",
+                    left: "270px",
                     cursor: "pointer",
                   }}
                   className="text-primary"
@@ -416,7 +416,7 @@ const AddProduct = () => {
                 ""
               )}
 
-              {type == "Single" || type === "Varient" || type ==="Combo" ? (
+              {type == "Single" || type === "Varient" || type === "Combo" ? (
                 <div>
                   <Input
                     labelName={"Product Image"}
@@ -466,7 +466,7 @@ const AddProduct = () => {
                 ""
               )}
 
-              {type === "Combo"  ? (
+              {type === "Combo" ? (
                 <div>
                   <Input
                     labelName={"Min. Selling Price"}
