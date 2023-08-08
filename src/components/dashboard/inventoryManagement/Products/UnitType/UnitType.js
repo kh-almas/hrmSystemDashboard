@@ -54,7 +54,13 @@ const UnitType = () => {
                       <td>{"1"}</td>
                       <td>{"pcs"}</td>
                       <td>{"Pieces"}</td>
-                      <td className="text-success">{"Active"}</td>
+                      <td>
+                        {" "}
+                        <span className="badge text-bg-success">
+                          {" "}
+                          {"Active"}
+                        </span>
+                      </td>
                       <td>
                         <Dropdownbtn />
                       </td>
@@ -63,7 +69,13 @@ const UnitType = () => {
                       <td>{"1"}</td>
                       <td>{"pcs"}</td>
                       <td>{"Pieces"}</td>
-                      <td className="text-success">{"Active"}</td>
+                      <td>
+                        {" "}
+                        <span className="badge text-bg-success">
+                          {" "}
+                          {"Active"}
+                        </span>
+                      </td>
                       <td>
                         <Dropdownbtn />
                       </td>

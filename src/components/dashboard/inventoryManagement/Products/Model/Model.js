@@ -54,7 +54,13 @@ const Model = () => {
                       <td>{"1"}</td>
                       <td>{"19 Inch"}</td>
                       <td>{"19 Inch"}</td>
-                      <td className="text-success">{"Active"}</td>
+                      <td>
+                        {" "}
+                        <span className="badge text-bg-success">
+                          {" "}
+                          {"Active"}
+                        </span>
+                      </td>
                       <td>
                         <Dropdownbtn />
                       </td>

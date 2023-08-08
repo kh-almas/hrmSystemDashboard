@@ -339,17 +339,17 @@ export const MENUITEMS = [
           {
             title: "Product Costing(Sales)",
             type: "link",
-            path: "/base/tabs/tab-line",
+            path: "/dashboard/hrm/inventory/product-costing",
           },
           {
             title: "Stock Transfer",
             type: "link",
-            path: "/base/tabs/tab-line",
+            path: "/dashboard/hrm/inventory/stock-transfer",
           },
           {
             title: "Stock List",
             type: "link",
-            path: "/base/tabs/tab-line",
+            path: "/dashboard/hrm/inventory/stock-list",
           },
           {
             title: "Stock Report",
@@ -421,7 +421,6 @@ export const MENUITEMS = [
         ],
       },
 
-      
       {
         title: "Location",
         type: "sub",

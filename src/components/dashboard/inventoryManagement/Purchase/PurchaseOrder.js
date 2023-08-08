@@ -57,7 +57,10 @@ const PurchaseOrder = () => {
                       <td>{"$5,500.00"}</td>
                       <td>{"$ 5,500.00"}</td>
                       <td>{"$ 0.00"}</td>
-                      <td className="text-success">{"Yes"}</td>
+                      <td>
+                        {" "}
+                        <span className="badge text-bg-success"> {"yes"}</span>
+                      </td>
                       <td>
                         <Dropdownbtn />
                       </td>

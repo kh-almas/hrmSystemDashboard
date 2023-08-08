@@ -1,16 +1,13 @@
 import React from "react";
-import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import Paginationbtn from "../../../common/Paginationbtn";
 import Breadcrumb from "../../../common/breadcrumb";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
+import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
+import Paginationbtn from "../../../common/Paginationbtn";
 
-const ReceiveYourProduct = () => {
+const StockTransfer = () => {
   return (
     <>
-      <Breadcrumb
-        parent="Inventory management"
-        title="Recieve Purchase Orders"
-      />
+      <Breadcrumb parent="Inventory management" title="Stock Transfer" />
       <div
         style={{ padding: "0px 18px" }}
         className="d-flex justify-content-between align-items-center pb-3"
@@ -24,7 +21,7 @@ const ReceiveYourProduct = () => {
           }}
         >
           <button className="btn btn-pill btn-info btn-air-info btn-air-info mx-2">
-            New Order
+            Transfer Product
           </button>
         </div>
 
@@ -36,18 +33,17 @@ const ReceiveYourProduct = () => {
           <table className="table">
             <thead className=" table-border">
               <tr>
-                <th scope="col">{"NO"}</th>
+                <th scope="col">{"Sl"}</th>
                 <th scope="col">{"Date"}</th>
-                <th scope="col">{"Supplier Name"}</th>
-                <th scope="col">{"Reference NO"}</th>
-                <th scope="col">{"Is Approved"}</th>
-                <th scope="col">{"Is Added to Stock"}</th>
+                <th scope="col">{"From"}</th>
+                <th scope="col">{"To"}</th>
                 <th scope="col">{"Status"}</th>
+                <th scope="col">{"Action"}</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>{"1"}</td>
+                {/* <td>{"1"}</td>
                 <td>{"26th Jul, 2023"}</td>
                 <td>{"Supplier-01"}</td>
                 <td>{""}</td>
@@ -68,10 +64,11 @@ const ReceiveYourProduct = () => {
                       </span>
                     </button>
                   </div>
-                </td>
+                </td> */}
               </tr>
             </tbody>
           </table>
+          <p className="text-center p-t-10">No data available in table</p>
         </div>
       </div>
       <Paginationbtn />
@@ -79,4 +76,4 @@ const ReceiveYourProduct = () => {
   );
 };
 
-export default ReceiveYourProduct;
+export default StockTransfer;
