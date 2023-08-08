@@ -429,12 +429,12 @@ export const MENUITEMS = [
           {
             title: "Branch",
             type: "link",
-            path: "/dashboard/admin/award",
+            path: "/dashboard/location/branch",
           },
           {
             title: "Warehouse",
             type: "link",
-            path: "/dashboard/admin/transfer",
+            path: "/dashboard/location/warehouse",
           },
         ],
       },
