@@ -46,23 +46,23 @@ const Category = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>{"1"}</td>
-                      <td>{"TV"}</td>
-                      <td>{"CATE-001"}</td>
-                      <td>{"N/A"}</td>
-                      <td>{"Television"}</td>
-                      <td>
-                        {" "}
-                        <span className="badge text-bg-success">
-                          {" "}
-                          {"Active"}
-                        </span>
-                      </td>
-                      <td>
-                        <Dropdownbtn />
-                      </td>
-                    </tr>
+                    {/*<tr>*/}
+                    {/*  <td>{"1"}</td>*/}
+                    {/*  <td>{"TV"}</td>*/}
+                    {/*  <td>{"CATE-001"}</td>*/}
+                    {/*  <td>{"N/A"}</td>*/}
+                    {/*  <td>{"Television"}</td>*/}
+                    {/*  <td>*/}
+                    {/*    {" "}*/}
+                    {/*    <span className="badge text-bg-success">*/}
+                    {/*      {" "}*/}
+                    {/*      {"Active"}*/}
+                    {/*    </span>*/}
+                    {/*  </td>*/}
+                    {/*  <td>*/}
+                    {/*    <Dropdownbtn />*/}
+                    {/*  </td>*/}
+                    {/*</tr>*/}
                   </tbody>
                 </table>
               </div>

@@ -27,11 +27,13 @@ const Products = () => {
             marginBottom: "20px",
           }}
         >
-          <button className="btn btn-pill btn-info btn-air-info btn-air-info mx-2">
-            New Contact
-          </button>
+          <Link to={"/dashboard/inventory-management/products/add-product"} className="btn btn-pill btn-info btn-air-info btn-air-info mx-2">
+              <i className="fa fa-plus me-1"></i>
+              New Product
+          </Link>
           <button className="btn btn-pill btn-info btn-air-info btn-air-info">
-            Upload Via CSV
+              <i className="fa fa-upload me-1"></i>
+              Upload Via CSV
           </button>
         </div>
 
