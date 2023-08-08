@@ -5,15 +5,30 @@ import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import Dropdownbtn from "../../../common/button/Dropdownbtn";
 import Paginationbtn from "../../../common/Paginationbtn";
 
-const Sale = () => {
-  const menu = {
-    item1: "Action",
-    item2: "Another Action",
-    item3: "Something Else Here",
-    item4: "Separated Link",
-    btncolor: "primary",
-    btntext: "Primary Button",
-  };
+const Sale = () =>{
+  const checkFunction = () => console.log('it works')
+  const data = [
+    {
+      "type": "link",
+      "url": "#",
+      "text": "View"
+    },
+    {
+      "type": "link",
+      "url": "#",
+      "text": "Update"
+    },
+    {
+      "type": "link",
+      "url": "#",
+      "text": "Delete"
+    },
+    {
+      "type": "function",
+      "url": checkFunction,
+      "text": "Download"
+    },
+  ]
   return (
     <div>
       <Breadcrumb parent="Inventory management" title="Sale" />
@@ -77,7 +92,7 @@ const Sale = () => {
                       </td>
                       <td>
                         <div style={{ zIndex: "90" }}>
-                          <Dropdownbtn />
+                          <Dropdownbtn data={data} />
                         </div>
                       </td>
                     </tr>

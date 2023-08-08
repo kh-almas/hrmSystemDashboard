@@ -1,28 +1,37 @@
 import React, { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
+import {Button, ListGroup, ListGroupItem, Popover, PopoverBody, PopoverHeader} from "reactstrap";
 
-const Dropdownbtn = (menu) => {
-  /// used in sale in sales in inventory management
+const Dropdownbtn = ({data}) => {
+  const [popover, setPopover] = useState(false)
+  const DirectionToggle = ({links}) => setPopover(!popover);
   return (
-    <>
-      <Dropdown>
-        <Dropdown.Toggle
-          variant="info"
-          id="dropdown-basic"
-          className="btn btn-pill btn-outline-info btn-xs p-1 px-4"
-          type="button"
-          style={{ zIndex: "900" }}
-        >
-          Select
-        </Dropdown.Toggle>
+      <>
+        <Button color={"primary"} className="example-popover" id={"Popover-" + 6}>{"Select"}</Button>
+        <Popover
+            placement={"bottom"}
+            isOpen={popover}
+            target={"Popover-" + 6}
+            toggle={DirectionToggle}>
+          <PopoverHeader></PopoverHeader>
+          <PopoverBody className="p-0">
+              <ListGroup>
+                  {
+                      data.map(info =>
+                          <>
+                              {
+                                  info.type === "link"
+                                      ? <a href={info.url}><ListGroupItem>{info.text}</ListGroupItem></a>
+                                      : <ListGroupItem onClick={info.url} style={{cursor: "pointer"}}>{info.text}</ListGroupItem>
+                              }
 
-        <Dropdown.Menu style={{ zIndex: "100" }}>
-          <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    </>
+                          </>)
+                  }
+
+              </ListGroup>
+          </PopoverBody>
+        </Popover>
+      </>
   );
 };
 
