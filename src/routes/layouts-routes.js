@@ -95,6 +95,7 @@ import StockReport from "../components/dashboard/inventoryManagement/Inventory/S
 import ProductMovement from "../components/dashboard/inventoryManagement/Inventory/ProductMovement";
 import StockAdjustments from "../components/dashboard/inventoryManagement/Inventory/StockAdjustments";
 import ProductInformation from "../components/dashboard/inventoryManagement/Inventory/ProductInformation";
+import DefaultTeam from "../components/dashboard/inventoryManagement/Project/DefaultTeam";
 
 export const routes = [
   {
@@ -255,7 +256,7 @@ export const routes = [
   },
 
   {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-branch`,
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/hrm-system-setup/manage-branch`,
     Component: <ManageBranch />,
   },
   {
@@ -278,6 +279,9 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-payslip-type`,
     Component: <ManagePayslipType />,
   },
+
+
+  
   {
     path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-allowance-option`,
     Component: <ManageAllowanceOption />,
@@ -327,26 +331,31 @@ export const routes = [
     Component: <ManageMeeting />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-meeting-calender`,
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-meeting-calender`,
     Component: <MeetingCalender />,
   },
+
+
+
+
+
   {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/employees-asset-setup`,
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/employees-asset-setup`,
     Component: <EmployeesAssetSetup />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/document-setup`,
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/document-setup`,
     Component: <DocumentSetup />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/company-policy`,
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/company-policy`,
     Component: <CompanyPolicy />,
   },
 
-
-
-
-
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/default-team`,
+    Component: <DefaultTeam />,
+  },
 
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/sales`,
