@@ -27,15 +27,6 @@ const AddContacts = () => {
   return (
     <>
       <Breadcrumb parent="Inventory management" title="Add Contact" />
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          marginBottom: "20px",
-        }}
-      ></div>
-
       <div className="card p-30">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row row-cols-1 row-cols-lg-3 ">

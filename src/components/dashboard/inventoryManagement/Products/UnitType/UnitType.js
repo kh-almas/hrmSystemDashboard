@@ -61,9 +61,6 @@ const UnitType = () => {
                           {"Active"}
                         </span>
                       </td>
-                      <td>
-                        <Dropdownbtn />
-                      </td>
                     </tr>
                     <tr style={{ whiteSpace: "nowrap" }}>
                       <td>{"1"}</td>
@@ -75,9 +72,6 @@ const UnitType = () => {
                           {" "}
                           {"Active"}
                         </span>
-                      </td>
-                      <td>
-                        <Dropdownbtn />
                       </td>
                     </tr>
                   </tbody>

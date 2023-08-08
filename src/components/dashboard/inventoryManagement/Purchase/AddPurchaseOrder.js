@@ -1,0 +1,168 @@
+import React from "react";
+import { useForm } from "react-hook-form";
+import Input from "../../../common/modal/Input";
+import Select from "../../../common/modal/Select";
+import CkEditorComponent from "../../../common/modal/CkEditorComponent";
+import Submitbtn from "../../../common/button/Submitbtn";
+
+const AddPurchaseOrder = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  return (
+    <>
+      <h4 className="p-4">Add Purchase Order</h4>
+      <div className="card p-30">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="row row-cols-1 row-cols-lg-3 ">
+            <div>
+              <Select
+                name={"Select Supplier*"}
+                labelName={"Select Supplier"}
+                placeholder={"Select Supplier"}
+                options={["Supplier-01"]}
+              />
+            </div>
+            <div>
+              <Select
+                name={"branch"}
+                labelName={"Select Warehouse Or Branch*"}
+                placeholder={"Main Branch"}
+                options={["Main Branch"]}
+              />
+            </div>
+
+            <div>
+              <Input
+                labelName={"Profile Picture"}
+                inputName={"profilePicture"}
+                inputType={"file"}
+                placeholder={"Profile Picture"}
+                validation={{
+                  ...register("profilePicture", { required: true }),
+                }}
+              />
+            </div>
+
+            <div>
+              <Input
+                labelName={"Business Name"}
+                inputName={"business-name"}
+                placeholder={"Business Name"}
+                inputType={"text"}
+                validation={{
+                  ...register("business-name", { required: true }),
+                }}
+              />
+            </div>
+
+            <div>
+              <Input
+                labelName={"Tax Number"}
+                inputName={"tex-number"}
+                inputType={"text"}
+                placeholder={"0"}
+                validation={{
+                  ...register("tex-number", { required: true }),
+                }}
+              />
+            </div>
+
+            <div>
+              <Input
+                labelName={"Openning Balance"}
+                inputName={"opennibg-balance"}
+                inputType={"text"}
+                placeholder={"Openning Balance"}
+                validation={{
+                  ...register("opennibg-balance", { required: true }),
+                }}
+              />
+            </div>
+
+            <div>
+              <Input
+                labelName={"Pay Term"}
+                inputName={"pay-term"}
+                inputType={"text"}
+                placeholder={"Pay Term"}
+                validation={{
+                  ...register("pay-term", { required: true }),
+                }}
+              />
+            </div>
+
+            <div>
+              <Select
+                name={"pay-term-condition"}
+                labelName={"Pay-Term-Condition"}
+                placeholder={"Select condition"}
+                options={["Days", "Months"]}
+              />
+            </div>
+
+            <div>
+              <Input
+                labelName={"Email"}
+                inputName={"email"}
+                inputType={"email"}
+                placeholder={"Email"}
+              />
+            </div>
+
+            <div>
+              <Input
+                labelName={"Credit Limit"}
+                inputName={"credit limit"}
+                inputType={"text"}
+                placeholder={"Credit Limit"}
+              />
+            </div>
+
+            <div>
+              <Input
+                labelName={"Mobile"}
+                inputName={"mobile"}
+                inputType={"text"}
+                placeholder={"Mobile"}
+              />
+            </div>
+
+            <div>
+              <Input
+                labelName={"Alternate Contact No"}
+                inputName={"alternate-contact-no"}
+                inputType={"text"}
+                placeholder={"Alternate Contact No"}
+              />
+            </div>
+
+            <div>
+              <Select
+                name={"city"}
+                labelName={"City"}
+                placeholder={"Select City"}
+                options={[""]}
+              />
+            </div>
+          </div>
+          <div className="row row-cols-1 row-cols-lg-1 mb-2">
+            <CkEditorComponent label={"Note"} />
+          </div>
+          <Submitbtn name={"Cencel"} />
+          <Submitbtn name={"Reset"} />
+          <Submitbtn name={"Submit"} />
+        </form>
+      </div>
+    </>
+  );
+};
+
+export default AddPurchaseOrder;

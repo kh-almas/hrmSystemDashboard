@@ -61,9 +61,7 @@ const Model = () => {
                           {"Active"}
                         </span>
                       </td>
-                      <td>
-                        <Dropdownbtn />
-                      </td>
+                     
                     </tr>
                   </tbody>
                 </table>

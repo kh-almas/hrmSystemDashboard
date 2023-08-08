@@ -59,9 +59,6 @@ const Category = () => {
                           {"Active"}
                         </span>
                       </td>
-                      <td>
-                        <Dropdownbtn />
-                      </td>
                     </tr>
                   </tbody>
                 </table>

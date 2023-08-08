@@ -125,7 +125,11 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/jobs/interview/schedule",
           },
-          { title: "Career", type: "link", path: "/base/tabs/tab-line" },
+          {
+            title: "Career",
+            type: "link",
+            path: "dashboard/hrm/recruitment/career",
+          },
         ],
       },
       {
@@ -386,6 +390,7 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/inventory-management/purchase/order",
           },
+
           {
             title: "Stock Alert List",
             type: "link",

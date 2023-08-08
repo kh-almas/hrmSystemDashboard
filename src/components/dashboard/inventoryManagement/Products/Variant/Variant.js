@@ -44,7 +44,7 @@ const Variant = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    {/* <tr>
                       <td>{"1"}</td>
                       <td>{"Red"}</td>
                       <td>{"Red"}</td>
@@ -58,7 +58,7 @@ const Variant = () => {
                       <td>
                         <Dropdownbtn />
                       </td>
-                    </tr>
+                    </tr> */}
                   </tbody>
                 </table>
               </div>

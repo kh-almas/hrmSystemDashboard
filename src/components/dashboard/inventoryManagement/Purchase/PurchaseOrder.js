@@ -4,6 +4,7 @@ import Paginationbtn from "../../../common/Paginationbtn";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import Dropdownbtn from "../../../common/button/Dropdownbtn";
+import { Link } from "react-router-dom";
 
 const PurchaseOrder = () => {
   return (
@@ -21,9 +22,9 @@ const PurchaseOrder = () => {
             marginBottom: "20px",
           }}
         >
-          <button className="btn btn-pill btn-info btn-air-info btn-air-info">
+          <Link to={`/dashboard/inventory-management/purchase/add-purchase-order`} className="btn btn-pill btn-info btn-air-info btn-air-info">
             New Order
-          </button>
+          </Link>
         </div>
 
         <FilesComponent />
@@ -49,7 +50,7 @@ const PurchaseOrder = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    {/* <tr>
                       <td>{"1"}</td>
                       <td>{"26th Jul, 2023"}</td>
                       <td>{"Supplier-01"}</td>
@@ -64,7 +65,7 @@ const PurchaseOrder = () => {
                       <td>
                         <Dropdownbtn />
                       </td>
-                    </tr>
+                    </tr> */}
                   </tbody>
                 </table>
               </div>

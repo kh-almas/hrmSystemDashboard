@@ -96,6 +96,8 @@ import ProductMovement from "../components/dashboard/inventoryManagement/Invento
 import StockAdjustments from "../components/dashboard/inventoryManagement/Inventory/StockAdjustments";
 import ProductInformation from "../components/dashboard/inventoryManagement/Inventory/ProductInformation";
 import DefaultTeam from "../components/dashboard/inventoryManagement/Project/DefaultTeam";
+import Career from "../components/dashboard/hrmSystem/RecruitmentSetup/Career";
+import AddPurchaseOrder from "../components/dashboard/inventoryManagement/Purchase/AddPurchaseOrder";
 
 export const routes = [
   {
@@ -202,6 +204,10 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/interview/schedule`,
     Component: <InterviewSchedule />,
   },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment/career`,
+    Component: <Career />,
+  },
 
   //hr admin setup
   {
@@ -280,8 +286,6 @@ export const routes = [
     Component: <ManagePayslipType />,
   },
 
-
-  
   {
     path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-allowance-option`,
     Component: <ManageAllowanceOption />,
@@ -334,10 +338,6 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-meeting-calender`,
     Component: <MeetingCalender />,
   },
-
-
-
-
 
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/employees-asset-setup`,
@@ -457,6 +457,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/order`,
     Component: <PurchaseOrder />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/add-purchase-order`,
+    Component: <AddPurchaseOrder />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/stock-alert-list`,
