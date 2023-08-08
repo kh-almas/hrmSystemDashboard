@@ -353,7 +353,7 @@ export const routes = [
     Component: <Sale />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sareturn`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/return`,
     Component: <SaleReturn />,
   },
   {
