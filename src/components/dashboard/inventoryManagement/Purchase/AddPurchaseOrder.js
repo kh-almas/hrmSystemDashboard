@@ -156,9 +156,11 @@ const AddPurchaseOrder = () => {
           <div className="row row-cols-1 row-cols-lg-1 mb-2">
             <CkEditorComponent label={"Note"} />
           </div>
-          <Submitbtn name={"Cencel"} />
-          <Submitbtn name={"Reset"} />
-          <Submitbtn name={"Submit"} />
+          <div className="d-flex ">
+            <Submitbtn name={"Cencel"} />
+            <Submitbtn name={"Reset"} />
+            <Submitbtn name={"Submit"} />
+          </div>
         </form>
       </div>
     </>
