@@ -1,19 +1,19 @@
 import React from "react";
 import Breadcrumb from "../../../common/breadcrumb";
+import Select from "../../../common/modal/Select";
+import Submitbtn from "../../../common/button/Submitbtn";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import Paginationbtn from "../../../common/Paginationbtn";
-import Select from "../../../common/modal/Select";
-import Submitbtn from "../../../common/button/Submitbtn";
 
-const StockList = () => {
+const StockReport = () => {
   return (
     <div>
       <div>
-        <Breadcrumb parent="Inventory management" title="Stock List" />
+        <Breadcrumb parent="Inventory management" title="Stock Report" />
         <div className="card p-4">
           <form>
-            <div className="row row-cols-1 row-cols-lg-4">
+            <div className="row row-cols-1 row-cols-lg-3">
               <div>
                 <Select
                   name={"branch"}
@@ -23,14 +23,6 @@ const StockList = () => {
                 />
               </div>
 
-              <div>
-                <Select
-                  name={"select-supplier"}
-                  labelName={"Supplier"}
-                  placeholder={"Select supplier"}
-                  options={["Supplier1"]}
-                />
-              </div>
               <div>
                 <Select
                   name={"brand"}
@@ -65,7 +57,7 @@ const StockList = () => {
               marginBottom: "20px",
             }}
           >
-            <h4 className="mx-2">Stock Report</h4>
+            <h4 className="mx-2">Report</h4>
           </div>
 
           <FilesComponent />
@@ -77,35 +69,44 @@ const StockList = () => {
               <thead className=" table-border">
                 <tr>
                   <th scope="col">{"Sl"}</th>
-                  <th scope="col">{"Image"}</th>
                   <th scope="col">{"Name"}</th>
                   <th scope="col">{"Brand"}</th>
-                  <th scope="col">{"Sku"}</th>
                   <th scope="col">{"Branch/Warehouse"}</th>
-                  <th scope="col">{"Supplier"}</th>
-                  <th scope="col">{"In Stock"}</th>
-                  <th scope="col">{"Stock Alert"}</th>
-                  <th scope="col">{"Purchase Price"}</th>
+                  <th scope="col">{"In Qty"}</th>
+                  <th scope="col">{"Out Qty"}</th>
+                  <th scope="col">{"Stock"}</th>
+                  <th scope="col">{"Purchase"}</th>
                   <th scope="col">{"Purchase Value"}</th>
                   <th scope="col">{"Selling Price"}</th>
+                  <th scope="col">{"Selling Value"}</th>
                 </tr>
               </thead>
               <tbody style={{ whiteSpace: "nowrap" }}>
                 <tr>
                   <td>{"1"}</td>
-                  <td>
-                    <img src="" alt="" />
-                  </td>
                   <td>{"19 Inch LG TV"}</td>
                   <td>{"LG"}</td>
-                  <td>{"hsdsdfds-1"}</td>
                   <td>{"Main Branch"}</td>
-                  <td>{"Supplier-01	"}</td>
+                  <td>{"105	"}</td>
+                  <td>{"15"}</td>
                   <td>{"90"}</td>
-                  <td>{"20"}</td>
                   <td>{"$1,000.00"}</td>
                   <td>{"$90,000.00	"}</td>
                   <td>{"$1,300.00"}</td>
+                  <td>{"$1,700.00"}</td>
+                </tr>{" "}
+                <tr>
+                  <td>{""}</td>
+                  <td>{""}</td>
+                  <td>{""}</td>
+                  <td>{""}</td>
+                  <td>{"Total"}</td>
+                  <td>{"105"}</td>
+                  <td>{"90"}</td>
+                  <td>{"$1,000.00"}</td>
+                  <td>{"$90,000.00	"}</td>
+                  <td>{"$1,300.00"}</td>
+                  <td>{"$1,700.00"}</td>
                 </tr>
               </tbody>
             </table>
@@ -117,4 +118,4 @@ const StockList = () => {
   );
 };
 
-export default StockList;
+export default StockReport;

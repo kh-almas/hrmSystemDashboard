@@ -240,12 +240,12 @@ export const MENUITEMS = [
           {
             title: "Sale",
             type: "link",
-            path: "/dashboard/hrm/sale",
+            path: "/dashboard/inventory-management/sale/sales",
           },
           {
             title: "Sale Return",
             type: "link",
-            path: "/dashboard/hrm/sale-return",
+            path: "/dashboard/inventory-management/sale/return",
           },
         ],
       },
@@ -256,25 +256,27 @@ export const MENUITEMS = [
           {
             title: "Add Contacts ",
             type: "link",
-            path: "/dashboard/hrm/add-contacts",
+            path: "/dashboard/inventory-management/contacts/add-contacts",
           },
           {
             title: "Supplier",
             type: "link",
-            path: "/dashboard/hrm/supplier",
+            path: "/dashboard/inventory-management/contacts/supplier",
           },
           {
             title: "Customer",
             type: "link",
-            path: "/dashboard/hrm/customer",
+            path: "/dashboard/inventory-management/contacts/customer",
           },
           {
             title: "Settings",
             type: "link",
-            path: "/dashboard/hrm/settings",
+            path: "/dashboard/inventory-management/contacts/settings",
           },
         ],
       },
+
+      //products
       {
         title: "Products",
         type: "sub",
@@ -282,42 +284,42 @@ export const MENUITEMS = [
           {
             title: "Product List",
             type: "link",
-            path: "/dashboard/hrm/products",
+            path: "/dashboard/inventory-management/products",
           },
           {
             title: "Service",
             type: "link",
-            path: "dashboard/hrm/services",
+            path: "/dashboard/inventory-management/products/services",
           },
           {
             title: "Add Product",
             type: "link",
-            path: "/dashboard/hrm/add-product",
+            path: "/dashboard/inventory-management/products/add-product",
           },
           {
             title: "Category",
             type: "link",
-            path: "/dashboard/hrm/category",
+            path: "/dashboard/inventory-management/products/category",
           },
           {
             title: "Brand",
             type: "link",
-            path: "/dashboard/hrm/brand",
+            path: "/dashboard/inventory-management/products/brand",
           },
           {
             title: "Model",
             type: "link",
-            path: "/dashboard/hrm/model",
+            path: "/dashboard/inventory-management/products/model",
           },
           {
             title: "Unit Type",
             type: "link",
-            path: "/dashboard/hrm/unit-type",
+            path: "/dashboard/inventory-management/products/unit-type",
           },
           {
             title: "Variant",
             type: "link",
-            path: "/dashboard/hrm/variant",
+            path: "/dashboard/inventory-management/products/variant",
           },
         ],
       },
@@ -329,44 +331,48 @@ export const MENUITEMS = [
           {
             title: "Add Opening Stock",
             type: "link",
-            path: "/dashboard/hrm/inventory/stock",
+            path: "/dashboard/inventory-management/inventory/add-opening-stock",
           },
           {
             title: "Receive Your Product",
             type: "link",
-            path: "/dashboard/hrm/inventory/product/receive",
+            path: "/dashboard/inventory-management/inventory/product-receive",
           },
           {
             title: "Product Costing(Sales)",
             type: "link",
-            path: "/dashboard/hrm/inventory/product-costing",
+            path: "/dashboard/inventory-management/inventory/product-costing",
           },
           {
             title: "Stock Transfer",
             type: "link",
-            path: "/dashboard/hrm/inventory/stock-transfer",
+            path: "/dashboard/inventory-management/inventory/stock-transfer",
           },
           {
             title: "Stock List",
             type: "link",
-            path: "/dashboard/hrm/inventory/stock-list",
+            path: "/dashboard/inventory-management/inventory/stock-list",
           },
           {
             title: "Stock Report",
             type: "link",
-            path: "/base/tabs/tab-line",
+            path: "/dashboard/inventory-management/inventory/stock-report",
           },
           {
             title: "Product Movement",
             type: "link",
-            path: "/base/tabs/tab-line",
+            path: "/dashboard/inventory-management/inventory/product-movement",
           },
           {
             title: "Stock Adjustment",
             type: "link",
-            path: "/base/tabs/tab-line",
+            path: "/dashboard/inventory-management/inventory/stock-adjustment",
           },
-          { title: "Product Info", type: "link", path: "/base/tabs/tab-line" },
+          {
+            title: "Product Info",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/product-info",
+          },
         ],
       },
 
@@ -378,28 +384,28 @@ export const MENUITEMS = [
           {
             title: "Purchase Order",
             type: "link",
-            path: "/dashboard/hrm/purchase/purchase_order",
+            path: "/dashboard/inventory-management/purchase/order",
           },
           {
             title: "Stock Alert List",
             type: "link",
-            path: "/dashboard/hrm/purchase/stock-alert-list",
+            path: "/dashboard/inventory-management/purchase/stock-alert-list",
           },
           {
             title: "Purchase Return List",
             type: "link",
-            path: "/dashboard/hrm/purchase/purchase-return-list",
+            path: "/dashboard/inventory-management/purchase/return-list",
           },
           {
             title: "C&F",
             type: "link",
-            path: "/dashboard/hrm/purchase/c&f",
+            path: "/dashboard/inventory-management/purchase/c&f",
           },
         ],
       },
 
       {
-        path: "/hrm/dashboard/quotation",
+        path: "/dashboard/inventory-management/quotation",
         title: "Quotation",
         type: "link",
       },
@@ -411,12 +417,12 @@ export const MENUITEMS = [
           {
             title: "Make A Transfer",
             type: "link",
-            path: "/dashboard/admin/make-a-transfer",
+            path: "/dashboard/inventory-management/transfer/make-transfer",
           },
           {
             title: "Transfered Lists",
             type: "link",
-            path: "/dashboard/admin/transfered-lists",
+            path: "/dashboard/inventory-management/transfer/transfered-list",
           },
         ],
       },
@@ -428,12 +434,12 @@ export const MENUITEMS = [
           {
             title: "Branch",
             type: "link",
-            path: "/dashboard/location/branch",
+            path: "/dashboard/inventory-management/location/branch",
           },
           {
             title: "Warehouse",
             type: "link",
-            path: "/dashboard/location/warehouse",
+            path: "/dashboard/inventory-management/location/warehouse",
           },
         ],
       },
