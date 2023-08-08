@@ -11,7 +11,7 @@ const Dropdownbtn = (menu) => {
           id="dropdown-basic"
           className="btn btn-pill btn-outline-info btn-xs p-1 px-4"
           type="button"
-          style={{ zIndex: "90" }}
+          style={{ zIndex: "900" }}
         >
           Select
         </Dropdown.Toggle>

@@ -7,9 +7,39 @@ import CkEditorComponent from "../../../../common/modal/CkEditorComponent";
 import { Button } from "react-bootstrap";
 import Submitbtn from "../../../../common/button/Submitbtn";
 import { set } from "lodash";
+import UnitModal from "../../../../common/AddProduct/Modal/UnitModal";
+import BrandModal from "../../../../common/AddProduct/Modal/BrandModal";
+import CategoryModal from "../../../../common/AddProduct/Modal/CategoryModal";
+import SubCategoryModal from "../../../../common/AddProduct/Modal/SubCategoryModal";
+import ModelModal from "../../../../common/AddProduct/Modal/ModelModal";
 
 const AddProduct = () => {
   const [type, setType] = useState("Single");
+  const [unit, setUnit] = useState(false);
+  const [brand, setBrand] = useState(false);
+  const [category, setCategory] = useState(false);
+  const [subCategory, setSubCategory] = useState(false);
+  const [model, setModel] = useState(false);
+
+  const unitToggle = () => {
+    setUnit(!unit);
+  };
+
+  const brandToggle = () => {
+    setBrand(!brand);
+  };
+
+  const categoryToggle = () => {
+    setCategory(!category);
+  };
+
+  const subCategoryToggle = () => {
+    setSubCategory(!subCategory);
+  };
+
+  const modelToggle = () => {
+    setModel(!model);
+  };
 
   const handleTypeChange = (type) => {
     setType(type);
@@ -89,9 +119,10 @@ const AddProduct = () => {
             {type === "Single" || type === "Varient" ? (
               <div style={{ position: "relative" }}>
                 <p
+                    onClick={unitToggle}
                   style={{
                     position: "absolute",
-                    left: "280px",
+                    right: "14px",
                     cursor: "pointer",
                   }}
                   className="text-primary"
@@ -100,12 +131,13 @@ const AddProduct = () => {
                   <span>
                     <i className="icofont icofont-plus-circle"></i>
                   </span>
+                  <UnitModal modal={unit} toggle={unitToggle} />
                 </p>
 
                 <div>
                   <Select
                     name={"select-unit"}
-                    labelName={"Select Unit"}
+                    labelName={"Unit"}
                     placeholder={"Select a unit"}
                     options={["pcs piees(s)", "cft CFT(s)"]}
                   />
@@ -131,9 +163,10 @@ const AddProduct = () => {
             {type == "Single" || type === "Varient" ? (
               <div style={{ position: "relative" }}>
                 <p
+                    onClick={brandToggle}
                   style={{
                     position: "absolute",
-                    left: "280px",
+                    right: "14px",
                     cursor: "pointer",
                   }}
                   className="text-primary"
@@ -142,6 +175,7 @@ const AddProduct = () => {
                   <span>
                     <i className="icofont icofont-plus-circle"></i>
                   </span>
+                  <BrandModal modal={brand} toggle={brandToggle} />
                 </p>
 
                 <div>
@@ -159,9 +193,10 @@ const AddProduct = () => {
             {type == "Single" || type === "Varient" ? (
               <div style={{ position: "relative" }}>
                 <p
+                    onClick={categoryToggle}
                   style={{
                     position: "absolute",
-                    left: "250px",
+                    right: "14px",
                     cursor: "pointer",
                   }}
                   className="text-primary"
@@ -170,6 +205,7 @@ const AddProduct = () => {
                   <span>
                     <i className="icofont icofont-plus-circle"></i>
                   </span>
+                  <CategoryModal modal={category} toggle={categoryToggle} />
                 </p>
 
                 <div>
@@ -218,9 +254,10 @@ const AddProduct = () => {
             {type == "Single" || type === "Varient" ? (
               <div style={{ position: "relative" }}>
                 <p
+                    onClick={subCategoryToggle}
                   style={{
                     position: "absolute",
-                    left: "250px",
+                    right: "14px",
                     cursor: "pointer",
                   }}
                   className="text-primary"
@@ -229,6 +266,7 @@ const AddProduct = () => {
                   <span>
                     <i className="icofont icofont-plus-circle"></i>
                   </span>
+                  <SubCategoryModal modal={subCategory} toggle={subCategoryToggle} />
                 </p>
 
                 <div>
@@ -247,9 +285,10 @@ const AddProduct = () => {
             {type == "Single" || type === "Varient" ? (
               <div style={{ position: "relative" }}>
                 <p
+                    onClick={modelToggle}
                   style={{
                     position: "absolute",
-                    left: "310px",
+                    right: "14px",
                     cursor: "pointer",
                   }}
                   className="text-primary"
@@ -258,6 +297,7 @@ const AddProduct = () => {
                   <span>
                     <i className="icofont icofont-plus-circle"></i>
                   </span>
+                  <ModelModal modal={model} toggle={modelToggle} />
                 </p>
 
                 <div>

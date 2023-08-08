@@ -22,7 +22,7 @@ const Select = ({
             {labelName}
           </label>
           <select
-              style={{ fontSize: "16px" }}
+              style={{ fontSize: "13px" }}
               name={name}
               className="form-control digits"
               id="exampleFormControlSelect9"
