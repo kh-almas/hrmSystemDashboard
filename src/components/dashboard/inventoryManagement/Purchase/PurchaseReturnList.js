@@ -3,6 +3,7 @@ import Breadcrumb from "../../../common/breadcrumb";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import Paginationbtn from "../../../common/Paginationbtn";
+import { Link } from "react-router-dom";
 const PurchaseReturnList = () => {
   return (
     <div>
@@ -19,9 +20,12 @@ const PurchaseReturnList = () => {
             marginBottom: "20px",
           }}
         >
-          <button className="btn btn-pill btn-info btn-air-info btn-air-info">
+          <Link
+            to={`/dashboard/inventory-management/purchase/purchase-return/list`}
+            className="btn btn-pill btn-info btn-air-info btn-air-info"
+          >
             Create Purchase Return
-          </button>
+          </Link>
         </div>
 
         <FilesComponent />

@@ -32,14 +32,14 @@ const AddContacts = () => {
           <div className="row row-cols-1 row-cols-lg-3 ">
             <div>
               <label
-                style={{ color: "#8990b6", fontSize: "16px" }}
+                style={{ fontSize: "14px" }}
                 htmlFor="exampleFormControlSelect9"
               >
                 Product-Type
               </label>
               <select
                 onChange={(e) => handleTypeChange(e.target.value)}
-                style={{ fontSize: "16px" }}
+                style={{ fontSize: "13px" }}
                 name="product-type"
                 className="form-control digits"
                 id="exampleFormControlSelect9"

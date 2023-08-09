@@ -98,6 +98,7 @@ import ProductInformation from "../components/dashboard/inventoryManagement/Inve
 import DefaultTeam from "../components/dashboard/inventoryManagement/Project/DefaultTeam";
 import Career from "../components/dashboard/hrmSystem/RecruitmentSetup/Career";
 import AddPurchaseOrder from "../components/dashboard/inventoryManagement/Purchase/AddPurchaseOrder";
+import CreatePurchaseReturn from "../components/dashboard/inventoryManagement/Purchase/CreatePurchaseReturn";
 
 export const routes = [
   {
@@ -461,6 +462,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/add-purchase-order`,
     Component: <AddPurchaseOrder />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/purchase-return/list`,
+    Component: <CreatePurchaseReturn />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/stock-alert-list`,
