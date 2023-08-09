@@ -1883,6 +1883,9 @@ body {
 				}
 				/* layouts 6 */
 				.page-body {
+					.sidebar-submenu-button {
+						color: $sub-sidebar-text-color !important;
+					}
 					background-color: $dark-body-background;
 					.card {
 						background-color: $dark-card-background;
@@ -1956,9 +1959,6 @@ body {
 								background-color: $dark-card-background;
 								border: 1px solid $dark-border-color;
 							}
-						}
-						.line {
-							color: $dark-all-font-color;
 						}
 						.table {
 							th,
@@ -4529,6 +4529,9 @@ body {
 				}
 				/* layouts 3 */
 				.page-body {
+					.sidebar-submenu-button {
+						color: $sub-sidebar-text-color !important;
+					}
 					background-color: $dark-body-background;
 					.card {
 						background-color: $dark-card-background;
@@ -8983,11 +8986,15 @@ body {
 					}
 				}
 				/* sidebar end */
+				/* layouts 4 */
 				.page-body {
+					.sidebar-submenu-button {
+						color: $sub-sidebar-text-color !important;
+					}
 					/* almas */
 					.card {
 						> * {
-							color: $dark-small-font-color;
+							color: $sub-sidebar-text-color !important;
 						}
 					}
 
