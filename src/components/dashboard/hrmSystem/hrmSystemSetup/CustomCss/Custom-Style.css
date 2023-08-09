@@ -1,6 +1,10 @@
-.custom-div {
-  color: aliceblue;
-  background-color: #4c2fbf !important;
+.sub-sidebar-button {
+  background-color: #4c2fbf;
   border-radius: 5px;
-  font-weight: 700 !important;
+  font-weight: 700;
 }
+
+.sub-sidebar-button a:hover{
+  color: white !important;
+}
+
