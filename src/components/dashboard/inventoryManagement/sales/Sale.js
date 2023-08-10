@@ -4,31 +4,47 @@ import CommonSearchComponet from "../../../common/salaryCard/CommonSearchCompone
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import Dropdownbtn from "../../../common/button/Dropdownbtn";
 import Paginationbtn from "../../../common/Paginationbtn";
+import { Link } from "react-router-dom";
 
-const Sale = () =>{
-  const checkFunction = () => console.log('it works')
+const Sale = () => {
+  const checkFunction = () => console.log("it works");
   const data = [
     {
-      "type": "link",
-      "url": "#",
-      "text": "View"
+      type: "link",
+      url: "/dashboard/inventory-management/sale/select-payment",
+      text: "Payment",
     },
     {
-      "type": "link",
-      "url": "#",
-      "text": "Update"
+      type: "link",
+      url: "#",
+      text: "Sell Return",
     },
     {
-      "type": "link",
-      "url": "#",
-      "text": "Delete"
+      type: "link",
+      url: "#",
+      text: "Order Details",
     },
     {
-      "type": "function",
-      "url": checkFunction,
-      "text": "Download"
+      type: "function",
+      url: checkFunction,
+      text: "Download",
     },
-  ]
+    {
+      type: "function",
+      url: checkFunction,
+      text: "Challan Download",
+    },
+    {
+      type: "function",
+      url: "#",
+      text: "Clone to Sale",
+    },
+    {
+      type: "function",
+      url: "#",
+      text: "Print",
+    },
+  ];
   return (
     <div>
       <Breadcrumb parent="Inventory management" title="Sale" />
@@ -44,9 +60,12 @@ const Sale = () =>{
             marginBottom: "20px",
           }}
         >
-          <button className="btn btn-pill btn-info btn-air-info btn-air-info">
+          <Link
+            to={`/dashboard/inventory-management/sale/add-sale`}
+            className="btn btn-pill btn-info btn-air-info btn-air-info"
+          >
             New Sale
-          </button>
+          </Link>
         </div>
 
         <FilesComponent />
@@ -55,9 +74,15 @@ const Sale = () =>{
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-12">
-            <div className="card" style={{ padding: "20px", zIndex: "1 !important" }}>
+            <div
+              className="card"
+              style={{ padding: "20px", zIndex: "1 !important" }}
+            >
               <CommonSearchComponet />
-              <div className="table-responsive" style={{ padding: "20px", zIndex: "1 !important" }}>
+              <div
+                className="table-responsive"
+                style={{ padding: "20px", zIndex: "1 !important" }}
+              >
                 <table className="table ">
                   <thead className=" table-border ">
                     <tr className="">
@@ -77,7 +102,21 @@ const Sale = () =>{
                     <tr>
                       <td>{"1"}</td>
                       <td>{"24th Jul, 2023"}</td>
-                      <td>{"INV-230712"}</td>
+                      <td>
+                        {"INV-230712"}{" "}
+                        <span>
+                          <i
+                            style={{
+                              backgroundColor: "skyblue",
+                              color: "#ffffff",
+                              cursor: "pointer",
+                            }}
+                            className="icofont icofont-eye-alt rounded  p-1"
+                            id="TooltipBottom"
+                            data-placement="bottom"
+                          ></i>
+                        </span>
+                      </td>
                       <td>{"Super admin"}</td>
                       <td>{"	kjdsjhdahghjgh"}</td>
                       <td>{"	$ 6,000.00"}</td>
@@ -94,31 +133,6 @@ const Sale = () =>{
                         <div style={{ zIndex: "90" }}>
                           <Dropdownbtn data={data} />
                         </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>{"1"}</td>
-                      <td>{"24th Jul, 2023"}</td>
-                      <td>{"INV-230712"}</td>
-                      <td>{"Super admin"}</td>
-                      <td>{"	kjdsghddsfbdsf"}</td>
-                      <td>{"	$ 6,000.00"}</td>
-                      <td>{"	$ 0.00"}</td>
-                      <td>{"	$ 6,000.00"}</td>
-                      <td>
-                        {" "}
-                        <span className="badge text-bg-success">
-                          {" "}
-                          {"Approved"}
-                        </span>
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-pill btn-outline-info btn-xs p-1 px-4"
-                          type="button"
-                        >
-                          Select
-                        </button>
                       </td>
                     </tr>
                   </tbody>
