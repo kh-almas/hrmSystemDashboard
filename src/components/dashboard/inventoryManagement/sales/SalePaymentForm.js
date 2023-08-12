@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Input from "../../../common/modal/Input";
 
-const SalePaymentForm = ({ handleSubmit, onSubmit, index, handleDelete }) => {
+const SalePaymentForm = ({ handleSubmit, onSubmit, index, handleDelete, show }) => {
   const [paymentMethod, setPaymentMethod] = useState("Cash");
   const handlePaymentType = (type) => {
     console.log(type);
@@ -18,6 +18,7 @@ const SalePaymentForm = ({ handleSubmit, onSubmit, index, handleDelete }) => {
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row row-cols-1 row-cols-lg-2 ">
+         <p className={`${show ? "d-block" : "d-none"}`} onClick={() => handleDelete(index)} type="">X</p>
           <div className="mb-2">
             <label
               style={{ fontSize: "14px" }}

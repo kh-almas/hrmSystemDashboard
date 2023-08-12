@@ -16,12 +16,12 @@ const Sale = () => {
     },
     {
       type: "link",
-      url: "#",
+      url: "/dashboard/inventory-management/sale/select-return",
       text: "Sell Return",
     },
     {
       type: "link",
-      url: "#",
+      url: "/dashboard/inventory-management/sale/select-order-details",
       text: "Order Details",
     },
     {

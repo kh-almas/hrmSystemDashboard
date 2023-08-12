@@ -8,7 +8,7 @@ import Submitbtn from "../../../common/button/Submitbtn";
 import SalePaymentForm from "./SalePaymentForm";
 
 const Payment = () => {
-  const [inputCount, setInputCount] = useState(1);
+  const [inputCount, setInputCount] = useState(0);
   const inputs = [];
 
   const increaseInputs = () => {
@@ -16,22 +16,25 @@ const Payment = () => {
   };
 
   const handleDelete = (i) => {
-    const updatedComponents = inputs.filter((component) => inputs.i !== i);
+    const updatedComponents = inputs.filter(
+      (component) => component.props.index !== i
+    );
     // console.log(i);
     // // inputs.splice(i, 1);
     setInputCount(updatedComponents);
-    console.log(inputCount)
+    console.log(inputCount);
   };
 
   const renderInputs = () => {
     for (let i = 0; i < inputCount; i++) {
       inputs.push(
         <SalePaymentForm
-          index={i}
-          handleDelete={handleDelete}
           register={register}
           onSubmit={onSubmit}
           handleSubmit={handleSubmit}
+          show={true}
+          handleDelete={handleDelete}
+          index={i}
         />
       );
     }
@@ -154,7 +157,15 @@ const Payment = () => {
                     )}
                   </div>
                 </form> */}
-                {renderInputs()}
+                <div className="card mb-2 p-2 ">
+                  <SalePaymentForm
+                    register={register}
+                    onSubmit={onSubmit}
+                    handleSubmit={handleSubmit}
+                    show={false}
+                  />
+                  <div>{renderInputs()}</div>
+                </div>
                 <div className="d-flex justify-content-center mt-3">
                   <button
                     onClick={increaseInputs}

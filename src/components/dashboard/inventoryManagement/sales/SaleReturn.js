@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const SaleReturn = () => {
   return (
     <div>
-      <Breadcrumb parent="Inventory management" title="Sale Return" />
+      <Breadcrumb parent="Inventory management" title="Sale Return List" />
       <div
         style={{ padding: "0px 20px" }}
         className="d-flex justify-content-between align-items-center pb-3"
@@ -21,7 +21,10 @@ const SaleReturn = () => {
             marginBottom: "20px",
           }}
         >
-          <Link to={`/dashboard/inventory-management/sale/sales-list`} className="btn btn-pill btn-info btn-air-info btn-air-info">
+          <Link
+            to={`/dashboard/inventory-management/sale/sales-list`}
+            className="btn btn-pill btn-info btn-air-info btn-air-info"
+          >
             Create Sale Return
           </Link>
         </div>
