@@ -141,8 +141,6 @@ const AddSale = () => {
                 options={["Parcentage"]}
               />
             </div>{" "}
-
-            
             <div>
               <label
                 style={{ fontSize: "14px" }}
@@ -238,7 +236,7 @@ const AddSale = () => {
           <div className="container-fluid">
             <div className="row">
               <div className="col-sm-12">
-                <div className="card" style={{ padding: "20px" }}>
+                <div className="card" style={{ padding: "20px 0px" }}>
                   <div className="table-responsive ">
                     <table className="table">
                       <thead className=" table-border">
