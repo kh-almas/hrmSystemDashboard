@@ -43,7 +43,6 @@ const AddContacts = () => {
                 name="product-type"
                 className="form-control digits"
                 id="exampleFormControlSelect9"
-                defaultValue="1"
               >
                 <option value="Supplier">Supplier</option>
                 <option value="Customer">Customer</option>

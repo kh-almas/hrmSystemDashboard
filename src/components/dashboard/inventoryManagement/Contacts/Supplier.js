@@ -21,9 +21,10 @@ const Supplier = () => {
           }}
         >
           <Link
-            to={"/dashboard/hrm/add-contacts"}
+            to={"/dashboard/inventory-management/contacts/add-contacts"}
             className="btn btn-pill btn-info btn-air-info btn-air-info mx-2"
           >
+            <i class="fa fa-plus me-2"></i>
             New Contact
           </Link>
           <Link to={"/dashboard/csv/upload"} className="btn btn-pill btn-info btn-air-info btn-air-info">

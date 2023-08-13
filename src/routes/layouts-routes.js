@@ -100,6 +100,11 @@ import Career from "../components/dashboard/hrmSystem/RecruitmentSetup/Career";
 import AddPurchaseOrder from "../components/dashboard/inventoryManagement/Purchase/AddPurchaseOrder";
 import CreatePurchaseReturn from "../components/dashboard/inventoryManagement/Purchase/CreatePurchaseReturn";
 import UploadCSV from "../components/common/UploadCSV";
+import AddSale from "../components/dashboard/inventoryManagement/sales/AddSale";
+import SalesList from "../components/dashboard/inventoryManagement/sales/SalesList";
+import Payment from "../components/dashboard/inventoryManagement/sales/Payment";
+import SaleSelectReturn from "../components/dashboard/inventoryManagement/sales/SaleSelectReturn";
+import SaleSelectOrderDetails from "../components/dashboard/inventoryManagement/sales/SaleSelectOrderDetails";
 
 export const routes = [
   {
@@ -362,6 +367,26 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/sales`,
     Component: <Sale />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/select-payment`,
+    Component: <Payment />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/select-return`,
+    Component: <SaleSelectReturn />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/select-order-details`,
+    Component: <SaleSelectOrderDetails />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/add-sale`,
+    Component: <AddSale />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/sales-list`,
+    Component: <SalesList />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/return`,
