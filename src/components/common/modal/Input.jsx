@@ -22,7 +22,7 @@ const Input = ({
             {labelName}
           </label>
           <input
-              style={{fontSize: "10px", height: "34px"}}
+              style={{fontSize: "10px", }} //height: "34px"
               className={`form-control ${errors?.inputName && "is-invalid"}`}
               id={inputName}
               type={inputType}

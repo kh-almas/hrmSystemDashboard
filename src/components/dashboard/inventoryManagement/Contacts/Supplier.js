@@ -27,9 +27,9 @@ const Supplier = () => {
             <i class="fa fa-plus me-2"></i>
             New Contact
           </Link>
-          <button className="btn btn-pill btn-info btn-air-info btn-air-info">
+          <Link to={"/dashboard/csv/upload"} className="btn btn-pill btn-info btn-air-info btn-air-info">
             Upload Via CSV
-          </button>
+          </Link>
         </div>
 
         <FilesComponent />

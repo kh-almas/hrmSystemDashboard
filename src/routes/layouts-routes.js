@@ -99,6 +99,7 @@ import DefaultTeam from "../components/dashboard/inventoryManagement/Project/Def
 import Career from "../components/dashboard/hrmSystem/RecruitmentSetup/Career";
 import AddPurchaseOrder from "../components/dashboard/inventoryManagement/Purchase/AddPurchaseOrder";
 import CreatePurchaseReturn from "../components/dashboard/inventoryManagement/Purchase/CreatePurchaseReturn";
+import UploadCSV from "../components/common/UploadCSV";
 import AddSale from "../components/dashboard/inventoryManagement/sales/AddSale";
 import SalesList from "../components/dashboard/inventoryManagement/sales/SalesList";
 import Payment from "../components/dashboard/inventoryManagement/sales/Payment";
@@ -524,4 +525,8 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/location/warehouse`,
     Component: <Warehouse />,
   },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/csv/upload`,
+    Component: <UploadCSV />,
+  }
 ];
