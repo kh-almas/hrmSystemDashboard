@@ -27,14 +27,21 @@ const Products = () => {
             marginBottom: "20px",
           }}
         >
-          <Link to={"/dashboard/inventory-management/products/add-product"} className="btn btn-pill btn-info btn-air-info btn-air-info mx-2">
+          <div className="d-flex flex-column flex-md-row  text-center">
+            <Link
+              to={"/dashboard/inventory-management/products/add-product"}
+              className="btn btn-pill btn-info btn-air-info  mx-2 mb-2 mt-1"
+            >
               <i className="fa fa-plus me-1"></i>
               New Product
-          </Link>
-          <button className="btn btn-pill btn-info btn-air-info btn-air-info">
-              <i className="fa fa-upload me-1"></i>
-              Upload Via CSV
-          </button>
+            </Link>
+            <Link className="btn btn-pill btn-info btn-air-info">
+              <div className="mt-1">
+                <i className="fa fa-upload me-1"></i>
+                <span>Upload Via CSV</span>
+              </div>
+            </Link>
+          </div>
         </div>
 
         <FilesComponent />

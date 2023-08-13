@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import Input from "../../../common/modal/Input";
 import Select from "../../../common/modal/Select";
+import Deletebtn from "../../../common/button/Deletebtn";
 import CkEditorComponent from "../../../common/modal/CkEditorComponent";
 import Submitbtn from "../../../common/button/Submitbtn";
-import Deletebtn from "../../../common/button/Deletebtn";
-import CencelBtn from "../../../common/button/CencelBtn";
-import ResetBtn from "../../../common/button/ResetBtn";
-import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 
-const AddPurchaseOrder = () => {
-  const [supplier, setSupplier] = useState(null);
+const AddSale = () => {
+  const [customer, setcustomer] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
   const {
     register,
@@ -22,11 +21,11 @@ const AddPurchaseOrder = () => {
     console.log(data);
   };
 
-  const handleSupplierChange = (supplier) => {
-    if (supplier !== "") {
-      setSupplier(supplier);
+  const handlecustomerChange = (customer) => {
+    if (customer !== "") {
+      setcustomer(customer);
     } else {
-      toast.warn("Please provide a supplier");
+      toast.warn("Please provide a customer");
     }
   };
   const handlePaymentType = (type) => {
@@ -38,32 +37,54 @@ const AddPurchaseOrder = () => {
       toast.warn("Please choose One Payment Method ");
     }
   };
-
   return (
     <>
-      <h4 className="p-4 ">Add Purchase Order</h4>
+      <h4 className="p-4 ">Add Sale</h4>
       <div className="card p-30">
-        {supplier ? <h5 className="pb-3 text-danger">Total Due: $0.00</h5> : ""}
+        {customer ? (
+          <div className="d-flex justify-content-between">
+            <h5 className="pb-3">
+              <span className="text-danger">Previous Due:</span>{" "}
+              <span className="text-info">$7,000.00</span>
+            </h5>
+            <h5 className="pb-3">
+              <span className="text-danger">Last Invoice:</span>{" "}
+              <span className="text-info"> INV-230712</span>
+            </h5>
+          </div>
+        ) : (
+          ""
+        )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row row-cols-1 row-cols-lg-3 ">
+            <div>
+              <Input
+                labelName={"Date"}
+                inputName={"date"}
+                inputType={"date"}
+                validation={{
+                  ...register("date", { required: true }),
+                }}
+              />
+            </div>
             <div>
               <label
                 style={{ fontSize: "14px" }}
                 htmlFor="exampleFormControlSelect9"
               >
-                Select Supplier*
+                Select customer*
               </label>
               <select
                 style={{ fontSize: "13px" }}
-                onChange={(e) => handleSupplierChange(e.target.value)}
-                name="supplier"
+                onChange={(e) => handlecustomerChange(e.target.value)}
+                name="customer"
                 className="form-control digits"
                 id="exampleFormControlSelect9"
                 defaultValue="1"
               >
                 <option value="">Select a option</option>
-                <option value="Supplier-01">Supplier-01</option>
-                <option value="Supplier-02">Supplier-02</option>
+                <option value="customer-01">customer-01</option>
+                <option value="customer-02">customer-02</option>
               </select>
             </div>
             <div>
@@ -76,66 +97,34 @@ const AddPurchaseOrder = () => {
             </div>
             <div>
               <Input
-                labelName={"Attach Document (PDF,JPG,PNG,DOC,DOCX,ZIP)"}
-                inputName={"document"}
-                inputType={"file"}
-                placeholder={"Attach Document"}
-                validation={{
-                  ...register("document", { required: true }),
-                }}
-              />
-            </div>
-            <div>
-              <Input
-                labelName={"Date"}
-                inputName={"date"}
-                inputType={"date"}
-                validation={{
-                  ...register("date", { required: true }),
-                }}
-              />
-            </div>
-            <div>
-              <Input
-                labelName={"Shipping Address"}
-                inputName={"shipping-address"}
+                labelName={"Invoice Number"}
+                inputName={"invoice-number"}
                 inputType={"text"}
-                placeholder={"Shipping Address"}
+                placeholder={"INV-230813"}
                 validation={{
-                  ...register("shipping-address", { required: true }),
+                  ...register("invoice-number", { required: true }),
                 }}
               />
             </div>
             <div>
               <Input
-                labelName={"Reference No"}
-                inputName={"reference-no"}
+                labelName={"Po No"}
+                inputName={"po-no"}
                 inputType={"text"}
-                placeholder={"Reference-No"}
+                placeholder={"Po No"}
                 validation={{
-                  ...register("reference-no", { required: true }),
-                }}
-              />
-            </div>
-            <div>
-              <Input
-                labelName={"Lc No."}
-                inputName={"lc-no"}
-                inputType={"text"}
-                placeholder={"Lc No."}
-                validation={{
-                  ...register("lc-no", { required: true }),
+                  ...register("po-no", { required: true }),
                 }}
               />
             </div>
             <div>
               <Select
-                name={"c&f-agent"}
-                labelName={"C&F Agent"}
-                placeholder={"Choose One"}
-                options={[""]}
+                name={"select-product"}
+                labelName={"Select Product"}
+                placeholder={"Select Product"}
+                options={["19 Inch LG TV > Brand: LG > Model: 19 Inch"]}
               />
-            </div>
+            </div>{" "}
             <div>
               <Input
                 labelName={"Discount"}
@@ -149,15 +138,7 @@ const AddPurchaseOrder = () => {
                 name={"discount-type"}
                 labelName={"Discount-Type"}
                 placeholder={"Amount"}
-                options={[""]}
-              />
-            </div>{" "}
-            <div>
-              <Select
-                name={"select-product"}
-                labelName={"Select Product"}
-                placeholder={"Select Product"}
-                options={["19 Inch LG TV > Brand: LG > Model: 19 Inch"]}
+                options={["Parcentage"]}
               />
             </div>{" "}
             <div>
@@ -255,7 +236,7 @@ const AddPurchaseOrder = () => {
           <div className="container-fluid">
             <div className="row">
               <div className="col-sm-12">
-                <div className="card" style={{ padding: "20px" }}>
+                <div className="card" style={{ padding: "20px 0px" }}>
                   <div className="table-responsive ">
                     <table className="table">
                       <thead className=" table-border">
@@ -382,9 +363,7 @@ const AddPurchaseOrder = () => {
             <CkEditorComponent label={"Note"} />
           </div>
           <div className="d-flex justify-content-center ">
-            <CencelBtn />
-            <ResetBtn />
-            <Submitbtn name={"Submit"} />
+            <Submitbtn name={"Save"} />
           </div>
         </form>
       </div>
@@ -392,4 +371,4 @@ const AddPurchaseOrder = () => {
   );
 };
 
-export default AddPurchaseOrder;
+export default AddSale;

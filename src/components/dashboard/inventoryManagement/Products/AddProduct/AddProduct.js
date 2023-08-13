@@ -58,6 +58,33 @@ const AddProduct = () => {
   return (
     <div>
       <Breadcrumb parent="Inventory management" title="Add New Product" />
+      <div class="pb-2">
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="inlineRadioOptions"
+            id="inlineRadio1"
+            value="option1"
+          />
+          <label class="form-check-label" for="inlineRadio1">
+            Raw Meterial
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="inlineRadioOptions"
+            id="inlineRadio2"
+            value="option2"
+          />
+          <label class="form-check-label" for="inlineRadio2">
+            Finish Product
+          </label>
+        </div>
+      </div>
+
       <div className="card p-30">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row row-cols-1 row-cols-lg-3 ">
@@ -119,7 +146,7 @@ const AddProduct = () => {
             {type === "Single" || type === "Varient" ? (
               <div style={{ position: "relative" }}>
                 <p
-                    onClick={unitToggle}
+                  onClick={unitToggle}
                   style={{
                     position: "absolute",
                     right: "14px",
@@ -163,7 +190,7 @@ const AddProduct = () => {
             {type == "Single" || type === "Varient" ? (
               <div style={{ position: "relative" }}>
                 <p
-                    onClick={brandToggle}
+                  onClick={brandToggle}
                   style={{
                     position: "absolute",
                     right: "14px",
@@ -193,7 +220,7 @@ const AddProduct = () => {
             {type == "Single" || type === "Varient" ? (
               <div style={{ position: "relative" }}>
                 <p
-                    onClick={categoryToggle}
+                  onClick={categoryToggle}
                   style={{
                     position: "absolute",
                     right: "14px",
@@ -254,7 +281,7 @@ const AddProduct = () => {
             {type == "Single" || type === "Varient" ? (
               <div style={{ position: "relative" }}>
                 <p
-                    onClick={subCategoryToggle}
+                  onClick={subCategoryToggle}
                   style={{
                     position: "absolute",
                     right: "14px",
@@ -266,7 +293,10 @@ const AddProduct = () => {
                   <span>
                     <i className="icofont icofont-plus-circle"></i>
                   </span>
-                  <SubCategoryModal modal={subCategory} toggle={subCategoryToggle} />
+                  <SubCategoryModal
+                    modal={subCategory}
+                    toggle={subCategoryToggle}
+                  />
                 </p>
 
                 <div>
@@ -285,7 +315,7 @@ const AddProduct = () => {
             {type == "Single" || type === "Varient" ? (
               <div style={{ position: "relative" }}>
                 <p
-                    onClick={modelToggle}
+                  onClick={modelToggle}
                   style={{
                     position: "absolute",
                     right: "14px",
