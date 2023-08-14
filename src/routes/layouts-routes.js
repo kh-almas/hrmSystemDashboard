@@ -106,6 +106,9 @@ import Payment from "../components/dashboard/inventoryManagement/sales/Payment";
 import SaleSelectReturn from "../components/dashboard/inventoryManagement/sales/SaleSelectReturn";
 import SaleSelectOrderDetails from "../components/dashboard/inventoryManagement/sales/SaleSelectOrderDetails";
 import EditContact from "../components/dashboard/inventoryManagement/Contacts/EditContact";
+import ViewContact from "../components/dashboard/inventoryManagement/Contacts/ViewContact";
+import SupplierPurchaseProductList
+  from "../components/dashboard/inventoryManagement/Contacts/SupplierPurchaseProductList";
 
 export const routes = [
   {
@@ -400,6 +403,14 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/edit-contacts`,
     Component: <EditContact />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/view-contacts`,
+    Component: <ViewContact />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/supplier/purchase-porduct-list/2`,
+    Component: <SupplierPurchaseProductList />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/supplier`,

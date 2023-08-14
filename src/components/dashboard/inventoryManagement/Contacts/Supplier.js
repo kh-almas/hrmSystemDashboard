@@ -20,7 +20,7 @@ const Supplier = () => {
     },
     {
       type: "link",
-      url: "/dashboard/inventory-management/sale/select-payment",
+      url: "/dashboard/inventory-management/contacts/view-contacts",
       text: "View",
     },
   ];
