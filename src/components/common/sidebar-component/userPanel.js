@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
-import man from '../../../assets/images/dashboard/user.png'
-import { Link } from 'react-router-dom';
 import { Edit } from 'react-feather';
-import {ELANA,GeneralManager} from '../../../constant'
+import { Link } from 'react-router-dom';
+import man from '../../../assets/images/dashboard/user.png';
+import { ELANA, GeneralManager } from '../../../constant';
 
 const UserPanel = () => {
     const url = '';

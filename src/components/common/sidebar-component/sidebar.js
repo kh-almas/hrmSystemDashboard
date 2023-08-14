@@ -1,11 +1,11 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import logo from '../../../assets/images/endless-logo.png';
 import logo_compact from '../../../assets/images/logo/compact-logo.png';
-import UserPanel from './userPanel';
-import { MENUITEMS } from '../../../components/common/sidebar-component/menu';
-import { Link } from 'react-router-dom';
+// import UserPanel from './userPanel';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { MENUITEMS } from '../../../components/common/sidebar-component/menu';
 import configDB from '../../../data/customizer/config';
 
 const Sidebar = (props) => {
@@ -183,7 +183,7 @@ const Sidebar = (props) => {
                     </div>
                 </div>
                 <div className="sidebar custom-scrollbar">
-                    <UserPanel />
+                    {/* <UserPanel /> */}
                     <ul
                         className="sidebar-menu"
                         id="myDIV"
