@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { ToastContainer } from "react-toastify";
 import Footer from "./common/footer";
-import Header from "./common/header-component/header";
+// import Header from "./common/header-component/header";
 import RightSidebar from "./common/right-sidebar";
 import Sidebar from "./common/sidebar-component/sidebar";
 import ThemeCustomizer from "./common/theme-customizer";
@@ -15,7 +15,7 @@ const AppLayout = (props) => {
       {/* <Loader /> */}
       <div className="page-wrapper">
         <div className="page-body-wrapper">
-          <Header />
+          {/*<Header />*/}
           <Sidebar />
           <RightSidebar />
           <div className="page-body">

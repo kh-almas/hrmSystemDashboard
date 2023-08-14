@@ -4,9 +4,7 @@ import { useForm } from "react-hook-form";
 import Select from "../../../../common/modal/Select";
 import Input from "../../../../common/modal/Input";
 import CkEditorComponent from "../../../../common/modal/CkEditorComponent";
-import { Button } from "react-bootstrap";
 import Submitbtn from "../../../../common/button/Submitbtn";
-import { set } from "lodash";
 import UnitModal from "../../../../common/AddProduct/Modal/UnitModal";
 import BrandModal from "../../../../common/AddProduct/Modal/BrandModal";
 import CategoryModal from "../../../../common/AddProduct/Modal/CategoryModal";
@@ -61,25 +59,25 @@ const AddProduct = () => {
       <div class="pb-2">
         <div class="form-check form-check-inline">
           <input
-            class="form-check-input"
+              className="form-check-input"
             type="radio"
             name="inlineRadioOptions"
             id="inlineRadio1"
             value="option1"
           />
-          <label class="form-check-label" for="inlineRadio1">
+          <label className="form-check-label" for="inlineRadio1">
             Raw Meterial
           </label>
         </div>
         <div class="form-check form-check-inline">
           <input
-            class="form-check-input"
+              className="form-check-input"
             type="radio"
             name="inlineRadioOptions"
             id="inlineRadio2"
             value="option2"
           />
-          <label class="form-check-label" for="inlineRadio2">
+          <label className="form-check-label" for="inlineRadio2">
             Finish Product
           </label>
         </div>

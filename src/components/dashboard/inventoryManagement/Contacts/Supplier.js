@@ -3,8 +3,27 @@ import Breadcrumb from "../../../common/breadcrumb";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import { Link } from "react-router-dom";
+import Dropdownbtn from "../../../common/button/Dropdownbtn";
 
 const Supplier = () => {
+  const checkFunction = () => console.log("it works");
+  const data = [
+    {
+      type: "link",
+      url: "/dashboard/inventory-management/contacts/edit-contacts",
+      text: "Edit",
+    },
+    {
+      type: "function",
+      url: checkFunction,
+      text: "Delete",
+    },
+    {
+      type: "link",
+      url: "/dashboard/inventory-management/contacts/view-contacts",
+      text: "View",
+    },
+  ];
   return (
     <div>
       <Breadcrumb parent="Inventory management" title="Supplier" />
@@ -28,7 +47,7 @@ const Supplier = () => {
             New Contact
           </Link>
           <Link to={"/dashboard/csv/upload"} className="btn btn-pill btn-info btn-air-info btn-air-info">
-            Upload Via CSV
+            <i className="fa fa-upload me-1"></i> Upload Via CSV
           </Link>
         </div>
 
@@ -65,12 +84,9 @@ const Supplier = () => {
                       <td>{""}</td>
                       <td>{""}</td>
                       <td>
-                        <button
-                          class="btn btn-pill btn-outline-info btn-xs p-1 px-4"
-                          type="button"
-                        >
-                          Select
-                        </button>
+                        <div>
+                          <Dropdownbtn data={data} />
+                        </div>
                       </td>
                     </tr>
                   </tbody>

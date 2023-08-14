@@ -30,6 +30,7 @@ const Dropdownbtn = ({ data }) => {
         isOpen={popover}
         target={"Popover-" + 6}
         toggle={DirectionToggle}
+        style={{minWidth: "150px"}}
       >
         <PopoverHeader></PopoverHeader>
         <PopoverBody className="p-0">

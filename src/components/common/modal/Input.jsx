@@ -11,6 +11,7 @@ const Input = ({
   defaultValue,
   validation,
 }) => {
+  console.log(defaultValue)
   const { register } = useForm();
   return (
     <>
@@ -22,13 +23,13 @@ const Input = ({
             {labelName}
           </label>
           <input
-              style={{fontSize: "10px", }} //height: "34px"
+              style={{fontSize: "13px", height: "37px" }} //
               className={`form-control ${errors?.inputName && "is-invalid"}`}
               id={inputName}
               type={inputType}
               name={inputName}
               placeholder={placeholder}
-              defaultValue={defaultValue || ""}
+              defaultValue={defaultValue}
               {...validation}
           />
           <span className="text-danger">
