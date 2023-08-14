@@ -21,6 +21,22 @@ export const MENUITEMS = [
         type: "link",
       },
       {
+        title: "Attendance",
+        type: "sub",
+        children: [
+          {
+            title: "Shift",
+            type: "link",
+            path: "/dashboard/hrm/shift",
+          },
+          {
+            title: "Manual Attendance",
+            type: "link",
+            path: "/dashboard/hrm/manage-attendance",
+          },
+        ],
+      },
+      {
         title: "Payroll Setup",
         type: "sub",
         children: [
@@ -40,11 +56,6 @@ export const MENUITEMS = [
             title: "Manage Leave",
             type: "link",
             path: "/dashboard/hrm/manage-leave",
-          },
-          {
-            title: "Attendance",
-            type: "link",
-            path: "/dashboard/hrm/manage-attendance",
           },
         ],
       },

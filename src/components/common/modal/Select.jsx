@@ -23,6 +23,7 @@ const Select = ({
             className="form-control digits"
             id="exampleFormControlSelect9"
             defaultValue="1"
+            // multiple={true}
           >
             <option>{placeholder}</option>
             {options?.map((item) => (
