@@ -10,8 +10,8 @@ import CompanyPolicy from "../components/dashboard/hrmSystem/CompanyPolicy";
 import DocumentSetup from "../components/dashboard/hrmSystem/DocumentSetup";
 import EmployeesAssetSetup from "../components/dashboard/hrmSystem/EmployeesAssetSetup";
 import EventSetup from "../components/dashboard/hrmSystem/EventSetup";
-import ManualAttendance from "../components/dashboard/hrmSystem/attendance/ManualAttendance";
-import ManageLeave from "../components/dashboard/hrmSystem/ManageLeaveSetup/ManageLeave";
+import ManualAttendance from "../components/common/Pages/ManualAttendance";
+import EmployeeLeave from "../components/dashboard/hrmSystem/ManageLeaveSetup/EmployeeLeave";
 import ManageMeeting from "../components/dashboard/hrmSystem/ManageMeeting";
 import Appraisal from "../components/dashboard/hrmSystem/PerformanceSetup/Appraisal";
 import GoalTracking from "../components/dashboard/hrmSystem/PerformanceSetup/GoalTracking";
@@ -108,458 +108,505 @@ import SaleSelectOrderDetails from "../components/dashboard/inventoryManagement/
 import EditContact from "../components/dashboard/inventoryManagement/Contacts/EditContact";
 import ViewContact from "../components/dashboard/inventoryManagement/Contacts/ViewContact";
 import SupplierPurchaseProductList
-  from "../components/dashboard/inventoryManagement/Contacts/SupplierPurchaseProductList";
+    from "../components/dashboard/inventoryManagement/Contacts/SupplierPurchaseProductList";
 import Shift from "../components/dashboard/hrmSystem/attendance/Shift";
 import ShiftSchedule from "../components/dashboard/hrmSystem/attendance/ShiftSchedule";
 import Attendance from "../components/dashboard/hrmSystem/attendance/Attendance";
+import LeaveApplication from "../components/dashboard/hrmSystem/ManageLeaveSetup/LeaveApplication";
+import LeaveSetup from "../components/dashboard/hrmSystem/ManageLeaveSetup/LeaveSetup";
+import EmployeeWiseAttendance from "../components/dashboard/hrmSystem/Reports/EmployeeWiseAttendance";
+import Leave from "../components/dashboard/hrmSystem/Reports/Leave";
+import EmployeeMovement from "../components/dashboard/hrmSystem/Reports/EmployeeMovement";
+import DateWiseAttendance from "../components/dashboard/hrmSystem/Reports/DateWiseAttendance";
+import DailyAttendance from "../components/dashboard/hrmSystem/Reports/DailyAttendance";
 
 export const routes = [
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/default`,
-    Component: <Default />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/ecommerce`,
-    Component: <Ecommerce />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/university`,
-    Component: <University />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/server`,
-    Component: <ServerComponent />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/project`,
-    Component: <Project />,
-  },
-  // hrm system
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee`,
-    Component: <EmployeSetup />,
-  },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/default`,
+        Component: <Default/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/ecommerce`,
+        Component: <Ecommerce/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/university`,
+        Component: <University/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/server`,
+        Component: <ServerComponent/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/project`,
+        Component: <Project/>,
+    },
+    // hrm system
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee`,
+        Component: <EmployeSetup/>,
+    },
 
     //update sidebar from here
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/shift`,
-    Component: <Shift />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/manual`,
-    Component: <ManualAttendance />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance`,
-    Component: <Attendance />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/shift/schedule`,
-    Component: <ShiftSchedule />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary`,
-    Component: <SetSalary />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/edit`,
-    Component: <EditEmploySetup />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary-details`,
-    Component: <SalaryDetails />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/payslip`,
-    Component: <Payslip />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-leave`,
-    Component: <ManageLeave />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-indicator`,
-    Component: <ManageIndicator />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-appraisal`,
-    Component: <Appraisal />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/goal-tracking`,
-    Component: <GoalTracking />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-training`,
-    Component: <ManageTraining />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-trainer`,
-    Component: <ManageTrainer />,
-  },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/shift`,
+        Component: <Shift/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/manual`,
+        Component: <ManualAttendance/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance`,
+        Component: <Attendance/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/shift/schedule`,
+        Component: <ShiftSchedule/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary`,
+        Component: <SetSalary/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/edit`,
+        Component: <EditEmploySetup/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary-details`,
+        Component: <SalaryDetails/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/payslip`,
+        Component: <Payslip/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/leave-type`,
+        Component: <LeaveType/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/leave-application`,
+        Component: <LeaveApplication/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/leave-setup`,
+        Component: <LeaveSetup/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/Employee-leave`,
+        Component: <EmployeeLeave/>,
+    },
 
-  {
-    path: `${process.env.PUBLIC_URL}/support-ticket/supportTicket`,
-    Component: <SupportTicket />,
-  },
 
-  //Recruitment Setup
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs`,
-    Component: <Jobs />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/create`,
-    Component: <CreateJob />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/application`,
-    Component: <Application />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/candidates`,
-    Component: <Candidates />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/on-boarding`,
-    Component: <OnBoarding />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/custom/question`,
-    Component: <CustomQuestion />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/interview/schedule`,
-    Component: <InterviewSchedule />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment/career`,
-    Component: <Career />,
-  },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/daily`,
+        Component: <DailyAttendance/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/datewise`,
+        Component: <DateWiseAttendance/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee/movements`,
+        Component: <EmployeeMovement/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee/leave`,
+        Component: <Leave/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/manual`,
+        Component: <ManualAttendance/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/single`,
+        Component: <EmployeeWiseAttendance/>,
+    },
 
-  //hr admin setup
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/award`,
-    Component: <Award />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/transfer`,
-    Component: <Transfer />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/resignation`,
-    Component: <Resignation />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/trip`,
-    Component: <Trip />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/promotion`,
-    Component: <Promotion />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/complaints`,
-    Component: <Complaints />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/warning`,
-    Component: <Warning />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/termination`,
-    Component: <Termination />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/announcement`,
-    Component: <Announcement />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday`,
-    Component: <Holiday />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday-calender`,
-    Component: <HolidayCalender />,
-  },
 
-  //hr admin setup
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/admin/event/setup`,
-    Component: <EventSetup />,
-  },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-indicator`,
+        Component: <ManageIndicator/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-appraisal`,
+        Component: <Appraisal/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/goal-tracking`,
+        Component: <GoalTracking/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-training`,
+        Component: <ManageTraining/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-trainer`,
+        Component: <ManageTrainer/>,
+    },
 
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/hrm-system-setup/manage-branch`,
-    Component: <ManageBranch />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-department`,
-    Component: <ManageDepartment />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-designation`,
-    Component: <ManageDesignation />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/leave-type`,
-    Component: <LeaveType />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-document`,
-    Component: <ManageDocumentType />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-payslip-type`,
-    Component: <ManagePayslipType />,
-  },
+    {
+        path: `${process.env.PUBLIC_URL}/support-ticket/supportTicket`,
+        Component: <SupportTicket/>,
+    },
 
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-allowance-option`,
-    Component: <ManageAllowanceOption />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-loan-option`,
-    Component: <ManageLoanOption />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-deduction-option`,
-    Component: <ManageDeductionOption />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-goal-type`,
-    Component: <ManageGoalType />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-training-type`,
-    Component: <ManageTrainingType />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-award-type`,
-    Component: <ManageAwardType />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-termination-type`,
-    Component: <ManageTerminationType />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-job-category`,
-    Component: <ManageJobCategory />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-job-stage`,
-    Component: <ManageJobStage />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-performance-type`,
-    Component: <ManagePerformanceType />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-competencies`,
-    Component: <ManageCompetencies />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-meeting`,
-    Component: <ManageMeeting />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-meeting-calender`,
-    Component: <MeetingCalender />,
-  },
+    //Recruitment Setup
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs`,
+        Component: <Jobs/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/create`,
+        Component: <CreateJob/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/application`,
+        Component: <Application/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/candidates`,
+        Component: <Candidates/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/on-boarding`,
+        Component: <OnBoarding/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/custom/question`,
+        Component: <CustomQuestion/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/jobs/interview/schedule`,
+        Component: <InterviewSchedule/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/recruitment/career`,
+        Component: <Career/>,
+    },
 
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/employees-asset-setup`,
-    Component: <EmployeesAssetSetup />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/document-setup`,
-    Component: <DocumentSetup />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/company-policy`,
-    Component: <CompanyPolicy />,
-  },
+    //hr admin setup
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/admin/award`,
+        Component: <Award/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/admin/transfer`,
+        Component: <Transfer/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/admin/resignation`,
+        Component: <Resignation/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/admin/trip`,
+        Component: <Trip/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/admin/promotion`,
+        Component: <Promotion/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/admin/complaints`,
+        Component: <Complaints/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/admin/warning`,
+        Component: <Warning/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/admin/termination`,
+        Component: <Termination/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/admin/announcement`,
+        Component: <Announcement/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday`,
+        Component: <Holiday/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/admin/holiday-calender`,
+        Component: <HolidayCalender/>,
+    },
 
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/default-team`,
-    Component: <DefaultTeam />,
-  },
+    //hr admin setup
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/admin/event/setup`,
+        Component: <EventSetup/>,
+    },
 
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/sales`,
-    Component: <Sale />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/select-payment`,
-    Component: <Payment />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/select-return`,
-    Component: <SaleSelectReturn />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/select-order-details`,
-    Component: <SaleSelectOrderDetails />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/add-sale`,
-    Component: <AddSale />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/sales-list`,
-    Component: <SalesList />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/return`,
-    Component: <SaleReturn />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/add-contacts`,
-    Component: <AddContacts />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/edit-contacts`,
-    Component: <EditContact />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/view-contacts`,
-    Component: <ViewContact />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/supplier/purchase-porduct-list/2`,
-    Component: <SupplierPurchaseProductList />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/supplier`,
-    Component: <Supplier />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/customer`,
-    Component: <Customer />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/settings`,
-    Component: <Settings />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products`,
-    Component: <Products />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products`,
-    Component: <ComboProduct />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/services`,
-    Component: <Service />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/add-product`,
-    Component: <AddProduct />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/category`,
-    Component: <Category />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/brand`,
-    Component: <Brand />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/model`,
-    Component: <Model />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/unit-type`,
-    Component: <UnitType />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/variant`,
-    Component: <Variant />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/add-opening-stock`,
-    Component: <OpeningStock />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-receive`,
-    Component: <ReceiveYourProduct />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-costing`,
-    Component: <ProductCosting />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-transfer`,
-    Component: <StockTransfer />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-list`,
-    Component: <StockList />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-report`,
-    Component: <StockReport />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-movement`,
-    Component: <ProductMovement />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-adjustment`,
-    Component: <StockAdjustments />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-info`,
-    Component: <ProductInformation />,
-  },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/hrm-system-setup/manage-branch`,
+        Component: <ManageBranch/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-department`,
+        Component: <ManageDepartment/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-designation`,
+        Component: <ManageDesignation/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/leave-type`,
+        Component: <LeaveType/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-document`,
+        Component: <ManageDocumentType/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-payslip-type`,
+        Component: <ManagePayslipType/>,
+    },
 
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/order`,
-    Component: <PurchaseOrder />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/add-purchase-order`,
-    Component: <AddPurchaseOrder />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/purchase-return/list`,
-    Component: <CreatePurchaseReturn />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/stock-alert-list`,
-    Component: <StockAlertList />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/return-list`,
-    Component: <PurchaseReturnList />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/c&f`,
-    Component: <CAndF />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/quotation`,
-    Component: <Quotation />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/transfer/make-transfer`,
-    Component: <MakeATransfer />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/transfer/transfered-list`,
-    Component: <TransferedLists />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/location/branch`,
-    Component: <Branch />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/location/warehouse`,
-    Component: <Warehouse />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/csv/upload`,
-    Component: <UploadCSV />,
-  }
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-allowance-option`,
+        Component: <ManageAllowanceOption/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-loan-option`,
+        Component: <ManageLoanOption/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-deduction-option`,
+        Component: <ManageDeductionOption/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-goal-type`,
+        Component: <ManageGoalType/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-training-type`,
+        Component: <ManageTrainingType/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-award-type`,
+        Component: <ManageAwardType/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-termination-type`,
+        Component: <ManageTerminationType/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-job-category`,
+        Component: <ManageJobCategory/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-job-stage`,
+        Component: <ManageJobStage/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-performance-type`,
+        Component: <ManagePerformanceType/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-competencies`,
+        Component: <ManageCompetencies/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/hrm/dashboard/manage-meeting`,
+        Component: <ManageMeeting/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-meeting-calender`,
+        Component: <MeetingCalender/>,
+    },
+
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/employees-asset-setup`,
+        Component: <EmployeesAssetSetup/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/document-setup`,
+        Component: <DocumentSetup/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/company-policy`,
+        Component: <CompanyPolicy/>,
+    },
+
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/default-team`,
+        Component: <DefaultTeam/>,
+    },
+
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/sales`,
+        Component: <Sale/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/select-payment`,
+        Component: <Payment/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/select-return`,
+        Component: <SaleSelectReturn/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/select-order-details`,
+        Component: <SaleSelectOrderDetails/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/add-sale`,
+        Component: <AddSale/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/sales-list`,
+        Component: <SalesList/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/sale/return`,
+        Component: <SaleReturn/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/add-contacts`,
+        Component: <AddContacts/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/edit-contacts`,
+        Component: <EditContact/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/view-contacts`,
+        Component: <ViewContact/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/supplier/purchase-porduct-list/2`,
+        Component: <SupplierPurchaseProductList/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/supplier`,
+        Component: <Supplier/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/customer`,
+        Component: <Customer/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/settings`,
+        Component: <Settings/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products`,
+        Component: <Products/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products`,
+        Component: <ComboProduct/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/services`,
+        Component: <Service/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/add-product`,
+        Component: <AddProduct/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/category`,
+        Component: <Category/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/brand`,
+        Component: <Brand/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/model`,
+        Component: <Model/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/unit-type`,
+        Component: <UnitType/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/variant`,
+        Component: <Variant/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/add-opening-stock`,
+        Component: <OpeningStock/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-receive`,
+        Component: <ReceiveYourProduct/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-costing`,
+        Component: <ProductCosting/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-transfer`,
+        Component: <StockTransfer/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-list`,
+        Component: <StockList/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-report`,
+        Component: <StockReport/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-movement`,
+        Component: <ProductMovement/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-adjustment`,
+        Component: <StockAdjustments/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-info`,
+        Component: <ProductInformation/>,
+    },
+
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/order`,
+        Component: <PurchaseOrder/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/add-purchase-order`,
+        Component: <AddPurchaseOrder/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/purchase-return/list`,
+        Component: <CreatePurchaseReturn/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/stock-alert-list`,
+        Component: <StockAlertList/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/return-list`,
+        Component: <PurchaseReturnList/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/c&f`,
+        Component: <CAndF/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/quotation`,
+        Component: <Quotation/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/transfer/make-transfer`,
+        Component: <MakeATransfer/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/transfer/transfered-list`,
+        Component: <TransferedLists/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/location/branch`,
+        Component: <Branch/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/location/warehouse`,
+        Component: <Warehouse/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/csv/upload`,
+        Component: <UploadCSV/>,
+    }
 ];

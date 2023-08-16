@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
-import Breadcrumb from "../../../common/breadcrumb";
-import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
+import Breadcrumb from "../breadcrumb";
+import CommonSearchComponet from "../salaryCard/CommonSearchComponet";
 import {useForm} from "react-hook-form";
-import Select from "../../../common/modal/Select";
-import Input from "../../../common/modal/Input";
-import Textarea from "../../../common/modal/Textarea";
+import Select from "../modal/Select";
+import Input from "../modal/Input";
+import Textarea from "../modal/Textarea";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 
 const ManualAttendance = () => {

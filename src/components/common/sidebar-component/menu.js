@@ -63,9 +63,60 @@ export const MENUITEMS = [
         type: "sub",
         children: [
           {
-            title: "Manage Leave",
+            title: "Leave Type",
             type: "link",
-            path: "/dashboard/hrm/manage-leave",
+            path: "/dashboard/hrm/leave-type",
+          },
+          {
+            title: "Application",
+            type: "link",
+            path: "/dashboard/hrm/leave-application",
+          },
+          {
+            title: "Leave Setup",
+            type: "link",
+            path: "/dashboard/hrm/leave-setup",
+          },
+          {
+            title: "Employee Leave",
+            type: "link",
+            path: "/dashboard/hrm/Employee-leave",
+          },
+        ],
+      },
+      {
+        title: "Reports",
+        type: "sub",
+        children: [
+          {
+            title: "Daily Attendance",
+            type: "link",
+            path: "/dashboard/hrm/attendance/daily",
+          },
+          {
+            title: "Date wise Attendance",
+            type: "link",
+            path: "/dashboard/hrm/attendance/datewise",
+          },
+          {
+            title: "Employee Movements",
+            type: "link",
+            path: "/dashboard/hrm/employee/movements",
+          },
+          {
+            title: "Leave",
+            type: "link",
+            path: "/dashboard/hrm/employee/leave",
+          },
+          {
+            title: "Manual Attendance",
+            type: "link",
+            path: "/dashboard/hrm/attendance/manual",
+          },
+          {
+            title: "Employee wise Attendance",
+            type: "link",
+            path: "/dashboard/hrm/attendance/single",
           },
         ],
       },
