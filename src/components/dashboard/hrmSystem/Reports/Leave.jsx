@@ -4,7 +4,7 @@ import Breadcrumb from "../../../common/breadcrumb";
 const Leave = () => {
     return (
         <>
-            <Breadcrumb parent="HRM System" title="Manage Employee Leave"/>
+            <Breadcrumb parent="HRM System" title="Employee Leave Reports"/>
         </>
     );
 };

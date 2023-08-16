@@ -21,7 +21,8 @@ const Trip = () => {
         console.log(data);
     };
 
-    return (<>
+    return (
+        <>
             <Breadcrumb parent="HRM System" title="Manage Trip"/>
             <div
                 style={{
@@ -144,7 +145,8 @@ const Trip = () => {
                     </form>
                 </ModalBody>
             </Modal>
-        </>);
+        </>
+    );
 };
 
 export default Trip;
