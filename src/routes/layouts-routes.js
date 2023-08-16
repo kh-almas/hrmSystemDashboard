@@ -10,7 +10,7 @@ import CompanyPolicy from "../components/dashboard/hrmSystem/CompanyPolicy";
 import DocumentSetup from "../components/dashboard/hrmSystem/DocumentSetup";
 import EmployeesAssetSetup from "../components/dashboard/hrmSystem/EmployeesAssetSetup";
 import EventSetup from "../components/dashboard/hrmSystem/EventSetup";
-import Attendance from "../components/dashboard/hrmSystem/ManageLeaveSetup/Attendance";
+import ManualAttendance from "../components/dashboard/hrmSystem/attendance/ManualAttendance";
 import ManageLeave from "../components/dashboard/hrmSystem/ManageLeaveSetup/ManageLeave";
 import ManageMeeting from "../components/dashboard/hrmSystem/ManageMeeting";
 import Appraisal from "../components/dashboard/hrmSystem/PerformanceSetup/Appraisal";
@@ -109,6 +109,9 @@ import EditContact from "../components/dashboard/inventoryManagement/Contacts/Ed
 import ViewContact from "../components/dashboard/inventoryManagement/Contacts/ViewContact";
 import SupplierPurchaseProductList
   from "../components/dashboard/inventoryManagement/Contacts/SupplierPurchaseProductList";
+import Shift from "../components/dashboard/hrmSystem/attendance/Shift";
+import ShiftSchedule from "../components/dashboard/hrmSystem/attendance/ShiftSchedule";
+import Attendance from "../components/dashboard/hrmSystem/attendance/Attendance";
 
 export const routes = [
   {
@@ -136,6 +139,24 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee`,
     Component: <EmployeSetup />,
   },
+
+    //update sidebar from here
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/shift`,
+    Component: <Shift />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/manual`,
+    Component: <ManualAttendance />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance`,
+    Component: <Attendance />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/shift/schedule`,
+    Component: <ShiftSchedule />,
+  },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary`,
     Component: <SetSalary />,
@@ -155,10 +176,6 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-leave`,
     Component: <ManageLeave />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-attendance`,
-    Component: <Attendance />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/manage-indicator`,

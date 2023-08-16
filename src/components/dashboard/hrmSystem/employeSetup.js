@@ -5,7 +5,7 @@ import CommonSearchComponet from "../../common/salaryCard/CommonSearchComponet";
 
 const EmployeSetup = () => {
   return (
-    <div>
+    <>
       <Breadcrumb parent="HRM System" title="Manage Employee" />
 
       <div className="container-fluid">
@@ -39,7 +39,7 @@ const EmployeSetup = () => {
                       <td>{""}</td>
                       <td>{""}</td>
                       <td>
-                        <div className="d-flex justify-content-between">
+                        <div className="d-flex justify-content-center">
                           <Link to="/dashboard/hrm/edit">
                             <i
                               style={{
@@ -70,7 +70,7 @@ const EmployeSetup = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

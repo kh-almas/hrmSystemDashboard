@@ -95,6 +95,7 @@ const Trip = () => {
                   validation={{ ...register("startdate", { required: true }) }}
                 />
               </div>
+
               <div>
                 <Input
                   labelName={"End Date"}
@@ -117,6 +118,7 @@ const Trip = () => {
                   }}
                 />
               </div>
+
               <div>
                 <Input
                   labelName={"Country"}
