@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import Breadcrumb from '../../../common/breadcrumb';
+import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import Input from "../../../common/modal/Input";
 import {useForm} from "react-hook-form";
+import Textarea from "../../../common/modal/Textarea";
 
-const LeaveType = () => {
+const LeaveApplication = () => {
     const {register, handleSubmit, formState: {errors},} = useForm();
     const [modal, setModal] = useState();
 
@@ -14,7 +15,7 @@ const LeaveType = () => {
     };
     return (
         <>
-            <Breadcrumb parent="HRM System" title="Manage Leave Type"/>
+            <Breadcrumb parent="HRM System" title="Manage Leave Application"/>
             <div
                 style={{
                     display: "flex",
@@ -38,8 +39,10 @@ const LeaveType = () => {
                     <table className="table">
                         <thead className=" table-border">
                         <tr>
-                            <th scope="col">{"On Leave Type"}</th>
-                            <th scope="col">{"Leave Type Category"}</th>
+                            <th scope="col">{"Employee"}</th>
+                            <th scope="col">{"Type"}</th>
+                            <th scope="col">{"Employee Comment"}</th>
+                            <th scope="col">{"Supervisor Comment"}</th>
                             <th scope="col">{"Active"}</th>
                             <th scope="col">{"Action"}</th>
                         </tr>
@@ -59,30 +62,33 @@ const LeaveType = () => {
             </div>
 
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Create Leave Type</ModalHeader>
+                <ModalHeader toggle={toggle}>Create Application</ModalHeader>
                 <ModalBody>
                     <form className="m-t-15">
+                        <div className="row row-cols-1 row-cols-lg-2">
+                            <div>
+                                <Input labelName={"Employee"} inputName={"employee"} inputType={"text"} placeholder={"Enter employee name"} validation={{...register("employee", { required: true }),}}/>
+                            </div>
+                            <div>
+                                <Input labelName={"Type"} inputName={"type"} inputType={"text"} placeholder={"Enter Leave Type"} validation={{...register("type", { required: true }),}}/>
+                            </div>
+                        </div>
+
                         <div>
-                            <Input
-                                labelName={"On Leave Type"}
-                                inputName={"type"}
-                                inputType={"text"}
-                                placeholder={"Enter Leave Type"}
-                                validation={{
-                                    ...register("type", { required: true }),
-                                }}
+                            <Textarea
+                                labelName={"Employee Comment"}
+                                inputName={"employeecomment"}
+                                placeholder={"Enter Employee Comment"}
+                                height={"5"}
                             />
                         </div>
 
                         <div>
-                            <Input
-                                labelName={"Leave Type Category"}
-                                inputName={"category"}
-                                inputType={"text"}
-                                placeholder={"Enter Leave Category"}
-                                validation={{
-                                    ...register("category", { required: true }),
-                                }}
+                            <Textarea
+                                labelName={"Supervisor Comment"}
+                                inputName={"supervisorcomment"}
+                                placeholder={"Enter Supervisor Comment"}
+                                height={"5"}
                             />
                         </div>
 
@@ -107,4 +113,4 @@ const LeaveType = () => {
     );
 };
 
-export default LeaveType;
+export default LeaveApplication;
