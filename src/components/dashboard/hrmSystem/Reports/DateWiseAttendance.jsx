@@ -12,7 +12,7 @@ const DateWiseAttendance = () => {
     };
     return (
         <>
-            <Breadcrumb parent="HRM System" title="Manage Date Wise Attendance"/>
+            <Breadcrumb parent="HRM System" title="Date Wise Attendance Reports"/>
             <div className="card" style={{padding: "20px"}}>
                 <div className="row">
                     <div className="col-sm-12 col-xl-6">

@@ -6,7 +6,7 @@ import CommonSearchComponet from "../../../common/salaryCard/CommonSearchCompone
 const DailyAttendance = () => {
     return (
         <>
-            <Breadcrumb parent="HRM System" title="Manage Daily Attendance"/>
+            <Breadcrumb parent="HRM System" title="Daily Attendance Reports"/>
             <div className="card" style={{padding: "20px"}}>
                 <CommonSearchComponet/>
                 <div className="table-responsive">
