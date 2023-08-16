@@ -32,7 +32,17 @@ export const MENUITEMS = [
           {
             title: "Manual Attendance",
             type: "link",
-            path: "/dashboard/hrm/manage-attendance",
+            path: "/dashboard/hrm/attendance/manual",
+          },
+          {
+            title: "Shift Schedule",
+            type: "link",
+            path: "/dashboard/hrm/shift/schedule",
+          },
+          {
+            title: "Attendance",
+            type: "link",
+            path: "/dashboard/hrm/attendance",
           },
         ],
       },

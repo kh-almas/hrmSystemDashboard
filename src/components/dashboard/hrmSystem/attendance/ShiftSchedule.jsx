@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import {Link} from "react-router-dom";
-import {useForm} from "react-hook-form";
-import {Button, Modal, ModalBody, ModalHeader} from "reactstrap"
+import {Button, Modal, ModalBody, ModalHeader} from "reactstrap";
 import Input from "../../../common/modal/Input";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import Select from "../../../common/modal/Select";
+import {useForm} from "react-hook-form";
 
-const Shift = () => {
+const ShiftSchedule = () => {
     const {
         register,
         handleSubmit,
@@ -23,9 +23,11 @@ const Shift = () => {
     const onSubmit = (data) => {
         console.log(data);
     };
+    const [selectAllDays, setSelectAllDays] = useState(false);
+
     return (
         <>
-            <Breadcrumb parent="HRM System" title="Manage Shift" />
+            <Breadcrumb parent="HRM System" title="Manage Shift Schedule" />
             <div
                 style={{
                     display: "flex",
@@ -51,12 +53,11 @@ const Shift = () => {
                                 <table className="table">
                                     <thead className=" table-border">
                                     <tr>
-                                        <th scope="col">{"Shift Id"}</th>
-                                        <th scope="col">{"Shift Name"}</th>
-                                        <th scope="col">{"Start Time"}</th>
-                                        <th scope="col">{"End Time"}</th>
+                                        <th scope="col">{"Date From"}</th>
+                                        <th scope="col">{"Date To"}</th>
+                                        <th scope="col">{"Shift From"}</th>
+                                        <th scope="col">{"Shift To"}</th>
                                         <th scope="col">{"Weekend"}</th>
-                                        <th scope="col">{"Status"}</th>
                                         <th scope="col">{"Action"}</th>
                                     </tr>
                                     </thead>
@@ -65,7 +66,6 @@ const Shift = () => {
                                         <td>{"#EMP0000001"}</td>
                                         <td>{"accountant"}</td>
                                         <td>{"accountant@example.com"}</td>
-                                        <td>{""}</td>
                                         <td>{""}</td>
                                         <td>{""}</td>
                                         <td>
@@ -101,45 +101,89 @@ const Shift = () => {
                 </div>
             </div>
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Shift Entry</ModalHeader>
+                <ModalHeader toggle={toggle}>Shift Schedule Entry</ModalHeader>
                 <ModalBody>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div>
-                            <Input
-                                labelName={"Shift Name"}
-                                inputName={"name"}
-                                inputType={"text"}
-                                placeholder={"Enter shift name"}
-                                validation={{
-                                    ...register("naem", { required: true }),
-                                }}
-                            />
-                        </div>
                         <div className="row row-cols-1 row-cols-lg-2">
                             <div>
                                 <Input
-                                    labelName={"Start Time"}
-                                    inputName={"starttime"}
-                                    inputType={"time"}
-                                    validation={{ ...register("starttime", { required: true }) }}
+                                    labelName={"Date From"}
+                                    inputName={"datefrom"}
+                                    inputType={"date"}
+                                    validation={{ ...register("datefrom", { required: true }) }}
                                 />
                             </div>
                             <div>
                                 <Input
-                                    labelName={"End Time"}
-                                    inputName={"endtime"}
-                                    inputType={"time"}
-                                    validation={{ ...register("endtime", { required: true }) }}
+                                    labelName={"Date To"}
+                                    inputName={"dateto"}
+                                    inputType={"date"}
+                                    validation={{ ...register("dateto", { required: true }) }}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="row row-cols-1 row-cols-lg-2">
+                            <div>
+                                <Select
+                                    name={"shiftfrom"}
+                                    labelName={"Shift From"}
+                                    placeholder={"Select an option"}
+                                    options={["Morning", "Evening", "Night"]}
+                                />
+                            </div>
+                            <div>
+                                <Select
+                                    name={"shiftto"}
+                                    labelName={"Shift To"}
+                                    placeholder={"Select an option"}
+                                    options={["Morning", "Evening", "Night"]}
                                 />
                             </div>
                         </div>
 
                         <div className="mb-3">
-                            <label htmlFor="weekdays">Weekend</label>
-                            <DropdownMultiselect
-                                options={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}
-                                name="weekdays"
-                            />
+                            <label htmlFor="weekdays">Active On</label>
+                            <div>
+                                <div class="animate-chk">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label className="d-block" htmlFor="chk-ani">
+                                                <input onClick={() => setSelectAllDays(!selectAllDays)} className="checkbox_animated" id="chk-ani" type="checkbox" />
+                                                All Days
+                                            </label>
+                                            <label className="d-block" htmlFor="chk-ani">
+                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani" type="checkbox" />
+                                                Sunday
+                                            </label>
+                                            <label className="d-block" htmlFor="chk-ani1">
+                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani1" type="checkbox" />
+                                                Monday
+                                            </label>
+                                            <label className="d-block" htmlFor="chk-ani2">
+                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani2" type="checkbox" />
+                                                Tuesday
+                                            </label>
+                                            <label className="d-block" htmlFor="chk-ani3">
+                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani3" type="checkbox" />
+                                                Wednesday
+                                            </label>
+                                            <label className="d-block" htmlFor="chk-ani3">
+                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani3" type="checkbox" />
+                                                Thursday
+                                            </label>
+                                            <label className="d-block" htmlFor="chk-ani3">
+                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani3" type="checkbox" />
+                                                Friday
+                                            </label>
+                                            <label className="d-block" htmlFor="chk-ani3">
+                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani3" type="checkbox" />
+                                                Saturday
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <Select
@@ -165,4 +209,4 @@ const Shift = () => {
     );
 };
 
-export default Shift;
+export default ShiftSchedule;
