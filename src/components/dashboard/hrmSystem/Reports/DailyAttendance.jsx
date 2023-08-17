@@ -91,13 +91,13 @@ const DailyAttendance = () => {
                     <div>
                         <h3 className="fw-bold">Daily Attendance Report</h3>
                     </div>
-                    <div>
-                        <PDFDownloadLink document={<MyDocument />} fileName="somename.pdf" className={"btn btn-primary"}>
-                            {({ blob, url, loading, error }) =>
-                                loading ? 'Loading document...' : 'Download now!'
-                            }
-                        </PDFDownloadLink>
-                    </div>
+                </div>
+                <div>
+                    <PDFDownloadLink document={<MyDocument />} fileName="somename.pdf" className={"btn btn-primary"}>
+                        {({ blob, url, loading, error }) =>
+                            loading ? 'Loading document...' : 'Download now!'
+                        }
+                    </PDFDownloadLink>
                 </div>
             </div>
             <div className="card" style={{padding: "20px"}}>
