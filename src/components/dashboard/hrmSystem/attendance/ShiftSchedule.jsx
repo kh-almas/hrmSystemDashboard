@@ -57,7 +57,7 @@ const ShiftSchedule = () => {
                                         <th scope="col">{"Date To"}</th>
                                         <th scope="col">{"Shift From"}</th>
                                         <th scope="col">{"Shift To"}</th>
-                                        <th scope="col">{"Weekend"}</th>
+                                        <th scope="col">{"Weekdays"}</th>
                                         <th scope="col">{"Action"}</th>
                                     </tr>
                                     </thead>

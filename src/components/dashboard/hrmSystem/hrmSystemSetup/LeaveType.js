@@ -4,6 +4,7 @@ import CommonSearchComponet from "../../../common/salaryCard/CommonSearchCompone
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import Input from "../../../common/modal/Input";
 import {useForm} from "react-hook-form";
+import Select from "../../../common/modal/Select";
 
 const LeaveType = () => {
     const {register, handleSubmit, formState: {errors},} = useForm();
@@ -39,16 +40,13 @@ const LeaveType = () => {
                         <thead className=" table-border">
                         <tr>
                             <th scope="col">{"On Leave Type"}</th>
-                            <th scope="col">{"Leave Type Category"}</th>
-                            <th scope="col">{"Active"}</th>
+                            <th scope="col">{"Status"}</th>
                             <th scope="col">{"Action"}</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             {/*
-                      <td>{""}</td>
-                      <td>{""}</td>
                       <td>{""}</td>
                       <td>{""}</td>                      */}
                         </tr>
@@ -75,22 +73,12 @@ const LeaveType = () => {
                         </div>
 
                         <div>
-                            <Input
-                                labelName={"Leave Type Category"}
-                                inputName={"category"}
-                                inputType={"text"}
-                                placeholder={"Enter Leave Category"}
-                                validation={{
-                                    ...register("category", { required: true }),
-                                }}
+                            <Select
+                                name={"status"}
+                                labelName={"Status"}
+                                placeholder={"Select an option"}
+                                options={["Active", "Inactive"]}
                             />
-                        </div>
-
-                        <div>
-                            <div class="checkbox checkbox-dark">
-                                <input id="inline-1" type="checkbox" />
-                                <label htmlFor="inline-1">Is Active</label>
-                            </div>
                         </div>
                     </form>
                 </ModalBody>

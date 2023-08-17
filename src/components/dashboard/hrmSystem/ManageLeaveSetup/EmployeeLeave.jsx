@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
+import Select from "../../../common/modal/Select";
 
 const EmployeeLeave = () => {
     const [modal, setModal] = useState();
@@ -77,7 +78,6 @@ const EmployeeLeave = () => {
                                 defaultValue="1"
                             >
                                 <option>{"Select Employee"}</option>
-                                <option>{"accountant"}</option>
                             </select>
                         </div>
                         <div className="col">
@@ -88,8 +88,6 @@ const EmployeeLeave = () => {
                                 defaultValue="1"
                             >
                                 <option>{"Select Leave Type"}</option>
-                                <option>{"accountant"}</option>
-                                <option>{"other"}</option>
                             </select>
                         </div>
 
@@ -136,6 +134,14 @@ const EmployeeLeave = () => {
                                     placeholder="Leave Remark"
                                 ></textarea>
                             </div>
+                        </div>
+                        <div className="mt-3">
+                            <Select
+                                name={"status"}
+                                labelName={"Status"}
+                                placeholder={"Select an option"}
+                                options={["Approve", "Decline", "Pending"]}
+                            />
                         </div>
                     </form>
                 </ModalBody>
