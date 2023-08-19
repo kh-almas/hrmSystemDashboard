@@ -190,16 +190,16 @@ const MyDocument = () => (
                                 <Text>Status</Text>
                             </View>
                             <View style={{paddingTop: '5px', paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
-                            <Text>2023-08-01</Text>
-                            <Text>EMP001</Text>
-                            <Text>John Smith</Text>
-                            <Text>Manager</Text>
-                            <Text>09:00</Text>
-                            <Text>18:00</Text>
-                            <Text>00:15</Text>
-                            <Text>00:00</Text>
-                            <Text>Present</Text>
-                        </View>
+                                <Text>2023-08-01</Text>
+                                <Text>EMP001</Text>
+                                <Text>John Smith</Text>
+                                <Text>Manager</Text>
+                                <Text>09:00</Text>
+                                <Text>18:00</Text>
+                                <Text>00:15</Text>
+                                <Text>00:00</Text>
+                                <Text>Present</Text>
+                            </View>
                             <View style={{paddingTop: '5px', paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
                                 <Text>2023-08-01</Text>
                                 <Text>EMP002</Text>

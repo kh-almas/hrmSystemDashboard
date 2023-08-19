@@ -71,19 +71,25 @@ const EmployeeMovementReport = () => (
           </View>
         </View>
         <View style={{ marginTop: "10px" }}>
-          <View
-            style={{
-              paddingBottom: "5px",
-              borderBottom: "1px dashed gray",
-              flexDirection: "row",
-              fontSize: "11px",
-              fontWeight: "100",
-              justifyContent: "space-around",
-            }}
-          >
+          <View style={{paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: "row", fontSize: "11px", fontWeight: "100", justifyContent: "space-around",}}>
             <Text>Date</Text>
             <Text>In Time</Text>
             <Text>Out Time</Text>
+          </View>
+          <View style={{paddingTop: "5px", paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: "row", fontSize: "11px", fontWeight: "100", justifyContent: "space-around",}}>
+            <Text>{"2023-08-19"}</Text>
+            <Text>{"09:00 AM"}</Text>
+            <Text>{"06:00 PM"}</Text>
+          </View>
+          <View style={{paddingTop: "5px", paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: "row", fontSize: "11px", fontWeight: "100", justifyContent: "space-around",}}>
+            <Text>{"2023-08-19"}</Text>
+            <Text>{"09:00 AM"}</Text>
+            <Text>{"06:00 PM"}</Text>
+          </View>
+          <View style={{paddingTop: "5px", paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: "row", fontSize: "11px", fontWeight: "100", justifyContent: "space-around",}}>
+            <Text>{"2023-08-19"}</Text>
+            <Text>{"09:00 AM"}</Text>
+            <Text>{"06:00 PM"}</Text>
           </View>
           <View
             style={{
