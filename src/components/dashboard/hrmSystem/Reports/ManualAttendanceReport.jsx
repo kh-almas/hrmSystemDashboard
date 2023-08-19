@@ -56,16 +56,7 @@ const ManualAttendanceReportPDF = () => (
           </View>
         </View>
         <View style={{ marginTop: "10px" }}>
-          <View
-            style={{
-              paddingBottom: "5px",
-              borderBottom: "1px dashed gray",
-              flexDirection: "row",
-              fontSize: "11px",
-              fontWeight: "100",
-              justifyContent: "space-around",
-            }}
-          >
+          <View style={{paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: "row", fontSize: "11px", fontWeight: "100", justifyContent: "space-around",}}>
             <Text>Employee</Text>
             <Text>Date</Text>
             <Text>Status</Text>
@@ -74,6 +65,26 @@ const ManualAttendanceReportPDF = () => (
             <Text>Late In</Text>
             <Text>Early Leaving</Text>
             <Text>Overtime</Text>
+          </View>
+          <View style={{paddingTop: "5px", paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: "row", fontSize: "11px", fontWeight: "100", justifyContent: "space-around",}}>
+            <Text>{"John Doe"}</Text>
+            <Text>{"2023-08-19"}</Text>
+            <Text>{"Present"}</Text>
+            <Text>{"09:00 AM"}</Text>
+            <Text>{"06:00 PM"}</Text>
+            <Text>{"15 minutes"}</Text>
+            <Text>{"N/A"}</Text>
+            <Text>{"1 hour"}</Text>
+          </View>
+          <View style={{paddingTop: "5px", paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: "row", fontSize: "11px", fontWeight: "100", justifyContent: "space-around",}}>
+            <Text>{"Jane Smith"}</Text>
+            <Text>{"2023-08-20"}</Text>
+            <Text>{"Present"}</Text>
+            <Text>{"09:30 AM"}</Text>
+            <Text>{"06:15 PM"}</Text>
+            <Text>{"30 minutes"}</Text>
+            <Text>{"N/A"}</Text>
+            <Text>{"45 minutes"}</Text>
           </View>
           <View
             style={{
