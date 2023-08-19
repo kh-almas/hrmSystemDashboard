@@ -528,7 +528,7 @@ const DateWiseAttendance = () => {
           <h6 className="fw-bold mb-3">Department: Dept2</h6>
           <div className="table-responsive">
             <table className="table">
-              <thead className=" table-border">
+              <thead className="table-border">
                 <tr>
                   <th scope="col">{"Date"}</th>
                   <th scope="col">{"Employee Code"}</th>
@@ -542,21 +542,55 @@ const DateWiseAttendance = () => {
                   <th scope="col">{"Action"}</th>
                 </tr>
               </thead>
-              <tbody className="">
-                {/* <tr>
-                    <th scope="row">{""}</th>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr> */}
+              <tbody style={{ whiteSpace: "nowrap" }}>
+                <tr>
+                  <td>{"2023-08-19"}</td>
+                  <td>{"EMP001"}</td>
+                  <td>{"John Doe"}</td>
+                  <td>{"Software Engineer"}</td>
+                  <td>{"09:00 AM"}</td>
+                  <td>{"06:00 PM"}</td>
+                  <td>{"15 minutes"}</td>
+                  <td>{"N/A"}</td>
+                  <td>{"Present"}</td>
+                  <td>
+                    <button className="btn btn-primary">Edit</button>
+                    <button className="btn btn-danger mx-2">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{"2023-08-20"}</td>
+                  <td>{"EMP002"}</td>
+                  <td>{"Jane Smith"}</td>
+                  <td>{"Product Manager"}</td>
+                  <td>{"09:30 AM"}</td>
+                  <td>{"06:15 PM"}</td>
+                  <td>{"30 minutes"}</td>
+                  <td>{"N/A"}</td>
+                  <td>{"Present"}</td>
+                  <td>
+                    <button className="btn btn-primary">Edit</button>
+                    <button className="btn btn-danger mx-2">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{"2023-08-21"}</td>
+                  <td>{"EMP003"}</td>
+                  <td>{"Michael Johnson"}</td>
+                  <td>{"Sales Executive"}</td>
+                  <td>{"08:45 AM"}</td>
+                  <td>{"05:30 PM"}</td>
+                  <td>{"10 minutes"}</td>
+                  <td>{"N/A"}</td>
+                  <td>{"Present"}</td>
+                  <td>
+                    <button className="btn btn-primary">Edit</button>
+                    <button className="btn btn-danger mx-2">Delete</button>
+                  </td>
+                </tr>
+                {/* Add more rows as needed */}
               </tbody>
             </table>
-            <p className="text-center p-t-10">No entries found</p>
           </div>
         </div>
       </div>
@@ -569,7 +603,7 @@ const DateWiseAttendance = () => {
           <h6 className="fw-bold mb-3">Department: Dept1</h6>
           <div className="table-responsive">
             <table className="table">
-              <thead className=" table-border">
+              <thead className="table-border">
                 <tr>
                   <th scope="col">{"Date"}</th>
                   <th scope="col">{"Employee Code"}</th>
@@ -583,21 +617,55 @@ const DateWiseAttendance = () => {
                   <th scope="col">{"Action"}</th>
                 </tr>
               </thead>
-              <tbody>
-                {/* <tr>
-                    <th scope="row">{""}</th>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr> */}
+              <tbody style={{ whiteSpace: "nowrap" }}>
+                <tr>
+                  <td>{"2023-08-19"}</td>
+                  <td>{"EMP001"}</td>
+                  <td>{"John Doe"}</td>
+                  <td>{"Software Engineer"}</td>
+                  <td>{"09:00 AM"}</td>
+                  <td>{"06:00 PM"}</td>
+                  <td>{"15 minutes"}</td>
+                  <td>{"N/A"}</td>
+                  <td>{"Present"}</td>
+                  <td>
+                    <button className="btn btn-primary">Edit</button>
+                    <button className="btn btn-danger mx-2">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{"2023-08-20"}</td>
+                  <td>{"EMP002"}</td>
+                  <td>{"Jane Smith"}</td>
+                  <td>{"Product Manager"}</td>
+                  <td>{"09:30 AM"}</td>
+                  <td>{"06:15 PM"}</td>
+                  <td>{"30 minutes"}</td>
+                  <td>{"N/A"}</td>
+                  <td>{"Present"}</td>
+                  <td>
+                    <button className="btn btn-primary">Edit</button>
+                    <button className="btn btn-danger mx-2">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{"2023-08-21"}</td>
+                  <td>{"EMP003"}</td>
+                  <td>{"Michael Johnson"}</td>
+                  <td>{"Sales Executive"}</td>
+                  <td>{"08:45 AM"}</td>
+                  <td>{"05:30 PM"}</td>
+                  <td>{"10 minutes"}</td>
+                  <td>{"N/A"}</td>
+                  <td>{"Present"}</td>
+                  <td>
+                    <button className="btn btn-primary">Edit</button>
+                    <button className="btn btn-danger mx-2">Delete</button>
+                  </td>
+                </tr>
               </tbody>
             </table>
-            <p className="text-center p-t-10">No entries found</p>
+           
           </div>
         </div>
 
@@ -605,7 +673,7 @@ const DateWiseAttendance = () => {
           <h6 className="fw-bold mb-3">Department: Dept2</h6>
           <div className="table-responsive">
             <table className="table">
-              <thead className=" table-border">
+              <thead className="table-border">
                 <tr>
                   <th scope="col">{"Date"}</th>
                   <th scope="col">{"Employee Code"}</th>
@@ -619,21 +687,55 @@ const DateWiseAttendance = () => {
                   <th scope="col">{"Action"}</th>
                 </tr>
               </thead>
-              <tbody>
-                {/* <tr>
-                    <th scope="row">{""}</th>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr> */}
+              <tbody style={{ whiteSpace: "nowrap" }}>
+                <tr>
+                  <td>{"2023-08-19"}</td>
+                  <td>{"EMP001"}</td>
+                  <td>{"John Doe"}</td>
+                  <td>{"Software Engineer"}</td>
+                  <td>{"09:00 AM"}</td>
+                  <td>{"06:00 PM"}</td>
+                  <td>{"15 minutes"}</td>
+                  <td>{"N/A"}</td>
+                  <td>{"Present"}</td>
+                  <td>
+                    <button className="btn btn-primary">Edit</button>
+                    <button className="btn btn-danger mx-2">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{"2023-08-20"}</td>
+                  <td>{"EMP002"}</td>
+                  <td>{"Jane Smith"}</td>
+                  <td>{"Product Manager"}</td>
+                  <td>{"09:30 AM"}</td>
+                  <td>{"06:15 PM"}</td>
+                  <td>{"30 minutes"}</td>
+                  <td>{"N/A"}</td>
+                  <td>{"Present"}</td>
+                  <td>
+                    <button className="btn btn-primary">Edit</button>
+                    <button className="btn btn-danger mx-2">Delete</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{"2023-08-21"}</td>
+                  <td>{"EMP003"}</td>
+                  <td>{"Michael Johnson"}</td>
+                  <td>{"Sales Executive"}</td>
+                  <td>{"08:45 AM"}</td>
+                  <td>{"05:30 PM"}</td>
+                  <td>{"10 minutes"}</td>
+                  <td>{"N/A"}</td>
+                  <td>{"Present"}</td>
+                  <td>
+                    <button className="btn btn-primary">Edit</button>
+                    <button className="btn btn-danger mx-2">Delete</button>
+                  </td>
+                </tr>
               </tbody>
             </table>
-            <p className="text-center p-t-10">No entries found</p>
+           
           </div>
         </div>
       </div>
