@@ -5,9 +5,8 @@ import {Document, Image, Page, PDFDownloadLink, Text, View} from "@react-pdf/ren
 import logo from "../../../../assets/images/logo/companyLogo.jpg";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 
-const EmployeeWiseAttendanceReport = () => (
+const LeaveReports = () => (
     <Document>
-        {/*// style={styles.page style={{ width: '600px'}}}*/}
         <Page size="A4" style={{margin: '10px', padding: '0 20px 0 0', marginRight: '20px'}}>
             <View style={{margin: '10px', padding: '10px',}}>
                 <View style={{fontSize: '11px', flexDirection:"row", justifyContent: "space-between", alignItems: "center"}}>
@@ -25,24 +24,18 @@ const EmployeeWiseAttendanceReport = () => (
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: "15px"}}>
                     <View>
-                        <Text style={{fontSize: '16px', margin: 'auto'}}>Employee Wise Attendance Reports</Text>
+                        <Text style={{fontSize: '16px', margin: 'auto'}}>Leave Reports</Text>
                         <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>From: 01 Aug 2023 To: 01 Nov 2023</Text>
-                        <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>Employee Name: ABC</Text>
-                        <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>Employee Code: #abc</Text>
-                        <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>Department: IT</Text>
-                        <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>Branch: Maintenance</Text>
                     </View>
                 </View>
                 <View style={{marginTop: '10px'}}>
                     <View style={{paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
-                        <Text>Date</Text>
-                        <Text>In Time</Text>
-                        <Text>Out Time</Text>
-                        <Text>Late In</Text>
-                        <Text>Early Out</Text>
-                        <Text>Over Time</Text>
-                        <Text>Total Hours</Text>
-                        <Text>Status</Text>
+                        <Text>Employee Name</Text>
+                        <Text>Casual Leave</Text>
+                        <Text>Sick Leave</Text>
+                        <Text>Absent</Text>
+                        <Text>Compensatory off</Text>
+                        <Text>Total</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: "5px"}}>
                         <Text style={{fontSize: '10px', }}>No entries found</Text>
@@ -53,7 +46,7 @@ const EmployeeWiseAttendanceReport = () => (
     </Document>
 );
 
-const EmployeeWiseAttendance = () => {
+const LeaveReport = () => {
     const [modal, setModal] = useState();
     const toggle = () => {
         setModal(!modal);
@@ -63,11 +56,11 @@ const EmployeeWiseAttendance = () => {
             <div className="pt-4 mb-3">
                 <div className="d-flex flex-rows justify-content-center">
                     <div>
-                        <h3 className="fw-bold">Employee Wise Attendance Reports</h3>
+                        <h3 className="fw-bold">Leave Reports</h3>
                     </div>
                 </div>
                 <div className="d-flex justify-content-center">
-                    <PDFDownloadLink document={<EmployeeWiseAttendanceReport />} fileName="EmployeeWiseAttendanceReport.pdf" className={"btn btn-primary"}>
+                    <PDFDownloadLink document={<LeaveReports />} fileName="LeaveReports.pdf" className={"btn btn-primary"}>
                         {({ blob, url, loading, error }) =>
                             loading ? 'Loading document...' : 'Download now!'
                         }
@@ -84,12 +77,6 @@ const EmployeeWiseAttendance = () => {
                     <div className="col">
                         <label htmlFor="exampleFormControlInput1">Date To</label>
                         <input className="form-control" required={true} type="date"/>
-                    </div>
-                    <div className="col">
-                        <label htmlFor="exampleFormControlInput1">Employee Name</label>
-                        <select className="form-control digits" id="exampleFormControlSelect9" defaultValue="1">
-                            <option>{"Select employee name"}</option>
-                        </select>
                     </div>
                     <div className="col">
                         <div
@@ -159,40 +146,36 @@ const EmployeeWiseAttendance = () => {
 
             <div className="card" style={{padding: "20px"}}>
                 <div>
-                    <h6 className="fw-bold">Employee Name: ABC</h6>
-                    <p className="fw-bold mb-1">Employee Code: #abc</p>
-                    <p className="fw-bold mb-1">Department: IT</p>
-                    <p className="fw-bold mb-1">Branch: Maintenance</p>
-                </div>
-                <hr />
-                <div>
                     <div className="table-responsive">
-                        <table className="table">
-                            <thead className=" table-border">
-                            <tr>
-                                <th scope="col">{"Date"}</th>
-                                <th scope="col">{"In Time"}</th>
-                                <th scope="col">{"Out Time"}</th>
-                                <th scope="col">{"Late In"}</th>
-                                <th scope="col">{"Early Out"}</th>
-                                <th scope="col">{"Over Time"}</th>
-                                <th scope="col">{"Total Hours"}</th>
-                                <th scope="col">{"Status"}</th>
-                            </tr>
-                            </thead>
+                        <table className="table text-center table-bordered">
                             <tbody>
-                            {/* <tr>
-                                <td>{""}</td>
-                                <td>{""}</td>
-                                <td>{""}</td>
-                                <td>{""}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                              </tr> */}
+                            <tr>
+                                <td scope="col" className="middle" rowSpan={3}>{"Employee Name"}</td>
+                                <td scope="col" colSpan={6}>{"Paid"}</td>
+                                <td scope="col" colSpan={2}>{"Unpaid"}</td>
+                                <td scope="col" className="middle" colSpan={2}  rowSpan={2}>{"Compensatory off"}</td>
+                            </tr>
+                            <tr>
+                                <td scope="col" colSpan={2}>{"Casual Leave"}</td>
+                                <td scope="col" colSpan={2}>{"Sick Leave"}</td>
+                                <td scope="col" colSpan={2}>{"Total"}</td>
+                                <td scope="col" colSpan={2}>{"Absent"}</td>
+                            </tr>
+                            <tr>
+                                <td scope="col">{"Taken"}</td>
+                                <td scope="col">{"Balance"}</td>
+                                <td scope="col">{"Taken"}</td>
+                                <td scope="col">{"Balance"}</td>
+                                <td scope="col">{"Taken"}</td>
+                                <td scope="col">{"Balance"}</td>
+                                <td scope="col">{"Taken"}</td>
+                                <td scope="col">{"Balance"}</td>
+                                <td scope="col">{"Taken"}</td>
+                                <td scope="col">{"Balance"}</td>
+                            </tr>
                             </tbody>
                         </table>
-                        <p className="text-center p-t-10">No entries found</p>
+                        <p className="text-center p-t-10 table-text">No entries found</p>
                     </div>
                 </div>
             </div>
@@ -200,4 +183,4 @@ const EmployeeWiseAttendance = () => {
     );
 };
 
-export default EmployeeWiseAttendance;
+export default LeaveReport;

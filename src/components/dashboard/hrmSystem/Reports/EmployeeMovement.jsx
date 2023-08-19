@@ -33,6 +33,8 @@ const EmployeeMovementReport = () => (
                         <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>From: 01 Aug 2023 To: 01 Nov 2023</Text>
                         <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>Employee Name: ABC</Text>
                         <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>Employee Code: #abc</Text>
+                        <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>Department: IT</Text>
+                        <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>Branch: Maintenance</Text>
                     </View>
                 </View>
                 <View style={{marginTop: '10px'}}>
@@ -40,10 +42,6 @@ const EmployeeMovementReport = () => (
                         <Text>Date</Text>
                         <Text>In Time</Text>
                         <Text>Out Time</Text>
-                        <Text>Late In</Text>
-                        <Text>Early Out</Text>
-                        <Text>Over Time</Text>
-                        <Text>Status</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: "5px"}}>
                         <Text style={{fontSize: '10px', }}>No entries found</Text>
@@ -161,7 +159,9 @@ const EmployeeMovement = () => {
             <div className="card" style={{padding: "20px"}}>
                 <div>
                     <h6 className="fw-bold">Employee Name: ABC</h6>
-                    <p className="fw-bold">Employee Code: #abc</p>
+                    <p className="fw-bold mb-1">Employee Code: #abc</p>
+                    <p className="fw-bold mb-1">Department: IT</p>
+                    <p className="fw-bold mb-1">Branch: Maintenance</p>
                 </div>
                 <hr />
                 <div>
@@ -172,10 +172,6 @@ const EmployeeMovement = () => {
                                 <th scope="col">{"Date"}</th>
                                 <th scope="col">{"In Time"}</th>
                                 <th scope="col">{"Out Time"}</th>
-                                <th scope="col">{"Late In"}</th>
-                                <th scope="col">{"Early Out"}</th>
-                                <th scope="col">{"Over Time"}</th>
-                                <th scope="col">{"Status"}</th>
                             </tr>
                             </thead>
                             <tbody>
