@@ -27,11 +27,13 @@ const EmployeeWiseAttendanceReport = () => (
                     <View>
                         <Text style={{fontSize: '16px', margin: 'auto'}}>Employee Wise Attendance Reports</Text>
                         <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>From: 01 Aug 2023 To: 01 Nov 2023</Text>
-                        <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>Employee Name: ABC</Text>
-                        <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>Employee Code: #abc</Text>
-                        <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>Department: IT</Text>
-                        <Text style={{fontSize: '10px', margin: 'auto', paddingTop: '4px'}}>Branch: Maintenance</Text>
                     </View>
+                </View>
+                <View style={{marginTop: '10px'}}>
+                    <Text style={{fontSize: '10px', paddingTop: '4px'}}>Employee Name: ABC</Text>
+                    <Text style={{fontSize: '10px', paddingTop: '4px'}}>Employee Code: #abc</Text>
+                    <Text style={{fontSize: '10px', paddingTop: '4px'}}>Department: IT</Text>
+                    <Text style={{fontSize: '10px', paddingTop: '4px'}}>Branch: Maintenance</Text>
                 </View>
                 <View style={{marginTop: '10px'}}>
                     <View style={{paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
