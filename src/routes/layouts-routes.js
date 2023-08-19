@@ -120,6 +120,7 @@ import EmployeeMovement from "../components/dashboard/hrmSystem/Reports/Employee
 import DateWiseAttendance from "../components/dashboard/hrmSystem/Reports/DateWiseAttendance";
 import DailyAttendance from "../components/dashboard/hrmSystem/Reports/DailyAttendance";
 import LeaveReport from "../components/dashboard/hrmSystem/Reports/LeaveReport";
+import ManualAttendanceReport from "../components/dashboard/hrmSystem/Reports/ManualAttendanceReport";
 
 export const routes = [
     {
@@ -216,13 +217,18 @@ export const routes = [
         Component: <LeaveReport/>,
     },
     {
-        path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/manual`,
-        Component: <ManualAttendance/>,
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/manual/report`,
+        Component: <ManualAttendanceReport />,
     },
     {
         path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/single`,
         Component: <EmployeeWiseAttendance/>,
     },
+
+
+
+
+
 
 
     {

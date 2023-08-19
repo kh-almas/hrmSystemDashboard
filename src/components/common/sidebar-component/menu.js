@@ -111,7 +111,7 @@ export const MENUITEMS = [
           {
             title: "Manual Attendance",
             type: "link",
-            path: "/dashboard/hrm/attendance/manual",
+            path: "/dashboard/hrm/attendance/manual/report",
           },
           {
             title: "Employee wise Attendance",
