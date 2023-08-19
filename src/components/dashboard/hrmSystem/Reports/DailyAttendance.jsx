@@ -59,8 +59,30 @@ const MyDocument = () => (
                                 <Text>Early Out</Text>
                                 <Text>Status</Text>
                             </View>
+                            <View style={{paddingTop: '5px', paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
+                                <Text>2023-08-01</Text>
+                                <Text>EMP001</Text>
+                                <Text>John Smith</Text>
+                                <Text>Manager</Text>
+                                <Text>09:00</Text>
+                                <Text>18:00</Text>
+                                <Text>00:15</Text>
+                                <Text>00:00</Text>
+                                <Text>Present</Text>
+                            </View>
+                            <View style={{paddingTop: '5px', paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
+                                <Text>2023-08-01</Text>
+                                <Text>EMP002</Text>
+                                <Text>Jane Doe</Text>
+                                <Text>Analyst</Text>
+                                <Text>09:15</Text>
+                                <Text>17:30</Text>
+                                <Text>00:30</Text>
+                                <Text>00:30</Text>
+                                <Text>Partial</Text>
+                            </View>
                             <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: "5px"}}>
-                                <Text style={{fontSize: '10px', }}>No entries found</Text>
+                                {/*<Text style={{fontSize: '10px', }}>No entries found</Text>*/}
                             </View>
                         </View>
                     </View>
@@ -78,8 +100,30 @@ const MyDocument = () => (
                                 <Text>Early Out</Text>
                                 <Text>Status</Text>
                             </View>
+                            <View style={{paddingTop: '5px', paddingTop: '5px', paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
+                                <Text>2023-08-01</Text>
+                                <Text>EMP001</Text>
+                                <Text>John Smith</Text>
+                                <Text>Manager</Text>
+                                <Text>09:00</Text>
+                                <Text>18:00</Text>
+                                <Text>00:15</Text>
+                                <Text>00:00</Text>
+                                <Text>Present</Text>
+                            </View>
+                            <View style={{paddingTop: '5px', paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
+                                <Text>2023-08-01</Text>
+                                <Text>EMP002</Text>
+                                <Text>Jane Doe</Text>
+                                <Text>Analyst</Text>
+                                <Text>09:15</Text>
+                                <Text>17:30</Text>
+                                <Text>00:30</Text>
+                                <Text>00:30</Text>
+                                <Text>Partial</Text>
+                            </View>
                             <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: "5px"}}>
-                                <Text style={{fontSize: '10px', }}>No entries found</Text>
+                                {/*<Text style={{fontSize: '10px', }}>No entries found</Text>*/}
                             </View>
                         </View>
                     </View>
@@ -104,8 +148,30 @@ const MyDocument = () => (
                                 <Text>Early Out</Text>
                                 <Text>Status</Text>
                             </View>
+                            <View style={{paddingTop: '5px', paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
+                                <Text>2023-08-01</Text>
+                                <Text>EMP001</Text>
+                                <Text>John Smith</Text>
+                                <Text>Manager</Text>
+                                <Text>09:00</Text>
+                                <Text>18:00</Text>
+                                <Text>00:15</Text>
+                                <Text>00:00</Text>
+                                <Text>Present</Text>
+                            </View>
+                            <View style={{paddingTop: '5px', paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
+                                <Text>2023-08-01</Text>
+                                <Text>EMP002</Text>
+                                <Text>Jane Doe</Text>
+                                <Text>Analyst</Text>
+                                <Text>09:15</Text>
+                                <Text>17:30</Text>
+                                <Text>00:30</Text>
+                                <Text>00:30</Text>
+                                <Text>Partial</Text>
+                            </View>
                             <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: "5px"}}>
-                                <Text style={{fontSize: '10px', }}>No entries found</Text>
+                                {/*<Text style={{fontSize: '10px', }}>No entries found</Text>*/}
                             </View>
                         </View>
                     </View>
@@ -123,8 +189,30 @@ const MyDocument = () => (
                                 <Text>Early Out</Text>
                                 <Text>Status</Text>
                             </View>
+                            <View style={{paddingTop: '5px', paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
+                            <Text>2023-08-01</Text>
+                            <Text>EMP001</Text>
+                            <Text>John Smith</Text>
+                            <Text>Manager</Text>
+                            <Text>09:00</Text>
+                            <Text>18:00</Text>
+                            <Text>00:15</Text>
+                            <Text>00:00</Text>
+                            <Text>Present</Text>
+                        </View>
+                            <View style={{paddingTop: '5px', paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
+                                <Text>2023-08-01</Text>
+                                <Text>EMP002</Text>
+                                <Text>Jane Doe</Text>
+                                <Text>Analyst</Text>
+                                <Text>09:15</Text>
+                                <Text>17:30</Text>
+                                <Text>00:30</Text>
+                                <Text>00:30</Text>
+                                <Text>Partial</Text>
+                            </View>
                             <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: "5px"}}>
-                                <Text style={{fontSize: '10px', }}>No entries found</Text>
+                                {/*<Text style={{fontSize: '10px', }}>No entries found</Text>*/}
                             </View>
                         </View>
                     </View>
@@ -172,24 +260,45 @@ const DailyAttendance = () => {
                                 <th scope="col">{"Late In"}</th>
                                 <th scope="col">{"Early Out"}</th>
                                 <th scope="col">{"Status"}</th>
-                                <th scope="col">{"Action"}</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {/* <tr>
-                    <th scope="row">{""}</th>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr> */}
+                                <tr>
+                                    <td>2023-08-01</td>
+                                    <td>EMP001</td>
+                                    <td>John Smith</td>
+                                    <td>Manager</td>
+                                    <td>09:00</td>
+                                    <td>18:00</td>
+                                    <td>00:15</td>
+                                    <td>00:00</td>
+                                    <td>Present</td>
+                                </tr>
+                                <tr>
+                                    <td>2023-08-01</td>
+                                    <td>EMP002</td>
+                                    <td>Jane Doe</td>
+                                    <td>Analyst</td>
+                                    <td>09:15</td>
+                                    <td>17:30</td>
+                                    <td>00:30</td>
+                                    <td>00:30</td>
+                                    <td>Partial</td>
+                                </tr>
+                                <tr>
+                                    <td>2023-08-01</td>
+                                    <td>EMP003</td>
+                                    <td>Michael Brown</td>
+                                    <td>Clerk</td>
+                                    <td>09:30</td>
+                                    <td>18:15</td>
+                                    <td>01:00</td>
+                                    <td>00:15</td>
+                                    <td>Present</td>
+                                </tr>
                             </tbody>
                         </table>
-                        <p className="text-center p-t-10">No entries found</p>
+                        {/*<p className="text-center p-t-10">No entries found</p>*/}
                     </div>
                 </div>
 
@@ -212,20 +321,42 @@ const DailyAttendance = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {/* <tr>
-                    <th scope="row">{""}</th>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr> */}
+                                <tr>
+                                    <td>2023-08-01</td>
+                                    <td>EMP001</td>
+                                    <td>John Smith</td>
+                                    <td>Manager</td>
+                                    <td>09:00</td>
+                                    <td>18:00</td>
+                                    <td>00:15</td>
+                                    <td>00:00</td>
+                                    <td>Present</td>
+                                </tr>
+                                <tr>
+                                    <td>2023-08-01</td>
+                                    <td>EMP002</td>
+                                    <td>Jane Doe</td>
+                                    <td>Analyst</td>
+                                    <td>09:15</td>
+                                    <td>17:30</td>
+                                    <td>00:30</td>
+                                    <td>00:30</td>
+                                    <td>Partial</td>
+                                </tr>
+                                <tr>
+                                    <td>2023-08-01</td>
+                                    <td>EMP003</td>
+                                    <td>Michael Brown</td>
+                                    <td>Clerk</td>
+                                    <td>09:30</td>
+                                    <td>18:15</td>
+                                    <td>01:00</td>
+                                    <td>00:15</td>
+                                    <td>Present</td>
+                                </tr>
                             </tbody>
                         </table>
-                        <p className="text-center p-t-10">No entries found</p>
+                        {/*<p className="text-center p-t-10">No entries found</p>*/}
                     </div>
                 </div>
             </div>
@@ -253,20 +384,42 @@ const DailyAttendance = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {/* <tr>
-                    <th scope="row">{""}</th>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr> */}
+                            <tr>
+                                <td>2023-08-01</td>
+                                <td>EMP001</td>
+                                <td>John Smith</td>
+                                <td>Manager</td>
+                                <td>09:00</td>
+                                <td>18:00</td>
+                                <td>00:15</td>
+                                <td>00:00</td>
+                                <td>Present</td>
+                            </tr>
+                            <tr>
+                                <td>2023-08-01</td>
+                                <td>EMP002</td>
+                                <td>Jane Doe</td>
+                                <td>Analyst</td>
+                                <td>09:15</td>
+                                <td>17:30</td>
+                                <td>00:30</td>
+                                <td>00:30</td>
+                                <td>Partial</td>
+                            </tr>
+                            <tr>
+                                <td>2023-08-01</td>
+                                <td>EMP003</td>
+                                <td>Michael Brown</td>
+                                <td>Clerk</td>
+                                <td>09:30</td>
+                                <td>18:15</td>
+                                <td>01:00</td>
+                                <td>00:15</td>
+                                <td>Present</td>
+                            </tr>
                             </tbody>
                         </table>
-                        <p className="text-center p-t-10">No entries found</p>
+                        {/*<p className="text-center p-t-10">No entries found</p>*/}
                     </div>
                 </div>
 
@@ -289,20 +442,42 @@ const DailyAttendance = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {/* <tr>
-                    <th scope="row">{""}</th>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td>{""}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr> */}
+                            <tr>
+                                <td>2023-08-01</td>
+                                <td>EMP001</td>
+                                <td>John Smith</td>
+                                <td>Manager</td>
+                                <td>09:00</td>
+                                <td>18:00</td>
+                                <td>00:15</td>
+                                <td>00:00</td>
+                                <td>Present</td>
+                            </tr>
+                            <tr>
+                                <td>2023-08-01</td>
+                                <td>EMP002</td>
+                                <td>Jane Doe</td>
+                                <td>Analyst</td>
+                                <td>09:15</td>
+                                <td>17:30</td>
+                                <td>00:30</td>
+                                <td>00:30</td>
+                                <td>Partial</td>
+                            </tr>
+                            <tr>
+                                <td>2023-08-01</td>
+                                <td>EMP003</td>
+                                <td>Michael Brown</td>
+                                <td>Clerk</td>
+                                <td>09:30</td>
+                                <td>18:15</td>
+                                <td>01:00</td>
+                                <td>00:15</td>
+                                <td>Present</td>
+                            </tr>
                             </tbody>
                         </table>
-                        <p className="text-center p-t-10">No entries found</p>
+                        {/*<p className="text-center p-t-10">No entries found</p>*/}
                     </div>
                 </div>
             </div>
