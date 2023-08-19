@@ -1,81 +1,133 @@
 import React, {useState} from 'react';
 import logo from '../../../../assets/images/logo/companyLogo.jpg';
-import { Page, Text, View, Document, StyleSheet, PDFDownloadLink, Image } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, PDFDownloadLink, Image, Font } from '@react-pdf/renderer';
+import robotoRegular from '../../../../assets/fonts/googleFont/Roboto/Roboto-Regular.ttf';
+import robotoLightItalic from '../../../../assets/fonts/googleFont/Roboto/Roboto-LightItalic.ttf';
+import robotoBold from '../../../../assets/fonts/googleFont/Roboto/Roboto-Bold.ttf';
+import robotoBlack from '../../../../assets/fonts/googleFont/Roboto/Roboto-Black.ttf';
 
 
-// Create styles
-const styles = StyleSheet.create({
-    page: {
-        // flexDirection: 'row',
-        backgroundColor: '#E4E4E4',
-        // marginRight: '320px',
-    },
-    section: {
-        margin: '10px',
-        padding: '10px',
-        fontSize: '11px',
-    },
+// Font.register({
+//     family: 'Roboto',
+//     src: '../../../../assets/fonts/googleFont/Roboto/Roboto-Regular.ttf',
+//     // fontStyle: 'normal',
+//     // fontWeight: 'normal',
+//     // fonts: [
+//     //     { src: "../../../../assets/fonts/googleFont/Roboto/Roboto-Regular.ttf" },
+//     //     { src: "../../../../assets/fonts/googleFont/Roboto/Roboto-LightItalic.ttf", fontStyle: 'italic' },
+//     //     { src: "../../../../assets/fonts/googleFont/Roboto/Roboto-Bold.ttf", fontWeight: 'bold' },
+//     //     { src: "../../../../assets/fonts/googleFont/Roboto/Roboto-Black.ttf", fontWeight: 'heavy' }
+//     // ]
+// })
 
-    table: {
-        flexDirection: 'row',
-        margin: '10px',
-        padding: '10px',
-        fontSize: '11px',
-        justifyContent: 'space-around',
-    }
-});
-
-
-// Create Document Component
 const MyDocument = () => (
-    <Document style={{ width: '600px',}}>
-        {/*// style={styles.page}*/}
-        <Page size="A4" style={{margin: '10px', padding: '10px',}}>
-            <View style={{fontSize: '11px', color: '#000000', flexDirection:"row", justifyContent: "space-between", alignItems: "center"}}>
-                <View style={styles.section}>
-                    <Image src={logo} style={{width: "150px",}}/>
-                    <View style={{marginTop: "8px"}}>
-                        <Text>7/1 (7th Floor), Kabbokash</Text>
-                        <Text>Kawran Bazar Rd, Dhaka 1215</Text>
+    <Document>
+        {/*// style={styles.page style={{ width: '600px'}}}*/}
+        <Page size="A4" style={{margin: '10px', padding: '0 20px 0 0', marginRight: '20px'}}>
+            <View style={{margin: '10px', padding: '10px',}}>
+                <View style={{fontSize: '11px', flexDirection:"row", justifyContent: "space-between", alignItems: "center"}}>
+                    <View style={{fontSize: '11px',}}>
+                        <Image src={logo} style={{width: "50px",}}/>
+                        <View style={{marginTop: "8px"}}>
+                            <Text>7/1 (7th Floor), Kabbokash</Text>
+                            <Text>Kawran Bazar Rd, Dhaka 1215</Text>
+                        </View>
+                    </View>
+                    <View style={{fontSize: '11px',}}>
+                        <Text>Report Date</Text>
+                        <Text>17.08.2023</Text>
                     </View>
                 </View>
-                <View style={styles.section}>
-                    <Text>Report Date</Text>
-                    <Text>17.08.2023</Text>
+                <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: "15px"}}>
+                    <Text style={{fontSize: '16px',}}>Daily Attendance Report</Text>
                 </View>
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: "center",}}>
-                <Text style={{fontSize: '20px', fontWeight: "bold",}}>Daily Attendance Report</Text>
-            </View>
-            <View>
-                <Text style={{fontSize: '16px', fontWeight: "bold", margin: "10px 0 13px 8px", }}>Branch: Developer</Text>
-            </View>
-            <View>
-                <Text style={{fontSize: '13px', fontWeight: "bold", margin: "0 0 7px 8px"}}>Department: Dept1</Text>
-                <View style={{paddingBottom: "5px", borderBottom: "1px solid #000000", flexDirection: 'row', fontSize: '11px', justifyContent: 'space-around',marginRight: '10px', paddingRight: '10px',}}>
-                    <Text>Date</Text>
-                    <Text>Employee Code</Text>
-                    <Text>Employee Name</Text>
-                    <Text>Designation</Text>
-                    <Text>In Time</Text>
-                    <Text>Out Time</Text>
-                    <Text>Late In</Text>
-                    <Text>Early Out</Text>
-                    <Text>Status</Text>
+                <View>
+                    <View>
+                        <Text style={{fontSize: '13px',  margin: "10px 0 13px 0", }}>Branch: Developer</Text>
+                    </View>
+                    <View>
+                        <Text style={{fontSize: '12px', fontWeight: "bold", margin: "0 0 7px 0"}}>Department: Dept1</Text>
+                        <View>
+                            <View style={{paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
+                                <Text>Date</Text>
+                                <Text>Employee Code</Text>
+                                <Text>Employee Name</Text>
+                                <Text>Designation</Text>
+                                <Text>In Time</Text>
+                                <Text>Out Time</Text>
+                                <Text>Late In</Text>
+                                <Text>Early Out</Text>
+                                <Text>Status</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: "5px"}}>
+                                <Text style={{fontSize: '10px', }}>No entries found</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={{marginTop: "15px"}}>
+                        <Text style={{fontSize: '12px', fontWeight: "bold", margin: "0 0 7px 0"}}>Department: Dept2</Text>
+                        <View>
+                            <View style={{paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', justifyContent: 'space-around'}}>
+                                <Text>Date</Text>
+                                <Text>Employee Code</Text>
+                                <Text>Employee Name</Text>
+                                <Text>Designation</Text>
+                                <Text>In Time</Text>
+                                <Text>Out Time</Text>
+                                <Text>Late In</Text>
+                                <Text>Early Out</Text>
+                                <Text>Status</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: "5px"}}>
+                                <Text style={{fontSize: '10px', }}>No entries found</Text>
+                            </View>
+                        </View>
+                    </View>
                 </View>
-            </View>
-            <View style={{marginTop: "20px"}}>
-                <Text style={{fontSize: '13px', fontWeight: "bold", margin: "0 0 7px 8px"}}>Department: Dept2</Text>
-                <View style={{paddingBottom: "5px", borderBottom: "1px solid #000000", flexDirection: 'row', fontSize: '11px', justifyContent: 'space-around',marginRight: '10px', paddingRight: '10px',}}>
-                    <Text>Date</Text>
-                    <Text>Employee Code</Text>
-                    <Text>Employee Name</Text>
-                    <Text>Designation</Text>
-                    <Text>In Time</Text>
-                    <Text>Out Time</Text>
-                    <Text>Late In</Text>
-                    <Text>Early Out</Text>
-                    <Text>Status</Text>
+
+
+                <View style={{marginTop: '15px'}}>
+                    <View>
+                        <Text style={{fontSize: '13px',  margin: "10px 0 13px 0", }}>Branch: Security</Text>
+                    </View>
+                    <View>
+                        <Text style={{fontSize: '12px', fontWeight: "bold", margin: "0 0 7px 0"}}>Department: Dept1</Text>
+                        <View>
+                            <View style={{paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', fontWeight: '100', justifyContent: 'space-around'}}>
+                                <Text>Date</Text>
+                                <Text>Employee Code</Text>
+                                <Text>Employee Name</Text>
+                                <Text>Designation</Text>
+                                <Text>In Time</Text>
+                                <Text>Out Time</Text>
+                                <Text>Late In</Text>
+                                <Text>Early Out</Text>
+                                <Text>Status</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: "5px"}}>
+                                <Text style={{fontSize: '10px', }}>No entries found</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={{marginTop: "15px"}}>
+                        <Text style={{fontSize: '12px', fontWeight: "bold", margin: "0 0 7px 0"}}>Department: Dept2</Text>
+                        <View>
+                            <View style={{paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: 'row', fontSize: '11px', justifyContent: 'space-around',}}>
+                                <Text>Date</Text>
+                                <Text>Employee Code</Text>
+                                <Text>Employee Name</Text>
+                                <Text>Designation</Text>
+                                <Text>In Time</Text>
+                                <Text>Out Time</Text>
+                                <Text>Late In</Text>
+                                <Text>Early Out</Text>
+                                <Text>Status</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: "center", marginTop: "5px"}}>
+                                <Text style={{fontSize: '10px', }}>No entries found</Text>
+                            </View>
+                        </View>
+                    </View>
                 </View>
             </View>
         </Page>
@@ -91,13 +143,13 @@ const DailyAttendance = () => {
                     <div>
                         <h3 className="fw-bold">Daily Attendance Report</h3>
                     </div>
-                    <div>
-                        <PDFDownloadLink document={<MyDocument />} fileName="somename.pdf" className={"btn btn-primary"}>
-                            {({ blob, url, loading, error }) =>
-                                loading ? 'Loading document...' : 'Download now!'
-                            }
-                        </PDFDownloadLink>
-                    </div>
+                </div>
+                <div className="d-flex justify-content-center">
+                    <PDFDownloadLink document={<MyDocument />} fileName="DailyAttendanceReport.pdf" className={"btn btn-primary"}>
+                        {({ blob, url, loading, error }) =>
+                            loading ? 'Loading document...' : 'Download now!'
+                        }
+                    </PDFDownloadLink>
                 </div>
             </div>
             <div className="card" style={{padding: "20px"}}>
