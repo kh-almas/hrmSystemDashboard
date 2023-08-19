@@ -260,7 +260,6 @@ const DateWiseAttendance = () => {
                                 <th scope="col">{"Late In"}</th>
                                 <th scope="col">{"Early Out"}</th>
                                 <th scope="col">{"Status"}</th>
-                                <th scope="col">{"Action"}</th>
                             </tr>
                             </thead>
                             <tbody>
