@@ -115,12 +115,22 @@ import Attendance from "../components/dashboard/hrmSystem/attendance/Attendance"
 import LeaveApplication from "../components/dashboard/hrmSystem/ManageLeaveSetup/LeaveApplication";
 import LeaveSetup from "../components/dashboard/hrmSystem/ManageLeaveSetup/LeaveSetup";
 import EmployeeWiseAttendance from "../components/dashboard/hrmSystem/Reports/EmployeeWiseAttendance";
-import Leave from "../components/dashboard/hrmSystem/Reports/Leave";
 import EmployeeMovement from "../components/dashboard/hrmSystem/Reports/EmployeeMovement";
 import DateWiseAttendance from "../components/dashboard/hrmSystem/Reports/DateWiseAttendance";
 import DailyAttendance from "../components/dashboard/hrmSystem/Reports/DailyAttendance";
 import LeaveReport from "../components/dashboard/hrmSystem/Reports/LeaveReport";
 import ManualAttendanceReport from "../components/dashboard/hrmSystem/Reports/ManualAttendanceReport";
+import DailyAttendanceReportPDf
+    from "../components/dashboard/hrmSystem/Reports/DailyAttendnaceReport/DailyAttendanceReportPDf";
+import DateWiseAttendanceReportPDf
+    from "../components/dashboard/hrmSystem/Reports/DateWiseAttendnaceReport/DateWiseAttendanceReportPDf";
+import EmployMovementReportPDf
+    from "../components/dashboard/hrmSystem/Reports/EmployMovementReport/EmployMovementReportPDf";
+import LeaveReportPDf from "../components/dashboard/hrmSystem/Reports/LeaveReport/LeaveReportPDf";
+import ManualAttendanceReportPDf
+    from "../components/dashboard/hrmSystem/Reports/ManualAttendanceReport/ManualAttendanceReportPDf";
+import EmployWiseAttendanceReportPDf
+    from "../components/dashboard/hrmSystem/Reports/EmployWiseAttendanceReport/EmployWiseAttendanceReportPDf";
 
 export const routes = [
     {
@@ -205,24 +215,48 @@ export const routes = [
         Component: <DailyAttendance/>,
     },
     {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/daily/pdf`,
+        Component: <DailyAttendanceReportPDf />,
+    },
+    {
         path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/datewise`,
         Component: <DateWiseAttendance/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/datewise/pdf`,
+        Component: <DateWiseAttendanceReportPDf/>,
     },
     {
         path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee/movements`,
         Component: <EmployeeMovement/>,
     },
     {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee/movements/pdf`,
+        Component: <EmployMovementReportPDf/>,
+    },
+    {
         path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee/leave`,
         Component: <LeaveReport/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee/leave/pdf`,
+        Component: <LeaveReportPDf />,
     },
     {
         path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/manual/report`,
         Component: <ManualAttendanceReport />,
     },
     {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/manual/report/pdf`,
+        Component: <ManualAttendanceReportPDf />,
+    },
+    {
         path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/single`,
         Component: <EmployeeWiseAttendance/>,
+    },
+    {
+        path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/single/pdf`,
+        Component: <EmployWiseAttendanceReportPDf/>,
     },
 
 

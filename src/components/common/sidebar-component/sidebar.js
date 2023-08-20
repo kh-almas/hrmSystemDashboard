@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import logo from '../../../assets/images/endless-logo.png';
-import logo_compact from '../../../assets/images/logo/compact-logo.png';
+import logo from '../../../assets/images/logo/companyLogo.jpg';
+import logo_compact from '../../../assets/images/logo/companyLogo.jpg';
 // import UserPanel from './userPanel';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -177,8 +177,8 @@ const Sidebar = (props) => {
                 <div className="main-header-left d-none d-lg-block">
                     <div className="logo-wrapper compactLogo">
                         <Link to={`${process.env.PUBLIC_URL}/dashboard/default`}>
-                            <img className="blur-up lazyloaded" src={logo_compact} alt="" />
-                            <img className="blur-up lazyloaded" src={logo} alt="" />
+                            <img className="blur-up lazyloaded rounded" src={logo_compact} alt="" style={{maxWidth: '200px'}}/>
+                            <img className="blur-up lazyloaded rounded" src={logo} alt="" style={{maxWidth: '200px'}} />
                         </Link>
                     </div>
                 </div>

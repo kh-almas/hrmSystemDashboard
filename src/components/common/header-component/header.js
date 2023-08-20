@@ -94,7 +94,7 @@ const Header = () => {
           <div className="main-header-left d-lg-none col-auto">
             <div className="logo-wrapper">
               <Link to={`${process.env.PUBLIC_URL}/dashboard/default`}>
-                <img className="img-fluid" src={logo} alt="" />
+                <img className="img-fluid" src={"https://res.cloudinary.com/dov60yweq/image/upload/v1691910191/zuoc27jeudbakxrbfbpn.png"} alt="" />
               </Link>
             </div>
           </div>
@@ -118,7 +118,6 @@ const Header = () => {
                 </a>
               </li>
               <li className="onhover-dropdown">
-
                 <Language />
               </li>
               <li className="onhover-dropdown">
