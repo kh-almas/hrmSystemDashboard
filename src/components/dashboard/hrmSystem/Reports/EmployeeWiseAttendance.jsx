@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import Breadcrumb from "../../../common/breadcrumb";
-import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import {
   Document,
   Image,
@@ -9,114 +7,8 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import logo from "../../../../assets/images/logo/companyLogo.jpg";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
-
-const EmployeeWiseAttendanceReport = () => (
-  <Document>
-    {/*// style={styles.page style={{ width: '600px'}}}*/}
-    <Page
-      size="A4"
-      style={{ margin: "10px", padding: "0 20px 0 0", marginRight: "20px" }}
-    >
-      <View style={{ margin: "10px", padding: "10px" }}>
-        <View
-          style={{
-            fontSize: "11px",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <View style={{ fontSize: "11px" }}>
-            <Image src={logo} style={{ width: "50px" }} />
-            <View style={{ marginTop: "8px" }}>
-              <Text>7/1 (7th Floor), Kabbokash</Text>
-              <Text>Kawran Bazar Rd, Dhaka 1215</Text>
-            </View>
-          </View>
-          <View style={{ fontSize: "11px" }}>
-            <Text>Report Date</Text>
-            <Text>17.08.2023</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: "15px",
-          }}
-        >
-          <View>
-            <Text style={{ fontSize: "16px", margin: "auto" }}>
-              Employee Wise Attendance Reports
-            </Text>
-            <Text
-              style={{ fontSize: "10px", margin: "auto", paddingTop: "4px" }}
-            >
-              From: 01 Aug 2023 To: 01 Nov 2023
-            </Text>
-          </View>
-        </View>
-        <View style={{ marginTop: "10px" }}>
-          <Text style={{ fontSize: "10px", paddingTop: "4px" }}>
-            Employee Name: ABC
-          </Text>
-          <Text style={{ fontSize: "10px", paddingTop: "4px" }}>
-            Employee Code: #abc
-          </Text>
-          <Text style={{ fontSize: "10px", paddingTop: "4px" }}>
-            Department: IT
-          </Text>
-          <Text style={{ fontSize: "10px", paddingTop: "4px" }}>
-            Branch: Maintenance
-          </Text>
-        </View>
-        <View style={{ marginTop: "10px" }}>
-          <View style={{paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: "row", fontSize: "11px", fontWeight: "100", justifyContent: "space-around",}}>
-            <Text>Date</Text>
-            <Text>In Time</Text>
-            <Text>Out Time</Text>
-            <Text>Late In</Text>
-            <Text>Early Out</Text>
-            <Text>Over Time</Text>
-            <Text>Total Hours</Text>
-            <Text>Status</Text>
-          </View>
-          <View style={{paddingTop: '5px',paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: "row", fontSize: "11px", fontWeight: "100", justifyContent: "space-around",}}>
-            <Text>{"2023-08-19"}</Text>
-            <Text>{"09:00 AM"}</Text>
-            <Text>{"06:00 PM"}</Text>
-            <Text>{"15 minutes"}</Text>
-            <Text>{"N/A"}</Text>
-            <Text>{"1 hour"}</Text>
-            <Text>{"8 hours 45 minutes"}</Text>
-            <Text>{"Present"}</Text>
-          </View>
-          <View style={{paddingTop: '5px',paddingBottom: "5px", borderBottom: "1px dashed gray", flexDirection: "row", fontSize: "11px", fontWeight: "100", justifyContent: "space-around",}}>
-            <Text>{"2023-08-20"}</Text>
-            <Text>{"09:30 AM"}</Text>
-            <Text>{"06:15 PM"}</Text>
-            <Text>{"30 minutes"}</Text>
-            <Text>{"N/A"}</Text>
-            <Text>{"45 minutes"}</Text>
-            <Text>{"7 hours 45 minutes"}</Text>
-            <Text>{"Present"}</Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginTop: "5px",
-            }}
-          >
-            <Text style={{ fontSize: "10px" }}>No entries found</Text>
-          </View>
-        </View>
-      </View>
-    </Page>
-  </Document>
-);
+import {Link} from "react-router-dom";
 
 const EmployeeWiseAttendance = () => {
   const [modal, setModal] = useState();
@@ -132,15 +24,9 @@ const EmployeeWiseAttendance = () => {
           </div>
         </div>
         <div className="d-flex justify-content-center">
-          <PDFDownloadLink
-            document={<EmployeeWiseAttendanceReport />}
-            fileName="EmployeeWiseAttendanceReport.pdf"
-            className={"btn btn-primary"}
-          >
-            {({ blob, url, loading, error }) =>
-              loading ? "Loading document..." : "Download now!"
-            }
-          </PDFDownloadLink>
+          <Link to={"/dashboard/hrm/attendance/single/pdf"} target="_blank" className="ms-3 btn btn-primary">
+            View PDF
+          </Link>
         </div>
       </div>
 
@@ -256,25 +142,24 @@ const EmployeeWiseAttendance = () => {
               <tbody>
                 <tr>
                   <td>{"2023-08-19"}</td>
-                  <td>{"09:00 AM"}</td>
-                  <td>{"06:00 PM"}</td>
-                  <td>{"15 minutes"}</td>
+                  <td>{"09:00"}</td>
+                  <td>{"06:00"}</td>
+                  <td>{"15"}</td>
                   <td>{"N/A"}</td>
-                  <td>{"1 hour"}</td>
-                  <td>{"8 hours 45 minutes"}</td>
+                  <td>{"50"}</td>
+                  <td>{"45"}</td>
                   <td>{"Present"}</td>
                 </tr>
                 <tr>
                   <td>{"2023-08-20"}</td>
-                  <td>{"09:30 AM"}</td>
-                  <td>{"06:15 PM"}</td>
-                  <td>{"30 minutes"}</td>
+                  <td>{"09:30"}</td>
+                  <td>{"06:15"}</td>
+                  <td>{"30"}</td>
                   <td>{"N/A"}</td>
-                  <td>{"45 minutes"}</td>
-                  <td>{"7 hours 45 minutes"}</td>
+                  <td>{"45"}</td>
+                  <td>{"35"}</td>
                   <td>{"Present"}</td>
                 </tr>
-                {/* You can add more rows like this */}
               </tbody>
             </table>
           </div>
