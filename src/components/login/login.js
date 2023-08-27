@@ -24,9 +24,11 @@ const Login = () => {
       .post("/auth/login", data)
       .then((res) => {
         const token = res.data.body.token;
+        const id = res.data.body.id;
         const email = res.data.body.email;
-        if (token && email) {
+        if (token && id && email) {
           localStorage.setItem("access-token", token);
+          localStorage.setItem("id", id);
           localStorage.setItem("email", email);
           setMatch(true);
           navigate(`${process.env.PUBLIC_URL}/dashboard/default`);

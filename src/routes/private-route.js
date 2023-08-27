@@ -10,7 +10,7 @@ const PrivateRoute = () => {
     let token = localStorage.getItem("access-token");
     let email = localStorage.getItem("email");
     if (token && email) {
-      fetch("https://dashboard-hrm-system-backend.vercel.app/auth/verify", {
+      fetch("http://localhost:5000/auth/verify", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -23,7 +23,9 @@ const PrivateRoute = () => {
           return res.json();
         })
         .then((json) => {
-          if (json.body.decode === email) {
+          console.log(json);
+
+          if (json.body.decoded.email === email) {
             setAuth(true);
           }
         })
@@ -31,6 +33,7 @@ const PrivateRoute = () => {
           setAuth(false);
           console.log(err);
           localStorage.removeItem("access-token");
+          localStorage.removeItem("id");
           localStorage.removeItem("email");
         })
         .then(() => setIsTokenValidated(true));

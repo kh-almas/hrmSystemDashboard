@@ -7,6 +7,7 @@ const UserMenu = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("access-token");
+    localStorage.removeItem("id");
     localStorage.removeItem("email");
     navigate("/");
   };
