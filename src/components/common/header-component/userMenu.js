@@ -1,13 +1,26 @@
 import React, { Fragment } from "react";
+import { Lock, LogOut, Mail, Settings, User } from "react-feather";
+import { useNavigate } from "react-router-dom";
 import man from "../../../assets/images/dashboard/user.png";
-import { User, Mail, Lock, Settings, LogOut } from "react-feather";
 
 const UserMenu = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("access-token");
+    localStorage.removeItem("id");
+    localStorage.removeItem("email");
+    navigate("/");
+  };
+
   return (
     <Fragment>
       <li className="onhover-dropdown">
         <div className="d-flex align-items-center">
-          <img className="align-self-center pull-right img-50 rounded-circle blur-up lazyloaded" src={man} alt="header-user" />
+          <img
+            className="align-self-center pull-right img-50 rounded-circle blur-up lazyloaded"
+            src={man}
+            alt="header-user"
+          />
           <div className="dotted-animation">
             <span className="animate-circle"></span>
             <span className="main-circle"></span>
@@ -38,7 +51,7 @@ const UserMenu = () => {
               Settings
             </a>
           </li>
-          <li>
+          <li onClick={handleLogout}>
             <a href="#javascript">
               <LogOut /> Log out
             </a>
