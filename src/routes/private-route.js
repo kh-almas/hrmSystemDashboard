@@ -10,7 +10,7 @@ const PrivateRoute = () => {
     let token = localStorage.getItem("access-token");
     let email = localStorage.getItem("email");
     if (token && email) {
-      fetch("https://dashboard-hrm-system-backend.vercel.app/", {
+      fetch("https://dashboard-hrm-system-backend.vercel.app/auth/verify", {
         method: "POST",
         headers: {
           Accept: "application/json",
