@@ -1,7 +1,5 @@
 import React from "react";
 
-import { FormGroup, Label } from "reactstrap";
-
 const Select = ({
   labelName,
   name,
@@ -22,7 +20,8 @@ const Select = ({
             name={name}
             className="form-control digits"
             id="exampleFormControlSelect9"
-            defaultValue="1"
+            defaultValue={defaultValue}
+            {...validation}
           >
             <option>{placeholder}</option>
             {options?.map((item) => (

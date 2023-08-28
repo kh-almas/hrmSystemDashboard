@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import axios from "../../../../axios";
+import imageUploader from "../../../../utilitis/imageUploader/imageUploader";
 import Breadcrumb from "../../../common/breadcrumb";
+import Submitbtn from "../../../common/button/Submitbtn";
+import CkEditorComponent from "../../../common/modal/CkEditorComponent";
 import Input from "../../../common/modal/Input";
 import Select from "../../../common/modal/Select";
-import { Button } from "react-bootstrap";
-import Textarea from "../../../common/modal/Textarea";
-import CkEditorComponent from "../../../common/modal/CkEditorComponent";
-import Submitbtn from "../../../common/button/Submitbtn";
 
 const AddContacts = () => {
   const [type, setType] = useState("Supplier");
+  const [content, setContent] = useState();
+  const navigate = useNavigate();
 
   const handleTypeChange = (type) => {
     setType(type);
@@ -20,8 +23,23 @@ const AddContacts = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    data.note = content;
+
+    const image = await imageUploader(data.image[0]);
+
+    const postData = { ...data };
+    postData.image = image;
+    postData.pc_address = "127.0.0.1";
+
+    const res = await axios.post(
+      "/inventory-management/contacts/add-contact",
+      postData
+    );
+    console.log(res);
+    navigate(
+      `/dashboard/inventory-management/contacts/view-contacts/${res?.data?.body?.data?.insertId}`
+    );
   };
 
   return (
@@ -43,6 +61,7 @@ const AddContacts = () => {
                 name="product-type"
                 className="form-control digits"
                 id="exampleFormControlSelect9"
+                {...register("contact_type", { required: true })}
               >
                 <option value="Supplier">Supplier</option>
                 <option value="Customer">Customer</option>
@@ -71,7 +90,7 @@ const AddContacts = () => {
                   inputType={"file"}
                   placeholder={"Profile Picture"}
                   validation={{
-                    ...register("profilePicture", { required: true }),
+                    ...register("image", { required: true }),
                   }}
                 />
               </div>
@@ -88,7 +107,7 @@ const AddContacts = () => {
                     placeholder={"Business Name"}
                     inputType={"text"}
                     validation={{
-                      ...register("business-name", { required: true }),
+                      ...register("business_name", { required: true }),
                     }}
                   />
                 </div>
@@ -106,7 +125,7 @@ const AddContacts = () => {
                     inputType={"text"}
                     placeholder={"0"}
                     validation={{
-                      ...register("tex-number", { required: true }),
+                      ...register("tax_number", { required: true }),
                     }}
                   />
                 </div>
@@ -124,7 +143,7 @@ const AddContacts = () => {
                     inputType={"text"}
                     placeholder={"Openning Balance"}
                     validation={{
-                      ...register("opennibg-balance", { required: true }),
+                      ...register("opening_balance", { required: true }),
                     }}
                   />
                 </div>
@@ -142,7 +161,7 @@ const AddContacts = () => {
                     inputType={"text"}
                     placeholder={"Pay Term"}
                     validation={{
-                      ...register("pay-term", { required: true }),
+                      ...register("pay_term", { required: true }),
                     }}
                   />
                 </div>
@@ -159,6 +178,9 @@ const AddContacts = () => {
                     labelName={"Pay-Term-Condition"}
                     placeholder={"Select condition"}
                     options={["Days", "Months"]}
+                    validation={{
+                      ...register("pay_term_condition", { required: true }),
+                    }}
                   />
                 </div>
               </div>
@@ -174,21 +196,9 @@ const AddContacts = () => {
                     inputName={"email"}
                     inputType={"email"}
                     placeholder={"Email"}
-                  />
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
-
-            {type == "Customer" ? (
-              <div>
-                <div>
-                  <Input
-                    labelName={"Credit Limit"}
-                    inputName={"credit limit"}
-                    inputType={"text"}
-                    placeholder={"Credit Limit"}
+                    validation={{
+                      ...register("email", { required: true }),
+                    }}
                   />
                 </div>
               </div>
@@ -204,6 +214,9 @@ const AddContacts = () => {
                     inputName={"mobile"}
                     inputType={"text"}
                     placeholder={"Mobile"}
+                    validation={{
+                      ...register("mobile", { required: true }),
+                    }}
                   />
                 </div>
               </div>
@@ -219,6 +232,9 @@ const AddContacts = () => {
                     inputName={"alternate-contact-no"}
                     inputType={"text"}
                     placeholder={"Alternate Contact No"}
+                    validation={{
+                      ...register("alternate_contact_no", { required: true }),
+                    }}
                   />
                 </div>
               </div>
@@ -234,6 +250,9 @@ const AddContacts = () => {
                     labelName={"Country"}
                     placeholder={"Select country"}
                     options={["Bangladesh", "Australia"]}
+                    validation={{
+                      ...register("country", { required: true }),
+                    }}
                   />
                 </div>
               </div>
@@ -249,6 +268,9 @@ const AddContacts = () => {
                     labelName={"State"}
                     placeholder={"Select State"}
                     options={[""]}
+                    validation={{
+                      ...register("state", { required: true }),
+                    }}
                   />
                 </div>
               </div>
@@ -264,6 +286,9 @@ const AddContacts = () => {
                     labelName={"City"}
                     placeholder={"Select City"}
                     options={[""]}
+                    validation={{
+                      ...register("city", { required: true }),
+                    }}
                   />
                 </div>
               </div>
@@ -286,7 +311,11 @@ const AddContacts = () => {
             )}
           </div>
           <div className="row row-cols-1 row-cols-lg-1 mb-2">
-            <CkEditorComponent label={"Note"} />
+            <CkEditorComponent
+              content={content}
+              setContent={setContent}
+              label={"Note"}
+            />
           </div>
           <Submitbtn name={"Add Contact"} />
         </form>

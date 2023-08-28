@@ -1,29 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "../../../../axios";
 import Breadcrumb from "../../../common/breadcrumb";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import { Link } from "react-router-dom";
-import Dropdownbtn from "../../../common/button/Dropdownbtn";
+import Single from "./Single";
 
 const Supplier = () => {
-  const checkFunction = () => console.log("it works");
-  const data = [
-    {
-      type: "link",
-      url: "/dashboard/inventory-management/contacts/edit-contacts",
-      text: "Edit",
-    },
-    {
-      type: "function",
-      url: checkFunction,
-      text: "Delete",
-    },
-    {
-      type: "link",
-      url: "/dashboard/inventory-management/contacts/view-contacts",
-      text: "View",
-    },
-  ];
+  const [data, setData] = useState([]);
+  const [isUpdate, setIsUpdate] = useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const data = await axios.get(
+          "inventory-management/contacts/all/supplier"
+        );
+        console.log(data);
+        setData(data?.data?.body?.contacts);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+  }, [isUpdate]);
+
   return (
     <div>
       <Breadcrumb parent="Inventory management" title="Supplier" />
@@ -43,10 +44,13 @@ const Supplier = () => {
             to={"/dashboard/inventory-management/contacts/add-contacts"}
             className="btn btn-pill btn-info btn-air-info btn-air-info mx-2"
           >
-            <i class="fa fa-plus me-2"></i>
+            <i className="fa fa-plus me-2"></i>
             New Contact
           </Link>
-          <Link to={"/dashboard/csv/upload"} className="btn btn-pill btn-info btn-air-info btn-air-info">
+          <Link
+            to={"/dashboard/csv/upload"}
+            className="btn btn-pill btn-info btn-air-info btn-air-info"
+          >
             <i className="fa fa-upload me-1"></i> Upload Via CSV
           </Link>
         </div>
@@ -74,21 +78,19 @@ const Supplier = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>{"1"}</td>
-                      <td>{"SUP-200002"}</td>
-                      <td>{"Supplier-01"}</td>
-                      <td>{"Super admin"}</td>
-                      <td>{""}</td>
-                      <td>{""}</td>
-                      <td>{""}</td>
-                      <td>{""}</td>
-                      <td>
-                        <div>
-                          <Dropdownbtn data={data} />
-                        </div>
-                      </td>
-                    </tr>
+                    {data.length ? (
+                      data?.map((item, index) => (
+                        <Single
+                          key={index}
+                          index={index}
+                          item={item}
+                          isUpdate={isUpdate}
+                          setIsUpdate={setIsUpdate}
+                        />
+                      ))
+                    ) : (
+                      <p>no supplier data</p>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -97,7 +99,7 @@ const Supplier = () => {
               <p style={{ fontSize: "13px" }}>Showing page 1 of 1</p>
               <div className="d-flex justify-content-between align-items-center">
                 <button
-                  class="btn btn-pill btn-outline-secondary btn-xs"
+                  className="btn btn-pill btn-outline-secondary btn-xs"
                   type="button"
                 >
                   <i
@@ -113,7 +115,7 @@ const Supplier = () => {
                   1
                 </p>
                 <button
-                  class="btn btn-pill btn-outline-secondary btn-xs"
+                  className="btn btn-pill btn-outline-secondary btn-xs"
                   type="button"
                 >
                   <i

@@ -1,10 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "../../../../axios";
 import Breadcrumb from "../../../common/breadcrumb";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import { Link } from "react-router-dom";
+import Single from "./Single";
 
 const Customer = () => {
+  const [data, setData] = useState([]);
+  const [isUpdate, setIsUpdate] = useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const data = await axios.get(
+          "inventory-management/contacts/all/customer"
+        );
+        console.log(data);
+        setData(data?.data?.body?.contacts);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getData();
+  }, []);
+
   return (
     <div>
       <Breadcrumb parent="Inventory management" title="Customers" />
@@ -54,42 +74,19 @@ const Customer = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>{"1"}</td>
-                      <td>{"SUP-200002"}</td>
-                      <td>{"Supplier-01"}</td>
-                      <td>{"Super admin"}</td>
-                      <td>{""}</td>
-                      <td>{""}</td>
-                      <td>{""}</td>
-                      <td>{""}</td>
-                      <td>
-                        <button
-                          class="btn btn-pill btn-outline-info btn-xs p-1 px-4"
-                          type="button"
-                        >
-                          Select
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>{"1"}</td>
-                      <td>{"SUP-200002"}</td>
-                      <td>{"Supplier-01"}</td>
-                      <td>{"Super admin"}</td>
-                      <td>{""}</td>
-                      <td>{""}</td>
-                      <td>{""}</td>
-                      <td>{""}</td>
-                      <td>
-                        <button
-                          class="btn btn-pill btn-outline-info btn-xs p-1 px-4"
-                          type="button"
-                        >
-                          Select
-                        </button>
-                      </td>
-                    </tr>
+                    {data.length ? (
+                      data?.map((item, index) => (
+                        <Single
+                          key={index}
+                          index={index}
+                          item={item}
+                          isUpdate={isUpdate}
+                          setIsUpdate={setIsUpdate}
+                        />
+                      ))
+                    ) : (
+                      <p>no customer data</p>
+                    )}
                   </tbody>
                 </table>
               </div>

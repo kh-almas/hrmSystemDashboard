@@ -1,8 +1,7 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import CKEditors from "react-ckeditor-component";
 
-const CkEditorComponent = ({ label, fieldContent }) => {
-  const [content, setContent] = useState(fieldContent);
+const CkEditorComponent = ({ label, content, setContent }) => {
   const onChange = (evt) => {
     const newContent = evt.editor.getData();
     setContent(newContent);
