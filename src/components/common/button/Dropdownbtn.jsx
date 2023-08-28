@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
 import {
   Button,
   ListGroup,
@@ -9,8 +8,9 @@ import {
   PopoverHeader,
 } from "reactstrap";
 
-const Dropdownbtn = ({ data }) => {
+const Dropdownbtn = ({ actionData }) => {
   const [popover, setPopover] = useState(false);
+
   const DirectionToggle = ({ links }) => setPopover(!popover);
   return (
     <>
@@ -30,15 +30,15 @@ const Dropdownbtn = ({ data }) => {
         isOpen={popover}
         target={"Popover-" + 6}
         toggle={DirectionToggle}
-        style={{minWidth: "150px"}}
+        style={{ minWidth: "150px" }}
       >
         <PopoverHeader></PopoverHeader>
         <PopoverBody className="p-0">
           <ListGroup>
-            {data.map((info) => (
-              <>
+            {actionData.map((info, index) => (
+              <span key={index}>
                 {info.type === "link" ? (
-                  <a href={info.url}>
+                  <a href={`${info.url}`}>
                     <ListGroupItem>{info.text}</ListGroupItem>
                   </a>
                 ) : (
@@ -49,7 +49,7 @@ const Dropdownbtn = ({ data }) => {
                     {info.text}
                   </ListGroupItem>
                 )}
-              </>
+              </span>
             ))}
           </ListGroup>
         </PopoverBody>

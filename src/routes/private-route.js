@@ -9,8 +9,10 @@ const PrivateRoute = () => {
     // send jwt to API to see if it's valid
     let token = localStorage.getItem("access-token");
     let email = localStorage.getItem("email");
+    // const local = "http://localhost:5000/";
+    const vercel = "https://dashboard-hrm-system-backend.vercel.app/";
     if (token && email) {
-      fetch("https://dashboard-hrm-system-backend.vercel.app/auth/verify", {
+      fetch(`${vercel}auth/verify`, {
         method: "POST",
         headers: {
           Accept: "application/json",
