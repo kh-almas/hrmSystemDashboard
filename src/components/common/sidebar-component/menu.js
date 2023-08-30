@@ -462,7 +462,6 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/inventory-management/purchase/order",
           },
-
           {
             title: "Stock Alert List",
             type: "link",
@@ -520,6 +519,82 @@ export const MENUITEMS = [
           },
         ],
       },
+    ],
+  },
+
+  {
+    title: "Accounts",
+    icon: Box,
+    type: "sub",
+    active: false,
+    children: [     
+      
+      {
+        title: "Expense Lists",
+        type: "link",
+        path: "/dashboard/accounts/expense-lists",
+      },      
+      {
+        title: "Income Lists",
+        type: "link",
+        path: "/dashboard/accounts/income-lists",
+      },
+      {
+        title: "Bank Accounts",
+        type: "link",
+        path: "/dashboard/accounts/bank-accounts",
+      },
+      {
+        title: "Opening Balance",
+        type: "link",
+        path: "/dashboard/accounts/opening-balance",
+      },
+      {
+        title: "Chart Of Accounts",
+        type: "link",
+        path: "/dashboard/accounts/chart-of-accounts",
+      },
+      {
+        title: "Report",
+        type: "sub",
+        children: [
+          {
+            title: "Transactions",
+            type: "link",
+            path: "/dashboard/accounts/",
+          },
+          {
+            title: "Statement",
+            type: "link",
+            path: "/dashboard/accounts/",
+          },
+          {
+            title: "Profit & Loss",
+            type: "link",
+            path: "/dashboard/accounts/",
+          },
+          {
+            title: "Account Balance",
+            type: "link",
+            path: "/dashboard/accounts/",
+          },
+          {
+            title: "Income By Customer",
+            type: "link",
+            path: "/dashboard/accounts/",
+          },
+          {
+            title: "Expense By Supplier",
+            type: "link",
+            path: "/dashboard/accounts/",
+          },
+          {
+            title: "Sales Tax",
+            type: "link",
+            path: "/dashboard/accounts/",
+          },
+        ],
+      }
     ],
   },
 

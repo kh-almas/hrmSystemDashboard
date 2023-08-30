@@ -10,7 +10,6 @@ const Settings = () => {
           <div className="col-sm-12">
             <div className="card" style={{ padding: "20px" }}>
               <CommonSearchComponet />
-
               <div
                 className="  d-flex flex-column flex-md-row justify-content-between align-items-center"
                 style={{ margin: "10px 0px" }}

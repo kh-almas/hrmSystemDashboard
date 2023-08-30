@@ -1,6 +1,5 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { FormGroup, Label } from "reactstrap";
 
 const Input = ({
   labelName,
@@ -11,33 +10,32 @@ const Input = ({
   defaultValue,
   validation,
 }) => {
-  console.log(defaultValue)
+  console.log(defaultValue);
   const { register } = useForm();
   return (
     <>
       <div className="theme-form">
         <div className="mb-3 form-group">
-          <label
-              htmlFor={inputName}
-          >
-            {labelName}
-          </label>
+          <label htmlFor={inputName}>{labelName}</label>
           <input
-              style={{fontSize: "13px", height: "37px" }} //
-              className={`form-control ${errors?.inputName && "is-invalid"}`}
-              id={inputName}
-              type={inputType}
-              name={inputName}
-              placeholder={placeholder}
-              defaultValue={defaultValue}
-              {...validation}
+            style={{
+              fontSize: "13px",
+              height: "37px",
+              outline: "0px !important",
+            }} //
+            className={`form-control ${errors?.inputName && "is-invalid"}`}
+            id={inputName}
+            type={inputType}
+            name={inputName}
+            placeholder={placeholder}
+            defaultValue={defaultValue}
+            {...validation}
           />
           <span className="text-danger">
-          {errors?.inputName && `${errors?.inputName} is required`}
-        </span>
+            {errors?.inputName && `${errors?.inputName} is required`}
+          </span>
         </div>
       </div>
-
     </>
   );
 };

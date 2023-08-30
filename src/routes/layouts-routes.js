@@ -125,6 +125,14 @@ import Payment from "../components/dashboard/inventoryManagement/sales/Payment";
 import SaleSelectOrderDetails from "../components/dashboard/inventoryManagement/sales/SaleSelectOrderDetails";
 import SaleSelectReturn from "../components/dashboard/inventoryManagement/sales/SaleSelectReturn";
 import SalesList from "../components/dashboard/inventoryManagement/sales/SalesList";
+// Accounts
+import AddExpense from "../components/dashboard/Accounts/AddExpense";
+import AddIncome from "../components/dashboard/Accounts/AddIncome";
+import BankAccounts from "../components/dashboard/Accounts/BankAccounts";
+import ChartOfAccounts from "../components/dashboard/Accounts/ChartOfAccounts";
+import ExpenseLists from "../components/dashboard/Accounts/ExpenseLists";
+import IncomeLists from "../components/dashboard/Accounts/IncomeLists";
+import OpeningBalance from "../components/dashboard/Accounts/OpeningBalance";
 
 export const routes = [
   {
@@ -636,5 +644,34 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/csv/upload`,
     Component: <UploadCSV />,
+  },
+  // Accounts
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/add-expense`,
+    Component: <AddExpense />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/expense-lists`,
+    Component: <ExpenseLists />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/income-lists`,
+    Component: <IncomeLists />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/add-income`,
+    Component: <AddIncome />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/bank-accounts`,
+    Component: <BankAccounts />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/opening-balance`,
+    Component: <OpeningBalance />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/chart-of-accounts`,
+    Component: <ChartOfAccounts />,
   },
 ];
