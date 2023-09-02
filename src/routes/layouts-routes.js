@@ -133,6 +133,13 @@ import ChartOfAccounts from "../components/dashboard/Accounts/ChartOfAccounts";
 import ExpenseLists from "../components/dashboard/Accounts/ExpenseLists";
 import IncomeLists from "../components/dashboard/Accounts/IncomeLists";
 import OpeningBalance from "../components/dashboard/Accounts/OpeningBalance";
+import AccountBalance from "../components/dashboard/Accounts/Report/AccountBalance";
+import ExpenseBySupplier from "../components/dashboard/Accounts/Report/ExpenseBySupplier";
+import IncomeByCustomer from "../components/dashboard/Accounts/Report/IncomeByCustomer";
+import ProfitAndLoss from "../components/dashboard/Accounts/Report/ProfitAndLoss";
+import SalesTax from "../components/dashboard/Accounts/Report/SalesTax";
+import Statement from "../components/dashboard/Accounts/Report/Statement";
+import Transactions from "../components/dashboard/Accounts/Report/Transactions";
 
 export const routes = [
   {
@@ -673,5 +680,33 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/accounts/chart-of-accounts`,
     Component: <ChartOfAccounts />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/report/transactions`,
+    Component: <Transactions />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/report/statement`,
+    Component: <Statement />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/report/profit-loss`,
+    Component: <ProfitAndLoss />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/report/account-balance`,
+    Component: <AccountBalance />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/report/income-by-customer`,
+    Component: <IncomeByCustomer />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/report/expense-by-supplier`,
+    Component: <ExpenseBySupplier />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/accounts/report/sales-tax`,
+    Component: <SalesTax />,
   },
 ];

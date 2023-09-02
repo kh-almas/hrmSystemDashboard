@@ -561,37 +561,37 @@ export const MENUITEMS = [
           {
             title: "Transactions",
             type: "link",
-            path: "/dashboard/accounts/",
+            path: "/dashboard/accounts/report/transactions",
           },
           {
             title: "Statement",
             type: "link",
-            path: "/dashboard/accounts/",
+            path: "/dashboard/accounts/report/statement",
           },
           {
             title: "Profit & Loss",
             type: "link",
-            path: "/dashboard/accounts/",
+            path: "/dashboard/accounts/report/profit-loss",
           },
           {
             title: "Account Balance",
             type: "link",
-            path: "/dashboard/accounts/",
+            path: "/dashboard/accounts/report/account-balance",
           },
           {
             title: "Income By Customer",
             type: "link",
-            path: "/dashboard/accounts/",
+            path: "/dashboard/accounts/report/income-by-customer",
           },
           {
             title: "Expense By Supplier",
             type: "link",
-            path: "/dashboard/accounts/",
+            path: "/dashboard/accounts/report/expense-by-supplier",
           },
           {
             title: "Sales Tax",
             type: "link",
-            path: "/dashboard/accounts/",
+            path: "/dashboard/accounts/report/sales-tax",
           },
         ],
       }

@@ -40,11 +40,11 @@ const AddExpense = () => {
   };
   return (
     <div>
-      <Breadcrumb parent="Dashboard" title="Add New Expense" />
+      <Breadcrumb parent="Accounts" title="Add New Expense" />
       <div>
         <form className="card p-30" onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
-            <div className="col">
+            <div className="col-lg-2 col-sm-1">
               <Input
                 labelName={"DATE*"}
                 inputName={"starttime"}
@@ -53,7 +53,7 @@ const AddExpense = () => {
                 defaultValue={shortDate}
               />
             </div>
-            <div className="col">
+            <div className="col-lg-2 col-sm-1">
               <Select
                 name={"payment"}
                 labelName={"PAYMENT FROM *"}
@@ -63,7 +63,7 @@ const AddExpense = () => {
             </div>
           </div>
           <div className="row">
-            <div className="col">
+            <div className="col-lg-2 col-sm-1">
               <Input
                 labelName={"NARRATION*"}
                 inputName={"narration"}
@@ -92,7 +92,7 @@ const AddExpense = () => {
           </div>
 
           <div className="row">
-            <div className="col">
+            <div className="col-lg-3 col-sm-2">
               <Select
                 name={"payment"}
                 labelName={"PAYMENT TO *"}
@@ -109,7 +109,7 @@ const AddExpense = () => {
                 ]}
               />
             </div>
-            <div className="col">
+            <div className="col-lg-3 col-sm-2">
               <Input
                 labelName={"AMOUNT*"}
                 inputName={"amount"}
@@ -118,7 +118,7 @@ const AddExpense = () => {
                 placeholder={"AMOUNT"}
               />
             </div>
-            <div className="col">
+            <div className="col-lg-3 col-sm-2">
               <Input
                 labelName={"NARRATION*"}
                 inputName={"narration1"}
@@ -127,7 +127,7 @@ const AddExpense = () => {
                 placeholder={"NARRATION"}
               />
             </div>
-            <div className="col">
+            <div className="col-lg-3 col-sm-2">
               {" "}
               <button
                 className="btn btn-pill btn-info btn-air-info btn-air-info"
@@ -150,7 +150,7 @@ const AddExpense = () => {
             {/* Render multiple amount forms */}
             {payForms.map((form, index) => (
               <div className="row" key={index}>
-                <div className="col">
+                <div className="col-lg-3 col-sm-2">
                   <Select
                     name={"payment"}
                     labelName={"PAYMENT TO *"}
@@ -167,7 +167,7 @@ const AddExpense = () => {
                     ]}
                   />
                 </div>
-                <div className="col">
+                <div className="col-lg-3 col-sm-2">
                   <Input
                     labelName={"AMOUNT*"}
                     inputName={"amount"}
@@ -179,7 +179,7 @@ const AddExpense = () => {
                     }
                   />
                 </div>
-                <div className="col">
+                <div className="col-lg-3 col-sm-2">
                   <Input
                     labelName={"NARRATION*"}
                     inputName={"narration1"}
@@ -193,7 +193,7 @@ const AddExpense = () => {
                     }
                   />
                 </div>
-                <div className="col">
+                <div className="col-lg-3 col-sm-2">
                   {" "}
                   <button
                     className="btn btn-pill btn-info btn-air-info btn-air-info"

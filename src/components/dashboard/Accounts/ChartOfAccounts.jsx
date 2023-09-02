@@ -26,7 +26,7 @@ const ChartOfAccounts = () => {
   };
   return (
     <div>
-      <Breadcrumb parent="Dashboard" title="Chart Of Accounts" />
+      <Breadcrumb parent="Accounts" title="Chart Of Accounts" />
       <div
         style={{ padding: "0px 20px" }}
         className="d-flex justify-content-between align-items-center pb-3"
@@ -44,43 +44,45 @@ const ChartOfAccounts = () => {
       </div>
       <div className="card p-20">
         <CommonSearchComponet />
-        <table className="table">
-          <thead className="table-border">
-            <tr>
-              <th scope="col">{"TYPE"}</th>
-              <th scope="col">{"CODE"}</th>
-              <th scope="col">{"NAME"}</th>
-              <th scope="col">{"COST CENTER"}</th>
-              <th scope="col">{"BALANCE"}</th>
-              <th scope="col">{"STATUS"}</th>
-              <th scope="col">{"ACTION "}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-            <ChartOfAccountsData />
-          </tbody>
-        </table>
+        <div className="table-responsive">
+          <table className="table">
+            <thead className="table-border">
+              <tr>
+                <th scope="col">{"TYPE"}</th>
+                <th scope="col">{"CODE"}</th>
+                <th scope="col">{"NAME"}</th>
+                <th scope="col">{"COST CENTER"}</th>
+                <th scope="col">{"BALANCE"}</th>
+                <th scope="col">{"STATUS"}</th>
+                <th scope="col">{"ACTION "}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+              <ChartOfAccountsData />
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <Modal isOpen={modal} toggle={toggle}>

@@ -8,7 +8,7 @@ import IncomeListsData from "./IncomeListsData";
 const IncomeLists = () => {
   return (
     <div>
-      <Breadcrumb parent="Dashboard" title="Income Lists" />
+      <Breadcrumb parent="Accounts" title="Income Lists" />
       <div
         style={{ padding: "0px 20px" }}
         className="d-flex justify-content-between align-items-center pb-3"

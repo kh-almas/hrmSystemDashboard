@@ -16,7 +16,7 @@ const OpeningBalance = () => {
   };
   return (
     <div>
-      <Breadcrumb parent="Dashboard" title="Add New Opening Balance" />
+      <Breadcrumb parent="Accounts" title="Add New Opening Balance" />
       <form onSubmit={handleSubmit(onSubmit)} className="card p-20">
         <div className="row row-cols-1 row-cols-lg-2">
           <div className="col">
