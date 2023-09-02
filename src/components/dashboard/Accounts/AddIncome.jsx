@@ -24,11 +24,11 @@ const AddIncome = () => {
 
   return (
     <div>
-      <Breadcrumb parent="Dashboard" title="Add New Income" />
+      <Breadcrumb parent="Accounts" title="Add New Income" />
       <div className="card p-30">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
-            <div className="col">
+            <div className="col-lg-2 col-sm-1">
               <Input
                 labelName={"DATE*"}
                 inputName={"starttime"}
@@ -37,7 +37,7 @@ const AddIncome = () => {
                 defaultValue={shortDate}
               />
             </div>
-            <div className="col">
+            <div className="col-lg-2 col-sm-1">
               <Input
                 labelName={"NARRATION"}
                 inputName={"narration"}
@@ -48,7 +48,7 @@ const AddIncome = () => {
             </div>
           </div>
           <div className="row">
-            <div className="col">
+            <div className="col-lg-2 col-sm-1">
               <Select
                 name={"payment"}
                 labelName={"PAYMENT FROM *"}
@@ -56,7 +56,7 @@ const AddIncome = () => {
                 options={["BANK ACCOUNT", "SALES"]}
               />
             </div>
-            <div className="col">
+            <div className="col-lg-2 col-sm-1">
               <Input
                 labelName={"AMOUNT *"}
                 inputName={"amount"}

@@ -7,7 +7,7 @@ import CommonSearchComponet from "../../common/salaryCard/CommonSearchComponet";
 const ExpenseLists = () => {
   return (
     <div>
-      <Breadcrumb parent="Dashboard" title="Expense Lists" />
+      <Breadcrumb parent="Accounts" title="Expense Lists" />
       <div
         style={{ padding: "0px 20px" }}
         className="d-flex justify-content-between align-items-center pb-3"

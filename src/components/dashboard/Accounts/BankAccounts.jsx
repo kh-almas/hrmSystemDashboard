@@ -25,10 +25,10 @@ const BankAccounts = () => {
   };
   return (
     <div>
-      <Breadcrumb parent="Dashboard" title="Bank Accounts" />
+      <Breadcrumb parent="Accounts" title="Bank Accounts" />
       <div
         style={{ padding: "0px 20px" }}
-        className="d-flex justify-content-between align-items-center pb-3"
+        className="d-flex justify-content-between align-items-center pb-3 flex-wrap"
       >
         <div
           style={{
@@ -56,21 +56,23 @@ const BankAccounts = () => {
       </div>
       <div className="card p-20">
         <CommonSearchComponet />
-        <table className="table">
-          <thead className="table-border">
-            <tr>
-              <th scope="col">{"ID"}</th>
-              <th scope="col">{"ACCOUNT"}</th>
-              <th scope="col">{"AMOUNT"}</th>
-              <th scope="col">{"NARRATION"}</th>
-              <th scope="col">{"DATE"}</th>
-              <th scope="col">{"ACTION "}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr></tr>
-          </tbody>
-        </table>
+        <div className="table-responsive">
+          <table className="table">
+            <thead className="table-border">
+              <tr>
+                <th scope="col">{"ID"}</th>
+                <th scope="col">{"ACCOUNT"}</th>
+                <th scope="col">{"AMOUNT"}</th>
+                <th scope="col">{"NARRATION"}</th>
+                <th scope="col">{"DATE"}</th>
+                <th scope="col">{"ACTION "}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr></tr>
+            </tbody>
+          </table>
+        </div>
         <p className="text-center p-t-10">No entries found</p>
       </div>
       <Modal isOpen={modal} toggle={toggle}>
