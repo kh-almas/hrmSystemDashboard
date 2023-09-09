@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
@@ -6,6 +6,7 @@ import CommonSearchComponet from "../../../common/salaryCard/CommonSearchCompone
 const ManualAttendance = () => {
   const [date, setDate] = useState(true);
   const [modal, setModal] = useState();
+
 
   const dateObj = new Date();
   // get the month in this format of 04, the same for months

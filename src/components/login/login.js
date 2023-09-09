@@ -18,8 +18,8 @@ const Login = () => {
   console.log("Error: ", errors);
 
   const onSubmit = (data) => {
-    console.log("Value: ", data);
-    console.log(data);
+    // console.log("Value: ", data);
+    // console.log(data);
     axios
       .post("/auth/login", data)
       .then((res) => {
@@ -27,7 +27,8 @@ const Login = () => {
         const id = res.data.body.id;
         const email = res.data.body.email;
         if (token && id && email) {
-          localStorage.setItem("access-token", token);
+          document.cookie = `token=${token}; path=/`;
+          // localStorage.setItem("access-token", token);
           localStorage.setItem("id", id);
           localStorage.setItem("email", email);
           setMatch(true);

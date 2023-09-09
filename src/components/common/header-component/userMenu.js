@@ -2,11 +2,14 @@ import React, { Fragment } from "react";
 import { Lock, LogOut, Mail, Settings, User } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import man from "../../../assets/images/dashboard/user.png";
+import moment from 'moment';
 
 const UserMenu = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
-    localStorage.removeItem("access-token");
+    // const currentTimestamp = moment().format('ddd, DD MMM YYYY HH:mm:ss [UTC]');
+    // console.log(currentTimestamp);
+    document.cookie = `token=; path=/;`;
     localStorage.removeItem("id");
     localStorage.removeItem("email");
     navigate("/");
@@ -51,8 +54,8 @@ const UserMenu = () => {
               Settings
             </a>
           </li>
-          <li onClick={handleLogout}>
-            <a href="#javascript">
+          <li>
+            <a onClick={handleLogout}>
               <LogOut /> Log out
             </a>
           </li>

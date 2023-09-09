@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import Breadcrumb from "../breadcrumb";
 import CommonSearchComponet from "../salaryCard/CommonSearchComponet";
@@ -7,12 +7,24 @@ import Select from "../modal/Select";
 import Input from "../modal/Input";
 import Textarea from "../modal/Textarea";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
+import {Link} from "react-router-dom";
+import axios from "../../../axios";
 
 const ManualAttendance = () => {
     const {register, handleSubmit, formState: {errors},} = useForm();
     const [dataModal, setDataModal] = useState(false);
     const [modal, setModal] = useState();
     const [date, setDate] = useState(true);
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        axios.get('https://dashboard-hrm-system-backend.vercel.app/hrm-system/manual-attendance')
+            // .then(res => res.json())
+            .then(info => {
+                console.log(info.data.body.data);
+                setData(info.data.body.data);
+            })
+    }, [])
 
 
     const dateObj = new Date();
@@ -220,17 +232,43 @@ const ManualAttendance = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {/* <tr>
-                <th scope="row">{""}</th>
-                <td>{""}</td>
-                <td>{""}</td>
-                <td>{""}</td>
-                <td>{""}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr> */}
+                        {
+                            data?.map((item, index) =>
+                                <tr key={index}>
+                                    <td>{item?.employee_id}</td>
+                                    <td>{item?.date}</td>
+                                    <td>{item?.status}</td>
+                                    <td>{item?.in_time}</td>
+                                    <td>{item?.out_time}</td>
+                                    <td>{item?.late}</td>
+                                    <td>{item?.early_out}</td>
+                                    <td>{item?.over_time}</td>
+                                    <td>
+                                        <div className="d-flex justify-content-center">
+                                            <Link to="/dashboard/hrm/edit">
+                                                <i
+                                                    style={{
+                                                        backgroundColor: "skyblue",
+                                                        color: "#ffffff",
+                                                    }}
+                                                    className="icofont icofont-pencil-alt-5  rounded m-r-15 p-2"
+                                                ></i>
+                                            </Link>
+                                            <Link to="/dashboard/hrm/employee">
+                                                {" "}
+                                                <i
+                                                    style={{
+                                                        backgroundColor: "#ff3a6e",
+                                                        color: "#ffffff",
+                                                    }}
+                                                    className="icofont icofont-trash rounded p-2"
+                                                ></i>
+                                            </Link>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        }
                         </tbody>
                     </table>
                     <p className="text-center p-t-10">No entries found</p>

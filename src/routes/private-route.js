@@ -7,7 +7,8 @@ const PrivateRoute = () => {
 
   useEffect(() => {
     // send jwt to API to see if it's valid
-    let token = localStorage.getItem("access-token");
+    // let token = localStorage.getItem("access-token");
+    let token = document.cookie?.split(';')?.find(cookie => cookie?.includes('token'))?.split('=')[1];
     let email = localStorage.getItem("email");
     // const local = "http://localhost:5000/";
     const vercel = "https://dashboard-hrm-system-backend.vercel.app/";
@@ -25,7 +26,7 @@ const PrivateRoute = () => {
           return res.json();
         })
         .then((json) => {
-          console.log(json);
+          // console.log(json);
 
           if (json.body.decoded.email === email) {
             setAuth(true);
@@ -34,7 +35,7 @@ const PrivateRoute = () => {
         .catch((err) => {
           setAuth(false);
           console.log(err);
-          localStorage.removeItem("access-token");
+          // localStorage.removeItem("access-token");
           localStorage.removeItem("id");
           localStorage.removeItem("email");
         })
@@ -45,7 +46,7 @@ const PrivateRoute = () => {
   }, []);
 
   if (!isTokenValidated) return <p>loading</p>;
-  console.log(auth);
+  // console.log(auth);
 
   return auth ? (
     <Outlet />
