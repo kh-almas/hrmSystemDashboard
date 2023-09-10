@@ -10,24 +10,25 @@ import axios from "../../../axios";
 import Swal from 'sweetalert2'
 import BaseModal from "../modal/BaseModal";
 import ManualAttendancesForm from "../modal/Form/ManualAttendancesForm";
+import ManualAttendancesUpdateForm from "../modal/Form/ManualAttendancesUpdateForm";
 
 const ManualAttendance = () => {
     const [dataModal, setDataModal] = useState(false);
+    const [dataUpdateModal, setDataUpdateModal] = useState(false);
     const [modal, setModal] = useState();
     const [date, setDate] = useState(true);
+    const [oldData, setOldDate] = useState();
     const [data, setData] = useState([]);
     const [totalItemCount, setTotalItemCount] = useState();
 
     useEffect(() => {
-        axios.get('https://dashboard-hrm-system-backend.vercel.app/hrm-system/manual-attendance')
+        axios.get('/hrm-system/manual-attendance')
             // .then(res => res.json())
             .then(info => {
-                // console.log(info.data.body.data);
                 setTotalItemCount(info.data.body.data.length)
                 setData(info.data.body.data);
             })
             .catch(e => {
-                console.log(e);
                 Swal.fire({
                     title: 'Something is wrong.',
                     width: 600,
@@ -64,6 +65,21 @@ const ManualAttendance = () => {
 
     const dataToggle = () => {
         setDataModal(!dataModal);
+    };
+
+    const dataUpdateToggle = (data) => {
+        setOldDate(null);
+
+        axios.get(`/hrm-system/manual-attendance/${data}`)
+            // .then(res => res.json())
+            .then(info => {
+                setOldDate(info.data.body.data);
+            })
+            .catch(e => {
+                // console.log(e);
+            })
+        // setOldDateId(data);
+        setDataUpdateModal(!dataUpdateModal);
     };
 
     return (
@@ -267,25 +283,12 @@ const ManualAttendance = () => {
                                         <td>{timeFormat(item?.over_time) ?? 'N/A'}</td>
                                         <td>
                                             <div className="d-flex justify-content-center">
-                                                <Link to="/dashboard/hrm/edit">
-                                                    <i
-                                                        style={{
-                                                            backgroundColor: "skyblue",
-                                                            color: "#ffffff",
-                                                        }}
-                                                        className="icofont icofont-pencil-alt-5  rounded m-r-15 p-2"
-                                                    ></i>
-                                                </Link>
-                                                <Link to="/dashboard/hrm/employee">
-                                                    {" "}
-                                                    <i
-                                                        style={{
-                                                            backgroundColor: "#ff3a6e",
-                                                            color: "#ffffff",
-                                                        }}
-                                                        className="icofont icofont-trash rounded p-2"
-                                                    ></i>
-                                                </Link>
+                                                <button onClick={() => dataUpdateToggle(item.id)} className="btn me-2" style={{backgroundColor: "skyblue", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>
+                                                    <i className="icofont icofont-pencil-alt-5  rounded" style={{backgroundColor: "skyblue", color: "#ffffff",}}></i>
+                                                </button>
+                                                <button onClick={() => dataUpdateToggle(item.id)} className="btn" style={{backgroundColor: "#ff3a6e", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>
+                                                    <i className="icofont icofont-trash rounded" style={{backgroundColor: "#ff3a6e", color: "#ffffff",}}></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -305,6 +308,13 @@ const ManualAttendance = () => {
             </div>
 
             <ManualAttendancesForm dataModal={dataModal} dataToggle={dataToggle}></ManualAttendancesForm>
+
+            {
+                oldData ?
+                    <ManualAttendancesUpdateForm oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>
+                    : ''
+            }
+
         </>
     );
 };
