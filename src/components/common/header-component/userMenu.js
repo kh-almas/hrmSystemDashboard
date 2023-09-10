@@ -31,6 +31,9 @@ const UserMenu = () => {
         </div>
         <ul className="profile-dropdown onhover-show-div p-20 profile-dropdown-hover">
           <li>
+            {localStorage.getItem("email")}
+          </li>
+          <li>
             <a href="#javascript">
               <User />
               Edit Profile

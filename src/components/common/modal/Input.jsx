@@ -1,17 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 
-const Input = ({
-  labelName,
-  inputName,
-  inputType,
-  placeholder,
-  errors,
-  defaultValue,
-  validation,
-}) => {
-  console.log(defaultValue);
-  const { register } = useForm();
+const Input = ({labelName, inputName, inputType, placeholder, defaultValue, validation, error}) => {
+    // const {formState: {errors},} = useForm();
   return (
     <>
       <div className="theme-form">
@@ -22,8 +13,8 @@ const Input = ({
               fontSize: "13px",
               height: "37px",
               outline: "0px !important",
-            }} //
-            className={`form-control ${errors?.inputName && "is-invalid"}`}
+            }}
+            className={`form-control ${error && "is-invalid"}`}
             id={inputName}
             type={inputType}
             name={inputName}
@@ -31,9 +22,11 @@ const Input = ({
             defaultValue={defaultValue}
             {...validation}
           />
-          <span className="text-danger">
-            {errors?.inputName && `${errors?.inputName} is required`}
-          </span>
+            { error ?
+                <span className="text-danger">
+                    {`${labelName} is required`}
+                </span> : ''
+            }
         </div>
       </div>
     </>
