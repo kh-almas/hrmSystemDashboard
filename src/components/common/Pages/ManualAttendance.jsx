@@ -5,27 +5,52 @@ import CommonSearchComponet from "../salaryCard/CommonSearchComponet";
 import {useForm} from "react-hook-form";
 import Select from "../modal/Select";
 import Input from "../modal/Input";
-import Textarea from "../modal/Textarea";
-import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import {Link} from "react-router-dom";
 import axios from "../../../axios";
+import Swal from 'sweetalert2'
+import BaseModal from "../modal/BaseModal";
+import ManualAttendancesForm from "../modal/Form/ManualAttendancesForm";
 
 const ManualAttendance = () => {
-    const {register, handleSubmit, formState: {errors},} = useForm();
     const [dataModal, setDataModal] = useState(false);
     const [modal, setModal] = useState();
     const [date, setDate] = useState(true);
     const [data, setData] = useState([]);
+    const [totalItemCount, setTotalItemCount] = useState();
 
     useEffect(() => {
         axios.get('https://dashboard-hrm-system-backend.vercel.app/hrm-system/manual-attendance')
             // .then(res => res.json())
             .then(info => {
-                console.log(info.data.body.data);
+                // console.log(info.data.body.data);
+                setTotalItemCount(info.data.body.data.length)
                 setData(info.data.body.data);
+            })
+            .catch(e => {
+                console.log(e);
+                Swal.fire({
+                    title: 'Something is wrong.',
+                    width: 600,
+                    padding: '3em',
+                    color: '#716add',
+                    background: '#fff url(/images/trees.png)',
+                    backdrop: `
+                        rgba(0,0,123,0.4)
+                        url("/images/nyan-cat.gif")
+                        left top
+                        no-repeat
+                      `
+                })
             })
     }, [])
 
+
+    const timeFormat = time => {
+        if (time){
+            const timeArray = time.split(":");
+            return `${timeArray[0]}h ${timeArray[1]}m`;
+        }
+    }
 
     const dateObj = new Date();
     // get the month in this format of 04, the same for months
@@ -39,10 +64,6 @@ const ManualAttendance = () => {
 
     const dataToggle = () => {
         setDataModal(!dataModal);
-    };
-
-    const onSubmit = (data) => {
-        console.log(data);
     };
 
     return (
@@ -233,140 +254,57 @@ const ManualAttendance = () => {
                         </thead>
                         <tbody>
                         {
-                            data?.map((item, index) =>
-                                <tr key={index}>
-                                    <td>{item?.employee_id}</td>
-                                    <td>{item?.date}</td>
-                                    <td>{item?.status}</td>
-                                    <td>{item?.in_time}</td>
-                                    <td>{item?.out_time}</td>
-                                    <td>{item?.late}</td>
-                                    <td>{item?.early_out}</td>
-                                    <td>{item?.over_time}</td>
-                                    <td>
-                                        <div className="d-flex justify-content-center">
-                                            <Link to="/dashboard/hrm/edit">
-                                                <i
-                                                    style={{
-                                                        backgroundColor: "skyblue",
-                                                        color: "#ffffff",
-                                                    }}
-                                                    className="icofont icofont-pencil-alt-5  rounded m-r-15 p-2"
-                                                ></i>
-                                            </Link>
-                                            <Link to="/dashboard/hrm/employee">
-                                                {" "}
-                                                <i
-                                                    style={{
-                                                        backgroundColor: "#ff3a6e",
-                                                        color: "#ffffff",
-                                                    }}
-                                                    className="icofont icofont-trash rounded p-2"
-                                                ></i>
-                                            </Link>
-                                        </div>
+                            data ?
+                                data?.map((item, index) =>
+                                    <tr key={index}>
+                                        <td>{item?.employee_name }</td>
+                                        <td>{item?.date ?? 'N/A'}</td>
+                                        <td>{item?.status ?? 'N/A'}</td>
+                                        <td>{timeFormat(item?.in_time) ?? 'N/A'}</td>
+                                        <td>{timeFormat(item?.out_time) ?? 'N/A'}</td>
+                                        <td>{timeFormat(item?.late) ?? 'N/A'}</td>
+                                        <td>{timeFormat(item?.early_out) ?? 'N/A'}</td>
+                                        <td>{timeFormat(item?.over_time) ?? 'N/A'}</td>
+                                        <td>
+                                            <div className="d-flex justify-content-center">
+                                                <Link to="/dashboard/hrm/edit">
+                                                    <i
+                                                        style={{
+                                                            backgroundColor: "skyblue",
+                                                            color: "#ffffff",
+                                                        }}
+                                                        className="icofont icofont-pencil-alt-5  rounded m-r-15 p-2"
+                                                    ></i>
+                                                </Link>
+                                                <Link to="/dashboard/hrm/employee">
+                                                    {" "}
+                                                    <i
+                                                        style={{
+                                                            backgroundColor: "#ff3a6e",
+                                                            color: "#ffffff",
+                                                        }}
+                                                        className="icofont icofont-trash rounded p-2"
+                                                    ></i>
+                                                </Link>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )
+                                 :
+                                <tr>
+                                    <td rowSpan={9}>
+                                        <p>No entries found</p>
                                     </td>
                                 </tr>
-                            )
                         }
                         </tbody>
                     </table>
-                    <p className="text-center p-t-10">No entries found</p>
+
                 </div>
-                <p>Showing 1 to 1 of 1 entries</p>
+                <p className="mt-3">Showing {totalItemCount} to {totalItemCount} of {totalItemCount} entries</p>
             </div>
 
-            <Modal isOpen={dataModal} toggle={dataToggle}>
-                <ModalHeader toggle={dataToggle}>Manual Attendance</ModalHeader>
-                <ModalBody>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="row row-cols-1 row-cols-lg-2">
-                            <div>
-                                <Input
-                                    labelName={"Employee Name"}
-                                    inputName={"name"}
-                                    inputType={"text"}
-                                    placeholder={"Enter Employee name"}
-                                    validation={{
-                                        ...register("name", { required: true }),
-                                    }}
-                                />
-                            </div>
-                            <div>
-                                <Input
-                                    labelName={"Date"}
-                                    inputName={"date"}
-                                    inputType={"date"}
-                                    validation={{ ...register("date", { required: true }) }}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="row row-cols-1 row-cols-lg-2">
-                            <div>
-                                <Input
-                                    labelName={"Clock In"}
-                                    inputName={"inTime"}
-                                    inputType={"time"}
-                                    validation={{ ...register("inTime", { required: true }) }}
-                                />
-                            </div>
-                            <div>
-                                <Input
-                                    labelName={"Clock Out"}
-                                    inputName={"outTime"}
-                                    inputType={"time"}
-                                    validation={{ ...register("outTime", { required: true }) }}
-                                />
-                            </div>
-                        </div>
-
-                        <div className="row row-cols-1 row-cols-lg-2">
-                            <div>
-                                <Input
-                                    labelName={"Early Leave"}
-                                    inputName={"leave"}
-                                    inputType={"time"}
-                                    validation={{ ...register("leave", { required: true }) }}
-                                />
-                            </div>
-                            <div>
-                                <Input
-                                    labelName={"Overtime"}
-                                    inputName={"overtime"}
-                                    inputType={"time"}
-                                    validation={{ ...register("overtime", { required: true }) }}
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <Select
-                                name={"status"}
-                                labelName={"Status"}
-                                placeholder={"Select an option"}
-                                options={["Active", "Inactive"]}
-                            />
-                        </div>
-
-                        <div>
-                            <div class="checkbox checkbox-dark">
-                                <input id="inline-1" type="checkbox" />
-                                <label htmlFor="inline-1">Is Late</label>
-                            </div>
-                        </div>
-
-                        <div className="d-flex justify-content-end">
-                            <Button color="danger" onClick={dataToggle} className="me-2">
-                                Cancel
-                            </Button>
-                            <Button color="primary" type="submit">
-                                Create
-                            </Button>
-                        </div>
-                    </form>
-                </ModalBody>
-            </Modal>
+            <ManualAttendancesForm dataModal={dataModal} dataToggle={dataToggle}></ManualAttendancesForm>
         </>
     );
 };
