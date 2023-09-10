@@ -8,11 +8,24 @@ import axios from "../../../../axios";
 import Swal from "sweetalert2";
 import moment from "moment";
 
-const ManualAttendancesForm = ({dataModal, dataToggle}) => {
+const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData}) => {
     const [employee, setEmployee] = useState([]);
+    const [manualAttendanceOld, setManualAttendanceOld] = useState([]);
     const [weekday, setWeekday] = useState([]);
     const [shift, setShift] = useState([]);
     const {register, handleSubmit, formState: {errors},} = useForm();
+
+    useEffect(() => {
+        const formattedTime = time => moment(time, "HH:mm:ss").format("HH:mm");
+        const in_time = formattedTime(oldData.in_time);
+        oldData.in_time = in_time;
+        const late = formattedTime(oldData.late);
+        oldData.late = late;
+        const out_time = formattedTime(oldData.out_time);
+        oldData.out_time = out_time;
+        const over_time = formattedTime(oldData.over_time);
+        oldData.over_time = over_time;
+    }, [oldData])
 
     useEffect(() => {
         axios.get('/hrm-system/employee/')
@@ -113,7 +126,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    dataToggle(false);
+                    dataUpdateToggle(false);
                 }
 
             })
@@ -130,7 +143,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
 
     return (
         <>
-            <BaseModal title={"Manual Attendance"} dataModal={dataModal} dataToggle={dataToggle}>
+            <BaseModal title={"Update Manual Attendance"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
@@ -139,6 +152,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
                                 labelName={"Employee Name"}
                                 placeholder={"Select an option"}
                                 options={employee}
+                                previous={oldData?.employee_id}
                                 validation={{...register("employee_id", {required: true})}}
                                 error={errors?.employee_id}
                             />
@@ -151,6 +165,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
                                 labelName={"Date"}
                                 inputName={"date"}
                                 inputType={"date"}
+                                defaultValue={oldData?.date}
                                 validation={{...register("date", {required: true})}}
                                 error={errors?.date}
                             />
@@ -164,6 +179,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
                                 labelName={"Shift"}
                                 placeholder={"Select an option"}
                                 options={shift}
+                                previous={oldData?.shift_id}
                                 validation={{...register("shift_id", {required: true})}}
                                 error={errors?.shift_id}
                             />
@@ -174,21 +190,11 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
                                 labelName={"Weekday"}
                                 placeholder={"Select an option"}
                                 options={weekday}
+                                previous={oldData?.day_type}
                                 validation={{...register("day_type", {required: true})}}
                                 error={errors?.day_type}
                             />
                         </div>
-                        {/*<div>*/}
-                        {/*    <Input*/}
-                        {/*        labelName={"Employee Name"}*/}
-                        {/*        inputName={"name"}*/}
-                        {/*        inputType={"text"}*/}
-                        {/*        placeholder={"Enter Employee name"}*/}
-                        {/*        validation={{*/}
-                        {/*            ...register("name", { required: true }),*/}
-                        {/*        }}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
 
                     </div>
 
@@ -199,6 +205,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
                                 labelName={"Clock In"}
                                 inputName={"inTime"}
                                 inputType={"time"}
+                                previous={oldData?.in_time}
                                 validation={{...register("in_time", {required: true})}}
                                 error={errors?.in_time}
                             />
@@ -208,6 +215,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
                                 labelName={"Clock Out"}
                                 inputName={"outTime"}
                                 inputType={"time"}
+                                previous={oldData?.out_time}
                                 validation={{...register("out_time", {required: true})}}
                                 error={errors?.out_time}
                             />
@@ -219,6 +227,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
                             name={"status"}
                             labelName={"Status"}
                             placeholder={"Select an option"}
+                            previous={oldData?.status}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
                             validation={{...register("status", {required: true})}}
                             error={errors?.status}
@@ -227,7 +236,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
 
 
                     <div className="d-flex justify-content-end">
-                        <Button color="danger" onClick={dataToggle} className="me-2">
+                        <Button color="danger" onClick={dataUpdateToggle} className="me-2">
                             Cancel
                         </Button>
                         <Button color="primary" type="submit">

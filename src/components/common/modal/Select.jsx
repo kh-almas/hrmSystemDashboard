@@ -1,7 +1,7 @@
 import React from "react";
 import {useForm} from "react-hook-form";
 
-const Select = ({labelName, options, defaultValue, validation, placeholder, error}) => {
+const Select = ({labelName, options, defaultValue, validation, placeholder, error, previous}) => {
     return (
         <>
             <div className="theme-form">
@@ -11,7 +11,7 @@ const Select = ({labelName, options, defaultValue, validation, placeholder, erro
                             defaultValue={defaultValue} {...validation}>
                         <option value="">{placeholder}</option>
                         {options?.map((item) => (
-                            <option value={item.id}>{item.value}</option>
+                             <option value={item.id} selected={item.id == previous} >{item.value}</option>
                         ))}
                     </select>
                     {error ?
