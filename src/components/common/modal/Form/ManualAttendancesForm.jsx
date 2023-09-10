@@ -6,6 +6,7 @@ import BaseModal from "../BaseModal";
 import {useForm} from "react-hook-form";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
+import moment from "moment";
 
 const ManualAttendancesForm = ({dataModal, dataToggle}) => {
     const [employee, setEmployee] = useState([]);
@@ -93,8 +94,47 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
             })
     }, [])
 
+    const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
+
     const onSubmit = (data) => {
+        const in_time = formattedTime(data.in_time);
+        data.in_time = in_time;
+        const out_time = formattedTime(data.out_time);
+        data.out_time = out_time;
         console.log(data);
+
+        axios.post('https://dashboard-hrm-system-backend.vercel.app/hrm-system/manual-attendance', data)
+            .then(info => {
+                // console.log(info);
+                if(info?.status == 200)
+                {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    dataToggle(false);
+                }
+
+            })
+            .catch(e => {
+                console.log(e);
+                // Swal.fire({
+                //     title: 'Something is wrong.',
+                //     width: 600,
+                //     padding: '3em',
+                //     color: '#716add',
+                //     background: '#fff url(/images/trees.png)',
+                //     backdrop: `
+                //         rgba(0,0,123,0.4)
+                //         url("/images/nyan-cat.gif")
+                //         left top
+                //         no-repeat
+                //       `
+                // })
+            })
     };
 
 
