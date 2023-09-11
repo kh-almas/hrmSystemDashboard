@@ -7,92 +7,52 @@ import {useForm} from "react-hook-form";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
 import moment from "moment";
+import GetEmployee from "../../Query/hrm/GetEmployee";
+import GetAllWeekday from "../../Query/hrm/GetAllWeekday";
+import GetAllShift from "../../Query/hrm/GetAllShift";
 
 const ManualAttendancesForm = ({dataModal, dataToggle, setIsChanged, isChanged}) => {
     const [employee, setEmployee] = useState([]);
     const [weekday, setWeekday] = useState([]);
     const [shift, setShift] = useState([]);
     const {register, handleSubmit, formState: {errors},} = useForm();
+    const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployee();
+    const [allWeekdayStatus, allWeekdayReFetch, allWeekday, allWeekdayError] = GetAllWeekday();
+    const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
+
+    console.log(shift);
+    useEffect( () => {
+        setEmployee([]);
+        allEmployee?.data?.body?.data?.map(item => {
+            const set_data = {
+                id: item.id,
+                value: item.name
+            }
+            setEmployee(prevEmployee => [...prevEmployee, set_data]);
+        })
+    }, [allEmployee])
+
+    useEffect( () => {
+        setWeekday([]);
+        allWeekday?.data?.body?.data?.map(item => {
+            const set_data = {
+                id: item.id,
+                value: item.name
+            }
+            setWeekday(prevWeekday => [...prevWeekday, set_data]);
+        })
+    }, [allWeekday])
 
     useEffect(() => {
-        axios.get('/hrm-system/employee/')
-            .then(info => {
-                info?.data?.body?.data?.map(item => {
-                    const set_data = {
-                        id: item.id,
-                        value: item.name
-                    }
-                    setEmployee(prevEmployee => [...prevEmployee, set_data]);
-                })
-            })
-            .catch(e => {
-                Swal.fire({
-                    title: 'Something is wrong.',
-                    width: 600,
-                    padding: '3em',
-                    color: '#716add',
-                    background: '#fff url(/images/trees.png)',
-                    backdrop: `
-                        rgba(0,0,123,0.4)
-                        url("/images/nyan-cat.gif")
-                        left top
-                        no-repeat
-                      `
-                })
-            })
-
-        axios.get('/hrm-system/weekday/')
-            .then(info => {
-                info?.data?.body?.data?.map(item => {
-                    const set_data = {
-                        id: item.id,
-                        value: item.name
-                    }
-                    setWeekday(prevWeekday => [...prevWeekday, set_data]);
-                })
-            })
-            .catch(e => {
-                Swal.fire({
-                    title: 'Something is wrong.',
-                    width: 600,
-                    padding: '3em',
-                    color: '#716add',
-                    background: '#fff url(/images/trees.png)',
-                    backdrop: `
-                        rgba(0,0,123,0.4)
-                        url("/images/nyan-cat.gif")
-                        left top
-                        no-repeat
-                      `
-                })
-            })
-
-        axios.get('/hrm-system/shift')
-            .then(info => {
-                info?.data?.body?.data?.map(item => {
-                    const set_data = {
-                        id: item.id,
-                        value: item.name
-                    }
-                    setShift(prevShift => [...prevShift, set_data]);
-                })
-            })
-            .catch(e => {
-                Swal.fire({
-                    title: 'Something is wrong.',
-                    width: 600,
-                    padding: '3em',
-                    color: '#716add',
-                    background: '#fff url(/images/trees.png)',
-                    backdrop: `
-                        rgba(0,0,123,0.4)
-                        url("/images/nyan-cat.gif")
-                        left top
-                        no-repeat
-                      `
-                })
-            })
-    }, [])
+        setShift([]);
+        allShift?.data?.body?.data?.map(item => {
+            const set_data = {
+                id: item.id,
+                value: item.name
+            }
+            setShift(prevShift => [...prevShift, set_data]);
+        })
+    }, [shift])
 
     const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
 
