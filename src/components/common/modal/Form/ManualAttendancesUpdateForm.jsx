@@ -8,12 +8,12 @@ import axios from "../../../../axios";
 import Swal from "sweetalert2";
 import moment from "moment";
 
-const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData}) => {
+const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setIsChanged, isChanged}) => {
+    // console.log(oldData)
     const [employee, setEmployee] = useState([]);
-    const [manualAttendanceOld, setManualAttendanceOld] = useState([]);
     const [weekday, setWeekday] = useState([]);
     const [shift, setShift] = useState([]);
-    const {register, handleSubmit, formState: {errors},} = useForm();
+    const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
     useEffect(() => {
         const formattedTime = time => moment(time, "HH:mm:ss").format("HH:mm");
@@ -105,7 +105,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData}) => 
                       `
                 })
             })
-    }, [])
+    }, [oldData])
 
     const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
 
@@ -115,7 +115,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData}) => 
         const out_time = formattedTime(data.out_time);
         data.out_time = out_time;
 
-        axios.post('/hrm-system/manual-attendance', data)
+        axios.put(`/hrm-system/manual-attendance/${oldData.id}`, data)
             .then(info => {
                 if(info?.status == 200)
                 {
@@ -127,14 +127,15 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData}) => 
                         timer: 1500
                     })
                     dataUpdateToggle(false);
+                    setIsChanged(!isChanged);
                 }
-
             })
             .catch(e => {
+                console.log(e)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0]}`,
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
                     footer: '<a href="">Why do I have this issue?</a>'
                 })
             })
@@ -178,8 +179,8 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData}) => 
                                 name={"shift"}
                                 labelName={"Shift"}
                                 placeholder={"Select an option"}
-                                options={shift}
                                 previous={oldData?.shift_id}
+                                options={shift}
                                 validation={{...register("shift_id", {required: true})}}
                                 error={errors?.shift_id}
                             />
@@ -205,7 +206,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData}) => 
                                 labelName={"Clock In"}
                                 inputName={"inTime"}
                                 inputType={"time"}
-                                previous={oldData?.in_time}
+                                defaultValue={oldData?.in_time}
                                 validation={{...register("in_time", {required: true})}}
                                 error={errors?.in_time}
                             />
@@ -215,7 +216,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData}) => 
                                 labelName={"Clock Out"}
                                 inputName={"outTime"}
                                 inputType={"time"}
-                                previous={oldData?.out_time}
+                                defaultValue={oldData?.out_time}
                                 validation={{...register("out_time", {required: true})}}
                                 error={errors?.out_time}
                             />

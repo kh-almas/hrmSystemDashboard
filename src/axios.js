@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 // Create an axios instance with your baseURL
-const axios = Axios.create({
+const axios  = Axios.create({
   baseURL: "https://dashboard-hrm-system-backend.vercel.app",
   // baseURL: "http://localhost:5000/",
 });
@@ -10,5 +10,6 @@ const axios = Axios.create({
 axios.defaults.headers.common["Authorization"] =
   "Bearer " + document.cookie?.split(';')?.find(cookie => cookie?.includes('token'))?.split('=')[1];
   // "Bearer " + localStorage.getItem("access-token");
+
 
 export default axios;
