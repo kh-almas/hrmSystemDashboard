@@ -8,7 +8,7 @@ import axios from "../../../../axios";
 import Swal from "sweetalert2";
 import moment from "moment";
 
-const ManualAttendancesForm = ({dataModal, dataToggle}) => {
+const ManualAttendancesForm = ({dataModal, dataToggle, setIsChanged, isChanged}) => {
     const [employee, setEmployee] = useState([]);
     const [weekday, setWeekday] = useState([]);
     const [shift, setShift] = useState([]);
@@ -114,6 +114,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
                         timer: 1500
                     })
                     dataToggle(false);
+                    setIsChanged(!isChanged);
                 }
 
             })
@@ -121,7 +122,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle}) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0]}`,
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
                     footer: '<a href="">Why do I have this issue?</a>'
                 })
             })

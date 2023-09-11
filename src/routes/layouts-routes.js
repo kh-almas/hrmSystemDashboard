@@ -6,7 +6,7 @@ import ServerComponent from "../components/dashboard/server/serverComponent";
 import University from "../components/dashboard/university";
 
 // sample page
-import ManualAttendance from "../components/common/Pages/ManualAttendance";
+import ManualAttendance from "../components/dashboard/hrmSystem/attendance/ManualAttendance";
 import MeetingCalender from "../components/dashboard/MeetingCalender";
 import CompanyPolicy from "../components/dashboard/hrmSystem/CompanyPolicy";
 import DocumentSetup from "../components/dashboard/hrmSystem/DocumentSetup";

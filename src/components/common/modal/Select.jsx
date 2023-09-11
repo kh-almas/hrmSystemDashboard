@@ -1,7 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useForm} from "react-hook-form";
 
 const Select = ({labelName, options, defaultValue, validation, placeholder, error, previous}) => {
+    const {reset} = useForm();
+    useEffect(() => {
+        reset();
+    }, [previous])
+
     return (
         <>
             <div className="theme-form">

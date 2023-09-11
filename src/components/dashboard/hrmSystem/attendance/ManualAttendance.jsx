@@ -1,19 +1,20 @@
 import React, {useEffect, useState} from "react";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
-import Breadcrumb from "../breadcrumb";
-import CommonSearchComponet from "../salaryCard/CommonSearchComponet";
+import Breadcrumb from "../../../common/breadcrumb";
+import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import {useForm} from "react-hook-form";
-import Select from "../modal/Select";
-import Input from "../modal/Input";
+import Select from "../../../common/modal/Select";
+import Input from "../../../common/modal/Input";
 import {Link} from "react-router-dom";
-import axios from "../../../axios";
+import axios from "../../../../axios";
 import Swal from 'sweetalert2'
-import BaseModal from "../modal/BaseModal";
-import ManualAttendancesForm from "../modal/Form/ManualAttendancesForm";
-import ManualAttendancesUpdateForm from "../modal/Form/ManualAttendancesUpdateForm";
+import BaseModal from "../../../common/modal/BaseModal";
+import ManualAttendancesForm from "../../../common/modal/Form/ManualAttendancesForm";
+import ManualAttendancesUpdateForm from "../../../common/modal/Form/ManualAttendancesUpdateForm";
 
 const ManualAttendance = () => {
     const [dataModal, setDataModal] = useState(false);
+    const [isChanged, setIsChanged] = useState(false);
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
     const [modal, setModal] = useState();
     const [date, setDate] = useState(true);
@@ -43,7 +44,7 @@ const ManualAttendance = () => {
                       `
                 })
             })
-    }, [])
+    }, [isChanged])
 
 
     const timeFormat = time => {
@@ -81,6 +82,41 @@ const ManualAttendance = () => {
         // setOldDateId(data);
         setDataUpdateModal(!dataUpdateModal);
     };
+
+    const deleteAttendance = id => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`/hrm-system/manual-attendance/${id}`)
+                    .then(info => {
+                        if(info?.status == 200)
+                        {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                            setIsChanged(!isChanged);
+                        }
+                    })
+                    .catch(e => {
+                        console.log(e);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                        })
+                    })
+            }
+        })
+    }
 
     return (
         <>
@@ -286,7 +322,7 @@ const ManualAttendance = () => {
                                                 <button onClick={() => dataUpdateToggle(item.id)} className="btn me-2" style={{backgroundColor: "skyblue", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>
                                                     <i className="icofont icofont-pencil-alt-5  rounded" style={{backgroundColor: "skyblue", color: "#ffffff",}}></i>
                                                 </button>
-                                                <button onClick={() => dataUpdateToggle(item.id)} className="btn" style={{backgroundColor: "#ff3a6e", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>
+                                                <button onClick={() => deleteAttendance(item.id)} className="btn" style={{backgroundColor: "#ff3a6e", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>
                                                     <i className="icofont icofont-trash rounded" style={{backgroundColor: "#ff3a6e", color: "#ffffff",}}></i>
                                                 </button>
                                             </div>
@@ -307,11 +343,11 @@ const ManualAttendance = () => {
                 <p className="mt-3">Showing {totalItemCount} to {totalItemCount} of {totalItemCount} entries</p>
             </div>
 
-            <ManualAttendancesForm dataModal={dataModal} dataToggle={dataToggle}></ManualAttendancesForm>
+            <ManualAttendancesForm isChanged={isChanged} setIsChanged={setIsChanged} dataModal={dataModal} dataToggle={dataToggle}></ManualAttendancesForm>
 
             {
                 oldData ?
-                    <ManualAttendancesUpdateForm oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>
+                    <ManualAttendancesUpdateForm isChanged={isChanged} setIsChanged={setIsChanged} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>
                     : ''
             }
 
