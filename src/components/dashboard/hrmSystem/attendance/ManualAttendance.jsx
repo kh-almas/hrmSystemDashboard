@@ -11,6 +11,7 @@ import Swal from 'sweetalert2'
 import BaseModal from "../../../common/modal/BaseModal";
 import ManualAttendancesForm from "../../../common/modal/Form/ManualAttendancesForm";
 import ManualAttendancesUpdateForm from "../../../common/modal/Form/ManualAttendancesUpdateForm";
+import GetManualAttendance from "../../../common/Query/hrm/GetManualAttendance";
 
 const ManualAttendance = () => {
     const [dataModal, setDataModal] = useState(false);
@@ -21,30 +22,21 @@ const ManualAttendance = () => {
     const [oldData, setOldDate] = useState();
     const [data, setData] = useState([]);
     const [totalItemCount, setTotalItemCount] = useState();
+    const [status, refetch, manualAttendance, error] = GetManualAttendance();
+    console.log(manualAttendance?.data?.body?.data);
 
     useEffect(() => {
-        axios.get('/hrm-system/manual-attendance')
-            // .then(res => res.json())
-            .then(info => {
-                setTotalItemCount(info.data.body.data.length)
-                setData(info.data.body.data);
-            })
-            .catch(e => {
-                Swal.fire({
-                    title: 'Something is wrong.',
-                    width: 600,
-                    padding: '3em',
-                    color: '#716add',
-                    background: '#fff url(/images/trees.png)',
-                    backdrop: `
-                        rgba(0,0,123,0.4)
-                        url("/images/nyan-cat.gif")
-                        left top
-                        no-repeat
-                      `
-                })
-            })
-    }, [isChanged])
+        setData(manualAttendance?.data?.body?.data);
+    //     // axios.get('/hrm-system/manual-attendance')
+    //     //     // .then(res => res.json())
+    //     //     .then(info => {
+    //     //         setTotalItemCount(info.data.body.data.length)
+    //     //         setData(info.data.body.data);
+    //     //     })
+    //     //     .catch(e => {
+    //     //
+    //     //     })
+    }, [isChanged, manualAttendance])
 
 
     const timeFormat = time => {
