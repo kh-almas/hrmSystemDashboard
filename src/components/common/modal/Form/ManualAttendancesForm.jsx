@@ -95,7 +95,6 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Select
-                                name={"employee"}
                                 labelName={"Employee Name"}
                                 placeholder={"Select an option"}
                                 options={employee}
@@ -120,7 +119,6 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                         </div>
                         <div>
                             <Select
-                                name={"shift"}
                                 labelName={"Shift"}
                                 placeholder={"Select an option"}
                                 options={shift}
@@ -130,7 +128,6 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                         </div>
                         <div>
                             <Select
-                                name={"day_type"}
                                 labelName={"Weekday"}
                                 placeholder={"Select an option"}
                                 options={weekday}
@@ -176,7 +173,6 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
 
                     <div>
                         <Select
-                            name={"status"}
                             labelName={"Status"}
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
