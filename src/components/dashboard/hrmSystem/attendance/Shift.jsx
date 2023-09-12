@@ -39,11 +39,14 @@ const Shift = () => {
         setModal(!modal);
     };
     const dataUpdateToggle = (item) => {
-        const formattedTime = time => moment(time, "HH:mm:ss").format("HH:mm");
-        const start_time = formattedTime(item?.start_time);
-        item.start_time =start_time;
-        const end_time = formattedTime(item?.end_time);
-        item.end_time =end_time;
+        if (item)
+        {
+            const formattedTime = time => moment(time, "HH:mm:ss").format("HH:mm");
+            const start_time = formattedTime(item?.start_time);
+            item.start_time = start_time;
+            const end_time = formattedTime(item?.end_time);
+            item.end_time =end_time;
+        }
         setOldData(item);
         setDataUpdateModal(!dataUpdateModal);
     };

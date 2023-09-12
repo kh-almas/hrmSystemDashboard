@@ -11,7 +11,6 @@ import Swal from "sweetalert2";
 const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftReFetch}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
-    console.log(oldData);
 
     useEffect(() => {
         reset();
@@ -26,11 +25,13 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
         data.end_time = end_time;
         const updatedData = {
             'name':data.name ? data.name : oldData.name,
-            'start_time': data.start_time ? data.start_time : oldData.start_time,
-            'end_time':data.end_time ? data.end_time : oldData.end_time,
+            'start_time': data.start_time ? data.start_time : formattedTimeForUpdate(oldData.start_time),
+            'end_time':data.end_time ? data.end_time : formattedTimeForUpdate(oldData.end_time),
             'weekends':data.weekends ? data.weekends : oldData.weekends,
             'status':data.status ? data.status : oldData.status
         }
+
+        console.log(data);
 
 
         axios.put(`/hrm-system/shift/${oldData.id}`, updatedData)
@@ -50,11 +51,12 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                 }
             })
             .catch(e => {
-                console.log(e)
+                // console.log(e)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: `${e?.response?.data?.body?.message?.details[0].message}`
+                    // ${e?.response?.data?.body?.message?.details[0].message}
                 })
             })
     }
