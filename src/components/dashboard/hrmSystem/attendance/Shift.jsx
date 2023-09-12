@@ -39,21 +39,16 @@ const Shift = () => {
         setModal(!modal);
     };
     const dataUpdateToggle = (item) => {
-        // axios.get(`/hrm-system/shift/${oldData?.id}`)
-        //     .then(info => {
-        //         console.log(info);
-        //         // setOldDate(info.data.body.data);
-        //     })
-        //     .catch(e => {
-        //         // console.log(e);
-        //     })
-        // setOldValue(oldData);
+        const formattedTime = time => moment(time, "HH:mm:ss").format("HH:mm");
+        const start_time = formattedTime(item?.start_time);
+        item.start_time =start_time;
+        const end_time = formattedTime(item?.end_time);
+        item.end_time =end_time;
         setOldData(item);
         setDataUpdateModal(!dataUpdateModal);
     };
 
     const onSubmit = (data) => {
-        // console.log(data)
         const start_time = formattedTime(data.start_time);
         data.start_time = start_time;
         const end_time = formattedTime(data.end_time);
@@ -97,7 +92,6 @@ const Shift = () => {
             if (result.isConfirmed) {
                 axios.delete(`/hrm-system/shift/${id}`)
                     .then(info => {
-                        // console.log(info)
                         if(info?.status == 200)
                         {
                             Swal.fire(
