@@ -12,13 +12,9 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
     console.log(oldData);
-    const formattedTime = time => moment(time, "HH:mm:ss").format("HH:mm");
+
     useEffect(() => {
         reset();
-        const start_time = formattedTime(oldData?.start_time);
-        oldData.start_time =start_time;
-        const end_time = formattedTime(oldData?.end_time);
-        oldData.end_time =end_time;
     },[oldData])
 
     const formattedTimeForUpdate = time => moment(time, "HH:mm").format("HH:mm:ss");
@@ -28,9 +24,6 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
         data.start_time = start_time;
         const end_time = formattedTimeForUpdate(data.end_time);
         data.end_time = end_time;
-        // oldData
-        // console.log(data.day_type);
-        // console.log(oldData);
         const updatedData = {
             'name':data.name ? data.name : oldData.name,
             'start_time': data.start_time ? data.start_time : oldData.start_time,
