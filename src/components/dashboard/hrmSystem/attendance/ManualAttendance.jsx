@@ -24,7 +24,6 @@ const ManualAttendance = () => {
     const [data, setData] = useState([]);
     const [totalItemCount, setTotalItemCount] = useState();
     const [status, refetch, manualAttendance, error] = GetManualAttendance();
-    // console.log(manualAttendance?.data?.body?.data);
 
     useEffect(() => {
         setData(manualAttendance?.data?.body?.data);
@@ -87,8 +86,9 @@ const ManualAttendance = () => {
                                 'Your file has been deleted.',
                                 'success'
                             )
-                            refetch();
+                            // refetch();
                         }
+                        refetch();
                     })
                     .catch(e => {
                         // console.log(e);
@@ -327,11 +327,11 @@ const ManualAttendance = () => {
                 <p className="mt-3">Showing {totalItemCount} to {totalItemCount} of {totalItemCount} entries</p>
             </div>
 
-            <ManualAttendancesForm isChanged={isChanged} setIsChanged={setIsChanged} dataModal={dataModal} dataToggle={dataToggle}></ManualAttendancesForm>
+            <ManualAttendancesForm refetch={refetch} dataModal={dataModal} dataToggle={dataToggle}></ManualAttendancesForm>
 
             {
                 oldData ?
-                    <ManualAttendancesUpdateForm isChanged={isChanged} setIsChanged={setIsChanged} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>
+                    <ManualAttendancesUpdateForm refetch={refetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>
                     : ''
             }
 

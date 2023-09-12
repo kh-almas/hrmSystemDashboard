@@ -11,8 +11,7 @@ import GetEmployee from "../../Query/hrm/GetEmployee";
 import GetAllWeekday from "../../Query/hrm/GetAllWeekday";
 import GetAllShift from "../../Query/hrm/GetAllShift";
 
-const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setIsChanged, isChanged}) => {
-    // console.log(oldData)
+const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refetch}) => {
     const [employee, setEmployee] = useState([]);
     const [weekday, setWeekday] = useState([]);
     const [shift, setShift] = useState([]);
@@ -20,14 +19,14 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setI
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployee();
     const [allWeekdayStatus, allWeekdayReFetch, allWeekday, allWeekdayError] = GetAllWeekday();
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
-    console.log(weekday);
+    // console.log(weekday);
 
 
     useEffect(() => {
-        reset();
         const formattedTime = time => moment(time, "HH:mm:ss").format("HH:mm");
         const in_time = formattedTime(oldData.in_time);
         oldData.in_time = in_time;
+        console.log(oldData.in_time);
         const late = formattedTime(oldData.late);
         oldData.late = late;
         const out_time = formattedTime(oldData.out_time);
@@ -67,7 +66,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setI
             }
             setShift(prevShift => [...prevShift, set_data]);
         })
-    }, [shift])
+    }, [allShift])
 
     const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
 
@@ -76,9 +75,23 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setI
         data.in_time = in_time;
         const out_time = formattedTime(data.out_time);
         data.out_time = out_time;
+        // oldData
+        // console.log(data.day_type);
+        // console.log(oldData);
+        const updatedData = {
+            'date':data.date ? data.date : oldData.date,
+            'day_type': data.day_type ? data.day_type : oldData.day_type,
+            'employee_id':data.employee_id ? data.employee_id : oldData.employee_id,
+            'in_time':data.in_time ? data.in_time : oldData.in_time,
+            'out_time':data.out_time ? data.out_time : oldData.out_time,
+            'shift_id':data.shift_id ? data.shift_id : oldData.shift_id,
+            'status':data.status ? data.status : oldData.status
+        }
 
-        axios.put(`/hrm-system/manual-attendance/${oldData.id}`, data)
+
+        axios.put(`/hrm-system/manual-attendance/${oldData.id}`, updatedData)
             .then(info => {
+                console.log(info)
                 if(info?.status == 200)
                 {
                     Swal.fire({
@@ -89,7 +102,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setI
                         timer: 1500
                     })
                     dataUpdateToggle(false);
-                    setIsChanged(!isChanged);
+                    refetch();
                 }
             })
             .catch(e => {
@@ -116,7 +129,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setI
                                 placeholder={"Select an option"}
                                 options={employee}
                                 previous={oldData?.employee_id}
-                                validation={{...register("employee_id", {required: true})}}
+                                validation={{...register("employee_id")}}
                                 error={errors?.employee_id}
                             />
                             {/*<span className="text-danger">*/}
@@ -129,7 +142,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setI
                                 inputName={"date"}
                                 inputType={"date"}
                                 defaultValue={oldData?.date}
-                                validation={{...register("date", {required: true})}}
+                                validation={{...register("date")}}
                                 error={errors?.date}
                             />
                             {/*<span className="text-danger">*/}
@@ -143,7 +156,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setI
                                 placeholder={"Select an option"}
                                 previous={oldData?.shift_id}
                                 options={shift}
-                                validation={{...register("shift_id", {required: true})}}
+                                validation={{...register("shift_id")}}
                                 error={errors?.shift_id}
                             />
                         </div>
@@ -154,7 +167,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setI
                                 placeholder={"Select an option"}
                                 options={weekday}
                                 previous={oldData?.day_type}
-                                validation={{...register("day_type", {required: true})}}
+                                validation={{...register("day_type")}}
                                 error={errors?.day_type}
                             />
                         </div>
@@ -169,7 +182,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setI
                                 inputName={"inTime"}
                                 inputType={"time"}
                                 defaultValue={oldData?.in_time}
-                                validation={{...register("in_time", {required: true})}}
+                                validation={{...register("in_time")}}
                                 error={errors?.in_time}
                             />
                         </div>
@@ -179,7 +192,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setI
                                 inputName={"outTime"}
                                 inputType={"time"}
                                 defaultValue={oldData?.out_time}
-                                validation={{...register("out_time", {required: true})}}
+                                validation={{...register("out_time")}}
                                 error={errors?.out_time}
                             />
                         </div>
@@ -192,7 +205,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setI
                             placeholder={"Select an option"}
                             previous={oldData?.status}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status", {required: true})}}
+                            validation={{...register("status")}}
                             error={errors?.status}
                         />
                     </div>
@@ -203,7 +216,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, setI
                             Cancel
                         </Button>
                         <Button color="primary" type="submit">
-                            Create
+                            Update
                         </Button>
                     </div>
                 </form>

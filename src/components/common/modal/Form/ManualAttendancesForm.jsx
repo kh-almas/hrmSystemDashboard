@@ -11,7 +11,7 @@ import GetEmployee from "../../Query/hrm/GetEmployee";
 import GetAllWeekday from "../../Query/hrm/GetAllWeekday";
 import GetAllShift from "../../Query/hrm/GetAllShift";
 
-const ManualAttendancesForm = ({dataModal, dataToggle, setIsChanged, isChanged}) => {
+const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     const [employee, setEmployee] = useState([]);
     const [weekday, setWeekday] = useState([]);
     const [shift, setShift] = useState([]);
@@ -20,9 +20,8 @@ const ManualAttendancesForm = ({dataModal, dataToggle, setIsChanged, isChanged})
     const [allWeekdayStatus, allWeekdayReFetch, allWeekday, allWeekdayError] = GetAllWeekday();
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
 
-    console.log(shift);
     useEffect( () => {
-        setEmployee([]);
+        setEmployee([])
         allEmployee?.data?.body?.data?.map(item => {
             const set_data = {
                 id: item.id,
@@ -33,7 +32,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, setIsChanged, isChanged})
     }, [allEmployee])
 
     useEffect( () => {
-        setWeekday([]);
+        setWeekday([])
         allWeekday?.data?.body?.data?.map(item => {
             const set_data = {
                 id: item.id,
@@ -44,7 +43,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, setIsChanged, isChanged})
     }, [allWeekday])
 
     useEffect(() => {
-        setShift([]);
+        setShift([])
         allShift?.data?.body?.data?.map(item => {
             const set_data = {
                 id: item.id,
@@ -52,7 +51,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, setIsChanged, isChanged})
             }
             setShift(prevShift => [...prevShift, set_data]);
         })
-    }, [shift])
+    }, [allShift])
 
     const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
 
@@ -74,7 +73,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, setIsChanged, isChanged})
                         timer: 1500
                     })
                     dataToggle(false);
-                    setIsChanged(!isChanged);
+                    refetch();
                 }
 
             })
