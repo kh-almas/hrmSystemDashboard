@@ -2,14 +2,22 @@ import React, {useEffect, useState} from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
+import GetManualAttendance from "../../../common/Query/hrm/GetManualAttendance";
 
 const ManualAttendance = () => {
+  const [status, refetch, manualAttendance, error] = GetManualAttendance();
   const [date, setDate] = useState(true);
   const [modal, setModal] = useState();
+  const [data, setData] = useState([]);
+  const [totalItemCount, setTotalItemCount] = useState();
 
+  console.log(manualAttendance);
+  useEffect(() => {
+    setData(manualAttendance?.data?.body?.data);
+    setTotalItemCount(manualAttendance?.data?.body?.data.length)
+  }, [manualAttendance])
 
   const dateObj = new Date();
-  // get the month in this format of 04, the same for months
   const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
   const year = dateObj.getFullYear();
   const shortDate = `${year}-${month}`;
@@ -17,6 +25,13 @@ const ManualAttendance = () => {
   const toggle = () => {
     setModal(!modal);
   };
+
+  const timeFormat = time => {
+    if (time){
+      const timeArray = time.split(":");
+      return `${timeArray[0]}h ${timeArray[1]}m`;
+    }
+  }
 
   return (
     <>
@@ -185,24 +200,44 @@ const ManualAttendance = () => {
                 <th scope="col">{"Late"}</th>
                 <th scope="col">{"Early Leaving"}</th>
                 <th scope="col">{"Overtime"}</th>
-                <th scope="col">{"Action"}</th>
+                {/*<th scope="col">{"Action"}</th>*/}
               </tr>
             </thead>
             <tbody>
-              {/* <tr>
-                <th scope="row">{""}</th>
-                <td>{""}</td>
-                <td>{""}</td>
-                <td>{""}</td>
-                <td>{""}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr> */}
+            {
+              data ?
+                  data?.map((item, index) =>
+                      <tr key={index}>
+                        <td>{item?.employee_name }</td>
+                        <td>{item?.date ?? 'N/A'}</td>
+                        <td>{item?.status ?? 'N/A'}</td>
+                        <td>{timeFormat(item?.in_time) ?? 'N/A'}</td>
+                        <td>{timeFormat(item?.out_time) ?? 'N/A'}</td>
+                        <td>{timeFormat(item?.late) ?? 'N/A'}</td>
+                        <td>{timeFormat(item?.early_out) ?? 'N/A'}</td>
+                        <td>{timeFormat(item?.over_time) ?? 'N/A'}</td>
+                        {/*<td>*/}
+                        {/*  <div className="d-flex justify-content-center">*/}
+                        {/*    <button onClick={() => dataUpdateToggle(item.id)} className="btn me-2" style={{backgroundColor: "skyblue", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>*/}
+                        {/*      <i className="icofont icofont-pencil-alt-5  rounded" style={{backgroundColor: "skyblue", color: "#ffffff",}}></i>*/}
+                        {/*    </button>*/}
+                        {/*    <button onClick={() => deleteAttendance(item.id)} className="btn" style={{backgroundColor: "#ff3a6e", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>*/}
+                        {/*      <i className="icofont icofont-trash rounded" style={{backgroundColor: "#ff3a6e", color: "#ffffff",}}></i>*/}
+                        {/*    </button>*/}
+                        {/*  </div>*/}
+                        {/*</td>*/}
+                      </tr>
+                  )
+                  :
+                  <tr>
+                    <td rowSpan={9}>
+                      <p>No entries found</p>
+                    </td>
+                  </tr>
+            }
             </tbody>
           </table>
-          <p className="text-center p-t-10">No entries found</p>
+          <p className="mt-3">Showing {totalItemCount} to {totalItemCount} of {totalItemCount} entries</p>
         </div>
         <p>Showing 1 to 1 of 1 entries</p>
       </div>
