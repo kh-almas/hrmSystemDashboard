@@ -1,39 +1,40 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import BaseModal from "../BaseModal";
-import Select from "../Select";
 import Input from "../Input";
+import Select from "../Select";
 import {Button} from "reactstrap";
 import {useForm} from "react-hook-form";
-import moment from "moment";
+import GetAllShift from "../../Query/hrm/GetAllShift";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
 
-const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftReFetch}) => {
+const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
+    const [shift, setShift] = useState([]);
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
-
+    const [allShift] = GetAllShift();
 
     useEffect(() => {
-        reset();
-    },[oldData])
-
-    const formattedTimeForUpdate = time => moment(time, "HH:mm").format("HH:mm:ss");
-
+        setShift([])
+        allShift?.data?.body?.data?.map(item => {
+            const set_data = {
+                id: item.id,
+                value: item.name
+            }
+            setShift(prevShift => [...prevShift, set_data]);
+        })
+    }, [allShift])
     const onSubmit = (data) => {
-        const start_time = formattedTimeForUpdate(data.start_time);
-        data.start_time = start_time;
-        const end_time = formattedTimeForUpdate(data.end_time);
-        data.end_time = end_time;
         const updatedData = {
-            'name':data.name ? data.name : oldData.name,
-            'start_time': data.start_time ? data.start_time : formattedTimeForUpdate(oldData.start_time),
-            'end_time':data.end_time ? data.end_time : formattedTimeForUpdate(oldData.end_time),
-            'weekends':data.weekends ? data.weekends : oldData.weekends,
+            'date_from':data.date_from ? data.date_from : oldData.date_from,
+            'date_to': data.date_to ? data.date_to : oldData.date_to,
+            'shift_from':data.shift_from ? data.shift_from : oldData.shift_from,
+            'shift_to':data.shift_to ? data.shift_to : oldData.shift_to,
+            'active_on':data.active_on ? data.active_on : oldData.active_on,
             'status':data.status ? data.status : oldData.status
         }
 
-        axios.put(`/hrm-system/shift/${oldData.id}`, updatedData)
+        axios.put(`/hrm-system/shift-schedule/${oldData.id}`, updatedData)
             .then(info => {
-                console.log(info)
                 if(info?.status == 200)
                 {
                     Swal.fire({
@@ -44,11 +45,11 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                         timer: 1500
                     })
                     dataUpdateToggle(false);
-                    allShiftReFetch();
+                    allShiftScheduleReFetch();
+                    reset();
                 }
             })
             .catch(e => {
-                // console.log(e)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -56,54 +57,55 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                 })
             })
     }
-
     return (
         <>
             <BaseModal title={"Update Shift Entry"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <Input
-                            labelName={"Shift Name"}
-                            inputName={"name"}
-                            inputType={"text"}
-                            defaultValue={oldData?.name}
-                            placeholder={"Enter shift name"}
-                            validation={{
-                                ...register("name"),
-                            }}
-                        />
-                    </div>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Input
-                                labelName={"Start Time"}
-                                inputName={"start_time"}
-                                inputType={"time"}
-                                defaultValue={oldData?.start_time}
-                                validation={{ ...register("start_time") }}
+                                labelName={"Date From"}
+                                inputName={"datefrom"}
+                                inputType={"date"}
+                                defaultValue={oldData?.date_from}
+                                validation={{ ...register("date_from", { required: true }) }}
                             />
                         </div>
                         <div>
                             <Input
-                                labelName={"End Time"}
-                                inputName={"end_time"}
-                                inputType={"time"}
-                                defaultValue={oldData?.end_time}
-                                validation={{ ...register("end_time") }}
+                                labelName={"Date To"}
+                                inputName={"dateto"}
+                                inputType={"date"}
+                                defaultValue={oldData?.date_to}
+                                validation={{ ...register("date_to", { required: true }) }}
                             />
                         </div>
                     </div>
-                    {/*<div className="mb-3">*/}
-                    {/*    <label htmlFor="weekdays">Weekend</label>*/}
-                    {/*    <DropdownMultiselect*/}
-                    {/*        options={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}*/}
-                    {/*        name="weekdays"*/}
-                    {/*        validation={{ ...register("weekdays", { required: true }) }}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
+                    <div className="row row-cols-1 row-cols-lg-2">
+                        <div>
+                            <Select
+                                labelName={"Shift From"}
+                                placeholder={"Select an option"}
+                                options={shift}
+                                previous={oldData?.shift_from}
+                                validation={{...register("shift_from")}}
+                                error={errors?.shift_from}
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Shift To"}
+                                placeholder={"Select an option"}
+                                options={shift}
+                                previous={oldData?.shift_to}
+                                validation={{...register("shift_to")}}
+                                error={errors?.shift_to}
+                            />
+                        </div>
+                    </div>
                     <div>
                         <Select
-                            labelName={"Weekend"}
+                            labelName={"Active On"}
                             placeholder={"Select an option"}
                             options={[
                                 {id: "Sunday", value: "Sunday"},
@@ -114,28 +116,27 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                                 {id: "Friday", value: "Friday"},
                                 {id: "Saturday", value: "Saturday"},
                             ]}
-                            previous={oldData?.weekends}
-                            validation={{...register("weekends")}}
-                            error={errors?.status}
+                            previous={oldData?.active_on}
+                            validation={{...register("active_on")}}
+                            error={errors?.active_on}
                         />
                     </div>
                     <div>
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            previous={oldData?.status}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
+                            previous={oldData?.status}
                             validation={{...register("status")}}
                             error={errors?.status}
                         />
                     </div>
-
                     <div className="d-flex justify-content-end">
                         <Button color="danger" onClick={dataUpdateToggle} className="me-2">
                             Cancel
                         </Button>
                         <Button color="primary" type="submit">
-                            Create
+                            Update
                         </Button>
                     </div>
                 </form>
@@ -144,4 +145,4 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     );
 };
 
-export default ShiftUpdateModal;
+export default ShiftScheduleUpdateModal;
