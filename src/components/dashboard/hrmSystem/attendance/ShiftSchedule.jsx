@@ -1,29 +1,114 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import {Link} from "react-router-dom";
 import {Button, Modal, ModalBody, ModalHeader} from "reactstrap";
 import Input from "../../../common/modal/Input";
-import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import Select from "../../../common/modal/Select";
 import {useForm} from "react-hook-form";
+import axios from "../../../../axios";
+import Swal from "sweetalert2";
+import GetAllShift from "../../../common/Query/hrm/GetAllShift";
+import GetAllShiftSchedule from "../../../common/Query/hrm/GetAllShiftSchedule";
+import ShiftScheduleUpdateModal from "../../../common/modal/Form/ShiftScheduleUpdateModal";
 
 const ShiftSchedule = () => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
-    const [modal, setModal] = useState();
+    const {register, handleSubmit, reset, formState: { errors },} = useForm();
+    const [modal, setModal] = useState(false);
+    const [data, setData] = useState([]);
+    const [oldData, setOldData] = useState([]);
+    const [dataUpdateModal, setDataUpdateModal] = useState(false);
+    const [shift, setShift] = useState([]);
+    const [allShift] = GetAllShift();
+    const [allShiftScheduleReFetch, allShiftSchedule] = GetAllShiftSchedule();
+
 
     const toggle = () => {
         setModal(!modal);
     };
 
+    useEffect(() => {
+        setShift([])
+        allShift?.data?.body?.data?.map(item => {
+            const set_data = {
+                id: item.id,
+                value: item.name
+            }
+            setShift(prevShift => [...prevShift, set_data]);
+        })
+    }, [allShift])
+
+    useEffect(() => {
+        setData(allShiftSchedule?.data?.body?.data);
+    }, [allShiftSchedule])
+
+
     const onSubmit = (data) => {
-        console.log(data);
+        axios.post('/hrm-system/shift-schedule', data)
+            .then(info => {
+                if(info?.status == 200)
+                {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setModal(!modal);
+                    allShiftScheduleReFetch();
+                    reset();
+                }
+            })
+            .catch(e => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                })
+            })
     };
-    const [selectAllDays, setSelectAllDays] = useState(false);
+
+    const dataUpdateToggle = (item) => {
+        setOldData(item);
+        setDataUpdateModal(!dataUpdateModal);
+    };
+
+    const deleteSchedule = id => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`/hrm-system/shift-schedule/${id}`)
+                    .then(info => {
+                        if(info?.status == 200)
+                        {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                        }
+                        allShiftScheduleReFetch();
+                    })
+                    .catch(e => {
+                        if(e?.response?.data?.body?.message?.sqlState === "23000")
+                        {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: `Can not delete shift, if there have any attendance in this shift`,
+                            })
+                        }
+                    })
+            }
+        })
+    }
 
     return (
         <>
@@ -57,41 +142,34 @@ const ShiftSchedule = () => {
                                         <th scope="col">{"Date To"}</th>
                                         <th scope="col">{"Shift From"}</th>
                                         <th scope="col">{"Shift To"}</th>
-                                        <th scope="col">{"Weekdays"}</th>
+                                        <th scope="col">{"Active On"}</th>
+                                        <th scope="col">{"Status"}</th>
                                         <th scope="col">{"Action"}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>{"#EMP0000001"}</td>
-                                        <td>{"accountant"}</td>
-                                        <td>{"accountant@example.com"}</td>
-                                        <td>{""}</td>
-                                        <td>{""}</td>
-                                        <td>
-                                            <div className="d-flex justify-content-center">
-                                                <Link to="/dashboard/hrm/edit">
-                                                    <i
-                                                        style={{
-                                                            backgroundColor: "skyblue",
-                                                            color: "#ffffff",
-                                                        }}
-                                                        className="icofont icofont-pencil-alt-5  rounded m-r-15 p-2"
-                                                    ></i>
-                                                </Link>
-                                                <Link to="/dashboard/hrm/employee">
-                                                    {" "}
-                                                    <i
-                                                        style={{
-                                                            backgroundColor: "#ff3a6e",
-                                                            color: "#ffffff",
-                                                        }}
-                                                        className="icofont icofont-trash rounded p-2"
-                                                    ></i>
-                                                </Link>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    {
+                                        data?.map((item, index) =>
+                                            <tr>
+                                                <td>{item?.date_from}</td>
+                                                <td>{item?.date_to}</td>
+                                                <td>{item?.shift_from}</td>
+                                                <td>{item?.shift_to}</td>
+                                                <td>{item?.active_on}</td>
+                                                <td>{item?.status}</td>
+                                                <td>
+                                                    <div className="d-flex justify-content-center">
+                                                        <button onClick={() => dataUpdateToggle(item)} className="btn me-2" style={{backgroundColor: "skyblue", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>
+                                                            <i className="icofont icofont-pencil-alt-5  rounded" style={{backgroundColor: "skyblue", color: "#ffffff",}}></i>
+                                                        </button>
+                                                        <button onClick={() => deleteSchedule(item.id)} className="btn" style={{backgroundColor: "#ff3a6e", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>
+                                                            <i className="icofont icofont-trash rounded" style={{backgroundColor: "#ff3a6e", color: "#ffffff",}}></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
                                     </tbody>
                                 </table>
                             </div>
@@ -110,7 +188,7 @@ const ShiftSchedule = () => {
                                     labelName={"Date From"}
                                     inputName={"datefrom"}
                                     inputType={"date"}
-                                    validation={{ ...register("datefrom", { required: true }) }}
+                                    validation={{ ...register("date_from", { required: true }) }}
                                 />
                             </div>
                             <div>
@@ -118,82 +196,56 @@ const ShiftSchedule = () => {
                                     labelName={"Date To"}
                                     inputName={"dateto"}
                                     inputType={"date"}
-                                    validation={{ ...register("dateto", { required: true }) }}
+                                    validation={{ ...register("date_to", { required: true }) }}
                                 />
                             </div>
                         </div>
-
                         <div className="row row-cols-1 row-cols-lg-2">
                             <div>
                                 <Select
-                                    name={"shiftfrom"}
                                     labelName={"Shift From"}
                                     placeholder={"Select an option"}
-                                    options={["Morning", "Evening", "Night"]}
+                                    options={shift}
+                                    validation={{...register("shift_from", {required: true})}}
+                                    error={errors?.shift_from}
                                 />
                             </div>
                             <div>
                                 <Select
-                                    name={"shiftto"}
                                     labelName={"Shift To"}
                                     placeholder={"Select an option"}
-                                    options={["Morning", "Evening", "Night"]}
+                                    options={shift}
+                                    validation={{...register("shift_to", {required: true})}}
+                                    error={errors?.shift_to}
                                 />
-                            </div>
-                        </div>
-
-                        <div className="mb-3">
-                            <label htmlFor="weekdays">Active On</label>
-                            <div>
-                                <div class="animate-chk">
-                                    <div class="row">
-                                        <div class="col">
-                                            <label className="d-block" htmlFor="chk-ani">
-                                                <input onClick={() => setSelectAllDays(!selectAllDays)} className="checkbox_animated" id="chk-ani" type="checkbox" />
-                                                All Days
-                                            </label>
-                                            <label className="d-block" htmlFor="chk-ani">
-                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani" type="checkbox" />
-                                                Sunday
-                                            </label>
-                                            <label className="d-block" htmlFor="chk-ani1">
-                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani1" type="checkbox" />
-                                                Monday
-                                            </label>
-                                            <label className="d-block" htmlFor="chk-ani2">
-                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani2" type="checkbox" />
-                                                Tuesday
-                                            </label>
-                                            <label className="d-block" htmlFor="chk-ani3">
-                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani3" type="checkbox" />
-                                                Wednesday
-                                            </label>
-                                            <label className="d-block" htmlFor="chk-ani3">
-                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani3" type="checkbox" />
-                                                Thursday
-                                            </label>
-                                            <label className="d-block" htmlFor="chk-ani3">
-                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani3" type="checkbox" />
-                                                Friday
-                                            </label>
-                                            <label className="d-block" htmlFor="chk-ani3">
-                                                <input checked={selectAllDays} className="checkbox_animated" id="chk-ani3" type="checkbox" />
-                                                Saturday
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div>
                             <Select
-                                name={"status"}
-                                labelName={"Status"}
+                                labelName={"Active On"}
                                 placeholder={"Select an option"}
-                                options={["Active", "Inactive"]}
+                                options={[
+                                    {id: "Sunday", value: "Sunday"},
+                                    {id: "Monday", value: "Monday"},
+                                    {id: "Tuesday", value: "Tuesday"},
+                                    {id: "Wednesday", value: "Wednesday"},
+                                    {id: "Thursday", value: "Thursday"},
+                                    {id: "Friday", value: "Friday"},
+                                    {id: "Saturday", value: "Saturday"},
+                                ]}
+                                validation={{...register("active_on", {required: true})}}
+                                error={errors?.active_on}
                             />
                         </div>
-
+                        <div>
+                            <Select
+                                labelName={"Status"}
+                                placeholder={"Select an option"}
+                                options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
+                                validation={{...register("status", {required: true})}}
+                                error={errors?.status}
+                            />
+                        </div>
                         <div className="d-flex justify-content-end">
                             <Button color="danger" onClick={toggle} className="me-2">
                                 Cancel
@@ -205,6 +257,12 @@ const ShiftSchedule = () => {
                     </form>
                 </ModalBody>
             </Modal>
+
+            {
+                oldData ?
+                    <ShiftScheduleUpdateModal allShiftScheduleReFetch={allShiftScheduleReFetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ShiftScheduleUpdateModal>
+                    : ''
+            }
         </>
     );
 };

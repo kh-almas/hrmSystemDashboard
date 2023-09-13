@@ -12,7 +12,6 @@ import moment from "moment/moment";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
 import ShiftUpdateModal from "../../../common/modal/Form/shiftUpdateModal";
-import ManualAttendancesUpdateForm from "../../../common/modal/Form/ManualAttendancesUpdateForm";
 
 const Shift = () => {
     const [shift, setShift] = useState([]);
