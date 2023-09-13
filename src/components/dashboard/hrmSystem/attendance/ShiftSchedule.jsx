@@ -18,8 +18,8 @@ const ShiftSchedule = () => {
     const [oldData, setOldData] = useState([]);
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
     const [shift, setShift] = useState([]);
-    const [allShift] = GetAllShift();
-    const [allShiftScheduleReFetch, allShiftSchedule] = GetAllShiftSchedule();
+    const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
+    const [allShiftScheduleStatus, allShiftScheduleReFetch, allShiftSchedule, allShiftScheduleError] = GetAllShiftSchedule();
 
 
     const toggle = () => {

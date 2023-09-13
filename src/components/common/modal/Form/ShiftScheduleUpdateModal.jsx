@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
     const [shift, setShift] = useState([]);
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
-    const [allShift] = GetAllShift();
+    const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
 
     useEffect(() => {
         setShift([])
