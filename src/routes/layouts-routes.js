@@ -140,6 +140,7 @@ import ProfitAndLoss from "../components/dashboard/Accounts/Report/ProfitAndLoss
 import SalesTax from "../components/dashboard/Accounts/Report/SalesTax";
 import Statement from "../components/dashboard/Accounts/Report/Statement";
 import Transactions from "../components/dashboard/Accounts/Report/Transactions";
+import Organaization from "../components/dashboard/hrmSystem/companyInfo/Organaization";
 
 export const routes = [
   {
@@ -184,6 +185,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/shift/schedule`,
     Component: <ShiftSchedule />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/organization`,
+    Component: <Organaization />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary`,

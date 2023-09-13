@@ -237,9 +237,8 @@ const ManualAttendance = () => {
             }
             </tbody>
           </table>
-          <p className="mt-3">Showing {totalItemCount} to {totalItemCount} of {totalItemCount} entries</p>
         </div>
-        <p>Showing 1 to 1 of 1 entries</p>
+        <p className="mt-3">Showing {totalItemCount} to {totalItemCount} of {totalItemCount} entries</p>
       </div>
     </>
   );
