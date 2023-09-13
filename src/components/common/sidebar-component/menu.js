@@ -46,6 +46,18 @@ export const MENUITEMS = [
           },
         ],
       },
+        //company info
+      {
+        title: "Company Information",
+        type: "sub",
+        children: [
+          {
+            title: "Organization",
+            type: "link",
+            path: "/dashboard/hrm/organization",
+          },
+        ],
+      },
       {
         title: "Payroll Setup",
         type: "sub",
