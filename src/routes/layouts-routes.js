@@ -143,6 +143,8 @@ import Transactions from "../components/dashboard/Accounts/Report/Transactions";
 import Organaization from "../components/dashboard/hrmSystem/companyInfo/Organaization";
 import Company from "../components/dashboard/hrmSystem/companyInfo/Company";
 import CompanyBranch from "../components/dashboard/hrmSystem/companyInfo/CompanyBranch";
+import Department from "../components/dashboard/hrmSystem/companyInfo/Department";
+import Designation from "../components/dashboard/hrmSystem/companyInfo/Designation";
 
 export const routes = [
   {
@@ -199,6 +201,14 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/branch`,
     Component: <CompanyBranch />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/department`,
+    Component: <Department />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/designation`,
+    Component: <Designation />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary`,
