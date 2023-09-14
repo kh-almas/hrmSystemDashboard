@@ -142,6 +142,7 @@ import Statement from "../components/dashboard/Accounts/Report/Statement";
 import Transactions from "../components/dashboard/Accounts/Report/Transactions";
 import Organaization from "../components/dashboard/hrmSystem/companyInfo/Organaization";
 import Company from "../components/dashboard/hrmSystem/companyInfo/Company";
+import CompanyBranch from "../components/dashboard/hrmSystem/companyInfo/CompanyBranch";
 
 export const routes = [
   {
@@ -194,6 +195,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/company`,
     Component: <Company />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/branch`,
+    Component: <CompanyBranch />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary`,

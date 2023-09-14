@@ -61,6 +61,11 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/company",
           },
+          {
+            title: "Branch",
+            type: "link",
+            path: "/dashboard/hrm/branch",
+          },
         ],
       },
       {
