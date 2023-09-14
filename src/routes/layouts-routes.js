@@ -145,6 +145,7 @@ import Company from "../components/dashboard/hrmSystem/companyInfo/Company";
 import CompanyBranch from "../components/dashboard/hrmSystem/companyInfo/CompanyBranch";
 import Department from "../components/dashboard/hrmSystem/companyInfo/Department";
 import Designation from "../components/dashboard/hrmSystem/companyInfo/Designation";
+import AddEmploySetup from "../components/dashboard/hrmSystem/addEmploySetup";
 
 export const routes = [
   {
@@ -168,10 +169,7 @@ export const routes = [
     Component: <Project />,
   },
   // hrm system
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee`,
-    Component: <EmployeSetup />,
-  },
+  ,
 
   //update sidebar from here
   {
@@ -214,9 +212,20 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary`,
     Component: <SetSalary />,
   },
+
+
+    //employee
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/edit`,
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee`,
+    Component: <EmployeSetup />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee/edit`,
     Component: <EditEmploySetup />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee/add`,
+    Component: <AddEmploySetup />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary-details`,
