@@ -53,7 +53,6 @@ const CompanyBranch = () => {
     };
 
     const onSubmit = (data) => {
-        console.log(data);
         axios.post('/hrm-system/branch', data)
             .then(info => {
                 if(info?.status == 200)
