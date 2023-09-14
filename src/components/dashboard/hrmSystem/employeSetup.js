@@ -2,36 +2,15 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import Breadcrumb from "../../common/breadcrumb";
 import CommonSearchComponet from "../../common/salaryCard/CommonSearchComponet";
+import GetEmployeeSetup from "../../common/Query/hrm/GetEmployeeSetup";
 
 const EmployeSetup = () => {
     const [data, setData] = useState([]);
+    const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployeeSetup();
+    // console.log(allEmployee?.data?.body?.data);
     useEffect(() => {
-        const token = "Bearer " + document.cookie.split(';').find(cookie => cookie.includes('token')).split('=')[1];
-        fetch('https://dashboard-hrm-system-backend.vercel.app/hrm-system/employee/', {
-            method: 'GET',
-            headers: {
-                'Authorization': `${token}`,
-            },
-        })
-            .then(res => res.json())
-            .then(info => {
-                console.log(info);
-                setData(info.body.data);
-            })
-    }, [])
-
-    const setCookie = () => {
-        document.cookie = 'exampleCookie=Hello, World; path=/'}
-    const getCookie = () => {
-        // const cookies = document.cookie.split(';');
-        const cookieValue = document.cookie.split(';').find(cookie => cookie.includes('token')).split('=')[1];
-        if (cookieValue) {
-            alert(`Cookie Value: ${cookieValue}`);
-        }
-        else {
-            alert('Cookie not found');
-        }
-    }
+        setData(allEmployee?.data?.body?.data);
+    }, [allEmployee])
 
     return (
         <>
@@ -41,9 +20,6 @@ const EmployeSetup = () => {
                 <div className="row">
                     <div className="col-sm-12">
                         <div className="card" style={{padding: "20px"}}>
-                            <div>
-                                <button onClick={getCookie}>get</button>
-                            </div>
                             <CommonSearchComponet/>
                             <div className="table-responsive">
                                 <table className="table">
