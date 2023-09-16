@@ -220,7 +220,7 @@ export const routes = [
     Component: <EmployeSetup />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee/edit`,
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee/edit/:id`,
     Component: <EditEmploySetup />,
   },
   {

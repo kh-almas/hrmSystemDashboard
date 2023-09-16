@@ -141,7 +141,7 @@ const EditEmploySetup = () => {
                                         <label htmlFor="exampleFormControlInput1">Gender*</label>
                                         <select className="form-control digits" id="exampleFormControlSelect9"
                                                 defaultValue="1" {...register("gender", {required: true})}>
-                                            <option value={"Male"}>{"Select an option"}</option>
+                                            <option>{"Select an option"}</option>
                                             <option value={"Male"}>{"Male"}</option>
                                             <option value={"Female"}>{"Female"}</option>
                                             <option value={"Others"}>{"Others"}</option>
