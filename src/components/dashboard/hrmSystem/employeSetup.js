@@ -104,21 +104,18 @@ const EmployeSetup = () => {
                                             data?.map((item, index) =>
                                                 <tr key={index}>
                                                     <td>{index + 1}</td>
-                                                    <td>{item.name}</td>
-                                                    <td>{item.phone}</td>
-                                                    <td>{item.branch_id}</td>
-                                                    <td>{item.department_id}</td>
-                                                    <td>{item.designation_id}</td>
-                                                    <td>{item.joining_date}</td>
+                                                    <td>{item?.name}</td>
+                                                    <td>{item?.phone}</td>
+                                                    <td>{item?.branch_id}</td>
+                                                    <td>{item?.department_id}</td>
+                                                    <td>{item?.designation_id}</td>
+                                                    <td>{item?.joining_date}</td>
                                                     <td>
-                                                        <div className="d-flex justify-content-center">
-                                                            <Link to="/dashboard/hrm/edit">
+                                                        <div>
+                                                            <Link to={`/dashboard/hrm/employee/edit/${item?.id}`} className="me-2">
                                                                 <i
-                                                                    style={{
-                                                                        backgroundColor: "skyblue",
-                                                                        color: "#ffffff",
-                                                                    }}
-                                                                    className="icofont icofont-pencil-alt-5  rounded m-r-15 p-2"
+                                                                    style={{backgroundColor: "skyblue", color: "#ffffff",padding: "10px 13px", borderRadius: "5px"}}
+                                                                    className="icofont icofont-pencil-alt-5"
                                                                 ></i>
                                                             </Link>
 
