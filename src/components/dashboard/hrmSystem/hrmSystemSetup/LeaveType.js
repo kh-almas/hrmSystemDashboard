@@ -172,9 +172,7 @@ const LeaveType = () => {
                                 inputName={"type"}
                                 inputType={"text"}
                                 placeholder={"Enter Leave Type"}
-                                validation={{
-                                    ...register("type", { required: true }),
-                                }}
+                                validation={{...register("type", { required: true }),}}
                             />
                         </div>
 
