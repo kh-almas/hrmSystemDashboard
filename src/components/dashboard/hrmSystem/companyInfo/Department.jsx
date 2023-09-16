@@ -38,7 +38,6 @@ const Department = () => {
     };
 
     const onSubmit = (data) => {
-        console.log(data);
         axios.post('/hrm-system/department', data)
             .then(info => {
                 if(info?.status == 200)
