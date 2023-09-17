@@ -148,6 +148,7 @@ import Designation from "../components/dashboard/hrmSystem/companyInfo/Designati
 import AddEmploySetup from "../components/dashboard/hrmSystem/addEmploySetup";
 import LeaveApproval from "../components/dashboard/hrmSystem/ManageLeaveSetup/LeaveApproval";
 import EmployeeShift from "../components/dashboard/hrmSystem/attendance/EmployeeShift";
+import Section from "../components/dashboard/hrmSystem/companyInfo/Section";
 
 export const routes = [
   {
@@ -213,6 +214,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/designation`,
     Component: <Designation />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/section`,
+    Component: <Section />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary`,
