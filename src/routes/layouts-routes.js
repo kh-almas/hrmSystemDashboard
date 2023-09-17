@@ -147,6 +147,7 @@ import Department from "../components/dashboard/hrmSystem/companyInfo/Department
 import Designation from "../components/dashboard/hrmSystem/companyInfo/Designation";
 import AddEmploySetup from "../components/dashboard/hrmSystem/addEmploySetup";
 import LeaveApproval from "../components/dashboard/hrmSystem/ManageLeaveSetup/LeaveApproval";
+import EmployeeShift from "../components/dashboard/hrmSystem/attendance/EmployeeShift";
 
 export const routes = [
   {
@@ -188,6 +189,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/shift/schedule`,
     Component: <ShiftSchedule />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee/shift/`,
+    Component: <EmployeeShift />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/organization`,
