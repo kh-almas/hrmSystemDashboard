@@ -146,6 +146,7 @@ import CompanyBranch from "../components/dashboard/hrmSystem/companyInfo/Company
 import Department from "../components/dashboard/hrmSystem/companyInfo/Department";
 import Designation from "../components/dashboard/hrmSystem/companyInfo/Designation";
 import AddEmploySetup from "../components/dashboard/hrmSystem/addEmploySetup";
+import LeaveApproval from "../components/dashboard/hrmSystem/ManageLeaveSetup/LeaveApproval";
 
 export const routes = [
   {
@@ -250,6 +251,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/Employee-leave`,
     Component: <EmployeeLeave />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/Employee-leave/approval`,
+    Component: <LeaveApproval />,
   },
 
   {

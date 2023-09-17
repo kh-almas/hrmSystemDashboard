@@ -114,6 +114,11 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/Employee-leave",
           },
+          {
+            title: "Leave Approval",
+            type: "link",
+            path: "/dashboard/hrm/Employee-leave/approval",
+          },
         ],
       },
       {
