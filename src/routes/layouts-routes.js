@@ -149,6 +149,8 @@ import AddEmploySetup from "../components/dashboard/hrmSystem/addEmploySetup";
 import LeaveApproval from "../components/dashboard/hrmSystem/ManageLeaveSetup/LeaveApproval";
 import EmployeeShift from "../components/dashboard/hrmSystem/attendance/EmployeeShift";
 import Section from "../components/dashboard/hrmSystem/companyInfo/Section";
+import CompanyHoliday from "../components/dashboard/hrmSystem/companyInfo/CompanyHoliday";
+import Weekday from "../components/dashboard/hrmSystem/companyInfo/Weekday";
 
 export const routes = [
   {
@@ -218,6 +220,14 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/section`,
     Component: <Section />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/holiday`,
+    Component: <CompanyHoliday />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/weekday`,
+    Component: <Weekday />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary`,
