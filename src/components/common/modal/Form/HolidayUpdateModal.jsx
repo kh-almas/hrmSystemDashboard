@@ -50,7 +50,7 @@ const HolidayUpdateModal = ({allHolidayReFetch, oldData, dataUpdateModal, dataUp
 
     return (
         <>
-            <BaseModal title={"Update Designation"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+            <BaseModal title={"Update Holiday"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Input

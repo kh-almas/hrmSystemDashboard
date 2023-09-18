@@ -193,7 +193,7 @@ const CompanyBranch = () => {
                 </div>
             </div>
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Company Entry</ModalHeader>
+                <ModalHeader toggle={toggle}>Branch Entry</ModalHeader>
                 <ModalBody>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>

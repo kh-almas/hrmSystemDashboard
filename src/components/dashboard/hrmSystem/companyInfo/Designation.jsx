@@ -174,7 +174,7 @@ const Designation = () => {
                 </div>
             </div>
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Designation</ModalHeader>
+                <ModalHeader toggle={toggle}>Designation Entry</ModalHeader>
                 <ModalBody>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>

@@ -181,10 +181,10 @@ const LeaveApproval = () => {
             </div>
 
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Create Leave Setup</ModalHeader>
+                <ModalHeader toggle={toggle}>Create Leave Approval</ModalHeader>
                 <ModalBody>
                     <form className="m-t-15" onSubmit={handleSubmit(onSubmit)}>
-                        <div className="row row-cols-1 row-cols-md-2">
+                        <div className="">
                             <div>
                                 <Select
                                     labelName={"Leave Application"}

@@ -190,7 +190,7 @@ const Section = () => {
                 </div>
             </div>
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Department Entry</ModalHeader>
+                <ModalHeader toggle={toggle}>Section Entry</ModalHeader>
                 <ModalBody>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>

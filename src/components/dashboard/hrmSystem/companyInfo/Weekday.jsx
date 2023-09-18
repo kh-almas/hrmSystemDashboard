@@ -178,7 +178,7 @@ const Weekday = () => {
                 </div>
             </div>
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Designation</ModalHeader>
+                <ModalHeader toggle={toggle}>Weekday Entry</ModalHeader>
                 <ModalBody>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>

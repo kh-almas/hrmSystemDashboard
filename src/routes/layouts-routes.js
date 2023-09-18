@@ -151,6 +151,7 @@ import EmployeeShift from "../components/dashboard/hrmSystem/attendance/Employee
 import Section from "../components/dashboard/hrmSystem/companyInfo/Section";
 import CompanyHoliday from "../components/dashboard/hrmSystem/companyInfo/CompanyHoliday";
 import Weekday from "../components/dashboard/hrmSystem/companyInfo/Weekday";
+import CompanyProject from "../components/dashboard/hrmSystem/companyInfo/CompanyProject";
 
 export const routes = [
   {
@@ -228,6 +229,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/weekday`,
     Component: <Weekday />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/project`,
+    Component: <CompanyProject />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/salary`,
