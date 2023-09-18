@@ -62,8 +62,7 @@ const CompanyHoliday = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                    footer: '<a href="">Why do I have this issue?</a>'
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`
                 })
             })
     };
@@ -176,7 +175,7 @@ const CompanyHoliday = () => {
                 </div>
             </div>
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Designation</ModalHeader>
+                <ModalHeader toggle={toggle}>Holiday Entry</ModalHeader>
                 <ModalBody>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>

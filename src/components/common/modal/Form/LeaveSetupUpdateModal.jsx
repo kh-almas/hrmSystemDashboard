@@ -54,7 +54,7 @@ const LeaveSetupUpdateModal = ({allLeaveSetupReFetch, leaveType, oldData, dataUp
 
     return (
         <>
-            <BaseModal title={"Update Branch"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+            <BaseModal title={"Update Leave Setup"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form className="m-t-15" onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-md-2">
                         <div>

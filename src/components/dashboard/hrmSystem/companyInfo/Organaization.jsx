@@ -200,7 +200,7 @@ const Organaization = () => {
                 </div>
             </div>
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Shift Entry</ModalHeader>
+                <ModalHeader toggle={toggle}>Organization Entry</ModalHeader>
                 <ModalBody>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>

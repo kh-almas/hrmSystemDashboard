@@ -49,7 +49,7 @@ const LeaveTypeUpdateModal = ({allLeaveTypeReFetch, oldData, dataUpdateModal, da
 
     return (
         <>
-            <BaseModal title={"Update Branch"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+            <BaseModal title={"Update Leave Type"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form className="m-t-15" onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Input

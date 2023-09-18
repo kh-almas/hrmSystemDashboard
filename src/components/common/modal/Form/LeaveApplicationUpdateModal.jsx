@@ -51,7 +51,7 @@ const LeaveTypeUpdateModal = ({allLeaveApplicationReFetch, leaveType, oldData, d
 
     return (
         <>
-            <BaseModal title={"Update Branch"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+            <BaseModal title={"Update Application"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form className="m-t-15" onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Select

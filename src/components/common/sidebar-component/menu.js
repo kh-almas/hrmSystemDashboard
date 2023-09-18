@@ -96,6 +96,11 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/weekday",
           },
+          {
+            title: "Project",
+            type: "link",
+            path: "/dashboard/hrm/project",
+          },
         ],
       },
       {

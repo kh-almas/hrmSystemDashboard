@@ -53,7 +53,7 @@ const LeaveApprovalUpdateModal = ({allApprovalReFetch, leaveApplication, oldData
 
     return (
         <>
-            <BaseModal title={"Update Branch"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+            <BaseModal title={"Update Leave Approval"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form className="m-t-15" onSubmit={handleSubmit(onSubmit)}>
                     <div className="">
                         <div>

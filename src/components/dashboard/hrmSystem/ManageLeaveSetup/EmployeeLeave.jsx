@@ -67,7 +67,7 @@ const EmployeeLeave = () => {
             </div>
 
             <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Create Leave</ModalHeader>
+                <ModalHeader toggle={toggle}>Create Employee Leave</ModalHeader>
                 <ModalBody>
                     <form className="m-t-15">
                         <div className="col">

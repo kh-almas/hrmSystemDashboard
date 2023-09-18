@@ -50,7 +50,7 @@ const WeekdayUpdateModal = ({allWeekdayReFetch, oldData, dataUpdateModal, dataUp
 
     return (
         <>
-            <BaseModal title={"Update Designation"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+            <BaseModal title={"Update Weekday"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Input

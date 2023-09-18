@@ -58,7 +58,7 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
 
     return (
         <>
-            <BaseModal title={"Update Organization"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+            <BaseModal title={"Update Company"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Select
