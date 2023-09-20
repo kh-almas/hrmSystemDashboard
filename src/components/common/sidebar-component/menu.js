@@ -343,6 +343,11 @@ export const MENUITEMS = [
         type: "link",
       },
       {
+        path: "/dashboard/hrm/roles",
+        title: "Roles",
+        type: "link",
+      },
+      {
         path: "/dashboard/hrm/company-policy",
         title: "Company policy",
         type: "link",

@@ -152,6 +152,7 @@ import Section from "../components/dashboard/hrmSystem/companyInfo/Section";
 import CompanyHoliday from "../components/dashboard/hrmSystem/companyInfo/CompanyHoliday";
 import Weekday from "../components/dashboard/hrmSystem/companyInfo/Weekday";
 import CompanyProject from "../components/dashboard/hrmSystem/companyInfo/CompanyProject";
+import Role from "../components/dashboard/Role";
 
 export const routes = [
   {
@@ -528,6 +529,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/document-setup`,
     Component: <DocumentSetup />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/roles`,
+    Component: <Role />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/company-policy`,
