@@ -1,9 +1,15 @@
 import React, {useState} from "react";
 import {useForm} from "react-hook-form";
-const CommonSearchComponet = ({howManyItem, setHowManyItem, searchData, setSearchData }) => {
+const CommonSearchComponet = ({howManyItem, setHowManyItem, searchData, setSearchData, setCurrentPage }) => {
     const {register, handleSubmit} = useForm();
-    const onSubmit = (data) => setHowManyItem(data?.item);
-    const onSearch = (data) => setSearchData(data?.search);
+    const onSubmit = (data) => {
+        setCurrentPage(1);
+        setHowManyItem(data?.item)
+    };
+    const onSearch = (data) => {
+        setCurrentPage(1);
+        setSearchData(data?.search);
+    };
   return (
     <div className="row" style={{ marginBottom: "20px" }}>
       <div className="col-sm-12 col-xl-10">
