@@ -104,14 +104,14 @@ const DocumentSetup = () => {
                 height={"5"}
               />
             </div>
-            <div>
-              <Input
-                labelName={"Document"}
-                inputName={"file"}
-                inputType={"file"}
-                validation={{ ...register("file", { required: true }) }}
-              />
-            </div>
+            {/*<div>*/}
+            {/*  <Input*/}
+            {/*    labelName={"Document"}*/}
+            {/*    inputName={"file"}*/}
+            {/*    inputType={"file"}*/}
+            {/*    validation={{ ...register("file", { required: true }) }}*/}
+            {/*  />*/}
+            {/*</div>*/}
 
             <div className="d-flex justify-content-end">
               <Button color="" onClick={toggle} className="me-2">
