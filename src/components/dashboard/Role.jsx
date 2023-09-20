@@ -14,7 +14,7 @@ const Role = () => {
     const [howManyItem, setHowManyItem] = useState('10');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalDBRow, setTotalDBRow] = useState(0);
-    const [searchData, setSearchData] = useState();
+    const [searchData, setSearchData] = useState('');
 
 
     const [role, setRole] = useState([]);
@@ -24,7 +24,6 @@ const Role = () => {
     const {register, handleSubmit, formState: { errors },} = useForm();
 
 
-    console.log(searchData);
     useEffect( () => {
         const getRole = async () => {
             const setItem = howManyItem < totalDBRow ? howManyItem : totalDBRow;
@@ -50,28 +49,29 @@ const Role = () => {
     };
 
     const onSubmit = (data) => {
-        axios.post('/roles', data)
-            .then(info => {
-                if(info?.status == 200)
-                {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    setModal(!modal);
-                }
-                // allRoleReFetch();
-            })
-            .catch(e => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                })
-            })
+        console.log(data);
+        // axios.post('/roles', data)
+        //     .then(info => {
+        //         if(info?.status == 200)
+        //         {
+        //             Swal.fire({
+        //                 position: 'top-end',
+        //                 icon: 'success',
+        //                 title: 'Your work has been saved',
+        //                 showConfirmButton: false,
+        //                 timer: 1500
+        //             })
+        //             setModal(!modal);
+        //         }
+        //         // allRoleReFetch();
+        //     })
+        //     .catch(e => {
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Oops...',
+        //             text: `${e?.response?.data?.body?.message?.details[0].message}`,
+        //         })
+        //     })
     };
 
     const deleteShift = id => {
@@ -235,47 +235,29 @@ const Role = () => {
                                 }}
                             />
                         </div>
-                        <div className="row row-cols-1 row-cols-lg-2">
-                            <div>
-                                <Input
-                                    labelName={"Start Time"}
-                                    inputName={"start_time"}
-                                    inputType={"time"}
-                                    validation={{ ...register("start_time", { required: true }) }}
-                                />
-                            </div>
-                            <div>
-                                <Input
-                                    labelName={"End Time"}
-                                    inputName={"end_time"}
-                                    inputType={"time"}
-                                    validation={{ ...register("end_time", { required: true }) }}
-                                />
-                            </div>
-                        </div>
                         <div className="mb-3">
                             <label htmlFor="">Permission</label>
                             <div>
                                 <div class="checkbox checkbox-primary">
-                                    <input value="Read" id="Read" type="checkbox" { ...register("read_permission") }/>
+                                    <input value="1" id="Read" type="checkbox" { ...register("read_permission") }/>
                                     <label htmlFor="Read">Read</label>
                                 </div>
                             </div>
                             <div>
                                 <div class="checkbox checkbox-primary">
-                                    <input value="Insert" id="Insert" type="checkbox"  { ...register("insert_permission") }/>
+                                    <input value="1" id="Insert" type="checkbox"  { ...register("insert_permission") }/>
                                     <label htmlFor="Insert">Insert</label>
                                 </div>
                             </div>
                             <div>
                                 <div class="checkbox checkbox-primary">
-                                    <input value="Update" id="Update" type="checkbox" { ...register("update_permission") } />
+                                    <input value="1" id="Update" type="checkbox" { ...register("update_permission") } />
                                     <label htmlFor="Update">Update</label>
                                 </div>
                             </div>
                             <div>
                                 <div class="checkbox checkbox-primary">
-                                    <input value="Delete" id="Delete" type="checkbox" { ...register("delete_permission") } />
+                                    <input value="1" id="Delete" type="checkbox" { ...register("delete_permission") } />
                                     <label htmlFor="Delete">Delete</label>
                                 </div>
                             </div>
