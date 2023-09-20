@@ -156,7 +156,7 @@ const Role = () => {
                 <div className="row">
                     <div className="col-sm-12">
                         <div className="card" style={{ padding: "20px" }}>
-                            <CommonSearchComponet searchData={searchData} setSearchData={setSearchData} howManyItem={howManyItem} setHowManyItem={setHowManyItem} />
+                            <CommonSearchComponet setCurrentPage={setCurrentPage} searchData={searchData} setSearchData={setSearchData} howManyItem={howManyItem} setHowManyItem={setHowManyItem} />
                             <div className="table-responsive">
                                 <table className="table">
                                     <thead className=" table-border">
