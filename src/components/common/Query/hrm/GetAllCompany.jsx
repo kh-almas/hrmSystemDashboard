@@ -3,7 +3,7 @@ import {useQuery} from "@tanstack/react-query";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
 
-const GetAllOrganization = () => {
+const GetAllCompany = () => {
     const {status: allCompanyStatus = '', refetch: allCompanyReFetch, data: allCompany = [], error: allCompanyError} = useQuery({
         queryKey: ['allCompany'],
         queryFn: async () => {
@@ -34,4 +34,4 @@ const GetAllOrganization = () => {
     return [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError];
 };
 
-export default GetAllOrganization;
+export default GetAllCompany;

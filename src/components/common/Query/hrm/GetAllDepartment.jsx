@@ -3,13 +3,14 @@ import {useQuery} from "@tanstack/react-query";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
 
-const GetAllOrganization = () => {
+const GetAllDepartment = () => {
     const {status: allDepartmentStatus = '', refetch: allDepartmentReFetch, data: allDepartment = [], error: allDepartmentError} = useQuery({
-        queryKey: ['allDepartment'],
+        queryKey: ['allDepartmentssssss'],
         queryFn: async () => {
-            return axios.get('/hrm-system/department/')
+            return axios.get('/hrm-system/department')
         }
     });
+    console.log(allDepartment);
 
     // if (allEmployeeStatus === 'loading') {
     //     return <span>Loading...</span>
@@ -34,4 +35,4 @@ const GetAllOrganization = () => {
     return [allDepartmentStatus, allDepartmentReFetch, allDepartment, allDepartmentError];
 };
 
-export default GetAllOrganization;
+export default GetAllDepartment;

@@ -10,6 +10,7 @@ import axios from "../../../axios";
 import Swal from "sweetalert2";
 import {Container,Row,Col,Card,CardHeader,CardBody,Nav,NavItem,NavLink,Dropdown,DropdownMenu,DropdownItem,DropdownToggle,TabContent,TabPane} from 'reactstrap'
 import Input from "../../common/modal/Input";
+import EmployeeCompanyInformation from "./employee/employeeCompanyInformation";
 
 const EditEmploySetup = () => {
     const [IconWithTab, setIconWithTab] = useState('1');
@@ -83,7 +84,39 @@ const EditEmploySetup = () => {
     };
 
     const EmployeeInformation = data => {
-        console.log(data);
+        data.status = "Active";
+        data.full_name = `${data.first_name} ${data.last_name}`;
+        const formData = new FormData();
+
+        for (const key in data) {
+            // console.log(key);
+            formData.append(key, data[key]);
+        }
+        console.log(formData);
+        axios.post('/hrm-system/employee', data)
+            .then(info => {
+                console.log(info);
+                if(info?.status == 200)
+                {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                }
+                // navigate("/dashboard/hrm/employee");
+            })
+            .catch(e => {
+                // console.log(e)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                })
+            })
     }
 
 
@@ -112,6 +145,22 @@ const EditEmploySetup = () => {
                             <TabPane  className="fade show" tabId="1">
                                 <form onSubmit={handleSubmit(EmployeeInformation)} className="mt-3">
                                     <div className="row">
+                                        <div className="col-6">
+                                            <div>
+                                                <Input
+                                                    labelName={"Name Title"}
+                                                    inputName={"name_title"}
+                                                    inputType={"text"}
+                                                    placeholder={"Enter name title like MR,MRS"}
+                                                    validation={{
+                                                        ...register("name_title"),
+                                                    }}
+                                                    error={errors.name_title}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
                                         <div className="col">
                                             <div>
                                                 <Input
@@ -120,7 +169,7 @@ const EditEmploySetup = () => {
                                                     inputType={"text"}
                                                     placeholder={"Enter your first name"}
                                                     validation={{
-                                                        ...register("first_name", { required: true }),
+                                                        ...register("first_name"),
                                                     }}
                                                     error={errors.first_name}
                                                 />
@@ -134,7 +183,7 @@ const EditEmploySetup = () => {
                                                     inputType={"text"}
                                                     placeholder={"Enter your last name"}
                                                     validation={{
-                                                        ...register("last_name", { required: true }),
+                                                        ...register("last_name"),
                                                     }}
                                                     error={errors.last_name}
                                                 />
@@ -150,7 +199,7 @@ const EditEmploySetup = () => {
                                                     inputType={"email"}
                                                     placeholder={"Enter your email"}
                                                     validation={{
-                                                        ...register("email", { required: true }),
+                                                        ...register("email"),
                                                     }}
                                                     error={errors.email}
                                                 />
@@ -164,7 +213,7 @@ const EditEmploySetup = () => {
                                                     inputType={"text"}
                                                     placeholder={"Enter your phone number"}
                                                     validation={{
-                                                        ...register("phone", { required: true }),
+                                                        ...register("phone"),
                                                     }}
                                                     error={errors.phone}
                                                 />
@@ -180,7 +229,7 @@ const EditEmploySetup = () => {
                                                     inputType={"text"}
                                                     placeholder={"Enter your father name"}
                                                     validation={{
-                                                        ...register("father_name", { required: true }),
+                                                        ...register("father_name"),
                                                     }}
                                                     error={errors.father_name}
                                                 />
@@ -194,7 +243,7 @@ const EditEmploySetup = () => {
                                                     inputType={"text"}
                                                     placeholder={"Enter your last name"}
                                                     validation={{
-                                                        ...register("mother_name", { required: true }),
+                                                        ...register("mother_name"),
                                                     }}
                                                     error={errors.mother_name}
                                                 />
@@ -208,7 +257,7 @@ const EditEmploySetup = () => {
                                             inputType={"text"}
                                             placeholder={"Enter your spouse name"}
                                             validation={{
-                                                ...register("spouse_name", { required: true }),
+                                                ...register("spouse_name"),
                                             }}
                                             error={errors.mother_name}
                                         />
@@ -221,7 +270,7 @@ const EditEmploySetup = () => {
                                                     inputName={"img"}
                                                     inputType={"file"}
                                                     validation={{
-                                                        ...register("img", { required: true }),
+                                                        ...register("img"),
                                                     }}
                                                     error={errors.img}
                                                 />
@@ -234,7 +283,7 @@ const EditEmploySetup = () => {
                                                     inputName={"cv"}
                                                     inputType={"file"}
                                                     validation={{
-                                                        ...register("cv", { required: true }),
+                                                        ...register("cv"),
                                                     }}
                                                     error={errors.cv}
                                                 />
@@ -245,12 +294,12 @@ const EditEmploySetup = () => {
                                         <div className="col">
                                             <div>
                                                 <Input
-                                                    labelName={"Phone"}
+                                                    labelName={"Date of Birth"}
                                                     inputName={"date_of_birth"}
                                                     inputType={"date"}
                                                     placeholder={"Date of Birth*"}
                                                     validation={{
-                                                        ...register("date_of_birth", { required: true }),
+                                                        ...register("date_of_birth"),
                                                     }}
                                                     error={errors.date_of_birth}
                                                 />
@@ -265,8 +314,8 @@ const EditEmploySetup = () => {
                                                     {id: "Female", value: "Female"},
                                                     {id: "Other", value: "Other"},
                                                 ]}
-                                                validation={{...register("gander", {required: true})}}
-                                                error={errors.gander}
+                                                validation={{...register("gender")}}
+                                                error={errors.gender}
                                             />
                                         </div>
                                     </div>
@@ -279,7 +328,7 @@ const EditEmploySetup = () => {
                                                     inputType={"url"}
                                                     placeholder={"Enter your website url"}
                                                     validation={{
-                                                        ...register("website", { required: true }),
+                                                        ...register("website"),
                                                     }}
                                                     error={errors.website}
                                                 />
@@ -294,7 +343,7 @@ const EditEmploySetup = () => {
                                 </form>
                             </TabPane>
                             <TabPane tabId="2">
-                                <p className="mb-0 m-t-30">{"2Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"}</p>
+                                <EmployeeCompanyInformation />
                             </TabPane>
                             <TabPane tabId="3">
                                 <p className="mb-0 m-t-30">{"3Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"}</p>
