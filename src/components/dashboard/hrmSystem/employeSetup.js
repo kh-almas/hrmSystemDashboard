@@ -104,7 +104,7 @@ const EmployeSetup = () => {
                                             data?.map((item, index) =>
                                                 <tr key={index}>
                                                     <td>{index + 1}</td>
-                                                    <td>{item?.name}</td>
+                                                    <td>{item?.full_name}</td>
                                                     <td>{item?.phone}</td>
                                                     <td>{item?.branch_id}</td>
                                                     <td>{item?.department_id}</td>
