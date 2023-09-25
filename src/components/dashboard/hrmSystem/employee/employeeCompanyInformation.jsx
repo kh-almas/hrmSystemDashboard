@@ -14,6 +14,10 @@ import AddSectionModal from "../../../common/modal/Form/AddSectionModal";
 import GetAllCompany from "../../../common/Query/hrm/GetAllCompany";
 import AddCompanyModal from "../../../common/modal/Form/AddCompanyModal";
 import AddDepartmentModal from "../../../common/modal/Form/AddDepartmentModal";
+import GetAllEmployeeGrade from "../../../common/Query/hrm/GetAllEmployeeGrade";
+import AddEmployeeGradeModal from "../../../common/modal/Form/AddEmployeeGradeModal";
+import GetAllSalaryGrade from "../../../common/Query/hrm/GetAllSalaryGrade";
+import AddSalaryGradeModal from "../../../common/modal/Form/AddSalaryGradeModal";
 
 const EmployeeCompanyInformation = () => {
     const [branch, setBranch] = useState([]);
@@ -26,13 +30,22 @@ const EmployeeCompanyInformation = () => {
     const [companyModal, setCompanyModal] = useState(false);
     const [department, setDepartment] = useState([]);
     const [departmentModal, setDepartmentModal] = useState(false);
+    const [employeeGrade, setEmployeeGrade] = useState([]);
+    const [employeeGradeModal, setEmployeeGradeModal] = useState(false);
+
+    const [salaryGrade, setSalaryGrade] = useState([]);
+    const [salaryGradeModal, setSalaryGradeModal] = useState(false);
+
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = GetAllBranch();
     const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = GetAllOrganization();
     const [allSectionStatus, allSectionReFetch, allSection, allSectionError] = GetAllSection();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allDepartmentStatus, allDepartmentReFetch, allDepartment, allDepartmentError] = GetAllDepartment();
+    const [allEmployeeGradeStatus, allEmployeeGradeReFetch, allEmployeeGrade, allEmployeeGradeError] = GetAllEmployeeGrade();
+    const [allSalaryGradeStatus, allSalaryGradeReFetch, allSalaryGrade, allSalaryGradeError] = GetAllSalaryGrade();
 
+    console.log(allSalaryGrade?.data?.body?.data);
     const branchToggle = () => {
         setBranchModal(!branchModal);
     };
@@ -48,6 +61,23 @@ const EmployeeCompanyInformation = () => {
     const departmentToggle = () => {
         setDepartmentModal(!departmentModal);
     };
+    const employeeGradeToggle = () => {
+        setEmployeeGradeModal(!employeeGradeModal);
+    };
+    const salaryGradeToggle = () => {
+        setSalaryGradeModal(!salaryGradeModal);
+    };
+
+    useEffect(() => {
+        setEmployeeGrade([]);
+        allEmployeeGrade?.data?.body?.data?.map(item => {
+            const set_data = {
+                id: item?.id,
+                value: item?.grade_name
+            }
+            setEmployeeGrade(prevEmployeeGrade => [...prevEmployeeGrade, set_data]);
+        })
+    }, [allEmployeeGrade])
 
     useEffect(() => {
         setDepartment([]);
@@ -104,38 +134,49 @@ const EmployeeCompanyInformation = () => {
         })
     }, [allSection])
 
+    useEffect(() => {
+        setSalaryGrade([]);
+        allSalaryGrade?.data?.body?.data?.map(item => {
+            const set_data = {
+                id: item?.id,
+                value: item?.salary_grade_name
+            }
+            setSalaryGrade(prevSalaryGrade => [...prevSalaryGrade, set_data]);
+        })
+    }, [allSalaryGrade])
+
     const EmployeeCompanyInformation = data => {
         console.log(data);
     }
     return (
         <form onSubmit={handleSubmit(EmployeeCompanyInformation)} className="mt-3">
             <div className="row">
-                <div className="col">
-                    <div style={{ position: "relative" }}>
-                        <p onClick={organizationToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
-                            New Organization
-                            <span><i className="icofont icofont-plus-circle"></i></span>
-                            <AddOrganizationModal reFetch={allOrganizationReFetch} modal={organizationModal} toggle={organizationToggle} />
-                        </p>
+                {/*<div className="col">*/}
+                {/*    <div style={{ position: "relative" }}>*/}
+                {/*        <p onClick={organizationToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">*/}
+                {/*            New Organization*/}
+                {/*            <span><i className="icofont icofont-plus-circle"></i></span>*/}
+                {/*            <AddOrganizationModal reFetch={allOrganizationReFetch} modal={organizationModal} toggle={organizationToggle} />*/}
+                {/*        </p>*/}
 
-                        <div>
-                            <Select
-                                labelName={"Organization"}
-                                placeholder={"Select an option"}
-                                options={organization}
-                                validation={{...register("organization")}}
-                                error={errors.branch}
-                            />
-                        </div>
-                    </div>
-                </div>
+                {/*        <div>*/}
+                {/*            <Select*/}
+                {/*                labelName={"Organization"}*/}
+                {/*                placeholder={"Select an option"}*/}
+                {/*                options={organization}*/}
+                {/*                validation={{...register("organization")}}*/}
+                {/*                error={errors.branch}*/}
+                {/*            />*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 <div className="col">
                     <div style={{ position: "relative" }}>
-                        <p onClick={CompanyToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
-                            New Company
-                            <span><i className="icofont icofont-plus-circle"></i></span>
-                            <AddCompanyModal organization={organization} reFetch={allCompanyReFetch} modal={companyModal} toggle={CompanyToggle} />
-                        </p>
+                        {/*<p onClick={CompanyToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">*/}
+                        {/*    New Company*/}
+                        {/*    <span><i className="icofont icofont-plus-circle"></i></span>*/}
+                        {/*    <AddCompanyModal organization={organization} reFetch={allCompanyReFetch} modal={companyModal} toggle={CompanyToggle} />*/}
+                        {/*</p>*/}
 
                         <div>
                             <Select
@@ -148,15 +189,13 @@ const EmployeeCompanyInformation = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="row">
                 <div className="col">
                     <div style={{ position: "relative" }}>
-                        <p onClick={branchToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
-                            New Branch
-                            <span><i className="icofont icofont-plus-circle"></i></span>
-                            <AddBranchModal reFetch={allBranchReFetch} modal={branchModal} toggle={branchToggle} />
-                        </p>
+                        {/*<p onClick={branchToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">*/}
+                        {/*    New Branch*/}
+                        {/*    <span><i className="icofont icofont-plus-circle"></i></span>*/}
+                        {/*    <AddBranchModal reFetch={allBranchReFetch} modal={branchModal} toggle={branchToggle} />*/}
+                        {/*</p>*/}
 
                         <div>
                             <Select
@@ -169,6 +208,8 @@ const EmployeeCompanyInformation = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="row">
                 <div className="col">
                     <div style={{ position: "relative" }}>
                         <p onClick={departmentToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
@@ -188,8 +229,6 @@ const EmployeeCompanyInformation = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="row">
                 <div className="col">
                     <div style={{ position: "relative" }}>
                         <p onClick={sectionToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
@@ -209,8 +248,45 @@ const EmployeeCompanyInformation = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="row">
                 <div className="col">
+                    <div style={{ position: "relative" }}>
+                        <p onClick={employeeGradeToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
+                            New Employee Grade
+                            <span><i className="icofont icofont-plus-circle"></i></span>
+                            <AddEmployeeGradeModal reFetch={allEmployeeGradeReFetch} modal={employeeGradeModal} toggle={employeeGradeToggle} />
+                        </p>
 
+                        <div>
+                            <Select
+                                labelName={"Employee Grade"}
+                                placeholder={"Select an option"}
+                                options={employeeGrade}
+                                validation={{...register("employeeGrade")}}
+                                error={errors.employeeGrade}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="col">
+                    <div style={{ position: "relative" }}>
+                        <p onClick={salaryGradeToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
+                            New salary Grade
+                            <span><i className="icofont icofont-plus-circle"></i></span>
+                            <AddSalaryGradeModal reFetch={allSalaryGradeReFetch} modal={salaryGradeModal} toggle={salaryGradeToggle} />
+                        </p>
+
+                        <div>
+                            <Select
+                                labelName={"Salary Grade"}
+                                placeholder={"Select an option"}
+                                options={salaryGrade}
+                                validation={{...register("salaryGrade")}}
+                                error={errors.salaryGrade}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
