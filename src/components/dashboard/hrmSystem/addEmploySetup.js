@@ -8,9 +8,27 @@ import GetAllDesignation from "../../common/Query/hrm/GetAllDesignation";
 import GetAllDepartment from "../../common/Query/hrm/GetAllDepartment";
 import axios from "../../../axios";
 import Swal from "sweetalert2";
-import {Container,Row,Col,Card,CardHeader,CardBody,Nav,NavItem,NavLink,Dropdown,DropdownMenu,DropdownItem,DropdownToggle,TabContent,TabPane} from 'reactstrap'
+import {
+    Container,
+    Row,
+    Col,
+    Card,
+    CardHeader,
+    CardBody,
+    Nav,
+    NavItem,
+    NavLink,
+    Dropdown,
+    DropdownMenu,
+    DropdownItem,
+    DropdownToggle,
+    TabContent,
+    TabPane
+} from 'reactstrap'
 import Input from "../../common/modal/Input";
 import EmployeeCompanyInformation from "./employee/employeeCompanyInformation";
+import EmployeeContact from "./employee/employeeContact";
+import EmployeeSkilles from "./employee/employeeSkilles";
 
 const EditEmploySetup = () => {
     const [IconWithTab, setIconWithTab] = useState('1');
@@ -60,8 +78,7 @@ const EditEmploySetup = () => {
         data.status = "Active";
         axios.post('/hrm-system/employee', data)
             .then(info => {
-                if(info?.status == 200)
-                {
+                if (info?.status == 200) {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
@@ -96,8 +113,7 @@ const EditEmploySetup = () => {
         axios.post('/hrm-system/employee', data)
             .then(info => {
                 console.log(info);
-                if(info?.status == 200)
-                {
+                if (info?.status == 200) {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
@@ -120,7 +136,6 @@ const EditEmploySetup = () => {
     }
 
 
-
     return (
         <div>
             <Breadcrumb parent="HRM System" title="Add Employee" id="#EMP0000001"/>
@@ -129,20 +144,28 @@ const EditEmploySetup = () => {
                     <CardBody>
                         <Nav tabs>
                             <NavItem>
-                                <NavLink href="#javascript"  className={IconWithTab === '1' ? 'active' : ''} onClick={() => setIconWithTab('1')}><i className="icofont icofont-ui-home"></i>Basic Information</NavLink>
+                                <NavLink href="#javascript" className={IconWithTab === '1' ? 'active' : ''}
+                                         onClick={() => setIconWithTab('1')}><i className="icofont icofont-ui-home"></i>Basic
+                                    Information</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#javascript" className={IconWithTab === '2' ? 'active' : ''} onClick={() => setIconWithTab('2')}><i className="icofont icofont-man-in-glasses"></i>Company Information</NavLink>
+                                <NavLink href="#javascript" className={IconWithTab === '2' ? 'active' : ''}
+                                         onClick={() => setIconWithTab('2')}><i
+                                    className="icofont icofont-man-in-glasses"></i>Company Information</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#javascript" className={IconWithTab === '3' ? 'active' : ''} onClick={() => setIconWithTab('3')}><i className="icofont icofont-contacts"></i>Contact</NavLink>
+                                <NavLink href="#javascript" className={IconWithTab === '3' ? 'active' : ''}
+                                         onClick={() => setIconWithTab('3')}><i
+                                    className="icofont icofont-contacts"></i>Contact</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#javascript" className={IconWithTab === '4' ? 'active' : ''} onClick={() => setIconWithTab('4')}><i className="icofont icofont-contacts"></i>Skills</NavLink>
+                                <NavLink href="#javascript" className={IconWithTab === '4' ? 'active' : ''}
+                                         onClick={() => setIconWithTab('4')}><i
+                                    className="icofont icofont-contacts"></i>Skills</NavLink>
                             </NavItem>
                         </Nav>
                         <TabContent activeTab={IconWithTab}>
-                            <TabPane  className="fade show" tabId="1">
+                            <TabPane className="fade show" tabId="1">
                                 <form onSubmit={handleSubmit(EmployeeInformation)} className="mt-3">
                                     <div className="row">
                                         <div className="col-6">
@@ -336,26 +359,28 @@ const EditEmploySetup = () => {
                                         </div>
                                     </div>
                                     <div className="d-flex justify-content-end">
-                                        <button className="btn btn-primary mt-2" style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}} type="submit">
+                                        <button className="btn btn-primary mt-2"
+                                                style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}
+                                                type="submit">
                                             Create
                                         </button>
                                     </div>
                                 </form>
                             </TabPane>
                             <TabPane tabId="2">
-                                <EmployeeCompanyInformation />
+                                <EmployeeCompanyInformation/>
                             </TabPane>
                             <TabPane tabId="3">
-                                <p className="mb-0 m-t-30">{"3Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"}</p>
+                                <EmployeeContact/>
                             </TabPane>
                             <TabPane tabId="4">
-                                <p className="mb-0 m-t-30">{"4Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum"}</p>
+                                <EmployeeSkilles />
                             </TabPane>
                         </TabContent>
                     </CardBody>
                 </Card>
             </div>
-            
+
             {/*<form onSubmit={handleSubmit(onSubmit)}>*/}
             {/*    <div className="row">*/}
             {/*        <div className="col-sm-12 col-xl-6">*/}
@@ -436,9 +461,9 @@ const EditEmploySetup = () => {
             {/*                            </div>*/}
             {/*                        </div>*/}
             {/*                    </div>*/}
-                    {/*        </div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
 
             {/*        <div className="col-sm-12 col-xl-6">*/}
             {/*            <div className="card" style={{height: "450px"}}>*/}
