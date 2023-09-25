@@ -10,7 +10,7 @@ const PrivateRoute = () => {
     // let token = localStorage.getItem("access-token");
     let token = document.cookie?.split(';')?.find(cookie => cookie?.includes('token'))?.split('=')[1];
     let email = localStorage.getItem("email");
-    // const local = "http://localhost:5000/";
+    // const vercel = "http://localhost:5000/";
     const vercel = "https://dashboard-hrm-system-backend.vercel.app/";
     if (token && email) {
       fetch(`${vercel}auth/verify`, {
