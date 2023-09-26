@@ -39,7 +39,6 @@ const AddSalaryGradeModal = ({modal, toggle, reFetch}) => {
     }, [allOrganization])
 
     const onSubmit = (data) => {
-        console.log(data);
         axios.post('/hrm-system/salary-grade', data)
             .then(info => {
                 if(info?.status == 200)
@@ -56,7 +55,6 @@ const AddSalaryGradeModal = ({modal, toggle, reFetch}) => {
                 reFetch();
             })
             .catch(e => {
-                console.log(e)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',

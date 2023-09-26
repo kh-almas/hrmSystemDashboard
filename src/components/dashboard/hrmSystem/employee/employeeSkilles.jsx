@@ -1,21 +1,41 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useForm} from "react-hook-form";
-import AddDepartmentModal from "../../../common/modal/Form/AddDepartmentModal";
-import Select from "../../../common/modal/Select";
-import AddSectionModal from "../../../common/modal/Form/AddSectionModal";
-import Input from "../../../common/modal/Input";
+import axios from "../../../../axios";
+import Swal from "sweetalert2";
 
-const EmployeeContact = () => {
+const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
-    const EmployeeContactInformation = data => {
-        console.log(data);
+
+    const EmployeeSkillesInformation = data => {
+        setProcessData(previousData => [...previousData, data]);
+        const FinalData = [...processData, data];
+        axios.post('/hrm-system/employee', FinalData)
+            .then(info => {
+                if (info?.status == 200) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                }
+                // navigate("/dashboard/hrm/employee");
+            })
+            .catch(e => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                })
+            })
         reset();
     }
 
-    // console.log(contact);
     return (
         <>
-            <form onSubmit={handleSubmit(EmployeeContactInformation)} className="mt-3">
+            <form onSubmit={handleSubmit(EmployeeSkillesInformation)} className="mt-3">
                 <div className="form-group mb-0">
                     <label htmlFor="exampleFormControlTextarea4">
                         Skills*
@@ -30,8 +50,10 @@ const EmployeeContact = () => {
                 </div>
 
                 <div className="d-flex justify-content-end">
-                    <button className="btn btn-primary mt-2" style={{ marginBottom: "30px"}} type="submit">
-                        Submit
+                    <button className="btn btn-primary mt-2"
+                            style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}
+                            type="submit">
+                        Create
                     </button>
                 </div>
             </form>

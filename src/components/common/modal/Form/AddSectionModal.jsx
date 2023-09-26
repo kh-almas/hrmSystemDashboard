@@ -14,7 +14,6 @@ const AddSectionModal = ({modal, toggle, reFetch}) => {
     const {register, handleSubmit, formState: { errors }} = useForm();
     const [allDepartmentStatus, allDepartmentReFetch, allDepartment, allDepartmentError] = GetAllDepartment();
 
-    console.log(allDepartment);
     useEffect(() => {
         setDepartment([])
         allDepartment?.data?.body?.data?.map(item => {

@@ -5,27 +5,42 @@ import Select from "../../../common/modal/Select";
 import AddSectionModal from "../../../common/modal/Form/AddSectionModal";
 import Input from "../../../common/modal/Input";
 
-const EmployeeContact = () => {
+const EmployeeContact = ({setProcessData, setIconWithTab}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [contact, setContact] = useState([]);
+    const [editContactData, setEditContactData] = useState([]);
     const [isDeleted, setIsDelete] = useState(false);
+
     const EmployeeContactInformation = data => {
         setContact(preData => [data, ...preData]);
+        setEditContactData([]);
         reset();
     }
 
+    console.log(editContactData);
+
     useEffect( () => {
         setContact([...contact]);
+        reset();
     }, [isDeleted])
+
+    const editContact = id => {
+        setEditContactData(contact[id]);
+        contact.splice(id, 1);
+        setIsDelete(!isDeleted);
+    }
 
     const deleteContact = id => {
         // delete contact[id];
         contact.splice(id, 1);
         setIsDelete(!isDeleted);
-        console.log(contact);
     }
 
-    // console.log(contact);
+    const handleMainForm = () => {
+        setProcessData(previousData => [...previousData, contact]);
+        setIconWithTab("4");
+    }
+
     return (
         <>
             <form onSubmit={handleSubmit(EmployeeContactInformation)} className="mt-3">
@@ -40,6 +55,7 @@ const EmployeeContact = () => {
                                 validation={{
                                     ...register("contact_type"),
                                 }}
+                                defaultValue={editContactData?.contact_type}
                                 error={errors.contact_type}
                             />
                         </div>
@@ -54,6 +70,7 @@ const EmployeeContact = () => {
                                 validation={{
                                     ...register("address"),
                                 }}
+                                defaultValue={editContactData?.address}
                                 error={errors.address}
                             />
                         </div>
@@ -68,6 +85,7 @@ const EmployeeContact = () => {
                                 validation={{
                                     ...register("division"),
                                 }}
+                                defaultValue={editContactData?.division}
                                 error={errors.division}
                             />
                         </div>
@@ -82,6 +100,7 @@ const EmployeeContact = () => {
                                 validation={{
                                     ...register("district"),
                                 }}
+                                defaultValue={editContactData?.district}
                                 error={errors.district}
                             />
                         </div>
@@ -96,6 +115,7 @@ const EmployeeContact = () => {
                                 validation={{
                                     ...register("country"),
                                 }}
+                                defaultValue={editContactData?.country}
                                 error={errors.country}
                             />
                         </div>
@@ -110,6 +130,7 @@ const EmployeeContact = () => {
                                 validation={{
                                     ...register("post_code"),
                                 }}
+                                defaultValue={editContactData?.post_code}
                                 error={errors.post_code}
                             />
                         </div>
@@ -147,6 +168,9 @@ const EmployeeContact = () => {
                                 <td>{item?.country }</td>
                                 <td>{item?.post_code }</td>
                                 <td>
+                                    <button onClick={() => editContact(index)} className="btn me-2" style={{backgroundColor: "skyblue", color: "#ffffff", padding: "4px 7px", borderRadius: "5px"}}>
+                                        <i className="icofont icofont-pencil-alt-5  rounded" style={{backgroundColor: "skyblue", color: "#ffffff",}}></i>
+                                    </button>
                                     <button onClick={() => deleteContact(index)} className="btn" style={{backgroundColor: "#ff3a6e", color: "#ffffff", padding: "4px 7px", borderRadius: "5px"}}>
                                       <i className="icofont icofont-trash rounded" style={{backgroundColor: "#ff3a6e", color: "#ffffff",}}></i>
                                     </button>
@@ -156,6 +180,13 @@ const EmployeeContact = () => {
                     }
                     </tbody>
                 </table>
+                <div className="d-flex justify-content-end">
+                    <button className="btn btn-primary mt-2"
+                            style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}
+                            type="button" onClick={()=> handleMainForm()}>
+                        Next
+                    </button>
+                </div>
             </div>
         </>
     );
