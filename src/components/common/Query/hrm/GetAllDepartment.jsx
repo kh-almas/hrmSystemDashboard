@@ -10,7 +10,6 @@ const GetAllDepartment = () => {
             return axios.get('/hrm-system/department')
         }
     });
-    console.log(allDepartment);
 
     // if (allEmployeeStatus === 'loading') {
     //     return <span>Loading...</span>

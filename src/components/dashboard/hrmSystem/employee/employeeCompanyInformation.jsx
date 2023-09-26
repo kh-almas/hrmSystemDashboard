@@ -19,7 +19,7 @@ import AddEmployeeGradeModal from "../../../common/modal/Form/AddEmployeeGradeMo
 import GetAllSalaryGrade from "../../../common/Query/hrm/GetAllSalaryGrade";
 import AddSalaryGradeModal from "../../../common/modal/Form/AddSalaryGradeModal";
 
-const EmployeeCompanyInformation = () => {
+const EmployeeCompanyInformation = ({setProcessData, setIconWithTab}) => {
     const [branch, setBranch] = useState([]);
     const [branchModal, setBranchModal] = useState(false);
     const [organization, setOrganization] = useState([]);
@@ -146,6 +146,8 @@ const EmployeeCompanyInformation = () => {
     }, [allSalaryGrade])
 
     const EmployeeCompanyInformation = data => {
+        setProcessData(previousData => [...previousData, data]);
+        setIconWithTab("3");
         console.log(data);
     }
     return (
@@ -288,6 +290,13 @@ const EmployeeCompanyInformation = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="d-flex justify-content-end">
+                <button className="btn btn-primary mt-2"
+                        style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}
+                        type="submit">
+                    Next
+                </button>
             </div>
         </form>
     );
