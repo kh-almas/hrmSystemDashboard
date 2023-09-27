@@ -8,53 +8,62 @@ import Swal from "sweetalert2";
 
 const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const EmployeeInformation = data => {
-        console.log("our data",data);
-        // data.status = "Active";
-        // data.full_name = `${data.first_name} ${data.last_name}`;
-        // // setProcessData({basicInfo: data});
-        // setProcessData({ ...processData, basicInfo: data });
+        // console.log("our data",data);
+        data.status = "Active";
+        data.full_name = `${data.first_name} ${data.last_name}`;
+        // setProcessData({basicInfo: data});
+        setProcessData({ ...processData, basicInfo: data });
         const formData = new FormData();
+        const formbaalData = new FormData();
 
-        for (const key in data) {
+        // let img
+        // formbaalData.append("img",img)
+        // for (let pair of formbaalData.entries()) {
+        //     console.log("data---->",pair[0]+ ', ' + pair[1]);
+        // }
 
-            if (data.hasOwnProperty(key)) {
-                console.log(key , key=== "image" ? data[key][0]: data[key])
-                formData.append(key, key=== "image" ? data[key][0]: data[key]);
-            }
-        }
+        // for (const key in data) {
+        //
+        //     if (data.hasOwnProperty(key)) {
+        //         // img = (key=== "image" && data[key][0])
+        //         // console.log(key , key=== "image" ? data[key][0]: data[key])
+        //         formData.append(key, key=== "image" || key=== "cv" ? data[key][0]: data[key]);
+        //     }
+        // }
 
-        for (let pair of formData.entries()) {
-            console.log("data",pair[0]+ ', ' + pair[1]);
-        }
+        // for (let pair of formData.entries()) {
+        //     console.log("data",pair[0]+ ', ' + pair[1]);
+        // }
 
-        axios.post('/hrm-system/employee', formData)
-            .then(info => {
-                if (info?.status == 200) {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-
-                }
-                // navigate("/dashboard/hrm/employee");
-            })
-            .catch(e => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                })
-            })
+        // axios.post('/hrm-system/employee', formData)
+        //     .then(info => {
+        //         if (info?.status == 200) {
+        //             Swal.fire({
+        //                 position: 'top-end',
+        //                 icon: 'success',
+        //                 title: 'Your work has been saved',
+        //                 showConfirmButton: false,
+        //                 timer: 1500
+        //             })
+        //
+        //         }
+        //         // navigate("/dashboard/hrm/employee");
+        //     })
+        //     .catch(e => {
+        //         console.log(e)
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Oops...',
+        //             // text: `${e?.response?.data?.body?.message?.details[0].message}`,
+        //         })
+        //     })
     }
 
     return (
         <>
-            <form onSubmit={handleSubmit(EmployeeInformation)} className="mt-3">
+            <form onChange={handleSubmit(EmployeeInformation)} className="mt-3">
                 <div className="row">
                     <div className="col-6">
                         <Select
@@ -258,13 +267,13 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                         </div>
                     </div>
                 </div>
-                <div className="d-flex justify-content-end">
-                    <button className="btn btn-primary mt-2"
-                            style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}
-                            type="submit">
-                        Next
-                    </button>
-                </div>
+                {/*<div className="d-flex justify-content-end">*/}
+                {/*    <button className="btn btn-primary mt-2"*/}
+                {/*            style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}*/}
+                {/*            type="submit">*/}
+                {/*        Next*/}
+                {/*    </button>*/}
+                {/*</div>*/}
             </form>
         </>
     );
