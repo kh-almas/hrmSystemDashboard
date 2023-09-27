@@ -8,8 +8,18 @@ import BasicInformation from "./employee/basicInformation";
 
 const EditEmploySetup = () => {
     const [IconWithTab, setIconWithTab] = useState('1');
-    const [processData, setProcessData] = useState([]);
+    const [processData, setProcessData] = useState({});
+    // const [processDatas, setProcessDatas] = useState({});
+    const [isUpdate, setIsUpdate] = useState(false);
+    const checkData = [];
     console.log("this is fine", processData);
+    // useEffect(() => {
+    //     console.log("newarray", checkData);
+    // }, [isUpdate])
+    //
+    // const toggle = () => {
+    //     setIsUpdate(!isUpdate)
+    // }
     return (
         <div>
             <Breadcrumb parent="HRM System" title="Add Employee" id="#EMP0000001"/>
@@ -18,30 +28,30 @@ const EditEmploySetup = () => {
                     <CardBody>
                         <Nav tabs>
                             <NavItem>
-                                <NavLink href="#javascript" className={IconWithTab === '1' ? 'active' : ''}><i className="icofont icofont-ui-home"></i>Basic Information</NavLink>
+                                <NavLink href="#javascript" onClick={() => setIconWithTab("1")} className={IconWithTab === '1' ? 'active' : ''}><i className="icofont icofont-ui-home"></i>Basic Information</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#javascript" className={IconWithTab === '2' ? 'active' : ''}><i className="icofont icofont-man-in-glasses"></i>Company Information</NavLink>
+                                <NavLink href="#javascript" onClick={() => setIconWithTab("2")} className={IconWithTab === '2' ? 'active' : ''}><i className="icofont icofont-man-in-glasses"></i>Company Information</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#javascript" className={IconWithTab === '3' ? 'active' : ''}><i className="icofont icofont-contacts"></i>Contact</NavLink>
+                                <NavLink href="#javascript" onClick={() => setIconWithTab("3")} className={IconWithTab === '3' ? 'active' : ''}><i className="icofont icofont-contacts"></i>Contact</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#javascript" className={IconWithTab === '4' ? 'active' : ''}><i className="icofont icofont-contacts"></i>Skills</NavLink>
+                                <NavLink href="#javascript" onClick={() => setIconWithTab("4")} className={IconWithTab === '4' ? 'active' : ''}><i className="icofont icofont-contacts"></i>Skills</NavLink>
                             </NavItem>
                         </Nav>
                         <TabContent activeTab={IconWithTab}>
                             <TabPane className="fade show" tabId="1">
-                                <BasicInformation setProcessData={setProcessData} setIconWithTab={setIconWithTab}></BasicInformation>
+                                <BasicInformation processData={processData} setProcessData={setProcessData} setIconWithTab={setIconWithTab}></BasicInformation>
                             </TabPane>
                             <TabPane tabId="2">
-                                <EmployeeCompanyInformation setProcessData={setProcessData} setIconWithTab={setIconWithTab}></EmployeeCompanyInformation>
+                                <EmployeeCompanyInformation processData={processData} setProcessData={setProcessData} setIconWithTab={setIconWithTab}></EmployeeCompanyInformation>
                             </TabPane>
                             <TabPane tabId="3">
-                                <EmployeeContact setProcessData={setProcessData} setIconWithTab={setIconWithTab}></EmployeeContact>
+                                <EmployeeContact processData={processData} setProcessData={setProcessData} setIconWithTab={setIconWithTab}></EmployeeContact>
                             </TabPane>
                             <TabPane tabId="4">
-                                <EmployeeSkilles  setProcessData={setProcessData} processData={processData} setIconWithTab={setIconWithTab}></EmployeeSkilles>
+                                <EmployeeSkilles  processData={processData} setProcessData={setProcessData} setIconWithTab={setIconWithTab}></EmployeeSkilles>
                             </TabPane>
                         </TabContent>
                     </CardBody>

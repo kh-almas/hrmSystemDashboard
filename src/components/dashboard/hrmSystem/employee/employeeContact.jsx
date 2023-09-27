@@ -5,7 +5,7 @@ import Select from "../../../common/modal/Select";
 import AddSectionModal from "../../../common/modal/Form/AddSectionModal";
 import Input from "../../../common/modal/Input";
 
-const EmployeeContact = ({setProcessData, setIconWithTab}) => {
+const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [contact, setContact] = useState([]);
     const [editContactData, setEditContactData] = useState([]);
@@ -13,9 +13,17 @@ const EmployeeContact = ({setProcessData, setIconWithTab}) => {
 
     const EmployeeContactInformation = data => {
         setContact(preData => [data, ...preData]);
-        setEditContactData([]);
+        // setEditContactData([]);
+
         reset();
     }
+    useEffect(() => {
+        if(contact.length > 0)
+        {
+            setProcessData({ ...processData, contact: contact });
+        }
+
+    }, [contact])
 
     console.log(editContactData);
 
@@ -38,7 +46,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab}) => {
 
     const handleMainForm = () => {
         setProcessData(previousData => [...previousData, contact]);
-        setIconWithTab("4");
+        // setIconWithTab("4");
     }
 
     return (
@@ -180,13 +188,13 @@ const EmployeeContact = ({setProcessData, setIconWithTab}) => {
                     }
                     </tbody>
                 </table>
-                <div className="d-flex justify-content-end">
-                    <button className="btn btn-primary mt-2"
-                            style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}
-                            type="button" onClick={()=> handleMainForm()}>
-                        Next
-                    </button>
-                </div>
+                {/*<div className="d-flex justify-content-end">*/}
+                {/*    <button className="btn btn-primary mt-2"*/}
+                {/*            style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}*/}
+                {/*            type="button" onClick={()=> handleMainForm()}>*/}
+                {/*        Next*/}
+                {/*    </button>*/}
+                {/*</div>*/}
             </div>
         </>
     );
