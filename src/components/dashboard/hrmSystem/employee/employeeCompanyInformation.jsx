@@ -18,8 +18,9 @@ import GetAllEmployeeGrade from "../../../common/Query/hrm/GetAllEmployeeGrade";
 import AddEmployeeGradeModal from "../../../common/modal/Form/AddEmployeeGradeModal";
 import GetAllSalaryGrade from "../../../common/Query/hrm/GetAllSalaryGrade";
 import AddSalaryGradeModal from "../../../common/modal/Form/AddSalaryGradeModal";
+import GetAllEmployeeShift from "../../../common/Query/hrm/GetAllEmployeeShift";
 
-const EmployeeCompanyInformation = ({setProcessData, setIconWithTab}) => {
+const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData}) => {
     const [branch, setBranch] = useState([]);
     const [branchModal, setBranchModal] = useState(false);
     const [organization, setOrganization] = useState([]);
@@ -32,9 +33,11 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab}) => {
     const [departmentModal, setDepartmentModal] = useState(false);
     const [employeeGrade, setEmployeeGrade] = useState([]);
     const [employeeGradeModal, setEmployeeGradeModal] = useState(false);
-
     const [salaryGrade, setSalaryGrade] = useState([]);
     const [salaryGradeModal, setSalaryGradeModal] = useState(false);
+
+    const [employeeShift, setEmployeeShift] = useState([]);
+    const [employeeShiftModal, setEmployeeShiftModal] = useState(false);
 
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = GetAllBranch();
@@ -44,8 +47,22 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab}) => {
     const [allDepartmentStatus, allDepartmentReFetch, allDepartment, allDepartmentError] = GetAllDepartment();
     const [allEmployeeGradeStatus, allEmployeeGradeReFetch, allEmployeeGrade, allEmployeeGradeError] = GetAllEmployeeGrade();
     const [allSalaryGradeStatus, allSalaryGradeReFetch, allSalaryGrade, allSalaryGradeError] = GetAllSalaryGrade();
+    // const [allEmployeeShiftStatus, allEmployeeShiftReFetch, allEmployeeShift, allEmployeeShiftError] = GetAllEmployeeShift();
 
-    console.log(allSalaryGrade?.data?.body?.data);
+
+    const EmployeeCompanyInformation = data => {
+        // setProcessData(previousData => [...previousData, data]);
+        // setIconWithTab("3");
+        // setProcessDatas({companyInformation: data});
+        setProcessData({ ...processData, company: data });
+        console.log(data);
+    }
+
+
+    // console.log(allSalaryGrade?.data?.body?.data);
+    const shiftToggle = () => {
+        setEmployeeShiftModal(!employeeShiftModal);
+    }
     const branchToggle = () => {
         setBranchModal(!branchModal);
     };
@@ -144,14 +161,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab}) => {
             setSalaryGrade(prevSalaryGrade => [...prevSalaryGrade, set_data]);
         })
     }, [allSalaryGrade])
-
-    const EmployeeCompanyInformation = data => {
-        setProcessData(previousData => [...previousData, data]);
-        setIconWithTab("3");
-        console.log(data);
-    }
     return (
-        <form onSubmit={handleSubmit(EmployeeCompanyInformation)} className="mt-3">
+        <form onChange={handleSubmit(EmployeeCompanyInformation)} className="mt-3">
             <div className="row">
                 {/*<div className="col">*/}
                 {/*    <div style={{ position: "relative" }}>*/}
@@ -291,13 +302,34 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab}) => {
                     </div>
                 </div>
             </div>
-            <div className="d-flex justify-content-end">
-                <button className="btn btn-primary mt-2"
-                        style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}
-                        type="submit">
-                    Next
-                </button>
-            </div>
+            {/*<div className="row">*/}
+            {/*    <div className="col-6">*/}
+            {/*        <div style={{ position: "relative" }}>*/}
+            {/*            <p onClick={salaryGradeToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">*/}
+            {/*                New shift*/}
+            {/*                <span><i className="icofont icofont-plus-circle"></i></span>*/}
+            {/*                <AddSalaryGradeModal reFetch={allSalaryGradeReFetch} modal={salaryGradeModal} toggle={salaryGradeToggle} />*/}
+            {/*            </p>*/}
+
+            {/*            <div>*/}
+            {/*                <Select*/}
+            {/*                    labelName={"Shift"}*/}
+            {/*                    placeholder={"Select an option"}*/}
+            {/*                    options={salaryGrade}*/}
+            {/*                    validation={{...register("salaryGrade")}}*/}
+            {/*                    error={errors.salaryGrade}*/}
+            {/*                />*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
+            {/*<div className="d-flex justify-content-end">*/}
+            {/*    <button className="btn btn-primary mt-2"*/}
+            {/*            style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}*/}
+            {/*            type="submit">*/}
+            {/*        Next*/}
+            {/*    </button>*/}
+            {/*</div>*/}
         </form>
     );
 };

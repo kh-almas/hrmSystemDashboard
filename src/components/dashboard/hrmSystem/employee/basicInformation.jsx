@@ -1,45 +1,55 @@
 import React from 'react';
 import Input from "../../../common/modal/Input";
 import Select from "../../../common/modal/Select";
-import axios from "../../../../axios";
-import Swal from "sweetalert2";
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
+import axios from "../../../../axios";
+import Swal from "sweetalert2";
 
-const BasicInformation = ({setProcessData, setIconWithTab}) => {
+const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const navigate = useNavigate();
     const EmployeeInformation = data => {
-        data.status = "Active";
-        data.full_name = `${data.first_name} ${data.last_name}`;
-        setProcessData([data]);
-        setIconWithTab("2")
-        // const formData = new FormData();
-        //
-        // for (const key in data) {
-        //     formData.append(key, data[key]);
-        // }
-        // axios.post('/hrm-system/employee', data)
-        //     .then(info => {
-        //         if (info?.status == 200) {
-        //             Swal.fire({
-        //                 position: 'top-end',
-        //                 icon: 'success',
-        //                 title: 'Your work has been saved',
-        //                 showConfirmButton: false,
-        //                 timer: 1500
-        //             })
-        //
-        //         }
-        //         // navigate("/dashboard/hrm/employee");
-        //     })
-        //     .catch(e => {
-        //         Swal.fire({
-        //             icon: 'error',
-        //             title: 'Oops...',
-        //             text: `${e?.response?.data?.body?.message?.details[0].message}`,
-        //         })
-        //     })
+        console.log("our data",data);
+        // data.status = "Active";
+        // data.full_name = `${data.first_name} ${data.last_name}`;
+        // // setProcessData({basicInfo: data});
+        // setProcessData({ ...processData, basicInfo: data });
+        const formData = new FormData();
+
+        for (const key in data) {
+
+            if (data.hasOwnProperty(key)) {
+                console.log(key , key=== "image" ? data[key][0]: data[key])
+                formData.append(key, key=== "image" ? data[key][0]: data[key]);
+            }
+        }
+
+        for (let pair of formData.entries()) {
+            console.log("data",pair[0]+ ', ' + pair[1]);
+        }
+
+        axios.post('/hrm-system/employee', formData)
+            .then(info => {
+                if (info?.status == 200) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                }
+                // navigate("/dashboard/hrm/employee");
+            })
+            .catch(e => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                })
+            })
     }
 
     return (
@@ -149,17 +159,31 @@ const BasicInformation = ({setProcessData, setIconWithTab}) => {
                         </div>
                     </div>
                 </div>
-                <div>
-                    <Input
-                        labelName={"Spouse Name"}
-                        inputName={"spouse_name"}
-                        inputType={"text"}
-                        placeholder={"Enter your spouse name"}
-                        validation={{
-                            ...register("spouse_name"),
-                        }}
-                        error={errors.mother_name}
-                    />
+                <div className="row">
+                    <div className={"col"}>
+                        <Input
+                            labelName={"Spouse Name"}
+                            inputName={"spouse_name"}
+                            inputType={"text"}
+                            placeholder={"Enter your spouse name"}
+                            validation={{
+                                ...register("spouse_name"),
+                            }}
+                            error={errors.mother_name}
+                        />
+                    </div>
+                    <div className={"col"}>
+                        <Input
+                            labelName={"Card Number"}
+                            inputName={"card_no"}
+                            inputType={"text"}
+                            placeholder={"Enter your card number"}
+                            validation={{
+                                ...register("card_no"),
+                            }}
+                            error={errors.card_no}
+                        />
+                    </div>
                 </div>
                 <div className="row">
                     <div className="col">
@@ -169,9 +193,9 @@ const BasicInformation = ({setProcessData, setIconWithTab}) => {
                                 inputName={"img"}
                                 inputType={"file"}
                                 validation={{
-                                    ...register("img"),
+                                    ...register("image"),
                                 }}
-                                error={errors.img}
+                                error={errors.image}
                             />
                         </div>
                     </div>
