@@ -1,6 +1,7 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import { Button } from "reactstrap";
 import Swal from "sweetalert2";
 import axios from "../../../../axios";
@@ -8,10 +9,11 @@ import BaseModal from "../BaseModal";
 import Input from "../Input";
 import Select from "../Select";
 
-const ManualAttendancesForm = ({ dataModal, dataToggle }) => {
+const ShiftForm = ({ dataModal, dataToggle }) => {
   const [employee, setEmployee] = useState([]);
   const [weekday, setWeekday] = useState([]);
   const [shift, setShift] = useState([]);
+  const [weekends, setWeekends] = useState([]);
   const {
     register,
     handleSubmit,
@@ -104,123 +106,100 @@ const ManualAttendancesForm = ({ dataModal, dataToggle }) => {
   const formattedTime = (time) => moment(time, "HH:mm").format("HH:mm:ss");
 
   const onSubmit = (data) => {
-    const in_time = formattedTime(data.in_time);
-    data.in_time = in_time;
-    const out_time = formattedTime(data.out_time);
-    data.out_time = out_time;
+    data.weekends = weekends.join(",");
 
-    axios
-      .post("/hrm-system/manual-attendance", data)
-      .then((info) => {
-        if (info?.status == 200) {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Your work has been saved",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          dataToggle(false);
-        }
-      })
-      .catch((e) => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: `${e?.response?.data?.body?.message?.details[0]}`,
-          footer: '<a href="">Why do I have this issue?</a>',
-        });
-      });
+    console.log(data);
+
+    // const in_time = formattedTime(data.in_time);
+    // data.in_time = in_time;
+    // const out_time = formattedTime(data.out_time);
+    // data.out_time = out_time;
+
+    // axios
+    //   .post("/hrm-system/manual-attendance", data)
+    //   .then((info) => {
+    //     if (info?.status == 200) {
+    //       Swal.fire({
+    //         position: "top-end",
+    //         icon: "success",
+    //         title: "Your work has been saved",
+    //         showConfirmButton: false,
+    //         timer: 1500,
+    //       });
+    //       dataToggle(false);
+    //     }
+    //   })
+    //   .catch((e) => {
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "Oops...",
+    //       text: `${e?.response?.data?.body?.message?.details[0]}`,
+    //       footer: '<a href="">Why do I have this issue?</a>',
+    //     });
+    //   });
   };
 
   return (
     <>
       <BaseModal
-        title={"Manual Attendance"}
+        title={"Shift Entry"}
         dataModal={dataModal}
         dataToggle={dataToggle}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row row-cols-1 row-cols-lg-2">
             <div>
-              <Select
-                name={"employee"}
-                labelName={"Employee Name"}
-                placeholder={"Select an option"}
-                options={employee}
-                validation={{ ...register("employee_id", { required: true }) }}
-                error={errors?.employee_id}
-              />
-              {/*<span className="text-danger">*/}
-              {/*    {errors?.employee_id && `Employee is required`}*/}
-              {/*</span>*/}
-            </div>
-            <div>
               <Input
-                labelName={"Date"}
-                inputName={"date"}
-                inputType={"date"}
-                validation={{ ...register("date", { required: true }) }}
-                error={errors?.date}
+                labelName={"Shift Name"}
+                inputName={"name"}
+                inputType={"text"}
+                placeholder={"Enter shift name"}
+                validation={{
+                  ...register("name", { required: true }),
+                }}
               />
               {/*<span className="text-danger">*/}
               {/*    {errors?.date && `Date is required`}*/}
               {/*</span>*/}
             </div>
             <div>
-              <Select
-                name={"shift"}
-                labelName={"Shift"}
-                placeholder={"Select an option"}
-                options={shift}
-                validation={{ ...register("shift_id", { required: true }) }}
-                error={errors?.shift_id}
+              <Input
+                labelName={"Start Time"}
+                inputName={"startTime"}
+                inputType={"time"}
+                validation={{ ...register("start_time", { required: true }) }}
+                error={errors?.start_time}
               />
             </div>
-            <div>
-              <Select
-                name={"day_type"}
-                labelName={"Weekday"}
-                placeholder={"Select an option"}
-                options={weekday}
-                validation={{ ...register("day_type", { required: true }) }}
-                error={errors?.day_type}
-              />
-            </div>
-            {/*<div>*/}
-            {/*    <Input*/}
-            {/*        labelName={"Employee Name"}*/}
-            {/*        inputName={"name"}*/}
-            {/*        inputType={"text"}*/}
-            {/*        placeholder={"Enter Employee name"}*/}
-            {/*        validation={{*/}
-            {/*            ...register("name", { required: true }),*/}
-            {/*        }}*/}
-            {/*    />*/}
-            {/*</div>*/}
           </div>
 
           <div className="row row-cols-1 row-cols-lg-2">
             <div>
               <Input
-                labelName={"Clock In"}
-                inputName={"inTime"}
+                labelName={"End Time"}
+                inputName={"endTime"}
                 inputType={"time"}
-                validation={{ ...register("in_time", { required: true }) }}
-                error={errors?.in_time}
+                validation={{ ...register("end_time", { required: true }) }}
+                error={errors?.end_time}
               />
             </div>
-            <div>
-              <Input
-                labelName={"Clock Out"}
-                inputName={"outTime"}
-                inputType={"time"}
-                validation={{ ...register("out_time", { required: true }) }}
-                error={errors?.out_time}
+            <div className="mb-3">
+              <label htmlFor="weekends">Weekends</label>
+              <DropdownMultiselect
+                options={[
+                  "Sunday",
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday",
+                ]}
+                name="weekends"
+                handleOnChange={(selected) => setWeekends(selected)}
               />
             </div>
           </div>
-
           <div>
             <Select
               name={"status"}
@@ -234,7 +213,6 @@ const ManualAttendancesForm = ({ dataModal, dataToggle }) => {
               error={errors?.status}
             />
           </div>
-
           <div className="d-flex justify-content-end">
             <Button color="danger" onClick={dataToggle} className="me-2">
               Cancel
@@ -249,4 +227,4 @@ const ManualAttendancesForm = ({ dataModal, dataToggle }) => {
   );
 };
 
-export default ManualAttendancesForm;
+export default ShiftForm;
