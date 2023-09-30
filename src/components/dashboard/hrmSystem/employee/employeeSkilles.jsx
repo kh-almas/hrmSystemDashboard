@@ -37,8 +37,10 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
                         if(currentKey === "contact"){
                             console.log("akjsdhfi", currentKey, JSON.stringify(value));
                             formData.append(currentKey, JSON.stringify(value));
+                        }else if(currentKey === "basicInfo[image][0]"){
+                            formData.append('image', value);
                         }else{
-                            formData.append(currentKey, value);
+                            formData.append('cv', value);
                         }
                         // console.log(value);
 

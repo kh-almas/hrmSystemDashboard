@@ -91,6 +91,7 @@ const EmployeSetup = () => {
                                     <tr>
                                         <th scope="col">{"Employee Id"}</th>
                                         <th scope="col">{"Name"}</th>
+                                        <th scope="col">{"Email"}</th>
                                         <th scope="col">{"Phone"}</th>
                                         <th scope="col">{"Branch"}</th>
                                         <th scope="col">{"Department"}</th>
@@ -105,6 +106,7 @@ const EmployeSetup = () => {
                                                 <tr key={index}>
                                                     <td>{index + 1}</td>
                                                     <td>{item?.full_name}</td>
+                                                    <td>{item?.email}</td>
                                                     <td>{item?.phone}</td>
                                                     <td>{item?.branch_id}</td>
                                                     <td>{item?.department_id}</td>
