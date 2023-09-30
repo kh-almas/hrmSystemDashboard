@@ -112,12 +112,12 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                     <div className="col">
                         <div>
                             <Input
-                                labelName={"Email"}
+                                labelName={"Email*"}
                                 inputName={"email"}
                                 inputType={"email"}
                                 placeholder={"Enter your email"}
                                 validation={{
-                                    ...register("email"),
+                                    ...register("email", { required: true }),
                                 }}
                                 error={errors.email}
                             />

@@ -92,7 +92,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
                         showConfirmButton: false,
                         timer: 1500
                     })
-
+                    console.log("got the result",info);
                 }
                 // navigate("/dashboard/hrm/employee");
             })
@@ -101,7 +101,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    // text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                    text: `${e?.response?.data?.body?.message}`,
                 })
             })
         reset();
@@ -112,13 +112,13 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
             <form onSubmit={handleSubmit(EmployeeSkillesInformation)} className="mt-3">
                 <div className="form-group mb-0">
                     <label htmlFor="exampleFormControlTextarea4">
-                        Skills* {errors.skill && <span>(Required)</span>}
+                        Skills
                     </label>
                     <textarea
                         className="form-control"
                         id="exampleFormControlTextarea4"
                         rows="5"
-                        {...register("skill", {required: true})}
+                        {...register("skill")}
                     ></textarea>
 
                 </div>
