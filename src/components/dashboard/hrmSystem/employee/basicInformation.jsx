@@ -117,7 +117,7 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                                 inputType={"email"}
                                 placeholder={"Enter your email"}
                                 validation={{
-                                    ...register("email", { required: true }),
+                                    ...register("email"),
                                 }}
                                 error={errors.email}
                             />

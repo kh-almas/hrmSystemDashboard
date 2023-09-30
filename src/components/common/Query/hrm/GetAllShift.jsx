@@ -7,7 +7,7 @@ const GetAllShift = () => {
     const {status: allShiftStatus = '', refetch: allShiftReFetch, data: allShift = [], error: allShiftError} = useQuery({
         queryKey: ['allShift'],
         queryFn: async () => {
-            return axios.get('/hrm-system/shift?page=&item=&search=')
+            return axios.get(`/hrm-system/shift`)
         }
     });
 
