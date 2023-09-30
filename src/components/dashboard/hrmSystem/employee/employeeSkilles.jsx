@@ -15,20 +15,33 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
         const formData = new FormData();
 
         const appendToFormData = (object, parentKey) => {
+            console.log(object, parentKey);
             for (let key in object) {
                 if (object.hasOwnProperty(key)) {
                     const value = object[key];
                     const currentKey = parentKey ? `${parentKey}[${key}]` : key;
 
-                    if (typeof value === 'object' && !Array.isArray(value)) {
-                        appendToFormData(value, currentKey);
-                    } else if (Array.isArray(value)) {
-                        value.forEach((item, index) => {
-                            appendToFormData({ [index]: item }, `${currentKey}[${index}]`);
-                        });
-                    } else {
-                        // console.log(currentKey, value);
-                        formData.append(currentKey, value);
+                    console.log(currentKey);
+                    if(currentKey !== "basicInfo[image][0]" && currentKey !== "basicInfo[cv][0]" && currentKey !== "contact"){
+                        if (typeof value === 'object' && !Array.isArray(value)) {
+                            appendToFormData(value, currentKey);
+                        } else if (Array.isArray(value)) {
+                            value.forEach((item, index) => {
+                                appendToFormData({ [index]: item }, `${currentKey}[${index}]`);
+                            });
+                        } else {
+                            // console.log(currentKey, value);
+                            formData.append(currentKey, value);
+                        }
+                    }else{
+                        if(currentKey === "contact"){
+                            console.log("akjsdhfi", currentKey, JSON.stringify(value));
+                            formData.append(currentKey, JSON.stringify(value));
+                        }else{
+                            formData.append(currentKey, value);
+                        }
+                        // console.log(value);
+
                     }
                 }
             }
@@ -36,9 +49,10 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
 
         const processed = appendToFormData(finalData);
 
-        for (let pair of formData.entries()) {
-            console.log("data",pair[0]+ ', ' + pair[1]);
-        }
+        // for (let pair of formData.entries()) {
+        //     console.log("data",pair[0]+ ', ' + pair[1]);
+        // }
+        console.log(...formData);
 
 
 
@@ -83,10 +97,11 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
                 // navigate("/dashboard/hrm/employee");
             })
             .catch(e => {
+                console.log(e)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                    // text: `${e?.response?.data?.body?.message?.details[0].message}`,
                 })
             })
         reset();
