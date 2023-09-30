@@ -19,6 +19,8 @@ import AddEmployeeGradeModal from "../../../common/modal/Form/AddEmployeeGradeMo
 import GetAllSalaryGrade from "../../../common/Query/hrm/GetAllSalaryGrade";
 import AddSalaryGradeModal from "../../../common/modal/Form/AddSalaryGradeModal";
 import GetAllEmployeeShift from "../../../common/Query/hrm/GetAllEmployeeShift";
+import getAllShift from "../../../common/Query/hrm/GetAllShift";
+import AddShiftModal from "../../../common/modal/Form/AddShiftModal";
 
 const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData}) => {
     const [branch, setBranch] = useState([]);
@@ -36,8 +38,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
     const [salaryGrade, setSalaryGrade] = useState([]);
     const [salaryGradeModal, setSalaryGradeModal] = useState(false);
 
-    const [employeeShift, setEmployeeShift] = useState([]);
-    const [employeeShiftModal, setEmployeeShiftModal] = useState(false);
+    const [shift, setShift] = useState([]);
+    const [shiftModal, setShiftModal] = useState(false);
 
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = GetAllBranch();
@@ -47,7 +49,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
     const [allDepartmentStatus, allDepartmentReFetch, allDepartment, allDepartmentError] = GetAllDepartment();
     const [allEmployeeGradeStatus, allEmployeeGradeReFetch, allEmployeeGrade, allEmployeeGradeError] = GetAllEmployeeGrade();
     const [allSalaryGradeStatus, allSalaryGradeReFetch, allSalaryGrade, allSalaryGradeError] = GetAllSalaryGrade();
-    // const [allEmployeeShiftStatus, allEmployeeShiftReFetch, allEmployeeShift, allEmployeeShiftError] = GetAllEmployeeShift();
+    const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
 
     const EmployeeCompanyInformation = data => {
@@ -61,7 +63,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
 
     // console.log(allSalaryGrade?.data?.body?.data);
     const shiftToggle = () => {
-        setEmployeeShiftModal(!employeeShiftModal);
+        setShiftModal(!shiftModal);
     }
     const branchToggle = () => {
         setBranchModal(!branchModal);
@@ -84,6 +86,17 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
     const salaryGradeToggle = () => {
         setSalaryGradeModal(!salaryGradeModal);
     };
+
+    useEffect(() => {
+        setShift([]);
+        allShift?.data?.body?.data?.map(item => {
+            const set_data = {
+                id: item?.id,
+                value: item?.name
+            }
+            setShift(prevEmployeeGrade => [...prevEmployeeGrade, set_data]);
+        })
+    }, [allShift])
 
     useEffect(() => {
         setEmployeeGrade([]);
@@ -302,27 +315,27 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                     </div>
                 </div>
             </div>
-            {/*<div className="row">*/}
-            {/*    <div className="col-6">*/}
-            {/*        <div style={{ position: "relative" }}>*/}
-            {/*            <p onClick={salaryGradeToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">*/}
-            {/*                New shift*/}
-            {/*                <span><i className="icofont icofont-plus-circle"></i></span>*/}
-            {/*                <AddSalaryGradeModal reFetch={allSalaryGradeReFetch} modal={salaryGradeModal} toggle={salaryGradeToggle} />*/}
-            {/*            </p>*/}
+            <div className="row">
+                <div className="col-6">
+                    <div style={{ position: "relative" }}>
+                        <p onClick={shiftToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
+                            New shift
+                            <span><i className="icofont icofont-plus-circle"></i></span>
+                            <AddShiftModal reFetch={allShiftReFetch} modal={shiftModal} toggle={shiftToggle} />
+                        </p>
 
-            {/*            <div>*/}
-            {/*                <Select*/}
-            {/*                    labelName={"Shift"}*/}
-            {/*                    placeholder={"Select an option"}*/}
-            {/*                    options={salaryGrade}*/}
-            {/*                    validation={{...register("salaryGrade")}}*/}
-            {/*                    error={errors.salaryGrade}*/}
-            {/*                />*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+                        <div>
+                            <Select
+                                labelName={"Shift"}
+                                placeholder={"Select an option"}
+                                options={shift}
+                                validation={{...register("shift")}}
+                                error={errors.shift}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
             {/*<div className="d-flex justify-content-end">*/}
             {/*    <button className="btn btn-primary mt-2"*/}
             {/*            style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}*/}

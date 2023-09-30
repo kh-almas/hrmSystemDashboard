@@ -7,6 +7,7 @@ import GetAllCompany from "../../Query/hrm/GetAllCompany";
 import {useForm} from "react-hook-form";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
+import moment from "moment";
 
 const AddShiftModal = ({modal, toggle, reFetch}) => {
     const [company, setCompany] = useState([]);
@@ -24,9 +25,15 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
         })
     }, [allCompany])
 
+    const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
+
     const onSubmit = (data) => {
-        console.log(data);
-        axios.post('/hrm-system/branch', data)
+        const start_time = formattedTime(data.start_time);
+        data.start_time = start_time;
+        const end_time = formattedTime(data.end_time);
+        data.end_time = end_time;
+
+        axios.post('/hrm-system/shift', data)
             .then(info => {
                 if(info?.status == 200)
                 {
@@ -46,6 +53,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                     icon: 'error',
                     title: 'Oops...',
                     text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                    footer: '<a href="">Why do I have this issue?</a>'
                 })
             })
     }
