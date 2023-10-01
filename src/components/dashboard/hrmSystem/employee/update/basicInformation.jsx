@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Input from "../../../../common/modal/Input";
 import Select from "../../../../common/modal/Select";
 import {useForm} from "react-hook-form";
@@ -6,6 +6,9 @@ import {useForm} from "react-hook-form";
 const BasicInformation = ({setProcessData, setIconWithTab, processData, employeeData}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     // const navigate = useNavigate();
+    // useEffect(() => {
+    //     reset()
+    // }, [employeeData]);
     const EmployeeInformation = data => {
         // console.log("our data",data);
         data.status = "Active";

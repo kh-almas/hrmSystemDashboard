@@ -6,6 +6,8 @@ const Select = ({labelName, options, defaultValue, validation, placeholder, erro
     useEffect(() => {
         reset();
     }, [previous])
+    // console.log("options", options)
+    // console.log("previous", previous)
 
     return (
         <>

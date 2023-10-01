@@ -52,6 +52,9 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
     const [allSalaryGradeStatus, allSalaryGradeReFetch, allSalaryGrade, allSalaryGradeError] = GetAllSalaryGrade();
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
+    // useEffect(() => {
+    //     reset()
+    // }, [employeeData]);
 
     const EmployeeCompanyInformation = data => {
         // setProcessData(previousData => [...previousData, data]);
@@ -210,8 +213,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Company"}
                                 placeholder={"Select an option"}
                                 options={company}
-                                validation={{...register("company")}}
-                                error={errors.company}
+                                validation={{...register("company_id")}}
+                                error={errors.company_id}
                                 previous={employeeData?.company_id}
                             />
                         </div>
@@ -230,8 +233,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Branch"}
                                 placeholder={"Select an option"}
                                 options={branch}
-                                validation={{...register("branch")}}
-                                error={errors.branch}
+                                validation={{...register("branch_id")}}
+                                error={errors.branch_id}
                                 previous={employeeData?.branch_id}
                             />
                         </div>
@@ -252,8 +255,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Department"}
                                 placeholder={"Select an option"}
                                 options={department}
-                                validation={{...register("department")}}
-                                error={errors.department}
+                                validation={{...register("department_id")}}
+                                error={errors.department_id}
                                 previous={employeeData?.department_id}
                             />
                         </div>
@@ -272,8 +275,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Section"}
                                 placeholder={"Select an option"}
                                 options={section}
-                                validation={{...register("section")}}
-                                error={errors.section}
+                                validation={{...register("section_id")}}
+                                error={errors.section_id}
                                 previous={employeeData?.section_id}
                             />
                         </div>
@@ -294,8 +297,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Employee Grade"}
                                 placeholder={"Select an option"}
                                 options={employeeGrade}
-                                validation={{...register("employeeGrade")}}
-                                error={errors.employeeGrade}
+                                validation={{...register("employee_grade_id")}}
+                                error={errors.employee_grade_id}
                                 previous={employeeData?.employee_grade_id}
                             />
                         </div>
@@ -314,9 +317,9 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Salary Grade"}
                                 placeholder={"Select an option"}
                                 options={salaryGrade}
-                                validation={{...register("salaryGrade")}}
-                                error={errors.salaryGrade}
-                                defaultValue={employeeData?.salary_grade_id}
+                                validation={{...register("salary_grade_id")}}
+                                error={errors.salary_grade_id}
+                                previous={employeeData?.salary_grade_id}
                             />
                         </div>
                     </div>
@@ -336,9 +339,9 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Shift"}
                                 placeholder={"Select an option"}
                                 options={shift}
-                                validation={{...register("shift")}}
-                                error={errors.shift}
-                                defaultValue={employeeData?.shift_id}
+                                validation={{...register("shift_id")}}
+                                error={errors.shift_id}
+                                previous={employeeData?.shift_id}
                             />
                         </div>
                     </div>
