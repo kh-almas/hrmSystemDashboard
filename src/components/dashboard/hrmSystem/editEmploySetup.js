@@ -17,7 +17,7 @@ const EditEmploySetup = () => {
     const [employeeData, setEmployeeData] = useState({});
     const [contactData, setContactData] = useState({});
     // const [processDatas, setProcessDatas] = useState({});
-    const [isUpdate, setIsUpdate] = useState(false);
+    const [isChange, setIsChange] = useState(false);
     const checkData = [];
     console.log("this is fine", processData);
     useEffect(() => {
@@ -26,12 +26,16 @@ const EditEmploySetup = () => {
                 // console.log(info?.data?.body?.data);
                 setEmployeeData(info?.data?.body?.data?.data);
                 setContactData(info?.data?.body?.data?.contact);
-                // console.log(info?.data?.body?.data?.data);
+                console.log(info?.data?.body?.data?.data);
             })
             .catch(e => {
                 console.log(e);
             })
-    }, [])
+    }, [isChange])
+
+    const toggle = () => {
+        setIsChange(!isChange)
+    }
 
 
     return (
@@ -62,10 +66,10 @@ const EditEmploySetup = () => {
                                 <EmployeeCompanyInformation employeeData={employeeData} processData={processData} setProcessData={setProcessData} setIconWithTab={setIconWithTab}></EmployeeCompanyInformation>
                             </TabPane>
                             <TabPane tabId="3">
-                                <EmployeeContact contactData={contactData} processData={processData} setProcessData={setProcessData} setIconWithTab={setIconWithTab}></EmployeeContact>
+                                <EmployeeContact toggle={toggle} contactData={contactData} processData={processData} setProcessData={setProcessData} setIconWithTab={setIconWithTab}></EmployeeContact>
                             </TabPane>
                             <TabPane tabId="4">
-                                <EmployeeSkilles employeeData={employeeData} processData={processData} setProcessData={setProcessData} setIconWithTab={setIconWithTab}></EmployeeSkilles>
+                                <EmployeeSkilles toggle={toggle} employeeData={employeeData} processData={processData} setProcessData={setProcessData} setIconWithTab={setIconWithTab}></EmployeeSkilles>
                             </TabPane>
                         </TabContent>
                     </CardBody>

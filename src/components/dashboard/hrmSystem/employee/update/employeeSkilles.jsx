@@ -1,11 +1,15 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useForm} from "react-hook-form";
 import axios from "../../../../../axios";
 import Swal from "sweetalert2";
 
-const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeData}) => {
+const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeData, toggle}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
+    console.log("skills",employeeData?.skills)
+    // useEffect(() => {
+    //     reset()
+    // }, [employeeData]);
     const EmployeeSkillesInformation = data => {
         setProcessData({ ...processData, skill: data });
         const finalData = { ...processData, skill: data }
@@ -14,6 +18,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeD
 
         const formData = new FormData();
 
+
         const appendToFormData = (object, parentKey) => {
             console.log(object, parentKey);
             for (let key in object) {
@@ -21,7 +26,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeD
                     const value = object[key];
                     const currentKey = parentKey ? `${parentKey}[${key}]` : key;
 
-                    console.log(currentKey);
+                    // console.log(currentKey);
                     if(currentKey !== "basicInfo[image][0]" && currentKey !== "basicInfo[cv][0]" && currentKey !== "contact"){
                         if (typeof value === 'object' && !Array.isArray(value)) {
                             appendToFormData(value, currentKey);
@@ -49,6 +54,9 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeD
             }
         };
 
+
+        console.log(...formData);
+
         const processed = appendToFormData(finalData);
 
         axios.patch(`/hrm-system/employee/${employeeData?.id}`, formData)
@@ -61,8 +69,9 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeD
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    console.log("got the result",info);
+                    // console.log("got the result",info);
                 }
+                toggle()
                 // navigate("/dashboard/hrm/employee");
             })
             .catch(e => {
@@ -73,7 +82,6 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeD
                     text: `${e?.response?.data?.body?.message}`,
                 })
             })
-        reset();
     }
 
     return (
@@ -87,8 +95,9 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeD
                         className="form-control"
                         id="exampleFormControlTextarea4"
                         rows="5"
-                        {...register("skill")}
-                    >{employeeData?.skill}</textarea>
+                        {...register("skills")}
+                        defaultValue={employeeData?.skills}
+                    ></textarea>
 
                 </div>
 
@@ -96,7 +105,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeD
                     <button className="btn btn-primary mt-2"
                             style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}
                             type="submit">
-                        Create
+                        Update
                     </button>
                 </div>
             </form>

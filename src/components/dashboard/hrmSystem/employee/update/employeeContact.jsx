@@ -4,20 +4,22 @@ import AddDepartmentModal from "../../../../common/modal/Form/AddDepartmentModal
 import Select from "../../../../common/modal/Select";
 import AddSectionModal from "../../../../common/modal/Form/AddSectionModal";
 import Input from "../../../../common/modal/Input";
+import axios from "../../../../../axios";
+import Swal from "sweetalert2";
 
-const EmployeeContact = ({setProcessData, setIconWithTab, processData, contactData}) => {
+
+const EmployeeContact = ({setProcessData, setIconWithTab, processData, contactData, toggle}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [contact, setContact] = useState([]);
+    const [contactID, setContactID] = useState(0);
     const [editContactData, setEditContactData] = useState([]);
     const [isDeleted, setIsDelete] = useState(false);
 
+    // useEffect(() => {
+    //     reset()
+    // }, [contactData]);
 
-    const EmployeeContactInformation = data => {
-        setContact(preData => [data, ...preData]);
-        // setEditContactData([]);
 
-        reset();
-    }
     useEffect(() => {
         if(contact.length > 0)
         {
@@ -37,15 +39,62 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, contactDa
         reset();
     }, [isDeleted])
 
-    const editContact = id => {
+    const EmployeeContactInformation = data => {
+
+        if(contactID > 0){
+            data.id = contactID;
+            setContactID(0);
+        }
+        console.log("asdkfvhnsdkfjlgs", data)
+        setContact(preData => [data, ...preData]);
+        // setEditContactData([]);
+        reset();
+        setEditContactData([]);
+    }
+
+    const editContact = ({id, item}) => {
         setEditContactData(contact[id]);
+        setContactID(item.id);
         contact.splice(id, 1);
         setIsDelete(!isDeleted);
     }
 
-    const deleteContact = id => {
+    const deleteContact = ({id, item}) => {
         // delete contact[id];
         contact.splice(id, 1);
+        axios.delete(`/hrm-system/employee/contact/${item.id}`)
+            .then(info => {
+                if(info?.status == 200)
+                {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Contact is deleted',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+                toggle();
+            })
+            .catch(e => {
+                console.log(e);
+                if(e?.response?.data?.body?.message?.sqlState === "23000")
+                {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `Can not delete shift, if there have any attendance in this shift`,
+                    })
+                }
+                // if (!empty(e?.response?.data?.body?.message?.details[0].message))
+                // {
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Oops...',
+                //         text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                //     })
+                // }
+            })
         setIsDelete(!isDeleted);
     }
 
@@ -181,10 +230,10 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, contactDa
                                 <td>{item?.country }</td>
                                 <td>{item?.post_code }</td>
                                 <td>
-                                    <button onClick={() => editContact(index)} className="btn me-2" style={{backgroundColor: "skyblue", color: "#ffffff", padding: "4px 7px", borderRadius: "5px"}}>
+                                    <button onClick={() => editContact({ id: index, item: { id: item.id } })} className="btn me-2" style={{backgroundColor: "skyblue", color: "#ffffff", padding: "4px 7px", borderRadius: "5px"}}>
                                         <i className="icofont icofont-pencil-alt-5  rounded" style={{backgroundColor: "skyblue", color: "#ffffff",}}></i>
                                     </button>
-                                    <button onClick={() => deleteContact(index)} className="btn" style={{backgroundColor: "#ff3a6e", color: "#ffffff", padding: "4px 7px", borderRadius: "5px"}}>
+                                    <button onClick={() => deleteContact({ id: index, item: { id: item.id } })} className="btn" style={{backgroundColor: "#ff3a6e", color: "#ffffff", padding: "4px 7px", borderRadius: "5px"}}>
                                       <i className="icofont icofont-trash rounded" style={{backgroundColor: "#ff3a6e", color: "#ffffff",}}></i>
                                     </button>
                                 </td>
