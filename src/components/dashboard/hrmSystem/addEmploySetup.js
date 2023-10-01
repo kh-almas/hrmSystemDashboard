@@ -6,7 +6,7 @@ import EmployeeContact from "./employee/employeeContact";
 import EmployeeSkilles from "./employee/employeeSkilles";
 import BasicInformation from "./employee/basicInformation";
 
-const EditEmploySetup = () => {
+const AddEmploySetup = () => {
     const [IconWithTab, setIconWithTab] = useState('1');
     const [processData, setProcessData] = useState({});
     // const [processDatas, setProcessDatas] = useState({});
@@ -61,4 +61,4 @@ const EditEmploySetup = () => {
     );
 };
 
-export default EditEmploySetup;
+export default AddEmploySetup;

@@ -5,14 +5,39 @@ import CommonSearchComponet from "../../common/salaryCard/CommonSearchComponet";
 import GetEmployeeSetup from "../../common/Query/hrm/GetEmployeeSetup";
 import Swal from "sweetalert2";
 import axios from "../../../axios";
+import getEmployeeAPI from "../../common/Query/hrm/forSort/getEmployeeAPI";
+import {Pagination, PaginationItem, PaginationLink} from "reactstrap";
 
 const EmployeSetup = () => {
+    const [pageCount, setPageCount] = useState(1);
+    const [howManyItem, setHowManyItem] = useState('10');
+    const [currentPage, setCurrentPage] = useState('1');
+    const [totalDBRow, setTotalDBRow] = useState(0);
+    const [searchData, setSearchData] = useState('');
+    const [isDelete, setIsDelete] = useState(false);
+
     const [data, setData] = useState([]);
-    const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployeeSetup();
-    console.log(allEmployee?.data?.body?.data);
-    useEffect(() => {
-        setData(allEmployee?.data?.body?.data);
-    }, [allEmployee])
+    // const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployeeSetup();
+    // console.log(allEmployee?.data?.body?.data);
+    // useEffect(() => {
+    //     setData(allEmployee?.data?.body?.data);
+    // }, [allEmployee])
+    useEffect( () => {
+        const getEmployee = async () => {
+            const setItem = howManyItem < totalDBRow ? howManyItem : totalDBRow;
+            // console.log(setItem);
+            const getData = await getEmployeeAPI(currentPage, howManyItem, searchData);
+            setData(getData?.data?.body?.data?.data);
+            console.log(getData?.data?.body?.data?.data);
+
+            const totalItem = getData?.data?.body?.data?.count
+            setTotalDBRow(totalItem);
+            const page = Math.ceil( totalItem / howManyItem);
+            setPageCount(page);
+        }
+        getEmployee();
+
+    }, [howManyItem, currentPage, searchData, isDelete])
 
     const deleteEmployee = id => {
         Swal.fire({
@@ -35,7 +60,7 @@ const EmployeSetup = () => {
                                 'success'
                             )
                         }
-                        allEmployeeReFetch();
+                        setIsDelete(!isDelete);
                     })
                     .catch(e => {
                         console.log(e);
@@ -58,6 +83,19 @@ const EmployeSetup = () => {
                     })
             }
         })
+    }
+
+
+    const paginationItems = [];
+
+    for (let i = 1; i <= pageCount; i++) {
+        paginationItems.push(
+            <PaginationItem key={i} active={i === currentPage}>
+                <PaginationLink onClick={() => setCurrentPage(i)}>
+                    {i}
+                </PaginationLink>
+            </PaginationItem>
+        );
     }
 
     return (
@@ -84,19 +122,20 @@ const EmployeSetup = () => {
                 <div className="row">
                     <div className="col-sm-12">
                         <div className="card" style={{padding: "20px"}}>
-                            <CommonSearchComponet/>
+                            <CommonSearchComponet setCurrentPage={setCurrentPage} searchData={searchData} setSearchData={setSearchData} howManyItem={howManyItem} setHowManyItem={setHowManyItem}/>
                             <div className="table-responsive">
                                 <table className="table">
                                     <thead className=" table-border">
                                     <tr>
                                         <th scope="col">{"Employee Id"}</th>
+                                        <th scope="col">{"Card Number"}</th>
                                         <th scope="col">{"Name"}</th>
                                         <th scope="col">{"Email"}</th>
                                         <th scope="col">{"Phone"}</th>
                                         <th scope="col">{"Branch"}</th>
                                         <th scope="col">{"Department"}</th>
                                         <th scope="col">{"Desigmation"}</th>
-                                        <th scope="col">{"Date Of Joining"}</th>
+                                        {/*<th scope="col">{"Date Of Joining"}</th>*/}
                                         <th scope="col">{"Action"}</th>
                                     </tr>
                                     </thead>
@@ -105,13 +144,14 @@ const EmployeSetup = () => {
                                             data?.map((item, index) =>
                                                 <tr key={index}>
                                                     <td>{index + 1}</td>
+                                                    <td>{item?.card_no}</td>
                                                     <td>{item?.full_name}</td>
                                                     <td>{item?.email}</td>
                                                     <td>{item?.phone}</td>
                                                     <td>{item?.branch_id}</td>
                                                     <td>{item?.department_id}</td>
                                                     <td>{item?.designation_id}</td>
-                                                    <td>{item?.joining_date}</td>
+                                                    {/*<td>{item?.joining_date}</td>*/}
                                                     <td>
                                                         <div>
                                                             <Link to={`/dashboard/hrm/employee/edit/${item?.id}`} className="me-2">
@@ -132,6 +172,19 @@ const EmployeSetup = () => {
 
                                     </tbody>
                                 </table>
+                            </div>
+                            <div className="mt-3 d-flex justify-content-end">
+                                <Pagination aria-label="Page navigation example" className="pagination-primary">
+                                    <PaginationItem disabled={currentPage === 1 ? true : false}>
+                                        <PaginationLink onClick={() => setCurrentPage(currentPage - 1)} previous href="#javascript" />
+                                    </PaginationItem>
+
+                                    {paginationItems}
+
+                                    <PaginationItem disabled={currentPage === pageCount ? true : false}>
+                                        <PaginationLink onClick={() => setCurrentPage(currentPage + 1)} next href="#javascript" />
+                                    </PaginationItem>
+                                </Pagination>
                             </div>
                             <p className="p-l-10 p-t-10">Showing 1 to 1 of 1 entries</p>
                         </div>
