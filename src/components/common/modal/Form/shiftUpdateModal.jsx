@@ -77,16 +77,21 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
         const end_time = formattedTimeForUpdate(data.end_time);
         data.end_time = end_time;
         const updatedData = {
+            'organization_id':selectedOrganization ? selectedOrganization : oldData.organization_id,
+            'company_id':selectedCompany ? selectedCompany : oldData.company_id,
+            'branch_id':data.branch_id ? data.branch_id : oldData.branch_id,
             'name':data.name ? data.name : oldData.name,
             'start_time': data.start_time ? data.start_time : formattedTimeForUpdate(oldData.start_time),
             'end_time':data.end_time ? data.end_time : formattedTimeForUpdate(oldData.end_time),
-            'weekends':data.weekends ? data.weekends : oldData.weekends,
+            'weekends':data.weekends ? JSON.stringify(data.weekends) : oldData.weekends,
+            'note':data.note ? data.note : oldData.note,
             'status':data.status ? data.status : oldData.status
         }
 
+        console.log(updatedData);
         axios.put(`/hrm-system/shift/${oldData.id}`, updatedData)
             .then(info => {
-                console.log(info)
+                console.log("update",info)
                 if(info?.status == 200)
                 {
                     Swal.fire({
@@ -153,7 +158,7 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                                 labelName={"Branch"}
                                 placeholder={"Select an option"}
                                 options={branch}
-                                validation={{...register("branch_id", {required: true})}}
+                                validation={{...register("branch_id")}}
                                 previous={oldData?.branch_id}
                                 error={errors?.branch_id}
                             />
@@ -212,6 +217,19 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                             name="multi_weekdays"
                         />
                     </div>
+                    <div className="form-group mb-3">
+                        <label htmlFor="exampleFormControlTextarea4">
+                            Note
+                        </label>
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea4"
+                            rows="3"
+                            {...register("note")}
+                            defaultValue={oldData?.note}
+                        ></textarea>
+
+                    </div>
                     <div>
                         <Select
                             labelName={"Status"}
@@ -228,7 +246,7 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                             Cancel
                         </Button>
                         <Button color="primary" type="submit">
-                            Create
+                            Update
                         </Button>
                     </div>
                 </form>
