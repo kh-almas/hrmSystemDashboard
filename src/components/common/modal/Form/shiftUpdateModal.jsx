@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import BaseModal from "../BaseModal";
 import Select from "../Select";
 import Input from "../Input";
@@ -7,12 +7,65 @@ import {useForm} from "react-hook-form";
 import moment from "moment";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
+import GetAllCompany from "../../Query/hrm/GetAllCompany";
+import getAllOrganization from "../../Query/hrm/GetAllOrganization";
+import getAllBranch from "../../Query/hrm/GetAllBranch";
+import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 
 const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftReFetch}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
-
+    const [organization, setOrganization] = useState([]);
+    const [company, setCompany] = useState([]);
+    const [branch, setBranch] = useState([]);
+    const [weekdays, setWeekdays] = useState([]);
+    const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
+    const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = getAllOrganization();
+    const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
+    const [selectedOrganization, setSelectedOrganization] = useState("");
+    const [selectedCompany, setSelectedCompany] = useState("");
 
     useEffect(() => {
+        setOrganization([])
+        allOrganization?.data?.body?.data?.map(item => {
+            const set_data = {
+                id: item.id,
+                value: item.name
+            }
+            setOrganization(prevOrganization => [...prevOrganization, set_data]);
+        })
+    }, [allOrganization])
+
+    useEffect(() => {
+        setCompany([])
+        if (selectedOrganization !== ""){
+            const sortedData = allCompany?.data?.body?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setCompany(prevCompany => [...prevCompany, set_data]);
+            })
+        }
+    }, [allCompany, selectedOrganization])
+
+    useEffect(() => {
+        setBranch([])
+        if (selectedCompany !== ""){
+            const sortedData = allBranch?.data?.body?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setBranch(prevBranch => [...prevBranch, set_data]);
+            })
+        }
+    }, [allBranch, selectedCompany])
+
+    useEffect(() => {
+        setSelectedOrganization(oldData?.organization_id);
+        setSelectedCompany(oldData?.company_id)
         reset();
     },[oldData])
 
@@ -60,19 +113,65 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     return (
         <>
             <BaseModal title={"Update Shift Entry"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <Input
-                            labelName={"Shift Name"}
-                            inputName={"name"}
-                            inputType={"text"}
-                            defaultValue={oldData?.name}
-                            placeholder={"Enter shift name"}
-                            validation={{
-                                ...register("name"),
-                            }}
-                        />
+                <div className="row row-cols-1 row-cols-lg-2">
+                    <div className="theme-form">
+                        <div className="mb-3 form-group">
+                            <label style={{fontSize: "11px",}} htmlFor={"Organization"}>{`Organization:`} {errors?.organization && <span className="text-danger">(Required)</span>}</label>
+                            <select className={`form-control ${errors?.organization && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"Organization"}
+
+                                    onChange={e => setSelectedOrganization(e.target.value)}
+                            >
+                                <option value="">Select an option</option>
+                                {
+                                    organization?.map((item) => (
+                                        <option value={item.id} selected={parseInt(item.id) === parseInt(oldData?.organization_id)}>{item.value}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
                     </div>
+                    <div className="theme-form">
+                        <div className="mb-3 form-group">
+                            <label style={{fontSize: "11px",}} htmlFor={"company"}>{`Company:`} {errors?.company && <span className="text-danger">(Required)</span>}</label>
+                            <select className={`form-control ${errors?.company && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
+                                    onChange={e => setSelectedCompany(e.target.value)}
+                            >
+                                <option value="">Select an option</option>
+                                {
+                                    company?.map((item) => (
+                                        <option value={item?.id} selected={parseInt(item.id) === parseInt(oldData?.company_id)}>{item.value}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="row row-cols-1 row-cols-lg-2">
+                        <div>
+                            <Select
+                                labelName={"Branch"}
+                                placeholder={"Select an option"}
+                                options={branch}
+                                validation={{...register("branch_id", {required: true})}}
+                                previous={oldData?.branch_id}
+                                error={errors?.branch_id}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Shift Name"}
+                                inputName={"name"}
+                                inputType={"text"}
+                                defaultValue={oldData?.name}
+                                placeholder={"Enter shift name"}
+                                validation={{
+                                    ...register("name"),
+                                }}
+                            />
+                        </div>
+                    </div>
+
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Input
@@ -101,22 +200,16 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                     {/*        validation={{ ...register("weekdays", { required: true }) }}*/}
                     {/*    />*/}
                     {/*</div>*/}
-                    <div>
-                        <Select
-                            labelName={"Weekend"}
-                            placeholder={"Select an option"}
-                            options={[
-                                {id: "Sunday", value: "Sunday"},
-                                {id: "Monday", value: "Monday"},
-                                {id: "Tuesday", value: "Tuesday"},
-                                {id: "Wednesday", value: "Wednesday"},
-                                {id: "Thursday", value: "Thursday"},
-                                {id: "Friday", value: "Friday"},
-                                {id: "Saturday", value: "Saturday"},
-                            ]}
-                            previous={oldData?.weekends}
-                            validation={{...register("weekends")}}
-                            error={errors?.status}
+                    <div className="mb-3">
+                        <label htmlFor="weekdays">Weekend</label>
+                        <DropdownMultiselect
+                            handleOnChange={(selected) => {
+                                setWeekdays(selected);
+                                // console.log(selected)
+                            }}
+                            selected={oldData?.weekends ? JSON.parse(oldData?.weekends) : []}
+                            options={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}
+                            name="multi_weekdays"
                         />
                     </div>
                     <div>
