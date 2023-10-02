@@ -3,7 +3,7 @@ import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
-import {Button, Modal, ModalBody, ModalHeader} from "reactstrap"
+import {Button, Modal, ModalBody, ModalHeader, Pagination, PaginationItem, PaginationLink} from "reactstrap"
 import Input from "../../../common/modal/Input";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import Select from "../../../common/modal/Select";
@@ -13,22 +13,54 @@ import axios from "../../../../axios";
 import Swal from "sweetalert2";
 import ShiftUpdateModal from "../../../common/modal/Form/shiftUpdateModal";
 import AddShiftModal from "../../../common/modal/Form/AddShiftModal";
+import getEmployeeAPI from "../../../common/Query/hrm/forSort/getEmployeeAPI";
+import getShiftAPI from "../../../common/Query/hrm/forSort/getShiftAPI";
 
 const Shift = () => {
+    const [pageCount, setPageCount] = useState(1);
+    const [howManyItem, setHowManyItem] = useState('10');
+    const [currentPage, setCurrentPage] = useState('1');
+    const [totalDBRow, setTotalDBRow] = useState(0);
+    const [searchData, setSearchData] = useState('');
+    const [isChange, setIsChange] = useState(false);
+    const isDarty = () =>
+    {
+        setIsChange(!isChange);
+    }
+
     const [shift, setShift] = useState([]);
     const [modal, setModal] = useState(false);
     const [oldData, setOldData] = useState({});
     const [shiftModal, setShiftModal] = useState(false);
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
-    const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
     const {register, handleSubmit, formState: { errors },} = useForm();
+
+
+
+    useEffect( () => {
+        const getShift= async () => {
+            const setItem = howManyItem < totalDBRow ? howManyItem : totalDBRow;
+            // console.log(setItem);
+            const getData = await getShiftAPI(currentPage, howManyItem, searchData);
+            setShift(getData?.data?.body?.data?.data);
+            console.log("sdjhsakdfvhnsadklvhnldfn",getData?.data?.body?.data?.data);
+
+            const totalItem = getData?.data?.body?.data?.count
+            setTotalDBRow(totalItem);
+            const page = Math.ceil( totalItem / howManyItem);
+            setPageCount(page);
+        }
+        getShift();
+
+    }, [howManyItem, currentPage, searchData, isChange])
+
 
     const shiftToggle = () => {
         setShiftModal(!shiftModal);
     }
     const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
 
-    // console.log(allShift);
+    // console.log(shift);
     const timeFormat = time => {
         if (time){
             const timeArray = time.split(":");
@@ -36,9 +68,9 @@ const Shift = () => {
         }
     }
 
-    useEffect(() => {
-        setShift(allShift?.data?.body?.data);
-    }, [allShift])
+    // useEffect(() => {
+    //     setShift(allShift?.data?.body?.data);
+    // }, [allShift])
 
     const toggle = () => {
         setModal(!modal);
@@ -77,7 +109,7 @@ const Shift = () => {
         //             })
         //             setModal(!modal);
         //         }
-        //         allShiftReFetch();
+        //         isDarty();
         //     })
         //     .catch(e => {
         //         Swal.fire({
@@ -116,7 +148,7 @@ const Shift = () => {
                                 'success'
                             )
                         }
-                        allShiftReFetch();
+                        isDarty();
                     })
                     .catch(e => {
                         console.log(e);
@@ -139,6 +171,18 @@ const Shift = () => {
                     })
             }
         })
+    }
+
+    const paginationItems = [];
+
+    for (let i = 1; i <= pageCount; i++) {
+        paginationItems.push(
+            <PaginationItem key={i} active={i === parseInt(currentPage)}>
+                <PaginationLink onClick={() => setCurrentPage(i)}>
+                    {i}
+                </PaginationLink>
+            </PaginationItem>
+        );
     }
     return (
         <>
@@ -163,7 +207,7 @@ const Shift = () => {
                 <div className="row">
                     <div className="col-sm-12">
                         <div className="card" style={{ padding: "20px" }}>
-                            <CommonSearchComponet />
+                            <CommonSearchComponet setCurrentPage={setCurrentPage} searchData={searchData} setSearchData={setSearchData} howManyItem={howManyItem} setHowManyItem={setHowManyItem} />
                             <div className="table-responsive">
                                 <table className="table">
                                     <thead className=" table-border">
@@ -185,7 +229,9 @@ const Shift = () => {
                                                 <td>{item?.name}</td>
                                                 <td>{timeFormat(item?.start_time)}</td>
                                                 <td>{timeFormat(item?.end_time)}</td>
-                                                <td>{item?.weekends}</td>
+                                                <td>{
+                                                    JSON.parse(item?.weekends).map((item) => <span class="badge text-bg-info">{item}</span>)
+                                                }</td>
                                                 <td>{item?.status}</td>
                                                 <td>
                                                     <div className="d-flex justify-content-center">
@@ -203,12 +249,25 @@ const Shift = () => {
                                     </tbody>
                                 </table>
                             </div>
+                            <div className="mt-3 d-flex justify-content-end">
+                                <Pagination aria-label="Page navigation example" className="pagination-primary">
+                                    <PaginationItem disabled={currentPage === 1 ? true : false}>
+                                        <PaginationLink onClick={() => setCurrentPage(currentPage - 1)} previous href="#javascript" />
+                                    </PaginationItem>
+
+                                    {paginationItems}
+
+                                    <PaginationItem disabled={currentPage === pageCount ? true : false}>
+                                        <PaginationLink onClick={() => setCurrentPage(currentPage + 1)} next href="#javascript" />
+                                    </PaginationItem>
+                                </Pagination>
+                            </div>
                             <p className="p-l-10 p-t-10">Showing 1 to 1 of 1 entries</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <AddShiftModal reFetch={allShiftReFetch} modal={modal} toggle={toggle} />
+            <AddShiftModal reFetch={isDarty} modal={modal} toggle={toggle} />
             {/*<Modal isOpen={modal} toggle={toggle}>*/}
             {/*    <ModalHeader toggle={toggle}>Shift Entry</ModalHeader>*/}
             {/*    <ModalBody>*/}
@@ -275,7 +334,7 @@ const Shift = () => {
             {/*</Modal>*/}
             {
                 oldData ?
-                    <ShiftUpdateModal allShiftReFetch={allShiftReFetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ShiftUpdateModal>
+                    <ShiftUpdateModal allShiftReFetch={isDarty} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ShiftUpdateModal>
                     : ''
             }
         </>

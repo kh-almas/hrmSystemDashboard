@@ -16,6 +16,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     const [organization, setOrganization] = useState([]);
     const [company, setCompany] = useState([]);
     const [branch, setBranch] = useState([]);
+    const [weekdays, setWeekdays] = useState([]);
     const {register, reset, handleSubmit, formState: { errors },} = useForm();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = getAllOrganization();
@@ -23,12 +24,6 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
 
     const [selectedOrganization, setSelectedOrganization] = useState("");
     const [selectedCompany, setSelectedCompany] = useState("");
-    // console.log("org", selectedOrganization)
-    // console.log("com", selectedCompany)
-
-    useEffect(() => {
-        reset();
-    }, [selectedOrganization, selectedCompany])
 
     useEffect(() => {
         setOrganization([])
@@ -77,6 +72,11 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
         const end_time = formattedTime(data.end_time);
         data.end_time = end_time;
 
+        data.organization_id = selectedOrganization;
+        data.company_id = selectedCompany;
+        data.weekends = JSON.stringify(weekdays);
+        console.log(data);
+
         axios.post('/hrm-system/shift', data)
             .then(info => {
                 if(info?.status == 200)
@@ -123,9 +123,8 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                     </div>
                     <div className="theme-form">
                         <div className="mb-3 form-group">
-                            <label style={{fontSize: "11px",}} htmlFor={"company"}>{`Company:`} {errors?.organization && <span className="text-danger">(Required)</span>}</label>
-                            <select className={`form-control ${errors?.organization && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
-                                    {...register("organization", {required: true})}
+                            <label style={{fontSize: "11px",}} htmlFor={"company"}>{`Company:`} {errors?.company && <span className="text-danger">(Required)</span>}</label>
+                            <select className={`form-control ${errors?.company && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
                                     onChange={e => setSelectedCompany(e.target.value)}
                             >
                                 <option value="">Select an option</option>
@@ -140,24 +139,13 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
-                        {/*<div>*/}
-                        {/*    <Select*/}
-                        {/*        labelName={"Organization"}*/}
-                        {/*        placeholder={"Select an option"}*/}
-                        {/*        options={organization}*/}
-                        {/*        validation={{...register("organization", {required: true})}}*/}
-                        {/*        error={errors?.organization}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
-
-
                         <div>
                             <Select
                                 labelName={"Branch"}
                                 placeholder={"Select an option"}
                                 options={branch}
-                                validation={{...register("branch", {required: true})}}
-                                error={errors?.branch}
+                                validation={{...register("branch_id", {required: true})}}
+                                error={errors?.branch_id}
                             />
                         </div>
                         <div>
@@ -194,7 +182,8 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                         <label htmlFor="weekdays">Weekend</label>
                         <DropdownMultiselect
                             handleOnChange={(selected) => {
-                                console.log(selected);
+                                setWeekdays(selected);
+                                // console.log(selected)
                             }}
                             options={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}
                             name="multi_weekdays"
@@ -208,7 +197,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                             className="form-control"
                             id="exampleFormControlTextarea4"
                             rows="3"
-                            {...register("skills", {required: true})}
+                            {...register("note", {required: true})}
                         ></textarea>
 
                     </div>

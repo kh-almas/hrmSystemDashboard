@@ -28,7 +28,7 @@ const EmployeSetup = () => {
             // console.log(setItem);
             const getData = await getEmployeeAPI(currentPage, howManyItem, searchData);
             setData(getData?.data?.body?.data?.data);
-            console.log("sdjhsakdfvhnsadklvhnldfn",getData?.data?.body?.data?.data);
+            console.log(getData?.data?.body?.data?.data);
 
             const totalItem = getData?.data?.body?.data?.count
             setTotalDBRow(totalItem);
