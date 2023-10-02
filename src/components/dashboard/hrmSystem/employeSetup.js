@@ -28,7 +28,7 @@ const EmployeSetup = () => {
             // console.log(setItem);
             const getData = await getEmployeeAPI(currentPage, howManyItem, searchData);
             setData(getData?.data?.body?.data?.data);
-            console.log(getData?.data?.body?.data?.data);
+            console.log("sdjhsakdfvhnsadklvhnldfn",getData?.data?.body?.data?.data);
 
             const totalItem = getData?.data?.body?.data?.count
             setTotalDBRow(totalItem);
@@ -127,7 +127,8 @@ const EmployeSetup = () => {
                                 <table className="table">
                                     <thead className=" table-border">
                                     <tr>
-                                        <th scope="col">{"Employee Id"}</th>
+                                        <th scope="col">{"SL"}</th>
+                                        <th scope="col">{"Image"}</th>
                                         <th scope="col">{"Card Number"}</th>
                                         <th scope="col">{"Name"}</th>
                                         <th scope="col">{"Email"}</th>
@@ -144,6 +145,7 @@ const EmployeSetup = () => {
                                             data?.map((item, index) =>
                                                 <tr key={index}>
                                                     <td>{index + 1}</td>
+                                                    <td><img src={`/${item?.img}`} alt="img"/></td>
                                                     <td>{item?.card_no}</td>
                                                     <td>{item?.full_name}</td>
                                                     <td>{item?.email}</td>

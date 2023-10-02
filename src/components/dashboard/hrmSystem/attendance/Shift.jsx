@@ -12,14 +12,20 @@ import moment from "moment/moment";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
 import ShiftUpdateModal from "../../../common/modal/Form/shiftUpdateModal";
+import AddShiftModal from "../../../common/modal/Form/AddShiftModal";
 
 const Shift = () => {
     const [shift, setShift] = useState([]);
     const [modal, setModal] = useState(false);
     const [oldData, setOldData] = useState({});
+    const [shiftModal, setShiftModal] = useState(false);
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
     const {register, handleSubmit, formState: { errors },} = useForm();
+
+    const shiftToggle = () => {
+        setShiftModal(!shiftModal);
+    }
     const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
 
     // console.log(allShift);
@@ -56,30 +62,38 @@ const Shift = () => {
         const end_time = formattedTime(data.end_time);
         data.end_time = end_time;
 
-        axios.post('/hrm-system/shift', data)
-            .then(info => {
-                if(info?.status == 200)
-                {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    setModal(!modal);
-                }
-                allShiftReFetch();
-            })
-            .catch(e => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                    footer: '<a href="">Why do I have this issue?</a>'
-                })
-            })
+        console.log(data);
+
+        // axios.post('/hrm-system/shift', data)
+        //     .then(info => {
+        //         if(info?.status == 200)
+        //         {
+        //             Swal.fire({
+        //                 position: 'top-end',
+        //                 icon: 'success',
+        //                 title: 'Your work has been saved',
+        //                 showConfirmButton: false,
+        //                 timer: 1500
+        //             })
+        //             setModal(!modal);
+        //         }
+        //         allShiftReFetch();
+        //     })
+        //     .catch(e => {
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Oops...',
+        //             text: `${e?.response?.data?.body?.message?.details[0].message}`,
+        //             footer: '<a href="">Why do I have this issue?</a>'
+        //         })
+        //     })
     };
+
+
+    const handleSubmitCheck = (e) => {
+        e.preventDefault();
+        console.log(e.target.countries);
+    }
 
     const deleteShift = id => {
         Swal.fire({
@@ -194,85 +208,71 @@ const Shift = () => {
                     </div>
                 </div>
             </div>
-            <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Shift Entry</ModalHeader>
-                <ModalBody>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div>
-                            <Input
-                                labelName={"Shift Name"}
-                                inputName={"name"}
-                                inputType={"text"}
-                                placeholder={"Enter shift name"}
-                                validation={{
-                                    ...register("name", { required: true }),
-                                }}
-                            />
-                        </div>
-                        <div className="row row-cols-1 row-cols-lg-2">
-                            <div>
-                                <Input
-                                    labelName={"Start Time"}
-                                    inputName={"start_time"}
-                                    inputType={"time"}
-                                    validation={{ ...register("start_time", { required: true }) }}
-                                />
-                            </div>
-                            <div>
-                                <Input
-                                    labelName={"End Time"}
-                                    inputName={"end_time"}
-                                    inputType={"time"}
-                                    validation={{ ...register("end_time", { required: true }) }}
-                                />
-                            </div>
-                        </div>
-                        {/*<div className="mb-3">*/}
-                        {/*    <label htmlFor="weekdays">Weekend</label>*/}
-                        {/*    <DropdownMultiselect*/}
-                        {/*        options={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}*/}
-                        {/*        name="weekdays"*/}
-                        {/*        validation={{ ...register("weekdays", { required: true }) }}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
-                        <div>
-                            <Select
-                                labelName={"Weekend"}
-                                placeholder={"Select an option"}
-                                options={[
-                                    {id: "Sunday", value: "Sunday"},
-                                    {id: "Monday", value: "Monday"},
-                                    {id: "Tuesday", value: "Tuesday"},
-                                    {id: "Wednesday", value: "Wednesday"},
-                                    {id: "Thursday", value: "Thursday"},
-                                    {id: "Friday", value: "Friday"},
-                                    {id: "Saturday", value: "Saturday"},
-                                ]}
-                                validation={{...register("weekends", {required: true})}}
-                                error={errors?.status}
-                            />
-                        </div>
-                        <div>
-                            <Select
-                                labelName={"Status"}
-                                placeholder={"Select an option"}
-                                options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                                validation={{...register("status", {required: true})}}
-                                error={errors?.status}
-                            />
-                        </div>
+            <AddShiftModal reFetch={allShiftReFetch} modal={modal} toggle={toggle} />
+            {/*<Modal isOpen={modal} toggle={toggle}>*/}
+            {/*    <ModalHeader toggle={toggle}>Shift Entry</ModalHeader>*/}
+            {/*    <ModalBody>*/}
+            {/*        <form onSubmit={handleSubmit(onSubmit)}>*/}
+            {/*            <div>*/}
+            {/*                <Input*/}
+            {/*                    labelName={"Shift Name"}*/}
+            {/*                    inputName={"name"}*/}
+            {/*                    inputType={"text"}*/}
+            {/*                    placeholder={"Enter shift name"}*/}
+            {/*                    validation={{*/}
+            {/*                        ...register("name", { required: true }),*/}
+            {/*                    }}*/}
+            {/*                />*/}
+            {/*            </div>*/}
+            {/*            <div className="row row-cols-1 row-cols-lg-2">*/}
+            {/*                <div>*/}
+            {/*                    <Input*/}
+            {/*                        labelName={"Start Time"}*/}
+            {/*                        inputName={"start_time"}*/}
+            {/*                        inputType={"time"}*/}
+            {/*                        validation={{ ...register("start_time", { required: true }) }}*/}
+            {/*                    />*/}
+            {/*                </div>*/}
+            {/*                <div>*/}
+            {/*                    <Input*/}
+            {/*                        labelName={"End Time"}*/}
+            {/*                        inputName={"end_time"}*/}
+            {/*                        inputType={"time"}*/}
+            {/*                        validation={{ ...register("end_time", { required: true }) }}*/}
+            {/*                    />*/}
+            {/*                </div>*/}
+            {/*            </div>*/}
+            {/*            <div className="mb-3">*/}
+            {/*                <label htmlFor="weekdays">Weekend</label>*/}
+            {/*                <DropdownMultiselect*/}
+            {/*                    handleOnChange={(selected) => {*/}
+            {/*                        console.log(selected);*/}
+            {/*                    }}*/}
+            {/*                    options={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}*/}
+            {/*                    name="multi_weekdays"*/}
+            {/*                />*/}
+            {/*            </div>*/}
+            {/*            <div>*/}
+            {/*                <Select*/}
+            {/*                    labelName={"Status"}*/}
+            {/*                    placeholder={"Select an option"}*/}
+            {/*                    options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}*/}
+            {/*                    validation={{...register("status", {required: true})}}*/}
+            {/*                    error={errors?.status}*/}
+            {/*                />*/}
+            {/*            </div>*/}
 
-                        <div className="d-flex justify-content-end">
-                            <Button color="danger" onClick={toggle} className="me-2">
-                                Cancel
-                            </Button>
-                            <Button color="primary" type="submit">
-                                Create
-                            </Button>
-                        </div>
-                    </form>
-                </ModalBody>
-            </Modal>
+            {/*            <div className="d-flex justify-content-end">*/}
+            {/*                <Button color="danger" onClick={toggle} className="me-2">*/}
+            {/*                    Cancel*/}
+            {/*                </Button>*/}
+            {/*                <Button color="primary" type="submit">*/}
+            {/*                    Create*/}
+            {/*                </Button>*/}
+            {/*            </div>*/}
+            {/*        </form>*/}
+            {/*    </ModalBody>*/}
+            {/*</Modal>*/}
             {
                 oldData ?
                     <ShiftUpdateModal allShiftReFetch={allShiftReFetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ShiftUpdateModal>
