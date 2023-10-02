@@ -89,7 +89,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
 
     useEffect(() => {
         setShift([]);
-        allShift?.data?.body?.data?.map(item => {
+        allShift?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item?.id,
                 value: item?.name

@@ -83,7 +83,7 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
             'name':data.name ? data.name : oldData.name,
             'start_time': data.start_time ? data.start_time : formattedTimeForUpdate(oldData.start_time),
             'end_time':data.end_time ? data.end_time : formattedTimeForUpdate(oldData.end_time),
-            'weekends':data.weekends ? JSON.stringify(data.weekends) : oldData.weekends,
+            'weekends':weekdays ? JSON.stringify(weekdays) : oldData.weekends,
             'note':data.note ? data.note : oldData.note,
             'status':data.status ? data.status : oldData.status
         }
