@@ -318,11 +318,11 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
             <div className="row">
                 <div className="col-6">
                     <div style={{ position: "relative" }}>
-                        <p onClick={shiftToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
-                            New shift
-                            <span><i className="icofont icofont-plus-circle"></i></span>
-                            <AddShiftModal reFetch={allShiftReFetch} modal={shiftModal} toggle={shiftToggle} />
-                        </p>
+                        {/*<p onClick={shiftToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">*/}
+                        {/*    New shift*/}
+                        {/*    <span><i className="icofont icofont-plus-circle"></i></span>*/}
+                        {/*    <AddShiftModal reFetch={allShiftReFetch} modal={shiftModal} toggle={shiftToggle} />*/}
+                        {/*</p>*/}
 
                         <div>
                             <Select

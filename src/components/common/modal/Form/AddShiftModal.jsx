@@ -8,22 +8,66 @@ import {useForm} from "react-hook-form";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
 import moment from "moment";
+import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
+import getAllOrganization from "../../Query/hrm/GetAllOrganization";
+import getAllBranch from "../../Query/hrm/GetAllBranch";
 
 const AddShiftModal = ({modal, toggle, reFetch}) => {
+    const [organization, setOrganization] = useState([]);
     const [company, setCompany] = useState([]);
-    const {register, handleSubmit, formState: { errors },} = useForm();
+    const [branch, setBranch] = useState([]);
+    const {register, reset, handleSubmit, formState: { errors },} = useForm();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
+    const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = getAllOrganization();
+    const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
+
+    const [selectedOrganization, setSelectedOrganization] = useState("");
+    const [selectedCompany, setSelectedCompany] = useState("");
+    // console.log("org", selectedOrganization)
+    // console.log("com", selectedCompany)
 
     useEffect(() => {
-        setCompany([])
-        allCompany?.data?.body?.data?.map(item => {
+        reset();
+    }, [selectedOrganization, selectedCompany])
+
+    useEffect(() => {
+        setOrganization([])
+        allOrganization?.data?.body?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name
             }
-            setCompany(prevShift => [...prevShift, set_data]);
+            setOrganization(prevOrganization => [...prevOrganization, set_data]);
         })
-    }, [allCompany])
+    }, [allOrganization])
+
+    useEffect(() => {
+        setCompany([])
+        if (selectedOrganization !== ""){
+            const sortedData = allCompany?.data?.body?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setCompany(prevCompany => [...prevCompany, set_data]);
+            })
+        }
+    }, [allCompany, selectedOrganization])
+
+    useEffect(() => {
+        setBranch([])
+        if (selectedCompany !== ""){
+            const sortedData = allBranch?.data?.body?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setBranch(prevBranch => [...prevBranch, set_data]);
+            })
+        }
+    }, [allBranch, selectedCompany])
 
     const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
 
@@ -52,8 +96,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                    footer: '<a href="">Why do I have this issue?</a>'
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`
                 })
             })
     }
@@ -61,17 +104,73 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     return (
         <>
             <BaseModal title={"Add Shift"} dataModal={modal} dataToggle={toggle}>
+                <div className="row row-cols-1 row-cols-lg-2">
+                    <div className="theme-form">
+                        <div className="mb-3 form-group">
+                            <label style={{fontSize: "11px",}} htmlFor={"Organization"}>{`Organization:`} {errors?.organization && <span className="text-danger">(Required)</span>}</label>
+                            <select className={`form-control ${errors?.organization && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"Organization"}
+
+                                    onChange={e => setSelectedOrganization(e.target.value)}
+                            >
+                                <option value="">Select an option</option>
+                                {
+                                    organization?.map((item) => (
+                                        <option value={item.id} selected={parseInt(item.id) === parseInt(selectedOrganization)}>{item.value}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div className="theme-form">
+                        <div className="mb-3 form-group">
+                            <label style={{fontSize: "11px",}} htmlFor={"company"}>{`Company:`} {errors?.organization && <span className="text-danger">(Required)</span>}</label>
+                            <select className={`form-control ${errors?.organization && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
+                                    {...register("organization", {required: true})}
+                                    onChange={e => setSelectedCompany(e.target.value)}
+                            >
+                                <option value="">Select an option</option>
+                                {
+                                    company?.map((item) => (
+                                        <option value={item?.id} selected={parseInt(item.id) === parseInt(selectedCompany)}>{item.value}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <Input
-                            labelName={"Shift Name"}
-                            inputName={"name"}
-                            inputType={"text"}
-                            placeholder={"Enter shift name"}
-                            validation={{
-                                ...register("name", { required: true }),
-                            }}
-                        />
+                    <div className="row row-cols-1 row-cols-lg-2">
+                        {/*<div>*/}
+                        {/*    <Select*/}
+                        {/*        labelName={"Organization"}*/}
+                        {/*        placeholder={"Select an option"}*/}
+                        {/*        options={organization}*/}
+                        {/*        validation={{...register("organization", {required: true})}}*/}
+                        {/*        error={errors?.organization}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
+
+
+                        <div>
+                            <Select
+                                labelName={"Branch"}
+                                placeholder={"Select an option"}
+                                options={branch}
+                                validation={{...register("branch", {required: true})}}
+                                error={errors?.branch}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Shift Name"}
+                                inputName={"name"}
+                                inputType={"text"}
+                                placeholder={"Enter shift name"}
+                                validation={{
+                                    ...register("name", { required: true }),
+                                }}
+                            />
+                        </div>
                     </div>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
@@ -91,30 +190,27 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                             />
                         </div>
                     </div>
-                    {/*<div className="mb-3">*/}
-                    {/*    <label htmlFor="weekdays">Weekend</label>*/}
-                    {/*    <DropdownMultiselect*/}
-                    {/*        options={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}*/}
-                    {/*        name="weekdays"*/}
-                    {/*        validation={{ ...register("weekdays", { required: true }) }}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
-                    <div>
-                        <Select
-                            labelName={"Weekend"}
-                            placeholder={"Select an option"}
-                            options={[
-                                {id: "Sunday", value: "Sunday"},
-                                {id: "Monday", value: "Monday"},
-                                {id: "Tuesday", value: "Tuesday"},
-                                {id: "Wednesday", value: "Wednesday"},
-                                {id: "Thursday", value: "Thursday"},
-                                {id: "Friday", value: "Friday"},
-                                {id: "Saturday", value: "Saturday"},
-                            ]}
-                            validation={{...register("weekends", {required: true})}}
-                            error={errors?.status}
+                    <div className="mb-3">
+                        <label htmlFor="weekdays">Weekend</label>
+                        <DropdownMultiselect
+                            handleOnChange={(selected) => {
+                                console.log(selected);
+                            }}
+                            options={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}
+                            name="multi_weekdays"
                         />
+                    </div>
+                    <div className="form-group mb-3">
+                        <label htmlFor="exampleFormControlTextarea4">
+                            Note
+                        </label>
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea4"
+                            rows="3"
+                            {...register("skills", {required: true})}
+                        ></textarea>
+
                     </div>
                     <div>
                         <Select
