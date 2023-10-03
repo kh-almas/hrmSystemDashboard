@@ -10,48 +10,85 @@ import moment from "moment";
 import GetEmployee from "../../Query/hrm/GetEmployee";
 import GetAllWeekday from "../../Query/hrm/GetAllWeekday";
 import GetAllShift from "../../Query/hrm/GetAllShift";
+import GetAllCompany from "../../Query/hrm/GetAllCompany";
+import getAllBranch from "../../Query/hrm/GetAllBranch";
+import getAllShift from "../../Query/hrm/GetAllShift";
 
 const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     const [employee, setEmployee] = useState([]);
-    const [weekday, setWeekday] = useState([]);
+    const [company, setCompany] = useState([]);
+    const [branch, setBranch] = useState([]);
     const [shift, setShift] = useState([]);
+
+    const [selectedOrganization, setSelectedOrganization] = useState("11");
+    const [selectedCompany, setSelectedCompany] = useState("");
+    const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedShift, setSelectedShift] = useState("");
     const {register, handleSubmit, formState: {errors},} = useForm();
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployee();
-    const [allWeekdayStatus, allWeekdayReFetch, allWeekday, allWeekdayError] = GetAllWeekday();
-    const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
+    const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
+    const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
+    const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
     useEffect( () => {
         setEmployee([])
-        allEmployee?.data?.body?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setEmployee(prevEmployee => [...prevEmployee, set_data]);
-        })
-    }, [allEmployee])
+        if(selectedShift !== "")
+        {
+            const sortData = allEmployee?.data?.body?.data?.data?.filter(data => parseInt(data.shift_id) === parseInt(selectedShift))
+            console.log("sortData",sortData);
+            sortData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.full_name
+                }
+                setEmployee(prevEmployee => [...prevEmployee, set_data]);
+            })
+        }
+    }, [allEmployee, selectedShift])
 
-    useEffect( () => {
-        setWeekday([])
-        allWeekday?.data?.body?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setWeekday(prevWeekday => [...prevWeekday, set_data]);
-        })
-    }, [allWeekday])
+    useEffect(() => {
+        setCompany([])
+        if (selectedOrganization !== ""){
+            const sortedData = allCompany?.data?.body?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setCompany(prevCompany => [...prevCompany, set_data]);
+            })
+        }
+    }, [allCompany, selectedOrganization])
+
+    useEffect(() => {
+        setBranch([])
+        if (selectedCompany !== ""){
+            const sortedData = allBranch?.data?.body?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setBranch(prevBranch => [...prevBranch, set_data]);
+            })
+        }
+    }, [allBranch, selectedCompany])
 
     useEffect(() => {
         setShift([])
-        allShift?.data?.body?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setShift(prevShift => [...prevShift, set_data]);
-        })
-    }, [allShift])
+        if (selectedCompany !== ""){
+            const sortedData = allShift?.data?.body?.data?.data?.filter((data) => parseInt(data.branch_id) === parseInt(selectedBranch))
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setShift(prevShift => [...prevShift, set_data]);
+            })
+        }
+    }, [allShift, selectedBranch])
+
+
 
     const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
 
@@ -60,6 +97,11 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
         data.in_time = in_time;
         const out_time = formattedTime(data.out_time);
         data.out_time = out_time;
+        data.organization_id = selectedOrganization;
+        data.company_id = selectedCompany;
+        data.branch_id = selectedBranch;
+        data.shift_id = selectedShift;
+        data.device_id = "device_5681234";
 
         axios.post('/hrm-system/manual-attendance', data)
             .then(info => {
@@ -81,8 +123,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                    footer: '<a href="">Why do I have this issue?</a>'
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`
                 })
             })
     };
@@ -91,6 +132,53 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     return (
         <>
             <BaseModal title={"Manual Attendance"} dataModal={dataModal} dataToggle={dataToggle}>
+                <div className="row row-cols-1 row-cols-lg-2">
+                    <div className="theme-form">
+                        <div className="mb-3 form-group">
+                            <label style={{fontSize: "11px",}} htmlFor={"company"}>{`Company:`} {errors?.company && <span className="text-danger">(Required)</span>}</label>
+                            <select className={`form-control ${errors?.company && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
+                                    onChange={e => setSelectedCompany(e.target.value)}
+                            >
+                                <option value="">Select an option</option>
+                                {
+                                    company?.map((item) => (
+                                        <option value={item?.id} selected={parseInt(item.id) === parseInt(selectedCompany)}>{item.value}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div className="theme-form">
+                        <div className="mb-3 form-group">
+                            <label style={{fontSize: "11px",}} htmlFor={"branch"}>{`Branch:`} {errors?.branch && <span className="text-danger">(Required)</span>}</label>
+                            <select className={`form-control ${errors?.branch && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
+                                    onChange={e => setSelectedBranch(e.target.value)}
+                            >
+                                <option value="">Select an option</option>
+                                {
+                                    branch?.map((item) => (
+                                        <option value={item?.id} selected={parseInt(item.id) === parseInt(selectedBranch)}>{item.value}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div className="theme-form">
+                        <div className="mb-3 form-group">
+                            <label style={{fontSize: "11px",}} htmlFor={"shift"}>{`Shift:`} {errors?.shift && <span className="text-danger">(Required)</span>}</label>
+                            <select className={`form-control ${errors?.shift && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"shift"}
+                                    onChange={e => setSelectedShift(e.target.value)}
+                            >
+                                <option value="">Select an option</option>
+                                {
+                                    shift?.map((item) => (
+                                        <option value={item?.id} selected={parseInt(item.id) === parseInt(selectedShift)}>{item.value}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
@@ -101,9 +189,25 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                                 validation={{...register("employee_id", {required: true})}}
                                 error={errors?.employee_id}
                             />
-                            {/*<span className="text-danger">*/}
-                            {/*    {errors?.employee_id && `Employee is required`}*/}
-                            {/*</span>*/}
+
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Attendance Type"}
+                                placeholder={"Select an option"}
+                                options={[{id: "Type 1", value: "Type 1"}, {id: "Type 2", value: "Type 2"}]}
+                                validation={{...register("attendance_type", {required: true})}}
+                                error={errors?.attendance_type}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Card Number"}
+                                inputName={"cardNo"}
+                                inputType={"cardNo"}
+                                validation={{...register("card_no", {required: true})}}
+                                error={errors?.card_no}
+                            />
                         </div>
                         <div>
                             <Input
@@ -113,44 +217,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                                 validation={{...register("date", {required: true})}}
                                 error={errors?.date}
                             />
-                            {/*<span className="text-danger">*/}
-                            {/*    {errors?.date && `Date is required`}*/}
-                            {/*</span>*/}
                         </div>
-                        <div>
-                            <Select
-                                labelName={"Shift"}
-                                placeholder={"Select an option"}
-                                options={shift}
-                                validation={{...register("shift_id", {required: true})}}
-                                error={errors?.shift_id}
-                            />
-                        </div>
-                        <div>
-                            <Select
-                                labelName={"Weekday"}
-                                placeholder={"Select an option"}
-                                options={weekday}
-                                validation={{...register("day_type", {required: true})}}
-                                error={errors?.day_type}
-                            />
-                        </div>
-                        {/*<div>*/}
-                        {/*    <Input*/}
-                        {/*        labelName={"Employee Name"}*/}
-                        {/*        inputName={"name"}*/}
-                        {/*        inputType={"text"}*/}
-                        {/*        placeholder={"Enter Employee name"}*/}
-                        {/*        validation={{*/}
-                        {/*            ...register("name", { required: true }),*/}
-                        {/*        }}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
-
-                    </div>
-
-
-                    <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Input
                                 labelName={"Clock In"}
@@ -169,17 +236,20 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                                 error={errors?.out_time}
                             />
                         </div>
+                        <div>
+                            <Select
+                                labelName={"Status"}
+                                placeholder={"Select an option"}
+                                options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
+                                validation={{...register("status", {required: true})}}
+                                error={errors?.status}
+                            />
+                        </div>
                     </div>
 
-                    <div>
-                        <Select
-                            labelName={"Status"}
-                            placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status", {required: true})}}
-                            error={errors?.status}
-                        />
-                    </div>
+
+
+
 
 
                     <div className="d-flex justify-content-end">

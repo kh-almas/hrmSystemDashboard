@@ -1,34 +1,95 @@
 import React, {useEffect, useState} from "react";
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, PaginationItem, PaginationLink} from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import {useForm} from "react-hook-form";
-import Select from "../../../common/modal/Select";
-import Input from "../../../common/modal/Input";
-import {Link} from "react-router-dom";
 import axios from "../../../../axios";
 import Swal from 'sweetalert2'
-import BaseModal from "../../../common/modal/BaseModal";
 import ManualAttendancesForm from "../../../common/modal/Form/ManualAttendancesForm";
 import ManualAttendancesUpdateForm from "../../../common/modal/Form/ManualAttendancesUpdateForm";
 import GetManualAttendance from "../../../common/Query/hrm/GetManualAttendance";
-import GetSingleManualAttendance from "../../../common/Query/hrm/GetSingleManualAttendance";
+import getShiftAPI from "../../../common/Query/hrm/forSort/getShiftAPI";
+import Input from "../../../common/modal/Input";
+import {useForm} from "react-hook-form";
+import getAllBranch from "../../../common/Query/hrm/GetAllBranch";
+import getAllShift from "../../../common/Query/hrm/GetAllShift";
+import GetAllCompany from "../../../common/Query/hrm/GetAllCompany";
+import getManualAttendanceAPI from "../../../common/Query/hrm/forSort/getManualAttendance";
 
 const ManualAttendance = () => {
+    const [url, setUrl] = useState('/hrm-system/manual-attendance');
+    const [pageCount, setPageCount] = useState(1);
+    const [howManyItem, setHowManyItem] = useState('10');
+    const [currentPage, setCurrentPage] = useState('1');
+    const [totalDBRow, setTotalDBRow] = useState(0);
+    const [searchData, setSearchData] = useState('');
+    const [isChange, setIsChange] = useState(false);
+    const isDarty = () =>
+    {
+        setIsChange(!isChange);
+    }
+
+    const [branch, setBranch] = useState([]);
+    const [selectedBranch, setSelectedBranch] = useState("");
+    const [company, setCompany] = useState([]);
+    const [selectedCompany, setSelectedCompany] = useState("");
     const [dataModal, setDataModal] = useState(false);
-    const [isChanged, setIsChanged] = useState(false);
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
     const [modal, setModal] = useState();
     const [date, setDate] = useState(true);
     const [oldData, setOldDate] = useState();
     const [data, setData] = useState([]);
     const [totalItemCount, setTotalItemCount] = useState();
+    const {register, reset, handleSubmit, formState: { errors },} = useForm();
     const [status, refetch, manualAttendance, error] = GetManualAttendance();
+    const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
+    const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
+
+    // console.log(manualAttendance);
+
+
+
+    useEffect( () => {
+        const getManualAttendance= async () => {
+            const setItem = howManyItem < totalDBRow ? howManyItem : totalDBRow;
+            // console.log(setItem);
+            const getData = await getManualAttendanceAPI(url, currentPage, howManyItem, searchData, selectedBranch, selectedCompany);
+            setData(getData?.data?.body?.data?.data);
+            // console.log("sdjhsakdfvhnsadklvhnldfn",getData?.data?.body?.data?.data);
+
+            const totalItem = getData?.data?.body?.data?.count
+            setTotalItemCount(totalItem);
+            setTotalDBRow(totalItem);
+            const page = Math.ceil( totalItem / howManyItem);
+            setPageCount(page);
+        }
+        getManualAttendance();
+
+    }, [howManyItem, currentPage, searchData, isChange, selectedBranch, selectedCompany])
 
     useEffect(() => {
-        setData(manualAttendance?.data?.body?.data);
-        setTotalItemCount(manualAttendance?.data?.body?.data.length)
-    }, [isChanged, manualAttendance])
+        setCompany([])
+        allCompany?.data?.body?.data?.map(item => {
+            const set_data = {
+                id: item.id,
+                value: item.name
+            }
+            setCompany(prevCompany => [...prevCompany, set_data]);
+        })
+    }, [allCompany])
+
+    useEffect(() => {
+        setBranch([])
+        if (selectedCompany !== ""){
+            const sortedData = allBranch?.data?.body?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setBranch(prevBranch => [...prevBranch, set_data]);
+            })
+        }
+    }, [allBranch, selectedCompany])
 
 
     const timeFormat = time => {
@@ -56,7 +117,6 @@ const ManualAttendance = () => {
         setOldDate(null);
 
         axios.get(`/hrm-system/manual-attendance/${id}`)
-            // .then(res => res.json())
             .then(info => {
                 setOldDate(info.data.body.data);
             })
@@ -100,6 +160,47 @@ const ManualAttendance = () => {
                     })
             }
         })
+    }
+
+    const csvSubmit= (data) => {
+        const formData = new FormData();
+        formData.append('csv', data.csv[0]);
+
+        axios.post('/hrm-system/manual-attendance/csv', formData)
+            .then(info => {
+                if (info?.status == 200) {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    console.log("got the result",info);
+                }
+                // navigate("/dashboard/hrm/employee");
+            })
+            .catch(e => {
+                console.log(e)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${e?.response?.data?.body?.message}`,
+                })
+            })
+        reset();
+    }
+
+    const paginationItems = [];
+
+    for (let i = 1; i <= pageCount; i++) {
+        paginationItems.push(
+            <PaginationItem key={i} active={i === parseInt(currentPage)}>
+                <PaginationLink onClick={() => setCurrentPage(i)}>
+                    {i}
+                </PaginationLink>
+            </PaginationItem>
+        );
     }
 
     return (
@@ -174,34 +275,42 @@ const ManualAttendance = () => {
                                 </div>
                             )}
                             <div className="col">
-                                <label htmlFor="exampleFormControlInput1">Branch</label>
-                                <select
-                                    className="form-control digits"
-                                    id="exampleFormControlSelect9"
-                                    defaultValue="1"
-                                >
-                                    <option>{"Select branch"}</option>
-                                    <option>{"accountant branch"}</option>
-                                    <option>{"accountant branch"}</option>
-                                    <option>{"other branch"}</option>
-                                </select>
+                                <div className="theme-form">
+                                    <div className="mb-3 form-group">
+                                        <label style={{fontSize: "11px",}} htmlFor={"company"}>{`Company:`} {errors?.company && <span className="text-danger">(Required)</span>}</label>
+                                        <select className={`form-control ${errors?.company && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
+                                                onChange={e => setSelectedCompany(e.target.value)}
+                                        >
+                                            <option value="">Select an option</option>
+                                            {
+                                                company?.map((item) => (
+                                                    <option value={item?.id} selected={parseInt(item.id) === parseInt(selectedCompany)}>{item.value}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="col-sm-12 col-xl-5">
                         <div className="row">
                             <div className="col">
-                                <label htmlFor="exampleFormControlInput1">Department</label>
-                                <select
-                                    className="form-control digits"
-                                    id="exampleFormControlSelect9"
-                                    defaultValue="1"
-                                >
-                                    <option>{"Select department"}</option>
-                                    <option>{"accountant department"}</option>
-                                    <option>{"accountant department"}</option>
-                                    <option>{"other department"}</option>
-                                </select>
+                                <div className="theme-form">
+                                    <div className="mb-3 form-group">
+                                        <label style={{fontSize: "11px",}} htmlFor={"branch"}>{`Branch:`} {errors?.branch && <span className="text-danger">(Required)</span>}</label>
+                                        <select className={`form-control ${errors?.branch && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
+                                                onChange={e => setSelectedBranch(e.target.value)}
+                                        >
+                                            <option value="">Select an option</option>
+                                            {
+                                                branch?.map((item) => (
+                                                    <option value={item?.id} selected={parseInt(item.id) === parseInt(selectedBranch)}>{item.value}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <div className="col">
                                 <div
@@ -213,18 +322,7 @@ const ManualAttendance = () => {
                                         marginTop: "20px",
                                     }}
                                 >
-                                    <button
-                                        className="btn btn-primary btn-lg"
-                                        style={{padding: "5px 15px"}}
-                                    >
-                                        <i className="fa fa-search"></i>
-                                    </button>
-                                    <button
-                                        className="btn btn-danger btn-lg"
-                                        style={{padding: "5px 15px", borderRadius: "5px"}}
-                                    >
-                                        <i className="fa fa-trash-o"></i>
-                                    </button>
+
                                     <button
                                         onClick={toggle}
                                         className="btn btn-primary btn-lg"
@@ -241,42 +339,36 @@ const ManualAttendance = () => {
             <Modal isOpen={modal} toggle={toggle}>
                 <ModalHeader toggle={toggle}>Import employee CSV file</ModalHeader>
                 <ModalBody>
-                    <form className="m-t-15 m-b-15">
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "flex-start",
-                                gap: "20px",
-                            }}
-                        >
-                            <h6 className="m-0">Download sample employee CSV file</h6>
-                            <button className="btn btn-primary btn-lg">
-                                {" "}
-                                <i className="fa fa-upload"></i> Download
-                            </button>
+                    <form onSubmit={handleSubmit(csvSubmit)} className="m-t-15 m-b-15">
+                        {/*<div style={{display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "20px",}}><h6 className="m-0">Download sample employee CSV file</h6><button className="btn btn-primary btn-lg">{" "}<i className="fa fa-upload"></i> Download</button></div>*/}
+                        <div>
+                            <Input
+                                labelName={"Select CSV File"}
+                                inputName={"csv"}
+                                inputType={"file"}
+                                validation={{ ...register("csv", { required: true }) }}
+                                error={errors.csv}
+                            />
                         </div>
-                        <label htmlFor="exampleFormControlInput1">Select CSV File</label>{" "}
-                        <br/>
-                        <input type="file"/>
+                        <div className="d-flex justify-content-end">
+                            <Button color="danger" onClick={toggle} className="me-2">
+                                Cancel
+                            </Button>
+                            <Button color="primary" type="submit">
+                                Upload
+                            </Button>
+                        </div>
                     </form>
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" type="submit">
-                        Upload
-                    </Button>
-                    <Button color="secondary" onClick={toggle}>
-                        Cancel
-                    </Button>
-                </ModalFooter>
             </Modal>
 
             <div className="card" style={{padding: "20px"}}>
-                <CommonSearchComponet/>
+                <CommonSearchComponet setCurrentPage={setCurrentPage} searchData={searchData} setSearchData={setSearchData} howManyItem={howManyItem} setHowManyItem={setHowManyItem} />
                 <div className="table-responsive">
                     <table className="table">
                         <thead className=" table-border">
                         <tr>
+                            <th scope="col">{"SL"}</th>
                             <th scope="col">{"Employee"}</th>
                             <th scope="col">{"Date"}</th>
                             <th scope="col">{"Status"}</th>
@@ -293,6 +385,7 @@ const ManualAttendance = () => {
                             data ?
                                 data?.map((item, index) =>
                                     <tr key={index}>
+                                        <td>{ parseInt(howManyItem) * (parseInt(currentPage)-1) + index+1 }</td>
                                         <td>{item?.employee_name }</td>
                                         <td>{item?.date ?? 'N/A'}</td>
                                         <td>{item?.status ?? 'N/A'}</td>
@@ -324,16 +417,29 @@ const ManualAttendance = () => {
                     </table>
 
                 </div>
-                <p className="mt-3">Showing {totalItemCount} to {totalItemCount} of {totalItemCount} entries</p>
+                <div className="mt-3 d-flex justify-content-end">
+                    <Pagination aria-label="Page navigation example" className="pagination-primary">
+                        <PaginationItem disabled={currentPage === 1 ? true : false}>
+                            <PaginationLink onClick={() => setCurrentPage(currentPage - 1)} previous href="#javascript" />
+                        </PaginationItem>
+
+                        {paginationItems}
+
+                        <PaginationItem disabled={currentPage === pageCount ? true : false}>
+                            <PaginationLink onClick={() => setCurrentPage(currentPage + 1)} next href="#javascript" />
+                        </PaginationItem>
+                    </Pagination>
+                </div>
+                {/*<p className="mt-3">Showing {totalItemCount} to {totalItemCount} of {totalItemCount} entries</p>*/}
             </div>
 
             <ManualAttendancesForm refetch={refetch} dataModal={dataModal} dataToggle={dataToggle}></ManualAttendancesForm>
 
-            {
-                oldData ?
-                    <ManualAttendancesUpdateForm refetch={refetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>
-                    : ''
-            }
+            {/*{*/}
+            {/*    oldData ?*/}
+            {/*        <ManualAttendancesUpdateForm refetch={refetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>*/}
+            {/*        : ''*/}
+            {/*}*/}
 
         </>
     );

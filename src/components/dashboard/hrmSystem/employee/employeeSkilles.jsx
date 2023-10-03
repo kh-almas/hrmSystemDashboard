@@ -15,7 +15,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
         const formData = new FormData();
 
         const appendToFormData = (object, parentKey) => {
-            console.log(object, parentKey);
+            // console.log(object, parentKey);
             for (let key in object) {
                 if (object.hasOwnProperty(key)) {
                     const value = object[key];
