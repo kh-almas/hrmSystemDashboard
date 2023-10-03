@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 
 const GetEmployee = () => {
     const {status: allEmployeeStatus = '', refetch: allEmployeeReFetch, data: allEmployee = [], error: allEmployeeError} = useQuery({
-        queryKey: ['allEmploeee'],
+        queryKey: ['allEmployee'],
         queryFn: async () => {
             return axios.get('/hrm-system/employee/')
         }

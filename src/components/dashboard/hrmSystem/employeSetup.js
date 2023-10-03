@@ -145,7 +145,7 @@ const EmployeSetup = () => {
                                             data?.map((item, index) =>
                                                 <tr key={index}>
                                                     <td>{index + 1}</td>
-                                                    <td><img src={`/${item?.img}`} alt="img"/></td>
+                                                    <td><img style={{borderRadius: "10px"}} width={"50"} height={"50"} src={`http://localhost:5000/hrm-system/employee/image/${item?.id}`} alt="img"/></td>
                                                     <td>{item?.card_no}</td>
                                                     <td>{item?.full_name}</td>
                                                     <td>{item?.email}</td>

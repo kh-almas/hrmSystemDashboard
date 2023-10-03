@@ -262,7 +262,7 @@ const Shift = () => {
                                     </PaginationItem>
                                 </Pagination>
                             </div>
-                            <p className="p-l-10 p-t-10">Showing 1 to 1 of 1 entries</p>
+                            {/*<p className="p-l-10 p-t-10">Showing 1 to 1 of 1 entries</p>*/}
                         </div>
                     </div>
                 </div>
