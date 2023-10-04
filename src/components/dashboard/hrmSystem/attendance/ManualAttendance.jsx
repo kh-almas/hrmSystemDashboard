@@ -44,9 +44,6 @@ const ManualAttendance = () => {
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
 
-    // console.log(manualAttendance);
-
-
 
     useEffect( () => {
         const getManualAttendance= async () => {

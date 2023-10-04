@@ -20,11 +20,15 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     const [branch, setBranch] = useState([]);
     const [shift, setShift] = useState([]);
 
+
     const [selectedOrganization, setSelectedOrganization] = useState("11");
-    const [selectedCompany, setSelectedCompany] = useState("");
-    const [selectedBranch, setSelectedBranch] = useState("");
-    const [selectedShift, setSelectedShift] = useState("");
-    const {register, handleSubmit, formState: {errors},} = useForm();
+    const [selectedCompany, setSelectedCompany] = useState("2");
+    const [selectedBranch, setSelectedBranch] = useState("8");
+    const [selectedShift, setSelectedShift] = useState("2");
+    const [employeeId, setEmployeeId] = useState('');
+    const [attendanceType, setAttendanceType] = useState('');
+    const [status, setStatus] = useState('Active');
+    const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployee();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
@@ -39,7 +43,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
             sortData?.map(item => {
                 const set_data = {
                     id: item.id,
-                    value: item.full_name
+                    value: item?.full_name
                 }
                 setEmployee(prevEmployee => [...prevEmployee, set_data]);
             })
@@ -52,8 +56,8 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
             const sortedData = allCompany?.data?.body?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
             sortedData?.map(item => {
                 const set_data = {
-                    id: item.id,
-                    value: item.name
+                    id: item?.id,
+                    value: item?.name
                 }
                 setCompany(prevCompany => [...prevCompany, set_data]);
             })
@@ -66,8 +70,8 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
             const sortedData = allBranch?.data?.body?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
             sortedData?.map(item => {
                 const set_data = {
-                    id: item.id,
-                    value: item.name
+                    id: item?.id,
+                    value: item?.name
                 }
                 setBranch(prevBranch => [...prevBranch, set_data]);
             })
@@ -80,8 +84,8 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
             const sortedData = allShift?.data?.body?.data?.data?.filter((data) => parseInt(data.branch_id) === parseInt(selectedBranch))
             sortedData?.map(item => {
                 const set_data = {
-                    id: item.id,
-                    value: item.name
+                    id: item?.id,
+                    value: item?.name
                 }
                 setShift(prevShift => [...prevShift, set_data]);
             })
@@ -102,6 +106,9 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
         data.branch_id = selectedBranch;
         data.shift_id = selectedShift;
         data.device_id = "device_5681234";
+        data.employee_id= employeeId;
+        data.attendance_type= attendanceType;
+        data.status= status;
 
         axios.post('/hrm-system/manual-attendance', data)
             .then(info => {
@@ -115,7 +122,14 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                         timer: 1500
                     })
                     dataToggle(false);
+                    reset();
                     refetch();
+                    setSelectedCompany('');
+                    setSelectedBranch('');
+                    setEmployeeId('')
+                    setAttendanceType('')
+                    setSelectedShift('');
+                    setStatus('Active');
                 }
 
             })
@@ -133,71 +147,58 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
         <>
             <BaseModal title={"Manual Attendance"} dataModal={dataModal} dataToggle={dataToggle}>
                 <div className="row row-cols-1 row-cols-lg-2">
-                    <div className="theme-form">
-                        <div className="mb-3 form-group">
-                            <label style={{fontSize: "11px",}} htmlFor={"company"}>{`Company:`} {errors?.company && <span className="text-danger">(Required)</span>}</label>
-                            <select className={`form-control ${errors?.company && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
-                                    onChange={e => setSelectedCompany(e.target.value)}
-                            >
-                                <option value="">Select an option</option>
-                                {
-                                    company?.map((item) => (
-                                        <option value={item?.id} selected={parseInt(item.id) === parseInt(selectedCompany)}>{item.value}</option>
-                                    ))
-                                }
-                            </select>
-                        </div>
+
+                    <div>
+                        <Select
+                            labelName={"Company:"}
+                            placeholder={"Select an option"}
+                            options={company}
+                            // validation={{...register("employee_id", {required: true})}}
+                            // error={errors?.employee_id}
+                            setValue={setSelectedCompany}
+                        />
                     </div>
-                    <div className="theme-form">
-                        <div className="mb-3 form-group">
-                            <label style={{fontSize: "11px",}} htmlFor={"branch"}>{`Branch:`} {errors?.branch && <span className="text-danger">(Required)</span>}</label>
-                            <select className={`form-control ${errors?.branch && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
-                                    onChange={e => setSelectedBranch(e.target.value)}
-                            >
-                                <option value="">Select an option</option>
-                                {
-                                    branch?.map((item) => (
-                                        <option value={item?.id} selected={parseInt(item.id) === parseInt(selectedBranch)}>{item.value}</option>
-                                    ))
-                                }
-                            </select>
-                        </div>
+                    <div>
+                        <Select
+                            labelName={"Branch:"}
+                            placeholder={"Select an option"}
+                            options={branch}
+                            // validation={{...register("employee_id", {required: true})}}
+                            // error={errors?.employee_id}
+                            setValue={setSelectedBranch}
+                        />
                     </div>
-                    <div className="theme-form">
-                        <div className="mb-3 form-group">
-                            <label style={{fontSize: "11px",}} htmlFor={"shift"}>{`Shift:`} {errors?.shift && <span className="text-danger">(Required)</span>}</label>
-                            <select className={`form-control ${errors?.shift && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"shift"}
-                                    onChange={e => setSelectedShift(e.target.value)}
-                            >
-                                <option value="">Select an option</option>
-                                {
-                                    shift?.map((item) => (
-                                        <option value={item?.id} selected={parseInt(item.id) === parseInt(selectedShift)}>{item.value}</option>
-                                    ))
-                                }
-                            </select>
-                        </div>
+                    <div>
+                        <Select
+                            labelName={"Shift:"}
+                            placeholder={"Select an option"}
+                            options={shift}
+                            // validation={{...register("employee_id", {required: true})}}
+                            // error={errors?.employee_id}
+                            setValue={setSelectedShift}
+                        />
+                    </div>
+                    <div>
+                        <Select
+                            labelName={"Employee Name"}
+                            placeholder={"Select an option"}
+                            options={employee}
+                            // validation={{...register("employee_id", {required: true})}}
+                            error={errors?.employee_id}
+                            setValue={setEmployeeId}
+                        />
                     </div>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Select
-                                labelName={"Employee Name"}
-                                placeholder={"Select an option"}
-                                options={employee}
-                                validation={{...register("employee_id", {required: true})}}
-                                error={errors?.employee_id}
-                            />
-
-                        </div>
-                        <div>
-                            <Select
                                 labelName={"Attendance Type"}
                                 placeholder={"Select an option"}
                                 options={[{id: "Type 1", value: "Type 1"}, {id: "Type 2", value: "Type 2"}]}
-                                validation={{...register("attendance_type", {required: true})}}
+                                // validation={{...register("attendance_type", {required: true})}}
                                 error={errors?.attendance_type}
+                                setValue={setAttendanceType}
                             />
                         </div>
                         <div>
@@ -241,15 +242,12 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                                 labelName={"Status"}
                                 placeholder={"Select an option"}
                                 options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                                validation={{...register("status", {required: true})}}
+                                // validation={{...register("status", {required: true})}}
                                 error={errors?.status}
+                                setValue={setStatus}
                             />
                         </div>
                     </div>
-
-
-
-
 
 
                     <div className="d-flex justify-content-end">
