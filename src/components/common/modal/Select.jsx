@@ -1,28 +1,26 @@
-import React, {useEffect} from "react";
-import {useForm} from "react-hook-form";
+import React, {useEffect, useState} from "react";
+import ReactSelect from "./ReactSelect";
 
-const Select = ({labelName, options, defaultValue, validation, placeholder, error, previous}) => {
-    const {reset} = useForm();
-    useEffect(() => {
-        reset();
-    }, [previous])
-    // console.log("options", options)
-    // console.log("previous", previous)
+const Select = ({labelName, options, defaultValue, validation, placeholder, error, previous, setValue}) => {
+    // const [newOption, setNewOption] = useState([])
+    //
+    // // const newOption = {
+    // //     value: options.id,
+    // //     label: options.value
+    // // }
+    //
+    // options.map(data => {
+    //     const newData = {
+    //         value: data.id,
+    //         label: data.value
+    //     }
+    //     setNewOption(data => [...data, newData])
+    //
+    // })
 
     return (
         <>
-            <div className="theme-form">
-                <div className="mb-3 form-group">
-                    <label style={{fontSize: "11px",}} htmlFor={labelName}>{`${labelName}:`} {error && <span className="text-danger">(Required)</span>}</label>
-                    <select className={`form-control ${error && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} className="form-control" id={labelName}
-                            defaultValue={defaultValue} {...validation}>
-                        <option value="">{placeholder}</option>
-                        {options?.map((item) => (
-                             <option value={item.id} selected={item.id == previous} >{item.value}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
+            <ReactSelect labelName={labelName} options={options} defaultValue={defaultValue} validation={validation} placeholder={placeholder} error={error} previous={previous} setValue={setValue}></ReactSelect>
         </>
     );
 };
