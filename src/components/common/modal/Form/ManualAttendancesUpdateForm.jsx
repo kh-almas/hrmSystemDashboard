@@ -10,16 +10,30 @@ import moment from "moment";
 import GetEmployee from "../../Query/hrm/GetEmployee";
 import GetAllWeekday from "../../Query/hrm/GetAllWeekday";
 import GetAllShift from "../../Query/hrm/GetAllShift";
+import GetAllCompany from "../../Query/hrm/GetAllCompany";
+import getAllBranch from "../../Query/hrm/GetAllBranch";
+import getAllShift from "../../Query/hrm/GetAllShift";
 
 const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refetch}) => {
+    console.log("oldData", oldData);
     const [employee, setEmployee] = useState([]);
-    const [weekday, setWeekday] = useState([]);
+    const [company, setCompany] = useState([]);
+    const [branch, setBranch] = useState([]);
     const [shift, setShift] = useState([]);
+
+
+    const [selectedOrganization, setSelectedOrganization] = useState("11");
+    const [selectedCompany, setSelectedCompany] = useState("2");
+    const [selectedBranch, setSelectedBranch] = useState("8");
+    const [selectedShift, setSelectedShift] = useState("2");
+    const [employeeId, setEmployeeId] = useState('');
+    const [attendanceType, setAttendanceType] = useState('');
+    const [status, setStatus] = useState('Active');
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployee();
-    const [allWeekdayStatus, allWeekdayReFetch, allWeekday, allWeekdayError] = GetAllWeekday();
-    const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
-    // console.log(weekday);
+    const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
+    const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
+    const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
 
     useEffect(() => {
@@ -36,37 +50,62 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
     }, [oldData])
 
     useEffect( () => {
-        setEmployee([]);
-        allEmployee?.data?.body?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setEmployee(prevEmployee => [...prevEmployee, set_data]);
-        })
-    }, [allEmployee])
-
-    useEffect( () => {
-        setWeekday([]);
-        allWeekday?.data?.body?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setWeekday(prevWeekday => [...prevWeekday, set_data]);
-        })
-    }, [allWeekday])
+        setEmployee([])
+        if(selectedShift !== "")
+        {
+            const sortData = allEmployee?.data?.body?.data?.data?.filter(data => parseInt(data.shift_id) === parseInt(selectedShift))
+            // console.log("sortData",sortData);
+            sortData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item?.full_name
+                }
+                setEmployee(prevEmployee => [...prevEmployee, set_data]);
+            })
+        }
+    }, [allEmployee, selectedShift])
 
     useEffect(() => {
-        setShift([]);
-        allShift?.data?.body?.data?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setShift(prevShift => [...prevShift, set_data]);
-        })
-    }, [allShift])
+        setCompany([])
+        if (selectedOrganization !== ""){
+            const sortedData = allCompany?.data?.body?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item?.id,
+                    value: item?.name
+                }
+                setCompany(prevCompany => [...prevCompany, set_data]);
+            })
+        }
+    }, [allCompany, selectedOrganization])
+
+    useEffect(() => {
+        setBranch([])
+        if (selectedCompany !== ""){
+            const sortedData = allBranch?.data?.body?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item?.id,
+                    value: item?.name
+                }
+                setBranch(prevBranch => [...prevBranch, set_data]);
+            })
+        }
+    }, [allBranch, selectedCompany])
+
+    useEffect(() => {
+        setShift([])
+        if (selectedCompany !== ""){
+            const sortedData = allShift?.data?.body?.data?.data?.filter((data) => parseInt(data.branch_id) === parseInt(selectedBranch))
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item?.id,
+                    value: item?.name
+                }
+                setShift(prevShift => [...prevShift, set_data]);
+            })
+        }
+    }, [allShift, selectedBranch])
 
     const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
 
@@ -75,13 +114,24 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
         data.in_time = in_time;
         const out_time = formattedTime(data.out_time);
         data.out_time = out_time;
-        // oldData
-        // console.log(data.day_type);
-        // console.log(oldData);
+        data.organization_id = selectedOrganization;
+        data.company_id = selectedCompany;
+        data.branch_id = selectedBranch;
+        data.shift_id = selectedShift;
+        data.device_id = "device_5681234";
+        data.employee_id= employeeId;
+        data.attendance_type = attendanceType;
         const updatedData = {
+            'organization_id':selectedOrganization ? selectedOrganization : oldData.organization_id,
+            'company_id': selectedCompany ? selectedCompany : oldData.company_id,
+            'branch_id': selectedBranch ? selectedBranch : oldData.branch_id,
+            'shift_id': selectedShift ? selectedShift : oldData.shift_id,
+            'device_id': data.device_id ? data.device_id : oldData.device_id,
+            'attendance_type': data.attendance_type ? data.attendance_type : oldData.attendance_type,
+            'card_no':data.card_no ? data.card_no : oldData.card_no,
             'date':data.date ? data.date : oldData.date,
             'day_type': data.day_type ? data.day_type : oldData.day_type,
-            'employee_id':data.employee_id ? data.employee_id : oldData.employee_id,
+            'employee_id': employeeId ? employeeId : oldData.employee_id,
             'in_time':data.in_time ? data.in_time : oldData.in_time,
             'out_time':data.out_time ? data.out_time : oldData.out_time,
             'shift_id':data.shift_id ? data.shift_id : oldData.shift_id,
@@ -110,8 +160,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                    footer: '<a href="">Why do I have this issue?</a>'
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`
                 })
             })
     };
@@ -120,21 +169,76 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
     return (
         <>
             <BaseModal title={"Update Manual Attendance"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+                <div className="row row-cols-1 row-cols-lg-2">
+
+                    <div>
+                        <Select
+                            labelName={"Company:"}
+                            placeholder={"Select an option"}
+                            options={company}
+                            previous={oldData?.company_id}
+                            // previous={oldData?.}
+                            // validation={{...register("employee_id", {required: true})}}
+                            // error={errors?.employee_id}
+                            setValue={setSelectedCompany}
+                        />
+                    </div>
+                    <div>
+                        <Select
+                            labelName={"Branch:"}
+                            placeholder={"Select an option"}
+                            options={branch}
+                            previous={oldData?.branch_id}
+                            // validation={{...register("employee_id", {required: true})}}
+                            // error={errors?.employee_id}
+                            setValue={setSelectedBranch}
+                        />
+                    </div>
+                    <div>
+                        <Select
+                            labelName={"Shift:"}
+                            placeholder={"Select an option"}
+                            options={shift}
+                            previous={oldData?.shift_id}
+                            // validation={{...register("employee_id", {required: true})}}
+                            // error={errors?.employee_id}
+                            setValue={setSelectedShift}
+                        />
+                    </div>
+                    <div>
+                        <Select
+                            labelName={"Employee Name"}
+                            placeholder={"Select an option"}
+                            options={employee}
+                            previous={oldData?.employee_id}
+                            // validation={{...register("employee_id", {required: true})}}
+                            error={errors?.employee_id}
+                            setValue={setEmployeeId}
+                        />
+                    </div>
+                </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Select
-                                name={"employee"}
-                                labelName={"Employee Name"}
+                                labelName={"Attendance Type"}
                                 placeholder={"Select an option"}
-                                options={employee}
-                                previous={oldData?.employee_id}
-                                validation={{...register("employee_id")}}
-                                error={errors?.employee_id}
+                                options={[{id: "Type 1", value: "Type 1"}, {id: "Type 2", value: "Type 2"}]}
+                                // validation={{...register("attendance_type", {required: true})}}
+                                previous={oldData?.attendance_type}
+                                error={errors?.attendance_type}
+                                setValue={setAttendanceType}
                             />
-                            {/*<span className="text-danger">*/}
-                            {/*    {errors?.employee_id && `Employee is required`}*/}
-                            {/*</span>*/}
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Card Number"}
+                                inputName={"cardNo"}
+                                inputType={"cardNo"}
+                                defaultValue={oldData?.card_no}
+                                validation={{...register("card_no", {required: true})}}
+                                error={errors?.card_no}
+                            />
                         </div>
                         <div>
                             <Input
@@ -142,47 +246,17 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
                                 inputName={"date"}
                                 inputType={"date"}
                                 defaultValue={oldData?.date}
-                                validation={{...register("date")}}
+                                validation={{...register("date", {required: true})}}
                                 error={errors?.date}
                             />
-                            {/*<span className="text-danger">*/}
-                            {/*    {errors?.date && `Date is required`}*/}
-                            {/*</span>*/}
                         </div>
-                        <div>
-                            <Select
-                                name={"shift"}
-                                labelName={"Shift"}
-                                placeholder={"Select an option"}
-                                previous={oldData?.shift_id}
-                                options={shift}
-                                validation={{...register("shift_id")}}
-                                error={errors?.shift_id}
-                            />
-                        </div>
-                        <div>
-                            <Select
-                                name={"day_type"}
-                                labelName={"Weekday"}
-                                placeholder={"Select an option"}
-                                options={weekday}
-                                previous={oldData?.day_type}
-                                validation={{...register("day_type")}}
-                                error={errors?.day_type}
-                            />
-                        </div>
-
-                    </div>
-
-
-                    <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Input
                                 labelName={"Clock In"}
                                 inputName={"inTime"}
                                 inputType={"time"}
                                 defaultValue={oldData?.in_time}
-                                validation={{...register("in_time")}}
+                                validation={{...register("in_time", {required: true})}}
                                 error={errors?.in_time}
                             />
                         </div>
@@ -191,23 +265,22 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
                                 labelName={"Clock Out"}
                                 inputName={"outTime"}
                                 inputType={"time"}
+                                validation={{...register("out_time", {required: true})}}
                                 defaultValue={oldData?.out_time}
-                                validation={{...register("out_time")}}
                                 error={errors?.out_time}
                             />
                         </div>
-                    </div>
-
-                    <div>
-                        <Select
-                            name={"status"}
-                            labelName={"Status"}
-                            placeholder={"Select an option"}
-                            previous={oldData?.status}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status")}}
-                            error={errors?.status}
-                        />
+                        <div>
+                            <Select
+                                labelName={"Status"}
+                                placeholder={"Select an option"}
+                                options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
+                                // validation={{...register("status", {required: true})}}
+                                error={errors?.status}
+                                previous={oldData?.status}
+                                setValue={setStatus}
+                            />
+                        </div>
                     </div>
 
 

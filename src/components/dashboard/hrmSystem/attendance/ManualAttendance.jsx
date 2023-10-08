@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader, Pagination, PaginationItem, PaginationLink} from "reactstrap";
+import {Button, Modal, ModalBody, ModalHeader, Pagination, PaginationItem, PaginationLink} from "reactstrap";
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 import axios from "../../../../axios";
@@ -7,13 +7,13 @@ import Swal from 'sweetalert2'
 import ManualAttendancesForm from "../../../common/modal/Form/ManualAttendancesForm";
 import ManualAttendancesUpdateForm from "../../../common/modal/Form/ManualAttendancesUpdateForm";
 import GetManualAttendance from "../../../common/Query/hrm/GetManualAttendance";
-import getShiftAPI from "../../../common/Query/hrm/forSort/getShiftAPI";
 import Input from "../../../common/modal/Input";
 import {useForm} from "react-hook-form";
 import getAllBranch from "../../../common/Query/hrm/GetAllBranch";
-import getAllShift from "../../../common/Query/hrm/GetAllShift";
+import moment from "moment";
 import GetAllCompany from "../../../common/Query/hrm/GetAllCompany";
 import getManualAttendanceAPI from "../../../common/Query/hrm/forSort/getManualAttendance";
+import Select from "../../../common/modal/Select";
 
 const ManualAttendance = () => {
     const [url, setUrl] = useState('/hrm-system/manual-attendance');
@@ -34,6 +34,10 @@ const ManualAttendance = () => {
     const [selectedCompany, setSelectedCompany] = useState("");
     const [dataModal, setDataModal] = useState(false);
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [datewise, setDatewise] = useState('');
+
     const [modal, setModal] = useState();
     const [date, setDate] = useState(true);
     const [oldData, setOldDate] = useState();
@@ -43,13 +47,29 @@ const ManualAttendance = () => {
     const [status, refetch, manualAttendance, error] = GetManualAttendance();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
+    const [selectedMonth, setSelectedMonth] =useState('');
 
+    const setMonth = e => {
+        const value = e.target.value
+        // console.log("month1", value);
+        const startOfMonth = moment(value, 'YYYY-MM').clone().startOf('month').format('YYYY-MM-DD');
+        const endOfMonth = moment(value, 'YYYY-MM').clone().endOf('month').format('YYYY-MM-DD');
+        setStartDate(startOfMonth);
+        setEndDate(endOfMonth);
+
+    }
+
+    const setDateWise = e => {
+        const value = e.target.value
+        setDatewise(value);
+        console.log(value);
+    }
 
     useEffect( () => {
         const getManualAttendance= async () => {
             const setItem = howManyItem < totalDBRow ? howManyItem : totalDBRow;
             // console.log(setItem);
-            const getData = await getManualAttendanceAPI(url, currentPage, howManyItem, searchData, selectedBranch, selectedCompany);
+            const getData = await getManualAttendanceAPI(url, currentPage, howManyItem, searchData, selectedBranch, selectedCompany, startDate, endDate, datewise);
             setData(getData?.data?.body?.data?.data);
             // console.log("sdjhsakdfvhnsadklvhnldfn",getData?.data?.body?.data?.data);
 
@@ -61,7 +81,7 @@ const ManualAttendance = () => {
         }
         getManualAttendance();
 
-    }, [howManyItem, currentPage, searchData, isChange, selectedBranch, selectedCompany])
+    }, [howManyItem, currentPage, searchData, isChange, selectedBranch, selectedCompany, endDate, datewise])
 
     useEffect(() => {
         setCompany([])
@@ -110,16 +130,19 @@ const ManualAttendance = () => {
         setDataModal(!dataModal);
     };
 
-    const dataUpdateToggle = (id) => {
+    const dataUpdateToggle = (data) => {
         setOldDate(null);
 
-        axios.get(`/hrm-system/manual-attendance/${id}`)
-            .then(info => {
-                setOldDate(info.data.body.data);
-            })
-            .catch(e => {
-                // console.log(e);
-            })
+        // axios.get(`/hrm-system/manual-attendance/${id}`)
+        //     .then(info => {
+        //         // setOldDate(info.data.body.data[0]);
+        //
+        //         // console.log("info.data.body.data", info.data.body.data)
+        //     })
+        //     .catch(e => {
+        //         // console.log(e);
+        //     })
+        setOldDate(data);
         setDataUpdateModal(!dataUpdateModal);
     };
 
@@ -145,7 +168,7 @@ const ManualAttendance = () => {
                             )
                             // refetch();
                         }
-                        refetch();
+                        setIsChange(!isChange);
                     })
                     .catch(e => {
                         // console.log(e);
@@ -173,12 +196,12 @@ const ManualAttendance = () => {
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    console.log("got the result",info);
+                    // console.log("got the result",info);
                 }
                 // navigate("/dashboard/hrm/employee");
             })
             .catch(e => {
-                console.log(e)
+                // console.log(e)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -258,6 +281,7 @@ const ManualAttendance = () => {
                                 <div className="col">
                                     <label htmlFor="exampleFormControlInput1">Month</label>
                                     <input
+                                        onChange={setMonth}
                                         className="form-control"
                                         required={true}
                                         type="month"
@@ -268,45 +292,33 @@ const ManualAttendance = () => {
                             {!date && (
                                 <div className="col">
                                     <label htmlFor="exampleFormControlInput1">Date</label>
-                                    <input className="form-control" required={true} type="date"/>
+                                    <input onChange={setDateWise} className="form-control" required={true} type="date"/>
                                 </div>
                             )}
                             <div className="col">
-                                <div className="theme-form">
-                                    <div className="mb-3 form-group">
-                                        <label style={{fontSize: "11px",}} htmlFor={"company"}>{`Company:`} {errors?.company && <span className="text-danger">(Required)</span>}</label>
-                                        <select className={`form-control ${errors?.company && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
-                                                onChange={e => setSelectedCompany(e.target.value)}
-                                        >
-                                            <option value="">Select an option</option>
-                                            {
-                                                company?.map((item) => (
-                                                    <option value={item?.id} selected={parseInt(item.id) === parseInt(selectedCompany)}>{item.value}</option>
-                                                ))
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
+                                <Select
+                                    labelName={"Company:"}
+                                    placeholder={"Select an option"}
+                                    options={company}
+                                    // validation={{...register("employee_id", {required: true})}}
+                                    // error={errors?.employee_id}
+                                    setValue={setSelectedCompany}
+                                />
                             </div>
                         </div>
                     </div>
                     <div className="col-sm-12 col-xl-5">
                         <div className="row">
                             <div className="col">
-                                <div className="theme-form">
-                                    <div className="mb-3 form-group">
-                                        <label style={{fontSize: "11px",}} htmlFor={"branch"}>{`Branch:`} {errors?.branch && <span className="text-danger">(Required)</span>}</label>
-                                        <select className={`form-control ${errors?.branch && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
-                                                onChange={e => setSelectedBranch(e.target.value)}
-                                        >
-                                            <option value="">Select an option</option>
-                                            {
-                                                branch?.map((item) => (
-                                                    <option value={item?.id} selected={parseInt(item.id) === parseInt(selectedBranch)}>{item.value}</option>
-                                                ))
-                                            }
-                                        </select>
-                                    </div>
+                                <div className="col">
+                                    <Select
+                                        labelName={"Branch:"}
+                                        placeholder={"Select an option"}
+                                        options={branch}
+                                        // validation={{...register("employee_id", {required: true})}}
+                                        // error={errors?.employee_id}
+                                        setValue={setSelectedBranch}
+                                    />
                                 </div>
                             </div>
                             <div className="col">
@@ -367,6 +379,8 @@ const ManualAttendance = () => {
                         <tr>
                             <th scope="col">{"SL"}</th>
                             <th scope="col">{"Employee"}</th>
+                            <th scope="col">{"Company"}</th>
+                            <th scope="col">{"Branch"}</th>
                             <th scope="col">{"Date"}</th>
                             <th scope="col">{"Status"}</th>
                             <th scope="col">{"Clock In"}</th>
@@ -384,6 +398,8 @@ const ManualAttendance = () => {
                                     <tr key={index}>
                                         <td>{ parseInt(howManyItem) * (parseInt(currentPage)-1) + index+1 }</td>
                                         <td>{item?.employee_name }</td>
+                                        <td>{item?.company_id }</td>
+                                        <td>{item?.branch_id }</td>
                                         <td>{item?.date ?? 'N/A'}</td>
                                         <td>{item?.status ?? 'N/A'}</td>
                                         <td>{timeFormat(item?.in_time) ?? 'N/A'}</td>
@@ -393,7 +409,7 @@ const ManualAttendance = () => {
                                         <td>{timeFormat(item?.over_time) ?? 'N/A'}</td>
                                         <td>
                                             <div className="d-flex justify-content-center">
-                                                <button onClick={() => dataUpdateToggle(item.id)} className="btn me-2" style={{backgroundColor: "skyblue", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>
+                                                <button onClick={() => dataUpdateToggle(item)} className="btn me-2" style={{backgroundColor: "skyblue", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>
                                                     <i className="icofont icofont-pencil-alt-5  rounded" style={{backgroundColor: "skyblue", color: "#ffffff",}}></i>
                                                 </button>
                                                 <button onClick={() => deleteAttendance(item.id)} className="btn" style={{backgroundColor: "#ff3a6e", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>
@@ -432,11 +448,11 @@ const ManualAttendance = () => {
 
             <ManualAttendancesForm refetch={refetch} dataModal={dataModal} dataToggle={dataToggle}></ManualAttendancesForm>
 
-            {/*{*/}
-            {/*    oldData ?*/}
-            {/*        <ManualAttendancesUpdateForm refetch={refetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>*/}
-            {/*        : ''*/}
-            {/*}*/}
+            {
+                oldData ?
+                    <ManualAttendancesUpdateForm refetch={refetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>
+                    : ''
+            }
 
         </>
     );

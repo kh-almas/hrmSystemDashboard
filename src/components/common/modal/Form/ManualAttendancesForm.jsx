@@ -39,7 +39,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
         if(selectedShift !== "")
         {
             const sortData = allEmployee?.data?.body?.data?.data?.filter(data => parseInt(data.shift_id) === parseInt(selectedShift))
-            console.log("sortData",sortData);
+            // console.log("sortData",sortData);
             sortData?.map(item => {
                 const set_data = {
                     id: item.id,

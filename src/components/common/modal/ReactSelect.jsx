@@ -3,36 +3,12 @@ import {useForm} from "react-hook-form";
 import Select from "react-select";
 
 const ReactSelect = ({labelName, options, defaultValue, validation, placeholder, error, previous, setValue}) => {
-    // console.log("optionsfdsgvdfh", options)
-
-
     const [newOption, setNewOption] = useState([])
-
-    // const newOption = {
-    //     value: options.id,
-    //     label: options.value
-    // }
-
-    const hgfjhm= options.map(data => ({
+    const data= options.map(data => ({
             value: data.id,
             label: data.value,
     }))
 
-
-    // const options = product.map((item) => ({
-    //     productId: item._id,
-    //     label: item.productName,
-    //     value: item._id,
-    //     imageUrl: item.images[0].imageUrl, // Assuming the image URL is in the first image object
-    //     regularPrice: item.regularPrice,
-    //     availableQuantity: item.availableQuantity,
-    // }));
-
-    const {reset} = useForm();
-    // useEffect(() => {
-    //     reset();
-    // }, [previous])
-    // console.log("options", options)
     // console.log("previous", previous)
     const handleChange = (selectedOption) => {
         // Ensure that selectedOption is defined
@@ -43,13 +19,39 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
         }
     }
 
-
+    // useEffect(() => {
+    //     const filterdata = data?.find((option) => option.value === previous)
+    //     console.log("check value", filterdata);
+    // }, [previous]);
 
     // Define custom styles
     const customStyles = {
-        fontSize: '11px !important',
-        height: '10px !important',
-        outline: '0px !important',
+        control: (provided, state) => ({
+            ...provided,
+            background: '#fff',
+            borderColor: '#9e9e9e',
+            minHeight: '30px',
+            height: '30px',
+            boxShadow: state.isFocused ? null : null,
+        }),
+
+        valueContainer: (provided, state) => ({
+            ...provided,
+            height: '30px',
+            padding: '0 6px'
+        }),
+
+        input: (provided, state) => ({
+            ...provided,
+            margin: '0px',
+        }),
+        indicatorSeparator: state => ({
+            display: 'none',
+        }),
+        indicatorsContainer: (provided, state) => ({
+            ...provided,
+            height: '30px',
+        }),
     };
 
     return (
@@ -61,21 +63,13 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
                     </label>
                     <div>
                         <Select
-                            className={` ${error && 'is-invalid'}`}
-                            styles={{
-                                control: (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    // borderColor: state.isFocused ? 'grey' : 'red',
-                                    fontSize: '10px',
-                                    height: '20px',
-                                    padding: '0 !important',
-                                }),
-                            }}
+                            className={`customeStyle ${error && 'is-invalid'}`}
                             id={labelName}
                             onChange={handleChange} // Remove the arrow function here
-                            // defaultValue={jkdfhgksdjf.find((option) => option.value === previous)}
+                            defaultValue={data.find((option) => option.value === previous)}
                             {...validation}
-                            options={hgfjhm}
+                            options={data}
+                            styles={customStyles}
                             isSearchable={true} // This enables the search functionality
                             placeholder={placeholder}
                         />
