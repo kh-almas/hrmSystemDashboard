@@ -21,6 +21,7 @@ const ShiftSchedule = () => {
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
     const [allShiftScheduleStatus, allShiftScheduleReFetch, allShiftSchedule, allShiftScheduleError] = GetAllShiftSchedule();
 
+    console.log(allShiftSchedule);
 
     const toggle = () => {
         setModal(!modal);
@@ -28,7 +29,7 @@ const ShiftSchedule = () => {
 
     useEffect(() => {
         setShift([])
-        allShift?.data?.body?.data?.map(item => {
+        allShift?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name
@@ -38,7 +39,7 @@ const ShiftSchedule = () => {
     }, [allShift])
 
     useEffect(() => {
-        setData(allShiftSchedule?.data?.body?.data);
+        setData(allShiftSchedule?.data?.body?.data?.data);
     }, [allShiftSchedule])
 
 
@@ -55,7 +56,7 @@ const ShiftSchedule = () => {
                         timer: 1500
                     })
                     setModal(!modal);
-                    allShiftScheduleReFetch();
+                    // allShiftScheduleReFetch();
                     reset();
                 }
             })
@@ -94,7 +95,7 @@ const ShiftSchedule = () => {
                                 'success'
                             )
                         }
-                        allShiftScheduleReFetch();
+                        // allShiftScheduleReFetch();
                     })
                     .catch(e => {
                         if(e?.response?.data?.body?.message?.sqlState === "23000")
@@ -138,6 +139,7 @@ const ShiftSchedule = () => {
                                 <table className="table">
                                     <thead className=" table-border">
                                     <tr>
+                                        <th scope="col">{"SL"}</th>
                                         <th scope="col">{"Date From"}</th>
                                         <th scope="col">{"Date To"}</th>
                                         <th scope="col">{"Shift From"}</th>
@@ -150,11 +152,12 @@ const ShiftSchedule = () => {
                                     <tbody>
                                     {
                                         data?.map((item, index) =>
-                                            <tr>
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
                                                 <td>{item?.date_from}</td>
                                                 <td>{item?.date_to}</td>
-                                                <td>{item?.shift_from}</td>
-                                                <td>{item?.shift_to}</td>
+                                                <td>{item?.s_shift}</td>
+                                                <td>{item?.e_shift}</td>
                                                 <td>{item?.active_on}</td>
                                                 <td>{item?.status}</td>
                                                 <td>
@@ -260,7 +263,7 @@ const ShiftSchedule = () => {
 
             {
                 oldData ?
-                    <ShiftScheduleUpdateModal allShiftScheduleReFetch={allShiftScheduleReFetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ShiftScheduleUpdateModal>
+                    <ShiftScheduleUpdateModal shift={shift} allShiftScheduleReFetch={allShiftScheduleReFetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ShiftScheduleUpdateModal>
                     : ''
             }
         </>
