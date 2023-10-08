@@ -8,21 +8,21 @@ import GetAllShift from "../../Query/hrm/GetAllShift";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
 
-const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
-    const [shift, setShift] = useState([]);
+const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateModal, dataUpdateToggle, shift}) => {
+    // const [shift, setShift] = useState([]);
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
-    const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
-
-    useEffect(() => {
-        setShift([])
-        allShift?.data?.body?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setShift(prevShift => [...prevShift, set_data]);
-        })
-    }, [allShift])
+    // const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
+    //
+    // useEffect(() => {
+    //     setShift([])
+    //     allShift?.data?.body?.data?.map(item => {
+    //         const set_data = {
+    //             id: item.id,
+    //             value: item.name
+    //         }
+    //         setShift(prevShift => [...prevShift, set_data]);
+    //     })
+    // }, [allShift])
     const onSubmit = (data) => {
         const updatedData = {
             'date_from':data.date_from ? data.date_from : oldData.date_from,
