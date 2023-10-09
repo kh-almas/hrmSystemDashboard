@@ -1,23 +1,26 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Input from "../../../../common/modal/Input";
 import Select from "../../../../common/modal/Select";
 import {useForm} from "react-hook-form";
 
 const BasicInformation = ({setProcessData, setIconWithTab, processData, employeeData}) => {
+    const [nameTitle, setNameTitle] = useState('');
+    const [gander, setGander] = useState('');
+    const [allData, setAllData] = useState({});
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
-    // const navigate = useNavigate();
-    // useEffect(() => {
-    //     reset()
-    // }, [employeeData]);
+
     const EmployeeInformation = data => {
-        // console.log("our data",data);
+        setAllData(data);
         data.status = "Active";
-        data.full_name = `${data.first_name} ${data.last_name}`;
-        // setProcessData({basicInfo: data});
+        data.name_title = nameTitle;
+        data.gender = gander
+        data.full_name = `${nameTitle ? nameTitle : ''} ${data.first_name ? data.first_name : ''} ${data.last_name ? data.last_name : ''}`;
         setProcessData({ ...processData, basicInfo: data });
     }
 
-    console.log(employeeData);
+    useEffect(() => {
+        EmployeeInformation(allData);
+    }, [nameTitle, gander])
 
     return (
         <>
@@ -31,9 +34,9 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                                 {id: "Mr", value: "Mr"},
                                 {id: "Mrs", value: "Mrs"},
                             ]}
-                            validation={{...register("name_title")}}
-                            previous={employeeData?.name_title}
-                            error={errors.name_title}
+                            // validation={{...register("name_title")}}
+                            // error={errors.name_title}
+                            setValue={setNameTitle}
                         />
                     </div>
                 </div>
@@ -216,9 +219,9 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                                 {id: "Female", value: "Female"},
                                 {id: "Other", value: "Other"},
                             ]}
-                            previous={employeeData?.gender}
-                            validation={{...register("gender")}}
-                            error={errors.gender}
+                            // validation={{...register("gender")}}
+                            // error={errors.gender}
+                            setValue={setGander}
                         />
                     </div>
                 </div>

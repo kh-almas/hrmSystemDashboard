@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Input from "../../../common/modal/Input";
 import Select from "../../../common/modal/Select";
 import {useForm} from "react-hook-form";
@@ -7,59 +7,24 @@ import axios from "../../../../axios";
 import Swal from "sweetalert2";
 
 const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
+    const [nameTitle, setNameTitle] = useState('');
+    const [gander, setGander] = useState('');
+    const [allData, setAllData] = useState({});
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
-    // const navigate = useNavigate();
+
+    // console.log(nameTitle);
     const EmployeeInformation = data => {
-        // console.log("our data",data);
+        setAllData(data);
         data.status = "Active";
-        data.full_name = `${data.first_name} ${data.last_name}`;
-        // setProcessData({basicInfo: data});
+        data.name_title = nameTitle;
+        data.gender = gander
+        data.full_name = `${nameTitle ? nameTitle : ''} ${data.first_name ? data.first_name : ''} ${data.last_name ? data.last_name : ''}`;
         setProcessData({ ...processData, basicInfo: data });
-        const formData = new FormData();
-        const formbaalData = new FormData();
-
-        // let img
-        // formbaalData.append("img",img)
-        // for (let pair of formbaalData.entries()) {
-        //     console.log("data---->",pair[0]+ ', ' + pair[1]);
-        // }
-
-        // for (const key in data) {
-        //
-        //     if (data.hasOwnProperty(key)) {
-        //         // img = (key=== "image" && data[key][0])
-        //         // console.log(key , key=== "image" ? data[key][0]: data[key])
-        //         formData.append(key, key=== "image" || key=== "cv" ? data[key][0]: data[key]);
-        //     }
-        // }
-
-        // for (let pair of formData.entries()) {
-        //     console.log("data",pair[0]+ ', ' + pair[1]);
-        // }
-
-        // axios.post('/hrm-system/employee', formData)
-        //     .then(info => {
-        //         if (info?.status == 200) {
-        //             Swal.fire({
-        //                 position: 'top-end',
-        //                 icon: 'success',
-        //                 title: 'Your work has been saved',
-        //                 showConfirmButton: false,
-        //                 timer: 1500
-        //             })
-        //
-        //         }
-        //         // navigate("/dashboard/hrm/employee");
-        //     })
-        //     .catch(e => {
-        //         console.log(e)
-        //         Swal.fire({
-        //             icon: 'error',
-        //             title: 'Oops...',
-        //             // text: `${e?.response?.data?.body?.message?.details[0].message}`,
-        //         })
-        //     })
     }
+
+    useEffect(() => {
+        EmployeeInformation(allData);
+    }, [nameTitle, gander])
 
     return (
         <>
@@ -73,8 +38,9 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                                 {id: "Mr", value: "Mr"},
                                 {id: "Mrs", value: "Mrs"},
                             ]}
-                            validation={{...register("name_title")}}
-                            error={errors.name_title}
+                            // validation={{...register("name_title")}}
+                            // error={errors.name_title}
+                            setValue={setNameTitle}
                         />
                     </div>
                 </div>
@@ -246,8 +212,9 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                                 {id: "Female", value: "Female"},
                                 {id: "Other", value: "Other"},
                             ]}
-                            validation={{...register("gender")}}
-                            error={errors.gender}
+                            // validation={{...register("gender")}}
+                            // error={errors.gender}
+                            setValue={setGander}
                         />
                     </div>
                 </div>

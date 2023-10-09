@@ -9,17 +9,8 @@ import BasicInformation from "./employee/basicInformation";
 const AddEmploySetup = () => {
     const [IconWithTab, setIconWithTab] = useState('1');
     const [processData, setProcessData] = useState({});
-    // const [processDatas, setProcessDatas] = useState({});
     const [isUpdate, setIsUpdate] = useState(false);
-    const checkData = [];
     console.log("this is fine", processData);
-    // useEffect(() => {
-    //     console.log("newarray", checkData);
-    // }, [isUpdate])
-    //
-    // const toggle = () => {
-    //     setIsUpdate(!isUpdate)
-    // }
     return (
         <div>
             <Breadcrumb parent="HRM System" title="Add Employee" id="#EMP0000001"/>
