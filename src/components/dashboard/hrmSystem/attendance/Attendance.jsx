@@ -306,8 +306,8 @@ const Attendance = () => {
                         <tr>
                             <th scope="col">{"SL"}</th>
                             <th scope="col">{"Employee"}</th>
-                            <th scope="col">{"Company"}</th>
-                            <th scope="col">{"Branch"}</th>
+                            {/*<th scope="col">{"Company"}</th>*/}
+                            {/*<th scope="col">{"Branch"}</th>*/}
                             <th scope="col">{"Date"}</th>
                             <th scope="col">{"Status"}</th>
                             <th scope="col">{"Clock In"}</th>
@@ -324,8 +324,8 @@ const Attendance = () => {
                                     <tr key={index}>
                                         <td>{ parseInt(howManyItem) * (parseInt(currentPage)-1) + index+1 }</td>
                                         <td>{item?.employee_name }</td>
-                                        <td>{item?.company_id }</td>
-                                        <td>{item?.branch_id }</td>
+                                        {/*<td>{item?.company_id }</td>*/}
+                                        {/*<td>{item?.branch_id }</td>*/}
                                         <td>{item?.date ?? 'N/A'}</td>
                                         <td>{item?.status ?? 'N/A'}</td>
                                         <td>{timeFormat(item?.in_time) ?? 'N/A'}</td>
