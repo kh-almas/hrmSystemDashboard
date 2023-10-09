@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import BaseModal from "../BaseModal";
 import Select from "../Select";
 import Input from "../Input";
@@ -9,6 +9,7 @@ import axios from "../../../../axios";
 import Swal from "sweetalert2";
 
 const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allOrganizationReFetch}) => {
+    const [selectedStatus, setSelectedStatus] = useState('');
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
 
@@ -26,7 +27,7 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
             'country':data.country ? data.country : oldData.country,
             'zip':data.zip ? data.zip : oldData.zip,
             'info':data.info ? data.info : oldData.info,
-            'status':data.status ? data.status : oldData.status
+            'status':selectedStatus ? selectedStatus : oldData.status
         }
 
         axios.put(`/hrm-system/organization/${oldData.id}`, updatedData)
@@ -151,10 +152,11 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            defaultValue={oldData.status}
+                            previous={oldData.status}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status", {required: true})}}
-                            error={errors?.status}
+                            // validation={{...register("status", {required: true})}}
+                            // error={errors?.status}
+                            setValue={setSelectedStatus}
                         />
                     </div>
 
