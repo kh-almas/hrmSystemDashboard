@@ -340,8 +340,6 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Shift"}
                                 placeholder={"Select an option"}
                                 options={shift}
-                                // validation={{...register("shift")}}
-                                // error={errors.shift}
                                 setValue={setSelectedShift}
                             />
                         </div>

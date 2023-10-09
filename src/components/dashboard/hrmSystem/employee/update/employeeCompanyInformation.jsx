@@ -52,17 +52,31 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
     const [allSalaryGradeStatus, allSalaryGradeReFetch, allSalaryGrade, allSalaryGradeError] = GetAllSalaryGrade();
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
-    // useEffect(() => {
-    //     reset()
-    // }, [employeeData]);
+    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedBranch, setSelectedBranch] = useState('');
+    const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [selectedSection, setSelectedSection] = useState('');
+    const [selectedEmployeeGrade, setSelectedEmployeeGrade] = useState('');
+    const [selectedSalaryGrade, setSelectedSalaryGrade] = useState('');
+    const [selectedShift, setSelectedShift] = useState('');
+
+    const [allData, setAllData] = useState({});
 
     const EmployeeCompanyInformation = data => {
-        // setProcessData(previousData => [...previousData, data]);
-        // setIconWithTab("3");
-        // setProcessDatas({companyInformation: data});
+        setAllData(data);
+        data.company = selectedCompany;
+        data.branch = selectedBranch;
+        data.department = selectedDepartment;
+        data.section = selectedSection;
+        data.employeeGrade = selectedEmployeeGrade;
+        data.salaryGrade = selectedSalaryGrade;
+        data.shift = selectedShift;
         setProcessData({ ...processData, company: data });
-        console.log(data);
     }
+
+    useEffect(() => {
+        EmployeeCompanyInformation(allData);
+    }, [company, branch, department, section, employeeGrade, salaryGrade, shift])
 
 
     // console.log(allSalaryGrade?.data?.body?.data);
@@ -213,9 +227,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Company"}
                                 placeholder={"Select an option"}
                                 options={company}
-                                validation={{...register("company_id")}}
-                                error={errors.company_id}
-                                previous={employeeData?.company_id}
+                                setValue={setSelectedCompany}
                             />
                         </div>
                     </div>
@@ -233,9 +245,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Branch"}
                                 placeholder={"Select an option"}
                                 options={branch}
-                                validation={{...register("branch_id")}}
-                                error={errors.branch_id}
-                                previous={employeeData?.branch_id}
+                                setValue={setSelectedBranch}
                             />
                         </div>
                     </div>
@@ -255,9 +265,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Department"}
                                 placeholder={"Select an option"}
                                 options={department}
-                                validation={{...register("department_id")}}
-                                error={errors.department_id}
-                                previous={employeeData?.department_id}
+                                setValue={setSelectedDepartment}
                             />
                         </div>
                     </div>
@@ -275,9 +283,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Section"}
                                 placeholder={"Select an option"}
                                 options={section}
-                                validation={{...register("section_id")}}
-                                error={errors.section_id}
-                                previous={employeeData?.section_id}
+                                setValue={setSelectedSection}
                             />
                         </div>
                     </div>
@@ -297,9 +303,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Employee Grade"}
                                 placeholder={"Select an option"}
                                 options={employeeGrade}
-                                validation={{...register("employee_grade_id")}}
-                                error={errors.employee_grade_id}
-                                previous={employeeData?.employee_grade_id}
+                                setValue={setSelectedEmployeeGrade}
                             />
                         </div>
                     </div>
@@ -317,9 +321,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Salary Grade"}
                                 placeholder={"Select an option"}
                                 options={salaryGrade}
-                                validation={{...register("salary_grade_id")}}
-                                error={errors.salary_grade_id}
-                                previous={employeeData?.salary_grade_id}
+                                setValue={setSelectedSalaryGrade}
                             />
                         </div>
                     </div>
@@ -339,9 +341,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 labelName={"Shift"}
                                 placeholder={"Select an option"}
                                 options={shift}
-                                validation={{...register("shift_id")}}
-                                error={errors.shift_id}
-                                previous={employeeData?.shift_id}
+                                setValue={setSelectedShift}
                             />
                         </div>
                     </div>
