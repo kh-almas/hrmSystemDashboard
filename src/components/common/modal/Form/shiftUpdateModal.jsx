@@ -21,8 +21,11 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = getAllOrganization();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
-    const [selectedOrganization, setSelectedOrganization] = useState("");
+
+    const [selectedOrganization, setSelectedOrganization] = useState("11");
     const [selectedCompany, setSelectedCompany] = useState("");
+    const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedStatus, setSelectedStatus] = useState("");
 
     useEffect(() => {
         setOrganization([])
@@ -79,13 +82,13 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
         const updatedData = {
             'organization_id':selectedOrganization ? selectedOrganization : oldData.organization_id,
             'company_id':selectedCompany ? selectedCompany : oldData.company_id,
-            'branch_id':data.branch_id ? data.branch_id : oldData.branch_id,
+            'branch_id':selectedBranch ? selectedBranch : oldData.branch_id,
             'name':data.name ? data.name : oldData.name,
             'start_time': data.start_time ? data.start_time : formattedTimeForUpdate(oldData.start_time),
             'end_time':data.end_time ? data.end_time : formattedTimeForUpdate(oldData.end_time),
             'weekends':weekdays ? JSON.stringify(weekdays) : oldData.weekends,
             'note':data.note ? data.note : oldData.note,
-            'status':data.status ? data.status : oldData.status
+            'status':selectedStatus ? selectedStatus : oldData.status
         }
 
         console.log(updatedData);
@@ -118,49 +121,25 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     return (
         <>
             <BaseModal title={"Update Shift Entry"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
-                <div className="row row-cols-1 row-cols-lg-2">
-                    <div className="theme-form">
-                        <div className="mb-3 form-group">
-                            <label style={{fontSize: "11px",}} htmlFor={"Organization"}>{`Organization:`} {errors?.organization && <span className="text-danger">(Required)</span>}</label>
-                            <select className={`form-control ${errors?.organization && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"Organization"}
-
-                                    onChange={e => setSelectedOrganization(e.target.value)}
-                            >
-                                <option value="">Select an option</option>
-                                {
-                                    organization?.map((item) => (
-                                        <option value={item.id} selected={parseInt(item.id) === parseInt(oldData?.organization_id)}>{item.value}</option>
-                                    ))
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div className="theme-form">
-                        <div className="mb-3 form-group">
-                            <label style={{fontSize: "11px",}} htmlFor={"company"}>{`Company:`} {errors?.company && <span className="text-danger">(Required)</span>}</label>
-                            <select className={`form-control ${errors?.company && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
-                                    onChange={e => setSelectedCompany(e.target.value)}
-                            >
-                                <option value="">Select an option</option>
-                                {
-                                    company?.map((item) => (
-                                        <option value={item?.id} selected={parseInt(item.id) === parseInt(oldData?.company_id)}>{item.value}</option>
-                                    ))
-                                }
-                            </select>
-                        </div>
-                    </div>
-                </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
+                        <div>
+                            <Select
+                                labelName={"Company"}
+                                placeholder={"Select an option"}
+                                options={company}
+                                previous={oldData?.company_id}
+                                setValue={setSelectedCompany}
+                            />
+                        </div>
+
                         <div>
                             <Select
                                 labelName={"Branch"}
                                 placeholder={"Select an option"}
                                 options={branch}
-                                validation={{...register("branch_id")}}
                                 previous={oldData?.branch_id}
-                                error={errors?.branch_id}
+                                setValue={setSelectedBranch}
                             />
                         </div>
                         <div>
@@ -197,14 +176,6 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                             />
                         </div>
                     </div>
-                    {/*<div className="mb-3">*/}
-                    {/*    <label htmlFor="weekdays">Weekend</label>*/}
-                    {/*    <DropdownMultiselect*/}
-                    {/*        options={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}*/}
-                    {/*        name="weekdays"*/}
-                    {/*        validation={{ ...register("weekdays", { required: true }) }}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
                     <div className="mb-3">
                         <label htmlFor="weekdays">Weekend</label>
                         <DropdownMultiselect
@@ -234,10 +205,9 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            previous={oldData?.status}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status")}}
-                            error={errors?.status}
+                            previous={oldData?.status}
+                            setValue={setSelectedStatus}
                         />
                     </div>
 

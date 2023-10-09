@@ -22,8 +22,12 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = getAllOrganization();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
 
-    const [selectedOrganization, setSelectedOrganization] = useState("");
+    const [selectedOrganization, setSelectedOrganization] = useState("11");
     const [selectedCompany, setSelectedCompany] = useState("");
+    const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedStatus, setSelectedStatus] = useState("");
+
+    // const [weekdays, setWeekdays] = useState('');
 
     useEffect(() => {
         setOrganization([])
@@ -74,6 +78,8 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
 
         data.organization_id = selectedOrganization;
         data.company_id = selectedCompany;
+        data.branch_id = selectedBranch;
+        data.status = selectedStatus;
         data.weekends = JSON.stringify(weekdays);
         console.log(data);
 
@@ -104,61 +110,35 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     return (
         <>
             <BaseModal title={"Add Shift"} dataModal={modal} dataToggle={toggle}>
-                <div className="row row-cols-1 row-cols-lg-2">
-                    <div className="theme-form">
-                        <div className="mb-3 form-group">
-                            <label style={{fontSize: "11px",}} htmlFor={"Organization"}>{`Organization:`} {errors?.organization && <span className="text-danger">(Required)</span>}</label>
-                            <select className={`form-control ${errors?.organization && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"Organization"}
-
-                                    onChange={e => setSelectedOrganization(e.target.value)}
-                            >
-                                <option value="">Select an option</option>
-                                {
-                                    organization?.map((item) => (
-                                        <option value={item.id} selected={parseInt(item.id) === parseInt(selectedOrganization)}>{item.value}</option>
-                                    ))
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div className="theme-form">
-                        <div className="mb-3 form-group">
-                            <label style={{fontSize: "11px",}} htmlFor={"company"}>{`Company:`} {errors?.company && <span className="text-danger">(Required)</span>}</label>
-                            <select className={`form-control ${errors?.company && "is-invalid"}`} style={{fontSize: "11px", height: "30px", outline: "0px !important",}} id={"company"}
-                                    onChange={e => setSelectedCompany(e.target.value)}
-                            >
-                                <option value="">Select an option</option>
-                                {
-                                    company?.map((item) => (
-                                        <option value={item?.id} selected={parseInt(item.id) === parseInt(selectedCompany)}>{item.value}</option>
-                                    ))
-                                }
-                            </select>
-                        </div>
-                    </div>
-                </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
+                        <div>
+                            <Select
+                                labelName={"Company"}
+                                placeholder={"Select an option"}
+                                options={company}
+                                setValue={setSelectedCompany}
+                            />
+                        </div>
                         <div>
                             <Select
                                 labelName={"Branch"}
                                 placeholder={"Select an option"}
                                 options={branch}
-                                validation={{...register("branch_id", {required: true})}}
-                                error={errors?.branch_id}
+                                setValue={setSelectedBranch}
                             />
                         </div>
-                        <div>
-                            <Input
-                                labelName={"Shift Name"}
-                                inputName={"name"}
-                                inputType={"text"}
-                                placeholder={"Enter shift name"}
-                                validation={{
-                                    ...register("name", { required: true }),
-                                }}
-                            />
-                        </div>
+                    </div>
+                    <div>
+                        <Input
+                            labelName={"Shift Name"}
+                            inputName={"name"}
+                            inputType={"text"}
+                            placeholder={"Enter shift name"}
+                            validation={{
+                                ...register("name", { required: true }),
+                            }}
+                        />
                     </div>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
@@ -206,8 +186,9 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                             labelName={"Status"}
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status", {required: true})}}
-                            error={errors?.status}
+                            // validation={{...register("status", {required: true})}}
+                            // error={errors?.status}
+                            setValue={setSelectedStatus}
                         />
                     </div>
 

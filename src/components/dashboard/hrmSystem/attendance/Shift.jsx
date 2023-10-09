@@ -43,7 +43,6 @@ const Shift = () => {
             // console.log(setItem);
             const getData = await getShiftAPI(currentPage, howManyItem, searchData);
             setShift(getData?.data?.body?.data?.data);
-            console.log("sdjhsakdfvhnsadklvhnldfn",getData?.data?.body?.data?.data);
 
             const totalItem = getData?.data?.body?.data?.count
             setTotalDBRow(totalItem);
@@ -94,31 +93,31 @@ const Shift = () => {
         const end_time = formattedTime(data.end_time);
         data.end_time = end_time;
 
-        console.log(data);
+        // console.log(data);
 
-        // axios.post('/hrm-system/shift', data)
-        //     .then(info => {
-        //         if(info?.status == 200)
-        //         {
-        //             Swal.fire({
-        //                 position: 'top-end',
-        //                 icon: 'success',
-        //                 title: 'Your work has been saved',
-        //                 showConfirmButton: false,
-        //                 timer: 1500
-        //             })
-        //             setModal(!modal);
-        //         }
-        //         isDarty();
-        //     })
-        //     .catch(e => {
-        //         Swal.fire({
-        //             icon: 'error',
-        //             title: 'Oops...',
-        //             text: `${e?.response?.data?.body?.message?.details[0].message}`,
-        //             footer: '<a href="">Why do I have this issue?</a>'
-        //         })
-        //     })
+        axios.post('/hrm-system/shift', data)
+            .then(info => {
+                if(info?.status == 200)
+                {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setModal(!modal);
+                }
+                isDarty();
+            })
+            .catch(e => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                    footer: '<a href="">Why do I have this issue?</a>'
+                })
+            })
     };
 
 
@@ -225,7 +224,7 @@ const Shift = () => {
                                     {
                                         shift?.map((item, index) =>
                                             <tr key={index}>
-                                                <td>{index + 1}</td>
+                                                <td>{ parseInt(howManyItem) * (parseInt(currentPage)-1) + index+1 }</td>
                                                 <td>{item?.name}</td>
                                                 <td>{timeFormat(item?.start_time)}</td>
                                                 <td>{timeFormat(item?.end_time)}</td>
@@ -268,70 +267,6 @@ const Shift = () => {
                 </div>
             </div>
             <AddShiftModal reFetch={isDarty} modal={modal} toggle={toggle} />
-            {/*<Modal isOpen={modal} toggle={toggle}>*/}
-            {/*    <ModalHeader toggle={toggle}>Shift Entry</ModalHeader>*/}
-            {/*    <ModalBody>*/}
-            {/*        <form onSubmit={handleSubmit(onSubmit)}>*/}
-            {/*            <div>*/}
-            {/*                <Input*/}
-            {/*                    labelName={"Shift Name"}*/}
-            {/*                    inputName={"name"}*/}
-            {/*                    inputType={"text"}*/}
-            {/*                    placeholder={"Enter shift name"}*/}
-            {/*                    validation={{*/}
-            {/*                        ...register("name", { required: true }),*/}
-            {/*                    }}*/}
-            {/*                />*/}
-            {/*            </div>*/}
-            {/*            <div className="row row-cols-1 row-cols-lg-2">*/}
-            {/*                <div>*/}
-            {/*                    <Input*/}
-            {/*                        labelName={"Start Time"}*/}
-            {/*                        inputName={"start_time"}*/}
-            {/*                        inputType={"time"}*/}
-            {/*                        validation={{ ...register("start_time", { required: true }) }}*/}
-            {/*                    />*/}
-            {/*                </div>*/}
-            {/*                <div>*/}
-            {/*                    <Input*/}
-            {/*                        labelName={"End Time"}*/}
-            {/*                        inputName={"end_time"}*/}
-            {/*                        inputType={"time"}*/}
-            {/*                        validation={{ ...register("end_time", { required: true }) }}*/}
-            {/*                    />*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*            <div className="mb-3">*/}
-            {/*                <label htmlFor="weekdays">Weekend</label>*/}
-            {/*                <DropdownMultiselect*/}
-            {/*                    handleOnChange={(selected) => {*/}
-            {/*                        console.log(selected);*/}
-            {/*                    }}*/}
-            {/*                    options={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}*/}
-            {/*                    name="multi_weekdays"*/}
-            {/*                />*/}
-            {/*            </div>*/}
-            {/*            <div>*/}
-            {/*                <Select*/}
-            {/*                    labelName={"Status"}*/}
-            {/*                    placeholder={"Select an option"}*/}
-            {/*                    options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}*/}
-            {/*                    validation={{...register("status", {required: true})}}*/}
-            {/*                    error={errors?.status}*/}
-            {/*                />*/}
-            {/*            </div>*/}
-
-            {/*            <div className="d-flex justify-content-end">*/}
-            {/*                <Button color="danger" onClick={toggle} className="me-2">*/}
-            {/*                    Cancel*/}
-            {/*                </Button>*/}
-            {/*                <Button color="primary" type="submit">*/}
-            {/*                    Create*/}
-            {/*                </Button>*/}
-            {/*            </div>*/}
-            {/*        </form>*/}
-            {/*    </ModalBody>*/}
-            {/*</Modal>*/}
             {
                 oldData ?
                     <ShiftUpdateModal allShiftReFetch={isDarty} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ShiftUpdateModal>

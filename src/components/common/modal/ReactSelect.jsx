@@ -9,22 +9,14 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
             label: data.value,
     }))
 
-    // console.log("previous", previous)
     const handleChange = (selectedOption) => {
         // Ensure that selectedOption is defined
         if (selectedOption) {
             const id = selectedOption?.value;
             setValue(id)
-            // Other logic
         }
     }
 
-    // useEffect(() => {
-    //     const filterdata = data?.find((option) => option.value === previous)
-    //     console.log("check value", filterdata);
-    // }, [previous]);
-
-    // Define custom styles
     const customStyles = {
         control: (provided, state) => ({
             ...provided,
