@@ -1,35 +1,32 @@
 import React, {useEffect, useState} from 'react';
 import BaseModal from "../BaseModal";
-import Input from "../Input";
 import Select from "../Select";
+import Input from "../Input";
 import {Button} from "reactstrap";
+import GetAllCompany from "../../Query/hrm/GetAllCompany";
 import {useForm} from "react-hook-form";
-import GetAllShift from "../../Query/hrm/GetAllShift";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
+import moment from "moment";
+import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
+import getAllOrganization from "../../Query/hrm/GetAllOrganization";
+import getAllBranch from "../../Query/hrm/GetAllBranch";
 
-const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateModal, dataUpdateToggle, shift}) => {
+const AddShiftSceduleModal = ({modal, toggle, reFetch, shift}) => {
     const [shiftForm, setShiftFrom] = useState('');
     const [shiftTo, setShiftTo] = useState('');
     const [activeOn, setActiveOn] = useState('');
     const [status, setStatus] = useState('');
-    const {register, reset, handleSubmit, formState: {errors},} = useForm();
-
-
-    console.log(oldData?.status);
+    const {register, reset, handleSubmit, formState: { errors },} = useForm();
 
 
     const onSubmit = (data) => {
-        const updatedData = {
-            'date_from':data.date_from ? data.date_from : oldData.date_from,
-            'date_to': data.date_to ? data.date_to : oldData.date_to,
-            'shift_from':shiftForm ? shiftForm : oldData.shift_from,
-            'shift_to':shiftTo ? shiftTo : oldData.shift_to,
-            'active_on':activeOn ? activeOn : oldData.active_on,
-            'status':status ? status : oldData.status
-        }
-
-        axios.put(`/hrm-system/shift-schedule/${oldData.id}`, updatedData)
+        data.shift_from = shiftForm;
+        data.shift_to = shiftTo;
+        data.active_on = activeOn;
+        data.status = status;
+        console.log(data);
+        axios.post('/hrm-system/shift-schedule', data)
             .then(info => {
                 if(info?.status == 200)
                 {
@@ -40,8 +37,8 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    dataUpdateToggle(false);
-                    allShiftScheduleReFetch();
+                    toggle();
+                    reFetch();
                     reset();
                 }
             })
@@ -49,13 +46,14 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
                 })
             })
-    }
+    };
+
     return (
         <>
-            <BaseModal title={"Update Shift Entry"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+            <BaseModal title={"Add Shift"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
@@ -63,8 +61,8 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
                                 labelName={"Date From"}
                                 inputName={"datefrom"}
                                 inputType={"date"}
-                                defaultValue={oldData?.date_from}
                                 validation={{ ...register("date_from", { required: true }) }}
+                                error={errors?.date_from}
                             />
                         </div>
                         <div>
@@ -72,8 +70,8 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
                                 labelName={"Date To"}
                                 inputName={"dateto"}
                                 inputType={"date"}
-                                defaultValue={oldData?.date_to}
                                 validation={{ ...register("date_to", { required: true }) }}
+                                error={errors?.date_to}
                             />
                         </div>
                     </div>
@@ -84,8 +82,7 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
                                 placeholder={"Select an option"}
                                 options={shift}
                                 setValue={setShiftFrom}
-                                previous={oldData?.shift_from}
-                                // validation={{...register("shift_from")}}
+                                // validation={{...register("shift_from", {required: true})}}
                                 // error={errors?.shift_from}
                             />
                         </div>
@@ -94,10 +91,9 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
                                 labelName={"Shift To"}
                                 placeholder={"Select an option"}
                                 options={shift}
-                                setValue={setShiftTo}
-                                previous={oldData?.shift_to}
-                                // validation={{...register("shift_to")}}
+                                // validation={{...register("shift_to", {required: true})}}
                                 // error={errors?.shift_to}
+                                setValue={setShiftTo}
                             />
                         </div>
                     </div>
@@ -114,10 +110,9 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
                                 {id: "Friday", value: "Friday"},
                                 {id: "Saturday", value: "Saturday"},
                             ]}
-                            setValue={setActiveOn}
-                            previous={oldData?.active_on}
-                            // validation={{...register("active_on")}}
+                            // validation={{...register("active_on", {required: true})}}
                             // error={errors?.active_on}
+                            setValue={setActiveOn}
                         />
                     </div>
                     <div>
@@ -125,18 +120,17 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
                             labelName={"Status"}
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            previous={oldData?.status}
-                            setValue={setStatus}
-                            // validation={{...register("status")}}
+                            // validation={{...register("status", {required: true})}}
                             // error={errors?.status}
+                            setValue={setStatus}
                         />
                     </div>
                     <div className="d-flex justify-content-end">
-                        <Button color="danger" onClick={dataUpdateToggle} className="me-2">
+                        <Button color="danger" onClick={toggle} className="me-2">
                             Cancel
                         </Button>
                         <Button color="primary" type="submit">
-                            Update
+                            Create
                         </Button>
                     </div>
                 </form>
@@ -145,4 +139,4 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
     );
 };
 
-export default ShiftScheduleUpdateModal;
+export default AddShiftSceduleModal;
