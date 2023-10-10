@@ -85,7 +85,7 @@ const ManualAttendance = () => {
 
     useEffect(() => {
         setCompany([])
-        allCompany?.data?.body?.data?.map(item => {
+        allCompany?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name

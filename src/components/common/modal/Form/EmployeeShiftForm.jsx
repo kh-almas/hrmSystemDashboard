@@ -24,7 +24,7 @@ const EmployeeShiftForm = ({dataModal, dataToggle, refetch}) => {
     console.log(allShiftSchedule);
     useEffect( () => {
         setEmployee([])
-        allEmployee?.data?.body?.data?.map(item => {
+        allEmployee?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name
@@ -35,7 +35,7 @@ const EmployeeShiftForm = ({dataModal, dataToggle, refetch}) => {
 
     useEffect( () => {
         setShiftSchedule([])
-        allShiftSchedule?.data?.body?.data?.map(item => {
+        allShiftSchedule?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.id
@@ -46,7 +46,7 @@ const EmployeeShiftForm = ({dataModal, dataToggle, refetch}) => {
 
     useEffect(() => {
         setShift([])
-        allShift?.data?.body?.data?.map(item => {
+        allShift?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name

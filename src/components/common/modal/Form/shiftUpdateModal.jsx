@@ -27,9 +27,11 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     const [selectedBranch, setSelectedBranch] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("");
 
+    // console.log("company",company);
+    //
     useEffect(() => {
         setOrganization([])
-        allOrganization?.data?.body?.data?.map(item => {
+        allOrganization?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name
@@ -41,7 +43,8 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     useEffect(() => {
         setCompany([])
         if (selectedOrganization !== ""){
-            const sortedData = allCompany?.data?.body?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+            const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+            // console.log(sortedData);
             sortedData?.map(item => {
                 const set_data = {
                     id: item.id,
@@ -91,10 +94,10 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
             'status':selectedStatus ? selectedStatus : oldData.status
         }
 
-        console.log(updatedData);
+        // console.log(updatedData);
         axios.put(`/hrm-system/shift/${oldData.id}`, updatedData)
             .then(info => {
-                console.log("update",info)
+                // console.log("update",info)
                 if(info?.status == 200)
                 {
                     Swal.fire({

@@ -18,7 +18,7 @@ const AddEmployeeGradeModal = ({modal, toggle, reFetch}) => {
 
     useEffect(() => {
         setCompany([])
-        allCompany?.data?.body?.data?.map(item => {
+        allCompany?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name
@@ -29,7 +29,7 @@ const AddEmployeeGradeModal = ({modal, toggle, reFetch}) => {
 
     useEffect(() => {
         setOrganization([]);
-        allOrganization?.data?.body?.data?.map(item => {
+        allOrganization?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item?.id,
                 value: item?.name

@@ -28,10 +28,11 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     const [selectedStatus, setSelectedStatus] = useState("");
 
     // const [weekdays, setWeekdays] = useState('');
+    console.log("company",company);
 
     useEffect(() => {
         setOrganization([])
-        allOrganization?.data?.body?.data?.map(item => {
+        allOrganization?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name
@@ -43,7 +44,8 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     useEffect(() => {
         setCompany([])
         if (selectedOrganization !== ""){
-            const sortedData = allCompany?.data?.body?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+            const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+            console.log("sortedData",sortedData)
             sortedData?.map(item => {
                 const set_data = {
                     id: item.id,

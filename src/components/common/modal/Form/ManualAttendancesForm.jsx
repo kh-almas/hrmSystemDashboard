@@ -34,6 +34,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
+    // console.log("allCompany?.data?.body?.data?.data",allCompany?.data?.body?.data?.data)
     useEffect( () => {
         setEmployee([])
         if(selectedShift !== "")
@@ -53,7 +54,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     useEffect(() => {
         setCompany([])
         if (selectedOrganization !== ""){
-            const sortedData = allCompany?.data?.body?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+            const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
             sortedData?.map(item => {
                 const set_data = {
                     id: item?.id,
