@@ -68,7 +68,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
     useEffect(() => {
         setCompany([])
         if (selectedOrganization !== ""){
-            const sortedData = allCompany?.data?.body?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+            const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
             sortedData?.map(item => {
                 const set_data = {
                     id: item?.id,

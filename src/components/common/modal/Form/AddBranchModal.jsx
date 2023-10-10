@@ -10,12 +10,14 @@ import Swal from "sweetalert2";
 
 const AddBranchModal = ({modal, toggle, reFetch}) => {
     const [company, setCompany] = useState([]);
+    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
     const {register, handleSubmit, formState: { errors },} = useForm();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
 
     useEffect(() => {
         setCompany([])
-        allCompany?.data?.body?.data?.map(item => {
+        allCompany?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name
@@ -25,7 +27,9 @@ const AddBranchModal = ({modal, toggle, reFetch}) => {
     }, [allCompany])
 
     const onSubmit = (data) => {
-        console.log(data);
+        data.company_id = selectedCompany;
+        data.status = selectedStatus;
+        // console.log(data);
         axios.post('/hrm-system/branch', data)
             .then(info => {
                 if(info?.status == 200)
@@ -59,8 +63,7 @@ const AddBranchModal = ({modal, toggle, reFetch}) => {
                             labelName={"Company"}
                             placeholder={"Select an option"}
                             options={company}
-                            validation={{...register("company_id", {required: true})}}
-                            error={errors?.company_id}
+                            setValue={setSelectedCompany}
                         />
                     </div>
                     <div>
@@ -108,8 +111,7 @@ const AddBranchModal = ({modal, toggle, reFetch}) => {
                             labelName={"Status"}
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status", {required: true})}}
-                            error={errors?.status}
+                            setValue={setSelectedStatus}
                         />
                     </div>
 

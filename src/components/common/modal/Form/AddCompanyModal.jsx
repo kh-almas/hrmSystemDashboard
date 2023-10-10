@@ -10,6 +10,8 @@ import Swal from "sweetalert2";
 import GetAllOrganization from "../../Query/hrm/GetAllOrganization";
 
 const AddCompanyModal = ({ modal, toggle, reFetch }) => {
+    const [selectedOrganization, setSelectedOrganization] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
     const [organization, setOrganization] = useState([]);
     const {register, handleSubmit, formState: { errors },} = useForm();
     const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = GetAllOrganization();
@@ -17,7 +19,7 @@ const AddCompanyModal = ({ modal, toggle, reFetch }) => {
 
     useEffect(() => {
         setOrganization([]);
-        allOrganization?.data?.body?.data?.map(item => {
+        allOrganization?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item?.id,
                 value: item?.name
@@ -27,7 +29,9 @@ const AddCompanyModal = ({ modal, toggle, reFetch }) => {
     }, [allOrganization])
 
     const onSubmit = (data) => {
-        console.log(data);
+        data.organization_id = selectedOrganization;
+        data.status = selectedStatus;
+        // console.log(data);
         axios.post('/hrm-system/company', data)
             .then(info => {
                 if(info?.status == 200)
@@ -61,8 +65,7 @@ const AddCompanyModal = ({ modal, toggle, reFetch }) => {
                             labelName={"Organization"}
                             placeholder={"Select an option"}
                             options={organization}
-                            validation={{...register("organization_id", {required: true})}}
-                            error={errors?.shift_from}
+                            setValue={setSelectedOrganization}
                         />
                     </div>
                     <div>
@@ -150,8 +153,7 @@ const AddCompanyModal = ({ modal, toggle, reFetch }) => {
                             labelName={"Status"}
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status", {required: true})}}
-                            error={errors?.status}
+                            setValue={setSelectedStatus}
                         />
                     </div>
 

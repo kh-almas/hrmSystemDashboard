@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import BaseModal from "../BaseModal";
 import Select from "../Select";
 import Input from "../Input";
@@ -9,8 +9,9 @@ import axios from "../../../../axios";
 import Swal from "sweetalert2";
 
 const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, oldData, allCompanyReFetch}) => {
+    const [selectedOrganization, setSelectedOrganization] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
-
 
     useEffect(() => {
         reset();
@@ -18,7 +19,7 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
 
     const onSubmit = (data) => {
         const updatedData = {
-            'organization_id':data.organization_id ? data.organization_id : oldData.organization_id,
+            'organization_id':selectedOrganization ? selectedOrganization : oldData.organization_id,
             'name': data.name ? data.name : oldData.name,
             'email':data.email ? data.email : oldData.email,
             'phone':data.phone ? data.phone : oldData.phone,
@@ -27,7 +28,7 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
             'country':data.country ? data.country : oldData.country,
             'zip':data.zip ? data.zip : oldData.zip,
             'info':data.info ? data.info : oldData.info,
-            'status':data.status ? data.status : oldData.status
+            'status':selectedStatus ? selectedStatus : oldData.status
         }
 
         axios.put(`/hrm-system/company/${oldData.id}`, updatedData)
@@ -66,8 +67,9 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
                             placeholder={"Select an option"}
                             options={organization}
                             previous={oldData.organization_id}
-                            validation={{...register("organization_id")}}
-                            error={errors?.organization_id}
+                            // validation={{...register("organization_id")}}
+                            // error={errors?.organization_id}
+                            setValue={setSelectedOrganization}
                         />
                     </div>
                     <div>
@@ -164,8 +166,9 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
                             placeholder={"Select an option"}
                             defaultValue={oldData.status}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status")}}
-                            error={errors?.status}
+                            // validation={{...register("status")}}
+                            // error={errors?.status}
+                            setValue={setSelectedStatus}
                         />
                     </div>
 

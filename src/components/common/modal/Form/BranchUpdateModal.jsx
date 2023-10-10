@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import BaseModal from "../BaseModal";
 import Select from "../Select";
 import Input from "../Input";
@@ -10,7 +10,8 @@ import Swal from "sweetalert2";
 
 const BranchUpdateModal = ({company, allBranchReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
-
+    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
 
     useEffect(() => {
         reset();
@@ -18,12 +19,12 @@ const BranchUpdateModal = ({company, allBranchReFetch, oldData, dataUpdateModal,
 
     const onSubmit = (data) => {
         const updatedData = {
-            'company_id':data.company_id ? data.company_id : oldData.company_id,
+            'company_id':selectedCompany ? selectedCompany : oldData.company_id,
             'name': data.name ? data.name : oldData.name,
             'email':data.email ? data.email : oldData.email,
             'phone':data.phone ? data.phone : oldData.phone,
             'address':data.address ? data.address : oldData.address,
-            'status':data.status ? data.status : oldData.status
+            'status':selectedStatus ? selectedStatus : oldData.status
         }
 
         axios.put(`/hrm-system/branch/${oldData.id}`, updatedData)
@@ -40,6 +41,8 @@ const BranchUpdateModal = ({company, allBranchReFetch, oldData, dataUpdateModal,
                     })
                     dataUpdateToggle(false);
                     allBranchReFetch();
+                    setSelectedCompany('');
+                    setSelectedStatus('');
                 }
             })
             .catch(e => {
@@ -62,8 +65,7 @@ const BranchUpdateModal = ({company, allBranchReFetch, oldData, dataUpdateModal,
                             placeholder={"Select an option"}
                             options={company}
                             previous={oldData?.company_id}
-                            validation={{...register("company_id", {required: true})}}
-                            error={errors?.company_id}
+                            setValue={setSelectedCompany}
                         />
                     </div>
                     <div>
@@ -116,8 +118,7 @@ const BranchUpdateModal = ({company, allBranchReFetch, oldData, dataUpdateModal,
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
                             previous={oldData?.status}
-                            validation={{...register("status", {required: true})}}
-                            error={errors?.status}
+                            setValue={setSelectedStatus}
                         />
                     </div>
 

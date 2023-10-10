@@ -28,7 +28,7 @@ const EmployeeShiftUpdateForm = ({dataUpdateModal, dataUpdateToggle, oldData, re
 
     useEffect( () => {
         setEmployee([]);
-        allEmployee?.data?.body?.data?.map(item => {
+        allEmployee?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name
@@ -39,7 +39,7 @@ const EmployeeShiftUpdateForm = ({dataUpdateModal, dataUpdateToggle, oldData, re
 
     useEffect( () => {
         setShiftSchedule([])
-        allShiftSchedule?.data?.body?.data?.map(item => {
+        allShiftSchedule?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.id
@@ -50,7 +50,7 @@ const EmployeeShiftUpdateForm = ({dataUpdateModal, dataUpdateToggle, oldData, re
 
     useEffect(() => {
         setShift([]);
-        allShift?.data?.body?.data?.map(item => {
+        allShift?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name

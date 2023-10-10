@@ -140,7 +140,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
 
     useEffect(() => {
         setCompany([]);
-        allCompany?.data?.body?.data?.map(item => {
+        allCompany?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item?.id,
                 value: item?.name
@@ -162,7 +162,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
 
     useEffect(() => {
         setOrganization([]);
-        allOrganization?.data?.body?.data?.map(item => {
+        allOrganization?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item?.id,
                 value: item?.name
