@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
+import getManualAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getManualAttendanceReportsAPI";
 
 
-const DailyAttendance = () => {
+const DailyAttendanceReport = () => {
     return (
         <>
             <div className="pt-4 mb-3">
@@ -259,4 +260,4 @@ const DailyAttendance = () => {
     );
 };
 
-export default DailyAttendance;
+export default DailyAttendanceReport;
