@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import BaseModal from "../BaseModal";
 import Select from "../Select";
 import Input from "../Input";
@@ -7,10 +7,27 @@ import {useForm} from "react-hook-form";
 import moment from "moment";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
+import GetAllCompany from "../../Query/hrm/GetAllCompany";
 
 const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
+    const [company, setCompany] = useState([]);
+    const [selectedCompany, setSelectedCompany] = useState('');
+    const [status, setStatus] = useState('');
+    const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
 
+
+    useEffect(() => {
+        setCompany([]);
+        allCompany?.data?.body?.data?.data?.map(item => {
+            const set_data = {
+                id: item?.id,
+                value: item?.name
+            }
+            setCompany(prevCompany => [...prevCompany, set_data]);
+        })
+    }, [allCompany])
+    // console.log(company)
 
     useEffect(() => {
         reset();
@@ -18,9 +35,10 @@ const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal
 
     const onSubmit = (data) => {
         const updatedData = {
+            'company_id':selectedCompany ? selectedCompany : oldData.name,
             'name':data.name ? data.name : oldData.name,
             'details': data.details ? data.details : oldData.details,
-            'status':data.status ? data.status : oldData.status
+            'status':status ? status : oldData.status
         }
 
         axios.put(`/hrm-system/department/${oldData.id}`, updatedData)
@@ -37,6 +55,8 @@ const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal
                     })
                     dataUpdateToggle(false);
                     allDepartmentReFetch();
+                    setSelectedCompany('');
+                    setStatus('');
                 }
             })
             .catch(e => {
@@ -53,6 +73,15 @@ const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal
         <>
             <BaseModal title={"Update Department"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
+                    <div>
+                        <Select
+                            labelName={"Company"}
+                            placeholder={"Select an option"}
+                            options={company}
+                            setValue={setSelectedCompany}
+                            previous={oldData?.company_id}
+                        />
+                    </div>
                     <div>
                         <Input
                             labelName={"Department Name"}
@@ -80,9 +109,8 @@ const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal
                             labelName={"Status"}
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status", {required: true})}}
+                            setValue={setStatus}
                             previous={oldData?.status}
-                            error={errors?.status}
                         />
                     </div>
 
@@ -92,7 +120,7 @@ const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal
                             Cancel
                         </Button>
                         <Button color="primary" type="submit">
-                            Create
+                            Update
                         </Button>
                     </div>
                 </form>

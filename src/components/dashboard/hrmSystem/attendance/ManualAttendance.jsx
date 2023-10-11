@@ -12,7 +12,7 @@ import {useForm} from "react-hook-form";
 import getAllBranch from "../../../common/Query/hrm/GetAllBranch";
 import moment from "moment";
 import GetAllCompany from "../../../common/Query/hrm/GetAllCompany";
-import getManualAttendanceAPI from "../../../common/Query/hrm/forSort/getManualAttendance";
+import getManualAttendanceAPI from "../../../common/Query/hrm/forSort/getManualAttendanceAPI";
 import Select from "../../../common/modal/Select";
 
 const ManualAttendance = () => {

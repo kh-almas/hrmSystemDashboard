@@ -15,10 +15,10 @@ const styles = StyleSheet.create({
     },
 });
 
-  const InvoiceItemsTable = ({invoice}) => (
+  const InvoiceItemsTable = ({invoice, data}) => (
     <View style={styles.tableContainer}>
         <InvoiceTableHeader />
-        <InvoiceTableRow/>
+        <InvoiceTableRow data={data}></InvoiceTableRow>
     </View>
   );
   

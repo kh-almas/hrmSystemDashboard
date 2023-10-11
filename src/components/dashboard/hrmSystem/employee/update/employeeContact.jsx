@@ -45,7 +45,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, contactDa
             data.id = contactID;
             setContactID(0);
         }
-        console.log("asdkfvhnsdkfjlgs", data)
+        // console.log("asdkfvhnsdkfjlgs", data)
         setContact(preData => [data, ...preData]);
         // setEditContactData([]);
         reset();
@@ -77,7 +77,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, contactDa
                 toggle();
             })
             .catch(e => {
-                console.log(e);
+                // console.log(e);
                 if(e?.response?.data?.body?.message?.sqlState === "23000")
                 {
                     Swal.fire({

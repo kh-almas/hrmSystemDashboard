@@ -57,6 +57,28 @@ const AddOrganizationModal = ({modal, toggle, reFetch}) => {
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Input
+                                labelName={"Short Name"}
+                                inputName={"shortname"}
+                                inputType={"text"}
+                                placeholder={"Enter Short name"}
+                                validation={{
+                                    ...register("shortname", { required: true }),
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Slogan"}
+                                inputName={"slogan"}
+                                inputType={"text"}
+                                placeholder={"Enter Slogan name"}
+                                validation={{
+                                    ...register("slogan", { required: true }),
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <Input
                                 labelName={"Email"}
                                 inputName={"email"}
                                 placeholder={"Enter your email"}
@@ -123,13 +145,22 @@ const AddOrganizationModal = ({modal, toggle, reFetch}) => {
                             />
                         </div>
                     </div>
+                    <div className="form-group mb-0">
+                        <label htmlFor="exampleFormControlTextarea4">
+                            description
+                        </label>
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea4"
+                            rows="3"
+                            {...register("description")}
+                        ></textarea>
+                    </div>
                     <div>
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            // validation={{...register("status", {required: true})}}
-                            // error={errors?.status}
                             setValue={setSelectedStatus}
                         />
                     </div>

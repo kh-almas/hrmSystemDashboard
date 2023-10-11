@@ -25,7 +25,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
 
     }, [contact])
 
-    console.log(editContactData);
+    // console.log(editContactData);
 
     useEffect( () => {
         setContact([...contact]);

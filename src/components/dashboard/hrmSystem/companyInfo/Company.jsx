@@ -1,21 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {Button, Modal, ModalBody, ModalHeader, Pagination, PaginationItem, PaginationLink} from "reactstrap"
-import Input from "../../../common/modal/Input";
-import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
-import Select from "../../../common/modal/Select";
 import moment from "moment/moment";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
-import ShiftUpdateModal from "../../../common/modal/Form/shiftUpdateModal";
 import GetAllOrganization from "../../../common/Query/hrm/GetAllOrganization";
-import OrganizationUpdateModal from "../../../common/modal/Form/OrganizationUpdateModal";
-import GetAllCompany from "../../../common/Query/hrm/GetAllCompany";
 import CompanyUpdateModal from "../../../common/modal/Form/CompanyUpdateModal";
-import getShiftAPI from "../../../common/Query/hrm/forSort/getShiftAPI";
 import getCompanyAPI from "../../../common/Query/hrm/forSort/getCompanyAPI";
 import AddCompanyModal from "../../../common/modal/Form/AddCompanyModal";
 

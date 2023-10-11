@@ -1,33 +1,57 @@
 import React, {useEffect, useState} from 'react';
 import Breadcrumb from "../../../common/breadcrumb";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
-import {Button, Modal, ModalBody, ModalHeader} from "reactstrap"
+import {Button, Modal, ModalBody, ModalHeader, Pagination, PaginationItem, PaginationLink} from "reactstrap"
 import Input from "../../../common/modal/Input";
-import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import Select from "../../../common/modal/Select";
-import moment from "moment/moment";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
-import ShiftUpdateModal from "../../../common/modal/Form/shiftUpdateModal";
-import GetAllOrganization from "../../../common/Query/hrm/GetAllOrganization";
-import OrganizationUpdateModal from "../../../common/modal/Form/OrganizationUpdateModal";
 import DepartmentUpdateModal from "../../../common/modal/Form/DepartmentUpdateModal";
 import GetAllDepartment from "../../../common/Query/hrm/GetAllDepartment";
+import getCompanyAPI from "../../../common/Query/hrm/forSort/getCompanyAPI";
+import getDepartmentAPI from "../../../common/Query/hrm/forSort/getDepartmentAPI";
+import AddDepartmentModal from "../../../common/modal/Form/AddDepartmentModal";
 
 const Department = () => {
+    const [pageCount, setPageCount] = useState(1);
+    const [howManyItem, setHowManyItem] = useState('10');
+    const [currentPage, setCurrentPage] = useState('1');
+    const [totalDBRow, setTotalDBRow] = useState(0);
+    const [searchData, setSearchData] = useState('');
+    const [isChange, setIsChange] = useState(false);
+    const isDarty = () =>
+    {
+        setIsChange(!isChange);
+    }
+
     const [department, setDepartment] = useState([]);
     const [modal, setModal] = useState(false);
     const [oldData, setOldData] = useState({});
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
-    const [allDepartmentStatus, allDepartmentReFetch, allDepartment, allDepartmentError] = GetAllDepartment();
     const {register, handleSubmit, formState: { errors },} = useForm();
 
 
-    useEffect(() => {
-        setDepartment(allDepartment?.data?.body?.data);
-    }, [allDepartment])
+    // useEffect(() => {
+    //     setDepartment(allDepartment?.data?.body?.data);
+    // }, [allDepartment])
+
+    useEffect( () => {
+        const getDepartment= async () => {
+            const setItem = howManyItem < totalDBRow ? howManyItem : totalDBRow;
+            // console.log(setItem);
+            const getData = await getDepartmentAPI(currentPage, howManyItem, searchData);
+            setDepartment(getData?.data?.body?.data?.data);
+            // console.log(getData);
+
+            const totalItem = getData?.data?.body?.data?.count
+            setTotalDBRow(totalItem);
+            const page = Math.ceil( totalItem / howManyItem);
+            setPageCount(page);
+        }
+        getDepartment();
+
+    }, [howManyItem, currentPage, searchData, isChange])
 
     const toggle = () => {
         setModal(!modal);
@@ -51,14 +75,13 @@ const Department = () => {
                     })
                     setModal(!modal);
                 }
-                allDepartmentReFetch();
+                isDarty();
             })
             .catch(e => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                    footer: '<a href="">Why do I have this issue?</a>'
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`
                 })
             })
     };
@@ -84,7 +107,7 @@ const Department = () => {
                                 'success'
                             )
                         }
-                        allDepartmentReFetch();
+                        isDarty();
                     })
                     .catch(e => {
                         console.log(e);
@@ -108,6 +131,19 @@ const Department = () => {
             }
         })
     }
+
+    const paginationItems = [];
+
+    for (let i = 1; i <= pageCount; i++) {
+        paginationItems.push(
+            <PaginationItem key={i} active={i === parseInt(currentPage)}>
+                <PaginationLink onClick={() => setCurrentPage(i)}>
+                    {i}
+                </PaginationLink>
+            </PaginationItem>
+        );
+    }
+
     return (
         <>
             <Breadcrumb parent="HRM System" title="Manage Department" />
@@ -131,13 +167,14 @@ const Department = () => {
                 <div className="row">
                     <div className="col-sm-12">
                         <div className="card" style={{ padding: "20px" }}>
-                            <CommonSearchComponet />
+                            <CommonSearchComponet setCurrentPage={setCurrentPage} searchData={searchData} setSearchData={setSearchData} howManyItem={howManyItem} setHowManyItem={setHowManyItem} />
                             <div className="table-responsive">
                                 <table className="table">
                                     <thead className=" table-border">
                                     <tr>
                                         <th scope="col">{"ID"}</th>
                                         <th scope="col">{"Name"}</th>
+                                        <th scope="col">{"Company"}</th>
                                         <th scope="col">{"Details"}</th>
                                         <th scope="col">{"Status"}</th>
                                         <th scope="col">{"Action"}</th>
@@ -147,8 +184,9 @@ const Department = () => {
                                     {
                                         department?.map((item, index) =>
                                             <tr key={index}>
-                                                <td>{index + 1}</td>
+                                                <td>{ parseInt(howManyItem) * (parseInt(currentPage)-1) + index+1 }</td>
                                                 <td>{item?.name}</td>
+                                                <td>{item?.company_name}</td>
                                                 <td>{item?.details}</td>
                                                 <td>{item?.status}</td>
                                                 <td>
@@ -167,60 +205,28 @@ const Department = () => {
                                     </tbody>
                                 </table>
                             </div>
-                            <p className="p-l-10 p-t-10">Showing 1 to 1 of 1 entries</p>
+                            <div className="mt-3 d-flex justify-content-end">
+                                <Pagination aria-label="Page navigation example" className="pagination-primary">
+                                    <PaginationItem disabled={currentPage === 1 ? true : false}>
+                                        <PaginationLink onClick={() => setCurrentPage(currentPage - 1)} previous href="#javascript" />
+                                    </PaginationItem>
+
+                                    {paginationItems}
+
+                                    <PaginationItem disabled={currentPage === pageCount ? true : false}>
+                                        <PaginationLink onClick={() => setCurrentPage(currentPage + 1)} next href="#javascript" />
+                                    </PaginationItem>
+                                </Pagination>
+                            </div>
+                            {/*<p className="p-l-10 p-t-10">Showing 1 to 1 of 1 entries</p>*/}
                         </div>
                     </div>
                 </div>
             </div>
-            <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Department Entry</ModalHeader>
-                <ModalBody>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div>
-                            <Input
-                                labelName={"Department Name"}
-                                inputName={"name"}
-                                inputType={"text"}
-                                placeholder={"Enter department name"}
-                                validation={{
-                                    ...register("name", { required: true }),
-                                }}
-                            />
-                        </div>
-                        <div>
-                            <Input
-                                labelName={"Details"}
-                                inputName={"details"}
-                                placeholder={"Enter details"}
-                                inputType={"text"}
-                                validation={{ ...register("details", { required: true }) }}
-                            />
-                        </div>
-                        <div>
-                            <Select
-                                labelName={"Status"}
-                                placeholder={"Select an option"}
-                                options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                                validation={{...register("status", {required: true})}}
-                                error={errors?.status}
-                            />
-                        </div>
-
-
-                        <div className="d-flex justify-content-end">
-                            <Button color="danger" onClick={toggle} className="me-2">
-                                Cancel
-                            </Button>
-                            <Button color="primary" type="submit">
-                                Create
-                            </Button>
-                        </div>
-                    </form>
-                </ModalBody>
-            </Modal>
+            <AddDepartmentModal modal={modal} toggle={toggle} reFetch={isDarty}></AddDepartmentModal>
             {
                 oldData ?
-                    <DepartmentUpdateModal allDepartmentReFetch={allDepartmentReFetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></DepartmentUpdateModal>
+                    <DepartmentUpdateModal allDepartmentReFetch={isDarty} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></DepartmentUpdateModal>
                     : ''
             }
         </>

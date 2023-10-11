@@ -123,7 +123,7 @@ const Shift = () => {
 
     const handleSubmitCheck = (e) => {
         e.preventDefault();
-        console.log(e.target.countries);
+        // console.log(e.target.countries);
     }
 
     const deleteShift = id => {
@@ -150,7 +150,7 @@ const Shift = () => {
                         isDarty();
                     })
                     .catch(e => {
-                        console.log(e);
+                        // console.log(e);
                         if(e?.response?.data?.body?.message?.sqlState === "23000")
                         {
                             Swal.fire({
