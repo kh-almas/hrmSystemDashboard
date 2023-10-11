@@ -76,9 +76,9 @@ import LeaveSetup from "../components/dashboard/hrmSystem/ManageLeaveSetup/Leave
 import Career from "../components/dashboard/hrmSystem/RecruitmentSetup/Career";
 import CustomQuestion from "../components/dashboard/hrmSystem/RecruitmentSetup/CustomQuestion";
 import InterviewSchedule from "../components/dashboard/hrmSystem/RecruitmentSetup/InterviewSchedule";
-import DailyAttendance from "../components/dashboard/hrmSystem/Reports/DailyAttendance";
+import DailyAttendanceReport from "../components/dashboard/hrmSystem/Reports/DailyAttendanceReport";
 import DailyAttendanceReportPDf from "../components/dashboard/hrmSystem/Reports/DailyAttendnaceReport/DailyAttendanceReportPDf";
-import DateWiseAttendance from "../components/dashboard/hrmSystem/Reports/DateWiseAttendance";
+import DateWiseAttendanceReport from "../components/dashboard/hrmSystem/Reports/DateWiseAttendanceReport";
 import DateWiseAttendanceReportPDf from "../components/dashboard/hrmSystem/Reports/DateWiseAttendnaceReport/DateWiseAttendanceReportPDf";
 import EmployMovementReportPDf from "../components/dashboard/hrmSystem/Reports/EmployMovementReport/EmployMovementReportPDf";
 import EmployWiseAttendanceReportPDf from "../components/dashboard/hrmSystem/Reports/EmployWiseAttendanceReport/EmployWiseAttendanceReportPDf";
@@ -285,7 +285,7 @@ export const routes = [
 
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/daily`,
-    Component: <DailyAttendance />,
+    Component: <DailyAttendanceReport />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/daily/pdf`,
@@ -293,7 +293,7 @@ export const routes = [
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/datewise`,
-    Component: <DateWiseAttendance />,
+    Component: <DateWiseAttendanceReport />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/datewise/pdf`,

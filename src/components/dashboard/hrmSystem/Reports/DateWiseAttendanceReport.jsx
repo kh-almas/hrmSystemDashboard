@@ -1,23 +1,74 @@
 import React, {useEffect, useState} from "react";
+import Breadcrumb from "../../../common/breadcrumb";
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {Link} from "react-router-dom";
+import GetAllCompany from "../../../common/Query/hrm/GetAllCompany";
+import getAllBranch from "../../../common/Query/hrm/GetAllBranch";
+import Select from "../../../common/modal/Select";
 import getManualAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getManualAttendanceReportsAPI";
+import getDailyAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getDailyAttendanceReportsAPI";
 
 
-const ManualAttendanceReport = () => {
+const DateWiseAttendanceReport = () => {
+    const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
+    const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
+    const [selectedCompany, setSelectedCompany] = useState("");
+    const [selectedBranch, setSelectedBranch] = useState("");
+    const [dateFrom, setDateForm] = useState("2023-09-01");
+    const [dateTo, setDateTo] = useState("2023-09-10");
+    const [company, setCompany] = useState([]);
+    const [branch, setBranch] = useState([]);
+    const [data, setData] = useState([]);
+    console.log("selectedCompany", selectedCompany)
+    useEffect(() => {
+        const getDailyAttendanceReport = async () => {
+
+            console.log("selectedCompany2", selectedCompany)
+            const getData = await getDailyAttendanceReportsAPI(selectedCompany, selectedBranch, dateFrom, dateTo);
+            setData(getData?.data?.body?.data?.data);
+            console.log(getData?.data?.body?.data?.data);
+        }
+        getDailyAttendanceReport();
+
+    }, [selectedCompany, selectedBranch, dateFrom, dateTo])
+
+    useEffect(() => {
+        setCompany([])
+            allCompany?.data?.body?.data?.data?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setCompany(prevCompany => [...prevCompany, set_data]);
+            })
+    }, [allCompany])
+
+    useEffect(() => {
+        setBranch([])
+        if (selectedCompany !== ""){
+            const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setBranch(prevBranch => [...prevBranch, set_data]);
+            })
+        }
+    }, [allBranch, selectedCompany])
+
+    const dateto = e => {
+        setDateTo(e.target.value);
+    }
+    const dateform = e => {
+        setDateForm(e.target.value)
+    }
+
+
+
+
     const [modal, setModal] = useState();
 
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        const getManualAttendance = async () => {
-            const getData = await getManualAttendanceReportsAPI();
-            setData(getData?.data?.body?.data?.data);
-        }
-        getManualAttendance();
-
-    }, [])
-
-    console.log(data);
     const toggle = () => {
         setModal(!modal);
     };
@@ -26,14 +77,15 @@ const ManualAttendanceReport = () => {
             <div className="pt-4 mb-3">
                 <div className="d-flex flex-rows justify-content-center">
                     <div>
-                        <h3 className="fw-bold">Manual Attendance Reports</h3>
+                        <h3 className="fw-bold">Date Wise Attendance Report</h3>
                     </div>
                 </div>
                 <div className="d-flex justify-content-center">
-                    <Link to={"/dashboard/hrm/attendance/manual/report/pdf"} target="_blank"
-                          className="ms-3 btn btn-primary">
-                        View PDF
-                    </Link>
+
+                    <div>
+                        <Link to={"/dashboard/hrm/attendance/datewise/pdf"} target="_blank" className="ms-3 btn btn-primary">View
+                            PDF</Link>
+                    </div>
                 </div>
             </div>
 
@@ -41,11 +93,31 @@ const ManualAttendanceReport = () => {
                 <div className="row">
                     <div className="col">
                         <label htmlFor="exampleFormControlInput1">Date From</label>
-                        <input className="form-control" required={true} type="date"/>
+                        <input onChange={dateform} className="form-control" required={true} type="date"/>
                     </div>
                     <div className="col">
                         <label htmlFor="exampleFormControlInput1">Date To</label>
-                        <input className="form-control" required={true} type="date"/>
+                        <input onChange={dateto} className="form-control" required={true} type="date"/>
+                    </div>
+                    <div className="col">
+                        <div>
+                            <Select
+                                labelName={"Company"}
+                                placeholder={"Select an option"}
+                                options={company}
+                                setValue={setSelectedCompany}
+                            />
+                        </div>
+                    </div>
+                    <div className="col">
+                        <div>
+                            <Select
+                                labelName={"Branch"}
+                                placeholder={"Select an option"}
+                                options={branch}
+                                setValue={setSelectedBranch}
+                            />
+                        </div>
                     </div>
                     <div className="col">
                         <div
@@ -112,6 +184,7 @@ const ManualAttendanceReport = () => {
                     </Button>
                 </ModalFooter>
             </Modal>
+
             {
                 data?.map((com, index) =>
                     <div className="card" style={{padding: "20px"}} key={index}>
@@ -165,9 +238,8 @@ const ManualAttendanceReport = () => {
                     </div>
                 )
             }
-
         </>
     );
 };
 
-export default ManualAttendanceReport;
+export default DateWiseAttendanceReport;
