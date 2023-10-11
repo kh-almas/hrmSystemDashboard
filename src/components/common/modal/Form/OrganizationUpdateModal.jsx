@@ -20,6 +20,9 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
     const onSubmit = (data) => {
         const updatedData = {
             'name':data.name ? data.name : oldData.name,
+            'shortname':data.shortname ? data.shortname : oldData.shortname,
+            'slogan':data.slogan ? data.slogan : oldData.slogan,
+            'description':data.description ? data.description : oldData.description,
             'email': data.email ? data.email : oldData.email,
             'phone':data.phone ? data.phone : oldData.phone,
             'vat':data.vat ? data.vat : oldData.vat,
@@ -68,11 +71,35 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
                             defaultValue={oldData.name}
                             placeholder={"Enter organization name"}
                             validation={{
-                                ...register("name", { required: true }),
+                                ...register("name")
                             }}
                         />
                     </div>
                     <div className="row row-cols-1 row-cols-lg-2">
+                        <div>
+                            <Input
+                                labelName={"Short Name"}
+                                inputName={"shortname"}
+                                inputType={"text"}
+                                defaultValue={oldData?.shortname}
+                                placeholder={"Enter Short name"}
+                                validation={{
+                                    ...register("shortname")
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Slogan"}
+                                inputName={"slogan"}
+                                inputType={"text"}
+                                defaultValue={oldData?.slogan}
+                                placeholder={"Enter Slogan name"}
+                                validation={{
+                                    ...register("slogan")
+                                }}
+                            />
+                        </div>
                         <div>
                             <Input
                                 labelName={"Email"}
@@ -80,7 +107,7 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
                                 placeholder={"Enter your email"}
                                 inputType={"email"}
                                 defaultValue={oldData.email}
-                                validation={{ ...register("email", { required: true }) }}
+                                validation={{ ...register("email") }}
                             />
                         </div>
                         <div>
@@ -90,7 +117,7 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
                                 placeholder={"Enter your phone number"}
                                 inputType={"text"}
                                 defaultValue={oldData.phone}
-                                validation={{ ...register("phone", { required: true }) }}
+                                validation={{ ...register("phone") }}
                             />
                         </div>
                     </div>
@@ -101,8 +128,8 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
                                 inputName={"country"}
                                 placeholder={"Enter your country"}
                                 inputType={"text"}
-                                defaultValue={oldData.country}
-                                validation={{ ...register("country", { required: true }) }}
+                                defaultValue={oldData?.country}
+                                validation={{ ...register("country") }}
                             />
                         </div>
                         <div>
@@ -111,8 +138,8 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
                                 inputName={"zip"}
                                 placeholder={"Enter your zip code"}
                                 inputType={"text"}
-                                defaultValue={oldData.zip}
-                                validation={{ ...register("zip", { required: true }) }}
+                                defaultValue={oldData?.zip}
+                                validation={{ ...register("zip") }}
                             />
                         </div>
                     </div>
@@ -122,8 +149,8 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
                             inputName={"address"}
                             placeholder={"Enter your address"}
                             inputType={"text"}
-                            defaultValue={oldData.address}
-                            validation={{ ...register("address", { required: true }) }}
+                            defaultValue={oldData?.address}
+                            validation={{ ...register("address") }}
                         />
                     </div>
                     <div className="row row-cols-1 row-cols-lg-2">
@@ -133,8 +160,8 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
                                 inputName={"info"}
                                 inputType={"text"}
                                 placeholder={"Enter info"}
-                                defaultValue={oldData.info}
-                                validation={{ ...register("info", { required: true }) }}
+                                defaultValue={oldData?.info}
+                                validation={{ ...register("info") }}
                             />
                         </div>
                         <div>
@@ -143,10 +170,22 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
                                 inputName={"vat"}
                                 placeholder={"Enter vat"}
                                 inputType={"text"}
-                                defaultValue={oldData.vat}
-                                validation={{ ...register("vat", { required: true }) }}
+                                defaultValue={oldData?.vat}
+                                validation={{ ...register("vat") }}
                             />
                         </div>
+                    </div>
+                    <div className="form-group mb-0">
+                        <label htmlFor="exampleFormControlTextarea4">
+                            description
+                        </label>
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea4"
+                            rows="3"
+                            {...register("description")}
+                            defaultValue={oldData?.description}
+                        ></textarea>
                     </div>
                     <div>
                         <Select
@@ -154,8 +193,6 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
                             placeholder={"Select an option"}
                             previous={oldData.status}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            // validation={{...register("status", {required: true})}}
-                            // error={errors?.status}
                             setValue={setSelectedStatus}
                         />
                     </div>

@@ -7,30 +7,47 @@ import GetAllCompany from "../../Query/hrm/GetAllCompany";
 import {useForm} from "react-hook-form";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
-import GetAllBranch from "../../Query/hrm/GetAllBranch";
+import GetAllOrganization from "../../Query/hrm/GetAllOrganization";
 
-const AddDepartmentModal = ({modal, toggle, reFetch}) => {
-    const {register, handleSubmit, formState: { errors },} = useForm();
+const AddDesignationModal = ({modal, toggle, reFetch}) => {
     const [company, setCompany] = useState([]);
-    const [selectedCompany, setSelectedCompany] = useState('');
-    const [status, setStatus] = useState('');
+    const [organization, setOrganization] = useState([]);
+    const {register, handleSubmit, formState: { errors },} = useForm();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
+    const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = GetAllOrganization();
+
+
+    const [selectedOrganization, setSelectedOrganization] = useState('');
+    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
 
     useEffect(() => {
-        setCompany([]);
+        setCompany([])
         allCompany?.data?.body?.data?.data?.map(item => {
+            const set_data = {
+                id: item.id,
+                value: item.name
+            }
+            setCompany(prevShift => [...prevShift, set_data]);
+        })
+    }, [allCompany])
+
+    useEffect(() => {
+        setOrganization([]);
+        allOrganization?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item?.id,
                 value: item?.name
             }
-            setCompany(prevCompany => [...prevCompany, set_data]);
+            setOrganization(prevOrganization => [...prevOrganization, set_data]);
         })
-    }, [allCompany])
+    }, [allOrganization])
 
     const onSubmit = (data) => {
+        data.organization_id = selectedOrganization;
         data.company_id = selectedCompany;
-        data.status = status;
-        axios.post('/hrm-system/department', data)
+        data.status = selectedStatus;
+        axios.post('/hrm-system/designation', data)
             .then(info => {
                 if(info?.status == 200)
                 {
@@ -41,23 +58,35 @@ const AddDepartmentModal = ({modal, toggle, reFetch}) => {
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    toggle();
+                    toggle()
                 }
                 reFetch();
             })
             .catch(e => {
+                // console.log(e)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                    footer: '<a href="">Why do I have this issue?</a>'
                 })
             })
     };
 
     return (
         <>
-            <BaseModal title={"Add Department"} dataModal={modal} dataToggle={toggle}>
+            <BaseModal title={"Add Designation"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
+                    <div>
+                        <Select
+                            labelName={"Organization"}
+                            placeholder={"Select an option"}
+                            options={organization}
+                            // validation={{...register("organization_id", {required: true})}}
+                            // error={errors?.organization_id}
+                            setValue={setSelectedOrganization}
+                        />
+                    </div>
                     <div>
                         <Select
                             labelName={"Company"}
@@ -68,30 +97,32 @@ const AddDepartmentModal = ({modal, toggle, reFetch}) => {
                     </div>
                     <div>
                         <Input
-                            labelName={"Department Name"}
+                            labelName={"Designation Name"}
                             inputName={"name"}
                             inputType={"text"}
-                            placeholder={"Enter department name"}
+                            placeholder={"Enter designation name"}
                             validation={{
                                 ...register("name", { required: true }),
                             }}
                         />
                     </div>
-                    <div>
-                        <Input
-                            labelName={"Details"}
-                            inputName={"details"}
-                            placeholder={"Enter details"}
-                            inputType={"text"}
-                            validation={{ ...register("details", { required: true }) }}
-                        />
+                    <div className="form-group mb-0">
+                        <label htmlFor="exampleFormControlTextarea4">
+                            Skills
+                        </label>
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea4"
+                            rows="3"
+                            {...register("details")}
+                        ></textarea>
                     </div>
                     <div>
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            setValue={setStatus}
+                            setValue={setSelectedStatus}
                         />
                     </div>
 
@@ -110,4 +141,4 @@ const AddDepartmentModal = ({modal, toggle, reFetch}) => {
     );
 };
 
-export default AddDepartmentModal;
+export default AddDesignationModal;

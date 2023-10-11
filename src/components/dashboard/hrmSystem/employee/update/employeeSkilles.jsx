@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeData, toggle}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
-    console.log("skills",employeeData?.skills)
+    // console.log("skills",employeeData?.skills)
     // useEffect(() => {
     //     reset()
     // }, [employeeData]);
@@ -14,13 +14,13 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeD
         setProcessData({ ...processData, skill: data });
         const finalData = { ...processData, skill: data }
 
-        console.log("this is fine", finalData);
+        // console.log("this is fine", finalData);
 
         const formData = new FormData();
 
 
         const appendToFormData = (object, parentKey) => {
-            console.log(object, parentKey);
+            // console.log(object, parentKey);
             for (let key in object) {
                 if (object.hasOwnProperty(key)) {
                     const value = object[key];
@@ -55,7 +55,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeD
         };
 
 
-        console.log(...formData);
+        // console.log(...formData);
 
         const processed = appendToFormData(finalData);
 
@@ -75,7 +75,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeD
                 // navigate("/dashboard/hrm/employee");
             })
             .catch(e => {
-                console.log(e)
+                // console.log(e)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',

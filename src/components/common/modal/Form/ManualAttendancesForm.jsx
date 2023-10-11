@@ -68,7 +68,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     useEffect(() => {
         setBranch([])
         if (selectedCompany !== ""){
-            const sortedData = allBranch?.data?.body?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+            const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
             sortedData?.map(item => {
                 const set_data = {
                     id: item?.id,
@@ -242,7 +242,13 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                             <Select
                                 labelName={"Status"}
                                 placeholder={"Select an option"}
-                                options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
+                                options={[
+                                    {id: "Present", value: "Present"},
+                                    {id: "Absent", value: "Absent"},
+                                    {id: "On Leave", value: "On Leave"},
+                                    {id: "Sick Leave", value: "Sick Leave"},
+                                    {id: "Vacation", value: "Vacation"},
+                                ]}
                                 // validation={{...register("status", {required: true})}}
                                 error={errors?.status}
                                 setValue={setStatus}

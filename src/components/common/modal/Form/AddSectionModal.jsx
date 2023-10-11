@@ -10,23 +10,51 @@ import axios from "../../../../axios";
 import Swal from "sweetalert2";
 
 const AddSectionModal = ({modal, toggle, reFetch}) => {
+
+    const [company, setCompany] = useState([]);
     const [department, setDepartment] = useState([]);
     const {register, handleSubmit, formState: { errors }} = useForm();
     const [allDepartmentStatus, allDepartmentReFetch, allDepartment, allDepartmentError] = GetAllDepartment();
+    const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
+
+    const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
+
+
+    // console.log(allDepartment);
 
     useEffect(() => {
         setDepartment([])
-        allDepartment?.data?.body?.data?.map(item => {
+        if (selectedCompany !== ""){
+            const sortedData = allDepartment?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+            console.log("sortedData",sortedData)
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setDepartment(prevDepartment => [...prevDepartment, set_data]);
+            })
+        }
+    }, [allCompany, selectedCompany])
+
+    useEffect(() => {
+        setCompany([])
+        allCompany?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name
             }
-            setDepartment(prevDepartment => [...prevDepartment, set_data]);
+            setCompany(prevShift => [...prevShift, set_data]);
         })
-    }, [allDepartment])
+    }, [allCompany])
 
 
     const onSubmit = (data) => {
+        data.department_id = selectedDepartment;
+        data.company_id = selectedCompany;
+        data.status = selectedStatus;
         axios.post('/hrm-system/section', data)
             .then(info => {
                 if(info?.status == 200)
@@ -46,8 +74,7 @@ const AddSectionModal = ({modal, toggle, reFetch}) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                    footer: '<a href="">Why do I have this issue?</a>'
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`
                 })
             })
     }
@@ -57,11 +84,18 @@ const AddSectionModal = ({modal, toggle, reFetch}) => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Select
+                            labelName={"Company"}
+                            placeholder={"Select an option"}
+                            options={company}
+                            setValue={setSelectedCompany}
+                        />
+                    </div>
+                    <div>
+                        <Select
                             labelName={"Department"}
                             placeholder={"Select an option"}
                             options={department}
-                            validation={{...register("department_id", {required: true})}}
-                            error={errors?.department_id}
+                            setValue={setSelectedDepartment}
                         />
                     </div>
                     <div>
@@ -80,8 +114,7 @@ const AddSectionModal = ({modal, toggle, reFetch}) => {
                             labelName={"Status"}
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status", {required: true})}}
-                            error={errors?.status}
+                            setValue={setSelectedStatus}
                         />
                     </div>
 

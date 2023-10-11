@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import BaseModal from "../BaseModal";
 import Select from "../Select";
 import Input from "../Input";
@@ -7,10 +7,45 @@ import {useForm} from "react-hook-form";
 import moment from "moment";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
+import GetAllDepartment from "../../Query/hrm/GetAllDepartment";
+import GetAllCompany from "../../Query/hrm/GetAllCompany";
 
-const SectionUpdateModal = ({department, allSectionReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
+const SectionUpdateModal = ({allSectionReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
+    const [company, setCompany] = useState([]);
+    const [department, setDepartment] = useState([]);
+    const [allDepartmentStatus, allDepartmentReFetch, allDepartment, allDepartmentError] = GetAllDepartment();
+    const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
 
+    const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
+
+    useEffect(() => {
+        setDepartment([])
+        if (selectedCompany !== ""){
+            const sortedData = allDepartment?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+            console.log("sortedData",sortedData)
+            sortedData?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setDepartment(prevDepartment => [...prevDepartment, set_data]);
+            })
+        }
+    }, [allCompany, selectedCompany])
+
+    useEffect(() => {
+        setCompany([])
+        allCompany?.data?.body?.data?.data?.map(item => {
+            const set_data = {
+                id: item.id,
+                value: item.name
+            }
+            setCompany(prevShift => [...prevShift, set_data]);
+        })
+    }, [allCompany])
 
     useEffect(() => {
         reset();
@@ -55,12 +90,20 @@ const SectionUpdateModal = ({department, allSectionReFetch, oldData, dataUpdateM
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Select
+                            labelName={"Company"}
+                            placeholder={"Select an option"}
+                            options={company}
+                            previous={oldData?.company_id}
+                            setValue={setSelectedCompany}
+                        />
+                    </div>
+                    <div>
+                        <Select
                             labelName={"Department"}
                             placeholder={"Select an option"}
                             options={department}
                             previous={oldData?.department_id}
-                            validation={{...register("department_id", {required: true})}}
-                            error={errors?.department_id}
+                            setValue={setSelectedDepartment}
                         />
                     </div>
                     <div>
@@ -79,10 +122,9 @@ const SectionUpdateModal = ({department, allSectionReFetch, oldData, dataUpdateM
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            previous={oldData?.status}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status", {required: true})}}
-                            error={errors?.status}
+                            previous={oldData?.status}
+                            setValue={setSelectedStatus}
                         />
                     </div>
 

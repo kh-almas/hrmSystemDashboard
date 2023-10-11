@@ -21,6 +21,9 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
         const updatedData = {
             'organization_id':selectedOrganization ? selectedOrganization : oldData.organization_id,
             'name': data.name ? data.name : oldData.name,
+            'shortname':data.shortname ? data.shortname : oldData.shortname,
+            'slogan':data.slogan ? data.slogan : oldData.slogan,
+            'description':data.description ? data.description : oldData.description,
             'email':data.email ? data.email : oldData.email,
             'phone':data.phone ? data.phone : oldData.phone,
             'vat':data.vat ? data.vat : oldData.vat,
@@ -61,30 +64,54 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
         <>
             <BaseModal title={"Update Company"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <Select
-                            labelName={"Organization"}
-                            placeholder={"Select an option"}
-                            options={organization}
-                            previous={oldData.organization_id}
-                            // validation={{...register("organization_id")}}
-                            // error={errors?.organization_id}
-                            setValue={setSelectedOrganization}
-                        />
-                    </div>
-                    <div>
-                        <Input
-                            labelName={"Company Name"}
-                            inputName={"name"}
-                            inputType={"text"}
-                            defaultValue={oldData.name}
-                            placeholder={"Enter company name"}
-                            validation={{
-                                ...register("name"),
-                            }}
-                        />
-                    </div>
                     <div className="row row-cols-1 row-cols-lg-2">
+                        <div>
+                            <Select
+                                labelName={"Organization"}
+                                placeholder={"Select an option"}
+                                options={organization}
+                                previous={oldData.organization_id}
+                                // validation={{...register("organization_id")}}
+                                // error={errors?.organization_id}
+                                setValue={setSelectedOrganization}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Company Name"}
+                                inputName={"name"}
+                                inputType={"text"}
+                                defaultValue={oldData.name}
+                                placeholder={"Enter company name"}
+                                validation={{
+                                    ...register("name"),
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Short Name"}
+                                inputName={"shortname"}
+                                inputType={"text"}
+                                defaultValue={oldData?.shortname}
+                                placeholder={"Enter Short name"}
+                                validation={{
+                                    ...register("shortname")
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Slogan"}
+                                inputName={"slogan"}
+                                inputType={"text"}
+                                defaultValue={oldData?.slogan}
+                                placeholder={"Enter Slogan name"}
+                                validation={{
+                                    ...register("slogan")
+                                }}
+                            />
+                        </div>
                         <div>
                             <Input
                                 labelName={"Email"}
@@ -159,6 +186,18 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
                                 validation={{ ...register("vat") }}
                             />
                         </div>
+                    </div>
+                    <div className="form-group mb-0">
+                        <label htmlFor="exampleFormControlTextarea4">
+                            description
+                        </label>
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea4"
+                            rows="3"
+                            {...register("description")}
+                            defaultValue={oldData?.description}
+                        ></textarea>
                     </div>
                     <div>
                         <Select

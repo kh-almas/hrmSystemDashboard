@@ -10,7 +10,7 @@ const AddEmploySetup = () => {
     const [IconWithTab, setIconWithTab] = useState('1');
     const [processData, setProcessData] = useState({});
     const [isUpdate, setIsUpdate] = useState(false);
-    console.log("this is fine", processData);
+    // console.log("this is fine", processData);
     return (
         <div>
             <Breadcrumb parent="HRM System" title="Add Employee" id="#EMP0000001"/>

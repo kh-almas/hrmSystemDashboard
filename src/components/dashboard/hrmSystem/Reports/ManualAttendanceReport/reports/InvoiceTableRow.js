@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import {Text, View, StyleSheet } from '@react-pdf/renderer';
+import {PaginationItem, PaginationLink} from "reactstrap";
 
 const borderColor = '#90e5fc'
 const styles = StyleSheet.create({
@@ -40,31 +41,32 @@ const styles = StyleSheet.create({
 });
 
 
-const InvoiceTableRow = () => {
+const InvoiceTableRow = ({data}) => {
+    console.log("data",data)
+
+    const allItems = [];
+
+    data.map(item =>
+        allItems.push(
+            <View style={styles.row}>
+                <Text style={styles.name}>{item?.employee_name}</Text>
+                <Text style={styles.date}>{item?.date ? item?.date : 'N/A'}</Text>
+                <Text style={styles.status}>{item?.status ? item?.status : 'N/A'}</Text>
+                <Text style={styles.in}>{item?.in_time ? item?.in_time : 'N/A'}</Text>
+                <Text style={styles.out}>{item?.out_time ? item?.out_time : 'N/A'}</Text>
+                <Text style={styles.late}>{item?.late ? item?.late: 'N/A'}</Text>
+                <Text style={styles.early}>{item?.early_out ? item?.early_out : 'N/A'}</Text>
+                <Text style={styles.overtime}>{item?.over_time ? item?.over_time : 'N/A'}</Text>
+            </View>
+        )
+    )
+
+    console.log("allItems",allItems);
+
     // const rows = items.map( item =>
     const rows =
         <>
-            {/*<View style={styles.row} key={item.sno.toString()}>*/}
-            <View style={styles.row}>
-                <Text style={styles.name}>John</Text>
-                <Text style={styles.date}>19</Text>
-                <Text style={styles.status}>Present</Text>
-                <Text style={styles.in}>09:00</Text>
-                <Text style={styles.out}>06:00</Text>
-                <Text style={styles.late}>15</Text>
-                <Text style={styles.early}>N/A</Text>
-                <Text style={styles.overtime}>60</Text>
-            </View>
-            <View style={styles.row}>
-                <Text style={styles.name}>Smith</Text>
-                <Text style={styles.date}>20</Text>
-                <Text style={styles.status}>Present</Text>
-                <Text style={styles.in}>09:30</Text>
-                <Text style={styles.out}>06:15</Text>
-                <Text style={styles.late}>30</Text>
-                <Text style={styles.early}>N/A</Text>
-                <Text style={styles.overtime}>45</Text>
-            </View>
+            {allItems}
         </>
     return (<Fragment>{rows}</Fragment> )
 };

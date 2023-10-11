@@ -28,7 +28,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     const [selectedStatus, setSelectedStatus] = useState("");
 
     // const [weekdays, setWeekdays] = useState('');
-    console.log("company",company);
+    // console.log("company",company);
 
     useEffect(() => {
         setOrganization([])
@@ -45,7 +45,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
         setCompany([])
         if (selectedOrganization !== ""){
             const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
-            console.log("sortedData",sortedData)
+            // console.log("sortedData",sortedData)
             sortedData?.map(item => {
                 const set_data = {
                     id: item.id,
@@ -59,7 +59,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     useEffect(() => {
         setBranch([])
         if (selectedCompany !== ""){
-            const sortedData = allBranch?.data?.body?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+            const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
             sortedData?.map(item => {
                 const set_data = {
                     id: item.id,
@@ -83,7 +83,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
         data.branch_id = selectedBranch;
         data.status = selectedStatus;
         data.weekends = JSON.stringify(weekdays);
-        console.log(data);
+        // console.log(data);
 
         axios.post('/hrm-system/shift', data)
             .then(info => {

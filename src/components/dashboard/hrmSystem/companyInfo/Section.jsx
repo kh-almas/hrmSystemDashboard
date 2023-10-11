@@ -13,8 +13,20 @@ import Swal from "sweetalert2";
 import GetAllSection from "../../../common/Query/hrm/GetAllSection";
 import GetAllDepartment from "../../../common/Query/hrm/GetAllDepartment";
 import SectionUpdateModal from "../../../common/modal/Form/SectionUpdateModal";
+import AddSectionModal from "../../../common/modal/Form/AddSectionModal";
 
 const Section = () => {
+    const [pageCount, setPageCount] = useState(1);
+    const [howManyItem, setHowManyItem] = useState('10');
+    const [currentPage, setCurrentPage] = useState('1');
+    const [totalDBRow, setTotalDBRow] = useState(0);
+    const [searchData, setSearchData] = useState('');
+    const [isChange, setIsChange] = useState(false);
+    const isDarty = () =>
+    {
+        setIsChange(!isChange);
+    }
+
     const [department, setDepartment] = useState([]);
     const [modal, setModal] = useState(false);
     const [oldData, setOldData] = useState({});
@@ -27,7 +39,7 @@ const Section = () => {
 
     useEffect(() => {
         setDepartment([])
-        allDepartment?.data?.body?.data?.map(item => {
+        allDepartment?.data?.body?.data?.data?.map(item => {
             const set_data = {
                 id: item.id,
                 value: item.name
@@ -182,55 +194,10 @@ const Section = () => {
                     </div>
                 </div>
             </div>
-            <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Section Entry</ModalHeader>
-                <ModalBody>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <div>
-                            <Select
-                                labelName={"Department"}
-                                placeholder={"Select an option"}
-                                options={department}
-                                validation={{...register("department_id", {required: true})}}
-                                error={errors?.department_id}
-                            />
-                        </div>
-                        <div>
-                            <Input
-                                labelName={"Section Name"}
-                                inputName={"name"}
-                                inputType={"text"}
-                                placeholder={"Enter company name"}
-                                validation={{
-                                    ...register("name", { required: true }),
-                                }}
-                            />
-                        </div>
-                        <div>
-                            <Select
-                                labelName={"Status"}
-                                placeholder={"Select an option"}
-                                options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                                validation={{...register("status", {required: true})}}
-                                error={errors?.status}
-                            />
-                        </div>
-
-
-                        <div className="d-flex justify-content-end">
-                            <Button color="danger" onClick={toggle} className="me-2">
-                                Cancel
-                            </Button>
-                            <Button color="primary" type="submit">
-                                Create
-                            </Button>
-                        </div>
-                    </form>
-                </ModalBody>
-            </Modal>
+            <AddSectionModal modal={modal} toggle={toggle} reFetch={isDarty}></AddSectionModal>
             {
                 oldData ?
-                    <SectionUpdateModal department={department} allSectionReFetch={allSectionReFetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></SectionUpdateModal>
+                    <SectionUpdateModal allSectionReFetch={isDarty} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></SectionUpdateModal>
                     : ''
             }
         </>

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import BaseModal from "../BaseModal";
 import Select from "../Select";
 import Input from "../Input";
@@ -7,10 +7,42 @@ import {useForm} from "react-hook-form";
 import moment from "moment";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
+import GetAllCompany from "../../Query/hrm/GetAllCompany";
+import GetAllOrganization from "../../Query/hrm/GetAllOrganization";
 
 const DesignationUpdateModal = ({allDesignationReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
-    const {register, reset, handleSubmit, formState: {errors},} = useForm();
+    const [company, setCompany] = useState([]);
+    const [organization, setOrganization] = useState([]);
+    const {register, reset, handleSubmit, formState: { errors },} = useForm();
+    const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
+    const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = GetAllOrganization();
 
+
+    const [selectedOrganization, setSelectedOrganization] = useState('');
+    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('Active');
+
+    useEffect(() => {
+        setCompany([])
+        allCompany?.data?.body?.data?.data?.map(item => {
+            const set_data = {
+                id: item.id,
+                value: item.name
+            }
+            setCompany(prevShift => [...prevShift, set_data]);
+        })
+    }, [allCompany])
+
+    useEffect(() => {
+        setOrganization([]);
+        allOrganization?.data?.body?.data?.data?.map(item => {
+            const set_data = {
+                id: item?.id,
+                value: item?.name
+            }
+            setOrganization(prevOrganization => [...prevOrganization, set_data]);
+        })
+    }, [allOrganization])
 
     useEffect(() => {
         reset();
@@ -18,8 +50,11 @@ const DesignationUpdateModal = ({allDesignationReFetch, oldData, dataUpdateModal
 
     const onSubmit = (data) => {
         const updatedData = {
+            'organization_id':selectedOrganization ? selectedOrganization : oldData.organization_id,
+            'company_id':selectedCompany ? selectedCompany : oldData.company_id,
             'name':data.name ? data.name : oldData.name,
-            'status':data.status ? data.status : oldData.status
+            'details':data.details ? data.details : oldData.details,
+            'status':selectedStatus ? selectedStatus : oldData.status
         }
 
         axios.put(`/hrm-system/designation/${oldData.id}`, updatedData)
@@ -36,6 +71,9 @@ const DesignationUpdateModal = ({allDesignationReFetch, oldData, dataUpdateModal
                     })
                     dataUpdateToggle(false);
                     allDesignationReFetch();
+                    setSelectedOrganization('');
+                    setSelectedCompany('');
+                    setSelectedStatus('Active');
                 }
             })
             .catch(e => {
@@ -53,25 +91,54 @@ const DesignationUpdateModal = ({allDesignationReFetch, oldData, dataUpdateModal
             <BaseModal title={"Update Designation"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
+                        <Select
+                            labelName={"Organization"}
+                            placeholder={"Select an option"}
+                            options={organization}
+                            previous={oldData.organization_id}
+                            setValue={setSelectedOrganization}
+                        />
+                    </div>
+                    <div>
+                        <Select
+                            labelName={"Company"}
+                            placeholder={"Select an option"}
+                            options={company}
+                            previous={oldData.company_id}
+                            setValue={setSelectedCompany}
+                        />
+                    </div>
+                    <div>
                         <Input
-                            labelName={"Department Name"}
+                            labelName={"Designation Name"}
                             inputName={"name"}
                             inputType={"text"}
-                            placeholder={"Enter department name"}
+                            placeholder={"Enter designation name"}
                             defaultValue={oldData?.name}
                             validation={{
                                 ...register("name", { required: true }),
                             }}
                         />
                     </div>
+                    <div className="form-group mb-0">
+                        <label htmlFor="exampleFormControlTextarea4">
+                            Details
+                        </label>
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea4"
+                            rows="5"
+                            {...register("details")}
+                            defaultValue={oldData?.details}
+                        ></textarea>
+                    </div>
                     <div>
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status", {required: true})}}
                             previous={oldData?.status}
-                            error={errors?.status}
+                            setValue={setSelectedStatus}
                         />
                     </div>
 

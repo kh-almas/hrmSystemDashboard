@@ -10,7 +10,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
         setProcessData({ ...processData, skill: data });
         const finalData = { ...processData, skill: data }
 
-        console.log("this is fine", finalData);
+        // console.log("this is fine", finalData);
 
         const formData = new FormData();
 
@@ -21,7 +21,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
                     const value = object[key];
                     const currentKey = parentKey ? `${parentKey}[${key}]` : key;
 
-                    console.log(currentKey);
+                    // console.log(currentKey);
                     if(currentKey !== "basicInfo[image][0]" && currentKey !== "basicInfo[cv][0]" && currentKey !== "contact"){
                         if (typeof value === 'object' && !Array.isArray(value)) {
                             appendToFormData(value, currentKey);
@@ -35,7 +35,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
                         }
                     }else{
                         if(currentKey === "contact"){
-                            console.log("akjsdhfi", currentKey, JSON.stringify(value));
+                            // console.log("akjsdhfi", currentKey, JSON.stringify(value));
                             formData.append(currentKey, JSON.stringify(value));
                         }else if(currentKey === "basicInfo[image][0]"){
                             formData.append('image', value);
@@ -54,7 +54,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
         // for (let pair of formData.entries()) {
         //     console.log("data",pair[0]+ ', ' + pair[1]);
         // }
-        console.log(...formData);
+        // console.log(...formData);
 
 
 
@@ -94,7 +94,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    console.log("got the result",info);
+                    // console.log("got the result",info);
                 }
                 // navigate("/dashboard/hrm/employee");
             })
@@ -122,7 +122,6 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
                         rows="5"
                         {...register("skill")}
                     ></textarea>
-
                 </div>
 
                 <div className="d-flex justify-content-end">
