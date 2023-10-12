@@ -8,7 +8,7 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import MainRoutes from "./routes";
 import store from "./store";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {QueryClient, QueryClientProvider, useQuery} from "@tanstack/react-query";
 
 // setup fake backend
 

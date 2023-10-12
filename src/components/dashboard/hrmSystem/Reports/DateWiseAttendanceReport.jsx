@@ -7,6 +7,8 @@ import getAllBranch from "../../../common/Query/hrm/GetAllBranch";
 import Select from "../../../common/modal/Select";
 import getManualAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getManualAttendanceReportsAPI";
 import getDailyAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getDailyAttendanceReportsAPI";
+import {PDFDownloadLink} from "@react-pdf/renderer";
+import Invoice from "./DateWiseAttendnaceReport/reports/Invoice";
 
 
 const DateWiseAttendanceReport = () => {
@@ -83,9 +85,14 @@ const DateWiseAttendanceReport = () => {
                 <div className="d-flex justify-content-center">
 
                     <div>
-                        <Link to={"/dashboard/hrm/attendance/datewise/pdf"} target="_blank" className="ms-3 btn btn-primary">View
+                        <Link to={`/dashboard/hrm/attendance/datewise/pdf?startdate=${dateFrom}&enddate=${dateTo}&setcompany=${selectedCompany}&setbranch=${selectedBranch}`} target="_blank" className="ms-3 btn btn-primary">View
                             PDF</Link>
                     </div>
+                    {/*<div>*/}
+                    {/*    <PDFDownloadLink document={<Invoice />} fileName="somename.pdf">*/}
+                    {/*        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}*/}
+                    {/*    </PDFDownloadLink>*/}
+                    {/*</div>*/}
                 </div>
             </div>
 
