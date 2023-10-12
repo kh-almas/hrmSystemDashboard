@@ -7,11 +7,11 @@ const PrivateRoute = () => {
 
   useEffect(() => {
     // send jwt to API to see if it's valid
-    // let token = localStorage.getItem("access-token");
-    let token = document.cookie
-      ?.split(";")
-      ?.find((cookie) => cookie?.includes("token"))
-      ?.split("=")[1];
+    let token = localStorage.getItem("access-token");
+    // let token = document.cookie
+    //   ?.split(";")
+    //   ?.find((cookie) => cookie?.includes("token"))
+    //   ?.split("=")[1];
     let email = localStorage.getItem("email");
     // const vercel = "http://localhost:5000/";
     const vercel = "https://dashboard-hrm-system-backend.vercel.app/";

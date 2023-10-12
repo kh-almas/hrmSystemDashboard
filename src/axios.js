@@ -7,12 +7,8 @@ const axios  = Axios.create({
 });
 
 // Set default headers for the axios instance
-axios.defaults.headers.common["Authorization"] =
-  "Bearer " +
-  document.cookie
-    ?.split(";")
-    ?.find((cookie) => cookie?.includes("token"))
-    ?.split("=")[1];
+axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("access-token")
+  // "Bearer " + document.cookie?.split(";")?.find((cookie) => cookie?.includes("token"))?.split("=")[1];
 axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
 // "Bearer " + localStorage.getItem("access-token");
 

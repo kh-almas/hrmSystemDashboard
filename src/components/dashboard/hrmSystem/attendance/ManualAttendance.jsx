@@ -97,7 +97,7 @@ const ManualAttendance = () => {
     useEffect(() => {
         setBranch([])
         if (selectedCompany !== ""){
-            const sortedData = allBranch?.data?.body?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+            const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
             sortedData?.map(item => {
                 const set_data = {
                     id: item.id,
