@@ -29,8 +29,8 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
     return (
         <>
             <form onChange={handleSubmit(EmployeeInformation)} className="mt-3">
-                <div className="row">
-                    <div className="col-6">
+                <div className="row row-cols-md-2 row-cols-1">
+                    <div className="col">
                         <Select
                             labelName={"Name Title"}
                             placeholder={"Select an option"}
@@ -38,13 +38,23 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                                 {id: "Mr", value: "Mr"},
                                 {id: "Mrs", value: "Mrs"},
                             ]}
-                            // validation={{...register("name_title")}}
-                            // error={errors.name_title}
                             setValue={setNameTitle}
                         />
                     </div>
-                </div>
-                <div className="row">
+                    <div className="col">
+                        <div>
+                            <Input
+                                labelName={"Job Code"}
+                                inputName={"job_code"}
+                                inputType={"text"}
+                                placeholder={"Enter job code"}
+                                validation={{
+                                    ...register("job_code"),
+                                }}
+                                error={errors.job_code}
+                            />
+                        </div>
+                    </div>
                     <div className="col">
                         <div>
                             <Input
@@ -73,8 +83,6 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                             />
                         </div>
                     </div>
-                </div>
-                <div className="row">
                     <div className="col">
                         <div>
                             <Input
@@ -103,8 +111,6 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                             />
                         </div>
                     </div>
-                </div>
-                <div className="row">
                     <div className="col">
                         <div>
                             <Input
@@ -133,8 +139,6 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                             />
                         </div>
                     </div>
-                </div>
-                <div className="row">
                     <div className={"col"}>
                         <Input
                             labelName={"Spouse Name"}
@@ -159,8 +163,6 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                             error={errors.card_no}
                         />
                     </div>
-                </div>
-                <div className="row">
                     <div className="col">
                         <div className="form-group">
                             <Input
@@ -187,8 +189,6 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                             />
                         </div>
                     </div>
-                </div>
-                <div className="row m-t-15">
                     <div className="col">
                         <div>
                             <Input
@@ -217,8 +217,6 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                             setValue={setGander}
                         />
                     </div>
-                </div>
-                <div className="row m-t-15">
                     <div className="col">
                         <div>
                             <Input
