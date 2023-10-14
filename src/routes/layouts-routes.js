@@ -83,7 +83,7 @@ import DateWiseAttendanceReportPDf from "../components/dashboard/hrmSystem/Repor
 import EmployMovementReportPDf from "../components/dashboard/hrmSystem/Reports/EmployMovementReport/EmployMovementReportPDf";
 import EmployWiseAttendanceReportPDf from "../components/dashboard/hrmSystem/Reports/EmployWiseAttendanceReport/EmployWiseAttendanceReportPDf";
 import EmployeeMovement from "../components/dashboard/hrmSystem/Reports/EmployeeMovement";
-import EmployeeWiseAttendance from "../components/dashboard/hrmSystem/Reports/EmployeeWiseAttendance";
+import EmployeeWiseAttendanceReport from "../components/dashboard/hrmSystem/Reports/EmployeeWiseAttendanceReport";
 import LeaveReport from "../components/dashboard/hrmSystem/Reports/LeaveReport";
 import LeaveReportPDf from "../components/dashboard/hrmSystem/Reports/LeaveReport/LeaveReportPDf";
 import ManualAttendanceReport from "../components/dashboard/hrmSystem/Reports/ManualAttendanceReport";
@@ -153,6 +153,7 @@ import CompanyHoliday from "../components/dashboard/hrmSystem/companyInfo/Compan
 import Weekday from "../components/dashboard/hrmSystem/companyInfo/Weekday";
 import CompanyProject from "../components/dashboard/hrmSystem/companyInfo/CompanyProject";
 import Role from "../components/dashboard/Role";
+import MachineInfo from "../components/dashboard/hrmSystem/attendance/MachineInfo";
 
 export const routes = [
   {
@@ -182,6 +183,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/shift`,
     Component: <Shift />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/machine-info`,
+    Component: <MachineInfo />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/manual`,
@@ -325,7 +330,7 @@ export const routes = [
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/single`,
-    Component: <EmployeeWiseAttendance />,
+    Component: <EmployeeWiseAttendanceReport />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/single/pdf`,
