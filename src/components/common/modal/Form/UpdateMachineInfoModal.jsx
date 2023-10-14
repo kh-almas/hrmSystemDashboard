@@ -12,7 +12,7 @@ import getAllOrganization from "../../Query/hrm/GetAllOrganization";
 import getAllBranch from "../../Query/hrm/GetAllBranch";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 
-const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftReFetch}) => {
+const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftReFetch}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [organization, setOrganization] = useState([]);
     const [company, setCompany] = useState([]);
@@ -26,10 +26,9 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     const [selectedCompany, setSelectedCompany] = useState("");
     const [selectedBranch, setSelectedBranch] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("");
-    const [dayDiff, setDaydiff] = useState(false);
 
-    // console.log("company",company);
-    //
+    console.log("company",allCompany);
+
     useEffect(() => {
         setOrganization([])
         allOrganization?.data?.body?.data?.data?.map(item => {
@@ -45,7 +44,7 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
         setCompany([])
         if (selectedOrganization !== ""){
             const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
-            // console.log(sortedData);
+            // console.log("sortedData",sortedData)
             sortedData?.map(item => {
                 const set_data = {
                     id: item.id,
@@ -72,32 +71,27 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
 
     useEffect(() => {
         setSelectedOrganization(oldData?.organization_id);
-        setSelectedCompany(oldData?.company_id);
-        const difference = oldData?.DayDiff === 1 ? true: false;
-        setDaydiff(difference);
-        // console.log("old", typeof difference)
+        setSelectedCompany(oldData?.company_id)
         reset();
     },[oldData])
 
     const formattedTimeForUpdate = time => moment(time, "HH:mm").format("HH:mm:ss");
 
     const onSubmit = (data) => {
-        const start_time = formattedTimeForUpdate(data.start_time);
-        data.start_time = start_time;
-        const end_time = formattedTimeForUpdate(data.end_time);
-        data.end_time = end_time;
-        // console.log(dayDiff);
+        // data.OrgId = selectedOrganization;
+        // data.CompanyId = selectedCompany;
+        // data.BranchId = selectedBranch;
+        // data.Status = selectedStatus;
         const updatedData = {
-            'organization_id':selectedOrganization ? selectedOrganization : oldData.organization_id,
-            'company_id':selectedCompany ? selectedCompany : oldData.company_id,
-            'branch_id':selectedBranch ? selectedBranch : oldData.branch_id,
-            'DayDiff': dayDiff ? true : false,
-            'name':data.name ? data.name : oldData.name,
-            'start_time': data.start_time ? data.start_time : formattedTimeForUpdate(oldData.start_time),
-            'end_time':data.end_time ? data.end_time : formattedTimeForUpdate(oldData.end_time),
-            'weekends':weekdays ? JSON.stringify(weekdays) : oldData.weekends,
-            'note':data.note ? data.note : oldData.note,
-            'status':selectedStatus ? selectedStatus : oldData.status
+            'OrgId':selectedOrganization ? selectedOrganization : oldData.organization_id,
+            'CompanyId':selectedCompany ? selectedCompany : oldData.company_id,
+            'BranchId':selectedBranch ? selectedBranch : oldData.branch_id,
+            'MachineNo': data.MachineNo ? data.MachineNo : oldData.MachineNo,
+            'MachineIP': data.MachineIP ? data.MachineIP : oldData.MachineIP,
+            'MachinePort':data.MachinePort ? data.MachinePort : oldData.MachinePort,
+            'commKey':data.commKey ? data.commKey : oldData.commKey,
+            'Location':data.Location ? data.Location : oldData.Location,
+            'Status':selectedStatus ? selectedStatus : oldData.status
         }
 
         // console.log(updatedData);
@@ -137,83 +131,67 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                                 labelName={"Company"}
                                 placeholder={"Select an option"}
                                 options={company}
-                                previous={oldData?.company_id}
                                 setValue={setSelectedCompany}
+                                previous={oldData?.OrgId}
                             />
                         </div>
-
                         <div>
                             <Select
                                 labelName={"Branch"}
                                 placeholder={"Select an option"}
                                 options={branch}
-                                previous={oldData?.branch_id}
-                                setValue={setSelectedBranch}
+                                setValue={oldData?.BranchId}
                             />
                         </div>
                         <div>
                             <Input
-                                labelName={"Shift Name"}
-                                inputName={"name"}
+                                labelName={"Machine Number"}
+                                inputName={"machine_no"}
+                                placeholder={"Enter your machine number"}
                                 inputType={"text"}
-                                defaultValue={oldData?.name}
-                                placeholder={"Enter shift name"}
-                                validation={{
-                                    ...register("name"),
-                                }}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="row row-cols-1 row-cols-lg-2">
-                        <div>
-                            <Input
-                                labelName={"Start Time"}
-                                inputName={"start_time"}
-                                inputType={"time"}
-                                defaultValue={oldData?.start_time}
-                                validation={{ ...register("start_time") }}
+                                validation={{ ...register("MachineNo") }}
+                                defaultValue={oldData?.MachineNo}
                             />
                         </div>
                         <div>
                             <Input
-                                labelName={"End Time"}
-                                inputName={"end_time"}
-                                inputType={"time"}
-                                defaultValue={oldData?.end_time}
-                                validation={{ ...register("end_time") }}
+                                labelName={"Machine IP"}
+                                inputName={"machine_ip"}
+                                placeholder={"Enter your machine IP"}
+                                inputType={"text"}
+                                validation={{ ...register("MachineIP") }}
+                                defaultValue={oldData?.MachineIP}
                             />
                         </div>
-                    </div>
-                    <div className="mb-3">
-                        <label htmlFor="weekdays">Weekend</label>
-                        <DropdownMultiselect
-                            handleOnChange={(selected) => {
-                                setWeekdays(selected);
-                                // console.log(selected)
-                            }}
-                            selected={oldData?.weekends ? JSON.parse(oldData?.weekends) : []}
-                            options={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}
-                            name="multi_weekdays"
-                        />
-                    </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="exampleFormControlTextarea4">
-                            Note
-                        </label>
-                        <textarea
-                            className="form-control"
-                            id="exampleFormControlTextarea4"
-                            rows="3"
-                            {...register("note")}
-                            defaultValue={oldData?.note}
-                        ></textarea>
-
-                    </div>
-                    <div className="form-group m-b-15 ms-1">
-                        <div className="checkbox checkbox-dark m-squar">
-                            <input {...register("DayDiff")} id="inline-sqr-1" onChange={() => setDaydiff(!dayDiff)} type="checkbox" checked={dayDiff} />
-                            <label className="mt-0" htmlFor="inline-sqr-1">is Date Changed</label>
+                        <div>
+                            <Input
+                                labelName={"Machine port"}
+                                inputName={"machine_port"}
+                                placeholder={"Enter your machine port"}
+                                inputType={"text"}
+                                validation={{ ...register("MachinePort") }}
+                                defaultValue={oldData?.MachinePort}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Common key"}
+                                inputName={"common_key"}
+                                placeholder={"Enter your machine port"}
+                                inputType={"text"}
+                                validation={{ ...register("commKey") }}
+                                defaultValue={oldData?.commKey}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Location"}
+                                inputName={"location"}
+                                placeholder={"Enter your machine location"}
+                                inputType={"text"}
+                                validation={{ ...register("Location", { required: true }) }}
+                                defaultValue={oldData?.Location}
+                            />
                         </div>
                     </div>
                     <div>
@@ -221,8 +199,8 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                             labelName={"Status"}
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            previous={oldData?.status}
                             setValue={setSelectedStatus}
+                            previous={oldData?.Status}
                         />
                     </div>
 
@@ -231,7 +209,7 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                             Cancel
                         </Button>
                         <Button color="primary" type="submit">
-                            Update
+                            Create
                         </Button>
                     </div>
                 </form>
@@ -240,4 +218,4 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     );
 };
 
-export default ShiftUpdateModal;
+export default UpdateMachineInfoModal;

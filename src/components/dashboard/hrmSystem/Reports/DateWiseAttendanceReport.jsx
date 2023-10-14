@@ -16,8 +16,8 @@ const DateWiseAttendanceReport = () => {
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [selectedCompany, setSelectedCompany] = useState("");
     const [selectedBranch, setSelectedBranch] = useState("");
-    const [dateFrom, setDateForm] = useState("2023-09-01");
-    const [dateTo, setDateTo] = useState("2023-09-10");
+    const [dateFrom, setDateForm] = useState("");
+    const [dateTo, setDateTo] = useState("");
     const [company, setCompany] = useState([]);
     const [branch, setBranch] = useState([]);
     const [data, setData] = useState([]);

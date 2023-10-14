@@ -16,7 +16,6 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     const [organization, setOrganization] = useState([]);
     const [company, setCompany] = useState([]);
     const [branch, setBranch] = useState([]);
-    const [weekdays, setWeekdays] = useState([]);
     const {register, reset, handleSubmit, formState: { errors },} = useForm();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = getAllOrganization();
@@ -70,48 +69,41 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
         }
     }, [allBranch, selectedCompany])
 
-    const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
 
     const onSubmit = (data) => {
-        const start_time = formattedTime(data.start_time);
-        data.start_time = start_time;
-        const end_time = formattedTime(data.end_time);
-        data.end_time = end_time;
+        data.OrgId = selectedOrganization;
+        data.CompanyId = selectedCompany;
+        data.BranchId = selectedBranch;
+        data.Status = selectedStatus;
+        // console.log(data);
 
-        data.organization_id = selectedOrganization;
-        data.company_id = selectedCompany;
-        data.branch_id = selectedBranch;
-        data.status = selectedStatus;
-        data.weekends = JSON.stringify(weekdays);
-        console.log(data);
-
-         axios.post('/hrm-system/shift', data)
-             .then(info => {
-                 if(info?.status == 200)
-                 {
-                     Swal.fire({
-                         position: 'top-end',
-                         icon: 'success',
-                         title: 'Your work has been saved',
-                         showConfirmButton: false,
-                         timer: 1500
-                     })
-                     toggle();
-                 }
-                 reFetch();
-             })
-             .catch(e => {
-                 Swal.fire({
-                     icon: 'error',
-                     title: 'Oops...',
-                     text: `${e?.response?.data?.body?.message?.details[0].message}`
-                 })
-             })
+        axios.post('/hrm-system/machine/info', data)
+            .then(info => {
+                if(info?.status == 200)
+                {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    toggle();
+                }
+                reFetch();
+            })
+            .catch(e => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`
+                })
+            })
     }
 
     return (
         <>
-            <BaseModal title={"Add Shift"} dataModal={modal} dataToggle={toggle}>
+            <BaseModal title={"Add Machine Information"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
@@ -130,74 +122,62 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                                 setValue={setSelectedBranch}
                             />
                         </div>
-                    </div>
-                    <div>
-                        <Input
-                            labelName={"Shift Name"}
-                            inputName={"name"}
-                            inputType={"text"}
-                            placeholder={"Enter shift name"}
-                            validation={{
-                                ...register("name", { required: true }),
-                            }}
-                        />
-                    </div>
-                    <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Input
-                                labelName={"Start Time"}
-                                inputName={"start_time"}
-                                inputType={"time"}
-                                validation={{ ...register("start_time", { required: true }) }}
+                                labelName={"Machine Number"}
+                                inputName={"machine_no"}
+                                placeholder={"Enter your machine number"}
+                                inputType={"text"}
+                                validation={{ ...register("MachineNo", { required: true }) }}
+                                error={errors?.MachineNo}
                             />
                         </div>
                         <div>
                             <Input
-                                labelName={"End Time"}
-                                inputName={"end_time"}
-                                inputType={"time"}
-                                validation={{ ...register("end_time", { required: true }) }}
+                                labelName={"Machine IP"}
+                                inputName={"machine_ip"}
+                                placeholder={"Enter your machine IP"}
+                                inputType={"text"}
+                                validation={{ ...register("MachineIP", { required: true }) }}
+                                error={errors?.MachineIP}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Machine port"}
+                                inputName={"machine_port"}
+                                placeholder={"Enter your machine port"}
+                                inputType={"text"}
+                                validation={{ ...register("MachinePort", { required: true }) }}
+                                error={errors?.MachinePort}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Common key"}
+                                inputName={"common_key"}
+                                placeholder={"Enter your machine port"}
+                                inputType={"text"}
+                                validation={{ ...register("commKey", { required: true }) }}
+                                error={errors?.commKey}
+                            />
+                        </div>
+                        <div>
+                            <Input
+                                labelName={"Location"}
+                                inputName={"location"}
+                                placeholder={"Enter your machine location"}
+                                inputType={"text"}
+                                validation={{ ...register("Location", { required: true }) }}
+                                error={errors?.Location}
                             />
                         </div>
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="weekdays">Weekend</label>
-                        <DropdownMultiselect
-                            handleOnChange={(selected) => {
-                                setWeekdays(selected);
-                                // console.log(selected)
-                            }}
-                            options={["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]}
-                            name="multi_weekdays"
-                        />
-                    </div>
-                    <div className="form-group mb-3">
-                        <label htmlFor="exampleFormControlTextarea4">
-                            Note
-                        </label>
-                        <textarea
-                            className="form-control"
-                            id="exampleFormControlTextarea4"
-                            rows="3"
-                            {...register("note", {required: true})}
-                        ></textarea>
-
-                    </div>
-
-                    <div className="form-group m-b-15 ms-1">
-                        <div className="checkbox checkbox-dark m-squar">
-                            <input {...register("DayDiff")} id="inline-sqr-1" type="checkbox"/>
-                            <label className="mt-0" htmlFor="inline-sqr-1">is Date Changed</label>
-                        </div>
-                    </div>
-
                     <div>
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            // validation={{...register("status", {required: true})}}
-                            // error={errors?.status}
                             setValue={setSelectedStatus}
                         />
                     </div>

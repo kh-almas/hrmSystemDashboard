@@ -5,6 +5,7 @@ import {useForm} from "react-hook-form";
 
 const BasicInformation = ({setProcessData, setIconWithTab, processData, employeeData}) => {
     const [nameTitle, setNameTitle] = useState('');
+    const [employeeType, setEmployeeType] = useState('');
     const [gander, setGander] = useState('');
     const [allData, setAllData] = useState({});
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
@@ -13,7 +14,8 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
         setAllData(data);
         data.status = "Active";
         data.name_title = nameTitle;
-        data.gender = gander
+        data.gender = gander;
+        data.employee_type = employeeType;
         data.full_name = `${nameTitle ? nameTitle : ''} ${data.first_name ? data.first_name : ''} ${data.last_name ? data.last_name : ''}`;
         setProcessData({ ...processData, basicInfo: data });
     }
@@ -209,6 +211,48 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                                 }}
                                 defaultValue={employeeData?.date}
                                 error={errors.date_of_birth}
+                            />
+                        </div>
+                    </div>
+                    <div className="col">
+                        <div>
+                            <Input
+                                labelName={"Joining Date"}
+                                inputName={"joining_date"}
+                                inputType={"date"}
+                                placeholder={"Joining Date"}
+                                validation={{
+                                    ...register("joining_date"),
+                                }}
+                                error={errors.joining_date}
+                            />
+                        </div>
+                    </div>
+                    <div className="col">
+                        <Select
+                            labelName={"Employee Type"}
+                            placeholder={"Select an option"}
+                            options={[
+                                {id: "Part-time employees", value: "Part-time employees"},
+                                {id: "Full-time employees", value: "Full-time employees"},
+                                {id: "Contractual employee", value: "Contractual employee"},
+                                {id: "Temporary employees", value: "Temporary employees"},
+                            ]}
+                            setValue={setEmployeeType}
+                            previous={employeeData?.employee_type}
+                        />
+                    </div>
+                    <div className="col">
+                        <div>
+                            <Input
+                                labelName={"Employee machine ID"}
+                                inputName={"emp_machine_id"}
+                                inputType={"number"}
+                                placeholder={"Employee machine ID"}
+                                validation={{
+                                    ...register("emp_machine_id"),
+                                }}
+                                defaultValue={employeeData?.emp_machine_id}
                             />
                         </div>
                     </div>

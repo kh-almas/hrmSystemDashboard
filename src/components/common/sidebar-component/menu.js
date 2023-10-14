@@ -30,6 +30,11 @@ export const MENUITEMS = [
             path: "/dashboard/hrm/shift",
           },
           {
+            title: "Machine Info",
+            type: "link",
+            path: "/dashboard/hrm/machine-info",
+          },
+          {
             title: "Manual Attendance",
             type: "link",
             path: "/dashboard/hrm/attendance/manual",
