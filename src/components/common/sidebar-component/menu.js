@@ -21,6 +21,11 @@ export const MENUITEMS = [
         type: "link",
       },
       {
+        title: "User Resignation",
+        type: "link",
+        path: "/dashboard/user/resignation",
+      },
+      {
         title: "Attendance",
         type: "sub",
         children: [
