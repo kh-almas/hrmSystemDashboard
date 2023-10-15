@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 
   const InvoiceTitle = ({title}) => (
     <View style={styles.titleContainer}>
-        <Text style={styles.reportTitle}>Daily Attendance Report</Text>
+        <Text style={styles.reportTitle}>Employee Summery Report</Text>
     </View>
   );
   

@@ -1,15 +1,16 @@
-import React, {useEffect, useState} from "react";
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
+import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
+import getManualAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getManualAttendanceReportsAPI";
 import getEmployee from "../../../common/Query/hrm/GetEmployee";
-import Select from "../../../common/modal/Select";
-import getDailyAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getDailyAttendanceReportsAPI";
 import getEmployeeWiseAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getEmployeeWiseAttendanceReportsAPI";
-import {Download} from "react-feather";
+import getEmployeeSummeryReportsAPI from "../../../common/Query/hrm/forSort/getEmployeeSummeryReportsAPI";
+import Select from "../../../common/modal/Select";
 import {PDFDownloadLink} from "@react-pdf/renderer";
-import Invoice from "./EmployWiseAttendanceReport/reports/Invoice";
+import {Download} from "react-feather";
+import Invoice from "./DailyAttendnaceReport/reports/Invoice";
 
-const EmployeeWiseAttendanceReport = () => {
+
+const EmployeeSummeryReport = () => {
     const [data, setData] = useState([]);
     const [employee, setEmployee] = useState([]);
     const [selectedEmployee, setSelectedEmployee] = useState('');
@@ -27,16 +28,12 @@ const EmployeeWiseAttendanceReport = () => {
 
     useEffect(() => {
         const employeeWiseAttendanceReport = async () => {
-
-            // console.log("selectedCompany2", selectedCompany)
-            const getData = await getEmployeeWiseAttendanceReportsAPI(selectedEmployee, dateFrom, dateTo);
+            const getData = await getEmployeeSummeryReportsAPI(selectedEmployee, dateFrom, dateTo);
             setData(getData?.data?.body?.data);
             // console.log(getData?.data?.body?.data);
         }
         employeeWiseAttendanceReport();
-
     }, [selectedEmployee, dateFrom, dateTo])
-
 
     useEffect(() => {
         setEmployee([])
@@ -62,9 +59,14 @@ const EmployeeWiseAttendanceReport = () => {
             <div className="pt-4 mb-3">
                 <div className="d-flex flex-rows justify-content-center">
                     <div>
-                        <h3 className="fw-bold">Employee Wise Attendance Reports</h3>
+                        <h3 className="fw-bold">Employee Summery Report</h3>
                     </div>
                 </div>
+                {/*<div className="d-flex justify-content-center">*/}
+                {/*    <div>*/}
+                {/*        <Link to={"/dashboard/hrm/attendance/daily/pdf"} target="_blank" className="ms-3 btn btn-primary" >View PDF</Link>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
 
             <div className="card" style={{padding: "20px"}}>
@@ -95,70 +97,63 @@ const EmployeeWiseAttendanceReport = () => {
                             <button className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}} onClick={() => removeSearch()}>
                                 <i style={{fontSize: '8px'}} className= "icon-close"></i>
                             </button>
-                            <Link to={`/dashboard/hrm/attendance/single/pdf?startdate=${dateFrom}&enddate=${dateTo}&selectedEmployee=${selectedEmployee}`} target={"_blank"} className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}}>
+                            <Link to={`/dashboard/hrm/summary/report/pdf?startdate=${dateFrom}&enddate=${dateTo}&selectedEmployee=${selectedEmployee}`} target={"_blank"} className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}}>
                                 <i style={{fontSize: '8px'}} className= "icon-eye"></i>
                             </Link>
-                            {/*<button  onClick={() => removeSearch()}>*/}
-                            {/*    /!*<i style={{fontSize: '8px'}} data-feather="download"></i>*!/*/}
-                            {/*    */}
-
                             <PDFDownloadLink
                                 className="btn btn-danger btn-lg" style={{padding: "0 10px 3px 10px", borderRadius: "5px"}}
-                                document={<Invoice data={data}></Invoice>} fileName="somename.pdf">
-                                    <Download size={'12px'}></Download>
-                                </PDFDownloadLink>
-                            {/*</button>*/}
+                                document={<Invoice data={data}></Invoice>} fileName="employee_summery.pdf">
+                                <Download size={'12px'}></Download>
+                            </PDFDownloadLink>
                         </div>
                     </div>
                 </div>
             </div>
-            {
-                data?.map((info, index) =>
-                    <div className="card mt-2" style={{padding: "20px"}} key={index}>
-                        <div>
-                            <h6 className="fw-bold">Employee Name: {info?.emp_name}</h6>
-                            <p className="fw-bold mb-1">Employee Code: {info?.card_no}</p>
-                            <p className="fw-bold mb-1">Department: {info?.dept_name}</p>
-                        </div>
-                        <hr/>
-                        <div>
+
+            <div className="card" style={{padding: "20px"}}>
+                {
+                    data?.map((item, index) =>
+                        <div className="mb-3" key={index}>
+                            <h6 style={{fontSize: "13px"}} className="fw-bold mb-3">Department: {item?.department_name}</h6>
                             <div className="table-responsive">
                                 <table className="table">
-                                    <thead className="table-border">
+                                    <thead className=" table-border">
                                     <tr>
-                                        <th scope="col">{"Date"}</th>
-                                        <th scope="col">{"In Time"}</th>
-                                        <th scope="col">{"Out Time"}</th>
-                                        <th scope="col">{"Late In"}</th>
-                                        <th scope="col">{"Early Out"}</th>
-                                        <th scope="col">{"Over Time"}</th>
-                                        {/*<th scope="col">{"Status"}</th>*/}
+                                        <th scope="col">{"Employee Name"}</th>
+                                        <th scope="col">{"Designation"}</th>
+                                        <th scope="col">{"Present (Days)"}</th>
+                                        <th scope="col">{"Absent (Days)"}</th>
+                                        <th scope="col">{"Late (Days)"}</th>
+                                        <th scope="col">{"Early Out (Days)"}</th>
+                                        <th scope="col">{"Over Time (Hours)"}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {
-                                        info?.data?.map((singleItem, index)=>
+                                        item?.employees?.map((emp, index) =>
                                             <tr key={index}>
-                                                <td>{singleItem?.date ? singleItem?.date : "N/A"}</td>
-                                                <td>{singleItem?.in_time ? singleItem?.in_time : "N/A"}</td>
-                                                <td>{singleItem?.out_time ? singleItem?.out_time : "N/A"}</td>
-                                                <td>{singleItem?.late ? singleItem?.late : "N/A"}</td>
-                                                <td>{singleItem?.early_out ? singleItem?.early_out : "N/A"}</td>
-                                                <td>{singleItem?.over_time ? singleItem?.over_time : "N/A"}</td>
-                                                {/*<td>{singleItem?.status ? singleItem?.status : "N/A"}</td>*/}
+                                                <td>{emp?.emp_name}</td>
+                                                <td>{emp?.emp_designation}</td>
+                                                <td>{emp?.totalPresent}</td>
+                                                <td>{emp?.totalAbsent}</td>
+                                                <td>{emp?.totalLate}</td>
+                                                <td>{emp?.totalEarlyOut}</td>
+                                                <td>{emp?.totalOverTime}</td>
                                             </tr>
                                         )
                                     }
+
                                     </tbody>
                                 </table>
+                                {/*<p className="text-center p-t-10">No entries found</p>*/}
                             </div>
                         </div>
-                    </div>
-                )
-            }
+                    )
+                }
 
+            </div>
         </>
     );
 };
 
-export default EmployeeWiseAttendanceReport;
+export default EmployeeSummeryReport;
