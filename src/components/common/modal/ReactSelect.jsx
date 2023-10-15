@@ -58,7 +58,7 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
                             className={`customeStyle ${error && 'is-invalid'}`}
                             id={labelName}
                             onChange={handleChange} // Remove the arrow function here
-                            defaultValue={data.find((option) => option.id === previous)}
+                            defaultValue={data.find((option) => option.id == previous)}
                             {...validation}
                             options={data}
                             styles={customStyles}

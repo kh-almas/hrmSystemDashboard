@@ -38,7 +38,7 @@ const Shift = () => {
             // console.log(setItem);
             const getData = await getMatchineInfoAPI(currentPage, howManyItem, searchData);
             setMachineInfo(getData?.data?.body?.data?.data);
-            console.log(getData?.data?.body?.data?.data);
+            // console.log(getData?.data?.body?.data?.data);
 
             const totalItem = getData?.data?.body?.data?.count
             setTotalDBRow(totalItem);
@@ -79,45 +79,6 @@ const Shift = () => {
         setDataUpdateModal(!dataUpdateModal);
     };
 
-    const onSubmit = (data) => {
-        const start_time = formattedTime(data.start_time);
-        data.start_time = start_time;
-        const end_time = formattedTime(data.end_time);
-        data.end_time = end_time;
-
-        // console.log(data);
-
-        axios.post('/hrm-system/shift', data)
-            .then(info => {
-                if(info?.status == 200)
-                {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    setModal(!modal);
-                }
-                isDarty();
-            })
-            .catch(e => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                    footer: '<a href="">Why do I have this issue?</a>'
-                })
-            })
-    };
-
-
-    const handleSubmitCheck = (e) => {
-        e.preventDefault();
-        // console.log(e.target.countries);
-    }
-
     const deleteShift = id => {
         Swal.fire({
             title: 'Are you sure?',
@@ -129,7 +90,7 @@ const Shift = () => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`/hrm-system/shift/${id}`)
+                axios.delete(`/hrm-system/machine/info/${id}`)
                     .then(info => {
                         if(info?.status == 200)
                         {
@@ -151,14 +112,6 @@ const Shift = () => {
                                 text: `Can not delete shift, if there have any attendance in this shift`,
                             })
                         }
-                        // if (!empty(e?.response?.data?.body?.message?.details[0].message))
-                        // {
-                        //     Swal.fire({
-                        //         icon: 'error',
-                        //         title: 'Oops...',
-                        //         text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                        //     })
-                        // }
                     })
             }
         })

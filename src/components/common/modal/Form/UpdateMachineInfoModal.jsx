@@ -25,9 +25,9 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
     const [selectedOrganization, setSelectedOrganization] = useState("11");
     const [selectedCompany, setSelectedCompany] = useState("");
     const [selectedBranch, setSelectedBranch] = useState("");
-    const [selectedStatus, setSelectedStatus] = useState("");
+    const [selectedStatus, setSelectedStatus] = useState("Active");
 
-    console.log("company",allCompany);
+    console.log('oldData',oldData?.id);
 
     useEffect(() => {
         setOrganization([])
@@ -44,7 +44,6 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
         setCompany([])
         if (selectedOrganization !== ""){
             const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
-            // console.log("sortedData",sortedData)
             sortedData?.map(item => {
                 const set_data = {
                     id: item.id,
@@ -70,7 +69,6 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
     }, [allBranch, selectedCompany])
 
     useEffect(() => {
-        setSelectedOrganization(oldData?.organization_id);
         setSelectedCompany(oldData?.company_id)
         reset();
     },[oldData])
@@ -91,11 +89,10 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
             'MachinePort':data.MachinePort ? data.MachinePort : oldData.MachinePort,
             'commKey':data.commKey ? data.commKey : oldData.commKey,
             'Location':data.Location ? data.Location : oldData.Location,
-            'Status':selectedStatus ? selectedStatus : oldData.status
+            'isInActive':selectedStatus ? selectedStatus : oldData.status
         }
 
-        // console.log(updatedData);
-        axios.put(`/hrm-system/shift/${oldData.id}`, updatedData)
+        axios.put(`/hrm-system/machine/info/${oldData?.id}`, updatedData)
             .then(info => {
                 // console.log("update",info)
                 if(info?.status == 200)
@@ -123,7 +120,7 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
 
     return (
         <>
-            <BaseModal title={"Update Shift Entry"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+            <BaseModal title={"Update Machine Entry"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
@@ -132,7 +129,7 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
                                 placeholder={"Select an option"}
                                 options={company}
                                 setValue={setSelectedCompany}
-                                previous={oldData?.OrgId}
+                                previous={oldData?.CompanyId}
                             />
                         </div>
                         <div>
@@ -140,7 +137,8 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
                                 labelName={"Branch"}
                                 placeholder={"Select an option"}
                                 options={branch}
-                                setValue={oldData?.BranchId}
+                                setValue={setSelectedBranch}
+                                previous={oldData?.BranchId}
                             />
                         </div>
                         <div>
@@ -198,7 +196,7 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
+                            options={[{id: "0", value: "Active"}, {id: "1", value: "Inactive"}]}
                             setValue={setSelectedStatus}
                             previous={oldData?.Status}
                         />
@@ -209,7 +207,7 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
                             Cancel
                         </Button>
                         <Button color="primary" type="submit">
-                            Create
+                            Update
                         </Button>
                     </div>
                 </form>
