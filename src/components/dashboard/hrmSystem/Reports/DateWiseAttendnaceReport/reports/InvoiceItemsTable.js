@@ -14,12 +14,12 @@ const styles = StyleSheet.create({
         borderColor: '#bff0fd',
     },
     company: {
-        marginBottom: '10px',
-        marginTop: '20px'
+        marginBottom: '3px',
+        marginTop: '15px'
     },
     branch: {
         marginBottom: '8px',
-        marginTop: '15px'
+        marginTop: '5px'
     }
 });
 
@@ -107,9 +107,6 @@ const rowStyles = StyleSheet.create({
 
 const InvoiceItemsTable = ({data}) => {
     const allItems = [];
-    console.log(data);
-
-        // console.log(company.company_name)
     return (
         <>
             {data?.map(com => <View>
@@ -124,18 +121,29 @@ const InvoiceItemsTable = ({data}) => {
                                     <Text>branchs: {branch?.branch?.name}</Text>
                                 </View>
                                 <View style={styles.tableContainer}>
+                                    <View style={HeaderStyles.container}>
+                                        <Text style={HeaderStyles.date}>Date</Text>
+                                        <Text style={HeaderStyles.code}>Code</Text>
+                                        <Text style={HeaderStyles.name}>Name</Text>
+                                        <Text style={HeaderStyles.designation}>Designation</Text>
+                                        <Text style={HeaderStyles.InTime}>In Time</Text>
+                                        <Text style={HeaderStyles.OutTime}>Out Time</Text>
+                                        <Text style={HeaderStyles.LateIn}>Late In</Text>
+                                        <Text style={HeaderStyles.EarlyOut}>Early Out</Text>
+                                        <Text style={HeaderStyles.status}>Status</Text>
+                                    </View>
                                     {
                                         branch?.branch?.attendance?.map((attendance, index) =>
-                                        <View style={HeaderStyles.container}>
-                                            <Text style={HeaderStyles.date}>{attendance?.date ? attendance?.date : 'N/A'}</Text>
-                                            <Text style={HeaderStyles.code}>{attendance?.c_no ? attendance?.c_no : 'N/A'}</Text>
-                                            <Text style={HeaderStyles.name}>{attendance?.employee_name ? attendance?.employee_name : 'N/A'}</Text>
-                                            <Text style={HeaderStyles.designation}>Designation</Text>
-                                            <Text style={HeaderStyles.InTime}>{attendance?.in_time ? attendance?.in_time : 'N/A'}</Text>
-                                            <Text style={HeaderStyles.OutTime}>{attendance?.out_time ? attendance?.out_time : 'N/A'}</Text>
-                                            <Text style={HeaderStyles.LateIn}>{attendance?.late ? attendance?.late : 'N/A'}</Text>
-                                            <Text style={HeaderStyles.EarlyOut}>{attendance?.early_out ? attendance?.early_out : 'N/A'}</Text>
-                                            <Text style={HeaderStyles.status}>{attendance?.status ? attendance?.status : 'N/A'}</Text>
+                                        <View style={rowStyles.row}>
+                                            <Text style={rowStyles.date}>{attendance?.date ? attendance?.date : 'N/A'}</Text>
+                                            <Text style={rowStyles.code}>{attendance?.c_no ? attendance?.c_no : 'N/A'}</Text>
+                                            <Text style={rowStyles.name}>{attendance?.employee_name ? attendance?.employee_name : 'N/A'}</Text>
+                                            <Text style={rowStyles.designation}>Designation</Text>
+                                            <Text style={rowStyles.InTime}>{attendance?.in_time ? attendance?.in_time : 'N/A'}</Text>
+                                            <Text style={rowStyles.OutTime}>{attendance?.out_time ? attendance?.out_time : 'N/A'}</Text>
+                                            <Text style={rowStyles.LateIn}>{attendance?.late ? attendance?.late : 'N/A'}</Text>
+                                            <Text style={rowStyles.EarlyOut}>{attendance?.early_out ? attendance?.early_out : 'N/A'}</Text>
+                                            <Text style={rowStyles.status}>{attendance?.status ? attendance?.status : 'N/A'}</Text>
                                         </View>
                                         )
                                     }

@@ -94,7 +94,7 @@ const EmployeeWiseAttendanceReport = () => {
                             <button className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}} onClick={() => removeSearch()}>
                                 <i style={{fontSize: '8px'}} className= "icon-close"></i>
                             </button>
-                            <Link to={`/dashboard/hrm/attendance/single/pdf?startdate=${dateFrom}&enddate=${dateTo}&selectedEmployee=${selectedEmployee}`} target={"_blank"} className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}} onClick={() => removeSearch()}>
+                            <Link to={`/dashboard/hrm/attendance/single/pdf?startdate=${dateFrom}&enddate=${dateTo}&selectedEmployee=${selectedEmployee}`} target={"_blank"} className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}}>
                                 <i style={{fontSize: '8px'}} className= "icon-eye"></i>
                             </Link>
                             {/*<button  onClick={() => removeSearch()}>*/}
