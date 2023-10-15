@@ -177,7 +177,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
+                            options={[{id: "0", value: "Active"}, {id: "1", value: "Inactive"}]}
                             setValue={setSelectedStatus}
                         />
                     </div>
