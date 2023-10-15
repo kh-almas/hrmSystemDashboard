@@ -23,29 +23,13 @@ const styles = StyleSheet.create({
     },
   });
   
-  const Invoice = ({queryParams}) => {
-      const {startdate, enddate, setcompany, setbranch} = queryParams;
-      // console.log("setcompany", setcompany);
-      const [data, setData] = useState([]);
-      useEffect( () => {
-          const getManualAttendance= async () => {
-              const getData = await getDailyAttendanceReportsAPI();
-              setData(getData?.data?.body?.data?.data);
-
-          }
-          getManualAttendance();
-
-
-      }, [])
-
-      console.log(data);
-
+  const Invoice = ({data}) => {
       return (
           <Document>
               <Page size="A4" style={styles.page}>
                   <View style={{flexDirection:"row", justifyContent: "space-between", alignItems: "center"}}>
                       <CompanyInfo/>
-                      <InvoiceNo/>
+                      {/*<InvoiceNo/>*/}
                   </View>
                   <InvoiceTitle />
                   <InvoiceItemsTable data={data} />

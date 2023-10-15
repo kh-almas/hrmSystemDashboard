@@ -1,14 +1,12 @@
 import React, {useEffect, useState} from "react";
-import Breadcrumb from "../../../common/breadcrumb";
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {Link} from "react-router-dom";
 import GetAllCompany from "../../../common/Query/hrm/GetAllCompany";
 import getAllBranch from "../../../common/Query/hrm/GetAllBranch";
 import Select from "../../../common/modal/Select";
-import getManualAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getManualAttendanceReportsAPI";
 import getDailyAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getDailyAttendanceReportsAPI";
 import {PDFDownloadLink} from "@react-pdf/renderer";
 import Invoice from "./DateWiseAttendnaceReport/reports/Invoice";
+import {Download} from "react-feather";
 
 
 const DateWiseAttendanceReport = () => {
@@ -21,14 +19,19 @@ const DateWiseAttendanceReport = () => {
     const [company, setCompany] = useState([]);
     const [branch, setBranch] = useState([]);
     const [data, setData] = useState([]);
-    console.log("selectedCompany", selectedCompany)
+
+
+    const removeSearch = () => {
+        setSelectedCompany('');
+        setSelectedBranch('');
+        setDateForm('');
+        setDateTo('');
+    }
     useEffect(() => {
         const getDailyAttendanceReport = async () => {
-
-            console.log("selectedCompany2", selectedCompany)
             const getData = await getDailyAttendanceReportsAPI(selectedCompany, selectedBranch, dateFrom, dateTo);
             setData(getData?.data?.body?.data?.data);
-            console.log(getData?.data?.body?.data?.data);
+            // console.log(getData?.data?.body?.data?.data);
         }
         getDailyAttendanceReport();
 
@@ -66,9 +69,6 @@ const DateWiseAttendanceReport = () => {
         setDateForm(e.target.value)
     }
 
-
-
-
     const [modal, setModal] = useState();
 
     const toggle = () => {
@@ -100,11 +100,11 @@ const DateWiseAttendanceReport = () => {
                 <div className="row">
                     <div className="col">
                         <label htmlFor="exampleFormControlInput1">Date From</label>
-                        <input onChange={dateform} className="form-control" required={true} type="date"/>
+                        <input onChange={dateform} value={dateFrom} className="form-control" required={true} type="date"/>
                     </div>
                     <div className="col">
                         <label htmlFor="exampleFormControlInput1">Date To</label>
-                        <input onChange={dateto} className="form-control" required={true} type="date"/>
+                        <input onChange={dateto}  value={dateTo} className="form-control" required={true} type="date"/>
                     </div>
                     <div className="col">
                         <div>
@@ -126,71 +126,30 @@ const DateWiseAttendanceReport = () => {
                             />
                         </div>
                     </div>
-                    <div className="col">
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: "20px",
-                                marginTop: "20px",
-                            }}
-                        >
-                            <button
-                                className="btn btn-primary btn-lg"
-                                style={{padding: "5px 15px"}}
-                            >
-                                <i className="fa fa-search"></i>
-                            </button>
-                            <button
-                                className="btn btn-danger btn-lg"
-                                style={{padding: "5px 15px", borderRadius: "5px"}}
-                            >
-                                <i className="fa fa-trash-o"></i>
-                            </button>
-                            <button
-                                onClick={toggle}
-                                className="btn btn-primary btn-lg"
-                                style={{padding: "5px 15px"}}
-                            >
-                                <i className="fa fa-paste"></i>
-                            </button>
-                        </div>
+                    <div className="col-1">
+                        {/*<div className="col-1">*/}
+                            <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "25px",}}>
+                                <button className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}} onClick={() => removeSearch()}>
+                                    <i style={{fontSize: '8px'}} className= "icon-close"></i>
+                                </button>
+                                <Link to={`/dashboard/hrm/attendance/datewise/pdf?dateFrom=${dateFrom}&dateTo=${dateTo}&selectedCompany=${selectedCompany}&selectedBranch=${selectedBranch}`} target={"_blank"} className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}}>
+                                    <i style={{fontSize: '8px'}} className= "icon-eye"></i>
+                                </Link>
+                                {/*<button  onClick={() => removeSearch()}>*/}
+                                {/*    /!*<i style={{fontSize: '8px'}} data-feather="download"></i>*!/*/}
+                                {/*    */}
+
+                                <PDFDownloadLink
+                                    className="btn btn-danger btn-lg" style={{padding: "0 10px 3px 10px", borderRadius: "5px"}}
+                                    document={<Invoice data={data}></Invoice>} fileName="somename.pdf">
+                                    <Download size={'12px'}></Download>
+                                </PDFDownloadLink>
+                                {/*</button>*/}
+                            </div>
+                        {/*</div>*/}
                     </div>
                 </div>
             </div>
-            <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Import employee CSV file</ModalHeader>
-                <ModalBody>
-                    <form className="m-t-15 m-b-15">
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "flex-start",
-                                gap: "20px",
-                            }}
-                        >
-                            <h6 className="m-0">Download sample employee CSV file</h6>
-                            <button className="btn btn-primary btn-lg">
-                                {" "}
-                                <i className="fa fa-upload"></i> Download
-                            </button>
-                        </div>
-                        <label htmlFor="exampleFormControlInput1">Select CSV File</label>{" "}
-                        <br/>
-                        <input type="file"/>
-                    </form>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" type="submit">
-                        Upload
-                    </Button>
-                    <Button color="secondary" onClick={toggle}>
-                        Cancel
-                    </Button>
-                </ModalFooter>
-            </Modal>
 
             {
                 data?.map((com, index) =>
