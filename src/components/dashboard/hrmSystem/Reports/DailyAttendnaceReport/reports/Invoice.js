@@ -19,15 +19,15 @@ const styles = StyleSheet.create({
     },
   });
   
-  const Invoice = ({invoice}) => (
+  const Invoice = ({data}) => (
             <Document>
                 <Page size="A4" style={styles.page}>
                     <View style={{flexDirection:"row", justifyContent: "space-between", alignItems: "center"}}>
                         <CompanyInfo/>
-                        <InvoiceNo/>
+                        {/*<InvoiceNo/>*/}
                     </View>
                     <InvoiceTitle />
-                    <InvoiceItemsTable invoice={invoice} />
+                    <InvoiceItemsTable data={data} />
                     <InvoiceThankYouMsg />
                 </Page>
             </Document>

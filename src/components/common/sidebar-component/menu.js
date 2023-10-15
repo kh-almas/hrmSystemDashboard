@@ -161,30 +161,30 @@ export const MENUITEMS = [
         type: "sub",
         children: [
           {
-            title: "Daily Attendance",
+            title: "Employee Summary Report",
             type: "link",
-            path: "/dashboard/hrm/attendance/daily",
+            path: "/dashboard/hrm/summary/report",
           },
           {
             title: "Date wise Attendance",
             type: "link",
             path: "/dashboard/hrm/attendance/datewise",
           },
-          {
-            title: "Employee Movements",
-            type: "link",
-            path: "/dashboard/hrm/employee/movements",
-          },
-          {
-            title: "Leave",
-            type: "link",
-            path: "/dashboard/hrm/employee/leave",
-          },
-          {
-            title: "Manual Attendance",
-            type: "link",
-            path: "/dashboard/hrm/attendance/manual/report",
-          },
+          // {
+          //   title: "Employee Movements",
+          //   type: "link",
+          //   path: "/dashboard/hrm/employee/movements",
+          // },
+          // {
+          //   title: "Leave",
+          //   type: "link",
+          //   path: "/dashboard/hrm/employee/leave",
+          // },
+          // {
+          //   title: "Manual Attendance",
+          //   type: "link",
+          //   path: "/dashboard/hrm/attendance/manual/report",
+          // },
           {
             title: "Employee wise Attendance",
             type: "link",
