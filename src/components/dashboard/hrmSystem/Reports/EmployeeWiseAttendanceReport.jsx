@@ -5,18 +5,24 @@ import getEmployee from "../../../common/Query/hrm/GetEmployee";
 import Select from "../../../common/modal/Select";
 import getDailyAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getDailyAttendanceReportsAPI";
 import getEmployeeWiseAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getEmployeeWiseAttendanceReportsAPI";
+import {Download} from "react-feather";
+import {PDFDownloadLink} from "@react-pdf/renderer";
+import Invoice from "./EmployWiseAttendanceReport/reports/Invoice";
 
 const EmployeeWiseAttendanceReport = () => {
-    const [modal, setModal] = useState();
     const [data, setData] = useState([]);
     const [employee, setEmployee] = useState([]);
-    const [selectedEmployee, setSelectedEmployee] = useState();
+    const [selectedEmployee, setSelectedEmployee] = useState('');
     const [dateFrom, setDateForm] = useState("");
     const [dateTo, setDateTo] = useState("");
 
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = getEmployee();
 
-    // console.log(dateFrom, dateTo)
+    const removeSearch = () => {
+        setSelectedEmployee('');
+        setDateForm('');
+        setDateTo('');
+    }
 
     useEffect(() => {
         const employeeWiseAttendanceReport = async () => {
@@ -24,7 +30,7 @@ const EmployeeWiseAttendanceReport = () => {
             // console.log("selectedCompany2", selectedCompany)
             const getData = await getEmployeeWiseAttendanceReportsAPI(selectedEmployee, dateFrom, dateTo);
             setData(getData?.data?.body?.data);
-            console.log(getData?.data?.body?.data);
+            // console.log(getData?.data?.body?.data);
         }
         employeeWiseAttendanceReport();
 
@@ -43,17 +49,13 @@ const EmployeeWiseAttendanceReport = () => {
     }, [allEmployee])
 
 
-    const dateto = e => {
+    const datetoFn = e => {
         setDateTo(e.target.value);
     }
-    const dateform = e => {
+    const dateformFn = e => {
         setDateForm(e.target.value)
     }
 
-
-    const toggle = () => {
-        setModal(!modal);
-    };
     return (
         <>
             <div className="pt-4 mb-3">
@@ -62,24 +64,20 @@ const EmployeeWiseAttendanceReport = () => {
                         <h3 className="fw-bold">Employee Wise Attendance Reports</h3>
                     </div>
                 </div>
-                <div className="d-flex justify-content-center">
-                    <Link to={"/dashboard/hrm/attendance/single/pdf"} target="_blank" className="ms-3 btn btn-primary">
-                        View PDF
-                    </Link>
-                </div>
             </div>
 
             <div className="card" style={{padding: "20px"}}>
                 <div className="row">
+
                     <div className="col">
                         <label htmlFor="exampleFormControlInput1">Date From</label>
-                        <input onChange={dateform} className="form-control" required={true} type="date"/>
-                    </div>
-                    <div className="col">
-                        <label htmlFor="exampleFormControlInput1">Date To</label>
-                        <input onChange={dateto} className="form-control" required={true} type="date"/>
+                        <input onChange={dateformFn} value={dateFrom} className="form-control" required={true} type="date"/>
                     </div>
 
+                    <div className="col">
+                        <label htmlFor="exampleFormControlInput1">Date To</label>
+                        <input onChange={datetoFn} value={dateTo} className="form-control" required={true} type="date"/>
+                    </div>
 
                     <div className="col">
                         <Select
@@ -91,74 +89,28 @@ const EmployeeWiseAttendanceReport = () => {
                     </div>
 
 
-                    <div className="col">
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: "20px",
-                                marginTop: "20px",
-                            }}
-                        >
-                            <button
-                                className="btn btn-primary btn-lg"
-                                style={{padding: "5px 15px"}}
-                            >
-                                <i className="fa fa-search"></i>
+                    <div className="col-1">
+                        <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "25px",}}>
+                            <button className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}} onClick={() => removeSearch()}>
+                                <i style={{fontSize: '8px'}} className= "icon-close"></i>
                             </button>
-                            <button
-                                className="btn btn-danger btn-lg"
-                                style={{padding: "5px 15px", borderRadius: "5px"}}
-                            >
-                                <i className="fa fa-trash-o"></i>
-                            </button>
-                            <button
-                                onClick={toggle}
-                                className="btn btn-primary btn-lg"
-                                style={{padding: "5px 15px"}}
-                            >
-                                <i className="fa fa-paste"></i>
-                            </button>
+                            <Link to={`/dashboard/hrm/attendance/single/pdf?startdate=${dateFrom}&enddate=${dateTo}&selectedEmployee=${selectedEmployee}`} target={"_blank"} className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}} onClick={() => removeSearch()}>
+                                <i style={{fontSize: '8px'}} className= "icon-eye"></i>
+                            </Link>
+                            {/*<button  onClick={() => removeSearch()}>*/}
+                            {/*    /!*<i style={{fontSize: '8px'}} data-feather="download"></i>*!/*/}
+                            {/*    */}
+
+                            <PDFDownloadLink
+                                className="btn btn-danger btn-lg" style={{padding: "0 10px 3px 10px", borderRadius: "5px"}}
+                                document={<Invoice data={data}></Invoice>} fileName="somename.pdf">
+                                    <Download size={'12px'}></Download>
+                                </PDFDownloadLink>
+                            {/*</button>*/}
                         </div>
                     </div>
                 </div>
             </div>
-            <Modal isOpen={modal} toggle={toggle}>
-                <ModalHeader toggle={toggle}>Import employee CSV file</ModalHeader>
-                <ModalBody>
-                    <form className="m-t-15 m-b-15">
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "flex-start",
-                                gap: "20px",
-                            }}
-                        >
-                            <h6 className="m-0">Download sample employee CSV file</h6>
-                            <button className="btn btn-primary btn-lg">
-                                {" "}
-                                <i className="fa fa-upload"></i> Download
-                            </button>
-                        </div>
-                        <label htmlFor="exampleFormControlInput1">Select CSV File</label>{" "}
-                        <br/>
-                        <input type="file"/>
-                    </form>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" type="submit">
-                        Upload
-                    </Button>
-                    <Button color="secondary" onClick={toggle}>
-                        Cancel
-                    </Button>
-                </ModalFooter>
-            </Modal>
-
-
-            {console?.log("data", data)}
             {
                 data?.map((info, index) =>
                     <div className="card mt-2" style={{padding: "20px"}} key={index}>
@@ -179,7 +131,7 @@ const EmployeeWiseAttendanceReport = () => {
                                         <th scope="col">{"Late In"}</th>
                                         <th scope="col">{"Early Out"}</th>
                                         <th scope="col">{"Over Time"}</th>
-                                        <th scope="col">{"Status"}</th>
+                                        {/*<th scope="col">{"Status"}</th>*/}
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -192,7 +144,7 @@ const EmployeeWiseAttendanceReport = () => {
                                                 <td>{singleItem?.late ? singleItem?.late : "N/A"}</td>
                                                 <td>{singleItem?.early_out ? singleItem?.early_out : "N/A"}</td>
                                                 <td>{singleItem?.over_time ? singleItem?.over_time : "N/A"}</td>
-                                                <td>{singleItem?.status ? singleItem?.status : "N/A"}</td>
+                                                {/*<td>{singleItem?.status ? singleItem?.status : "N/A"}</td>*/}
                                             </tr>
                                         )
                                     }

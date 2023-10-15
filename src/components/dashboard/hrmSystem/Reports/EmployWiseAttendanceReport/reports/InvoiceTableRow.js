@@ -33,15 +33,6 @@ const InvoiceTableRow = () => {
                 <Text style={styles.width}>60</Text>
                 <Text style={styles.width}>Present</Text>
             </View>
-            <View style={styles.row}>
-                <Text style={styles.width}>20</Text>
-                <Text style={styles.width}>09:30</Text>
-                <Text style={styles.width}>06:15</Text>
-                <Text style={styles.width}>30</Text>
-                <Text style={styles.width}>00</Text>
-                <Text style={styles.width}>45</Text>
-                <Text style={styles.width}>Present</Text>
-            </View>
         </>
     return (<Fragment>{rows}</Fragment> )
 };
