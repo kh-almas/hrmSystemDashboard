@@ -154,6 +154,7 @@ import Weekday from "../components/dashboard/hrmSystem/companyInfo/Weekday";
 import CompanyProject from "../components/dashboard/hrmSystem/companyInfo/CompanyProject";
 import Role from "../components/dashboard/Role";
 import MachineInfo from "../components/dashboard/hrmSystem/attendance/MachineInfo";
+import CreateUser from "../components/dashboard/user/CreateUser";
 
 export const routes = [
   {
@@ -409,6 +410,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/admin/resignation`,
     Component: <Resignation />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/user/resignation`,
+    Component: <CreateUser />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/admin/trip`,

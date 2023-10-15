@@ -18,6 +18,7 @@ const EmployeeWiseAttendanceReport = () => {
 
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = getEmployee();
 
+    console.log(data)
     const removeSearch = () => {
         setSelectedEmployee('');
         setDateForm('');
