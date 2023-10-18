@@ -46,10 +46,12 @@ const CompanyHoliday = () => {
 
       let err = false;
       for (let I = 0; I <= dayDiff; I++) {
+        // console.log(dateFrom, I);
+        // console.log(dateFrom.add(2, "days").format("YYYY-MM-DD"));
         axios
           .post("/hrm-system/holiday", {
             title: data.title,
-            date: dateFrom.add(I, "days").format("YYYY-MM-DD"),
+            date: dateFrom.add(I ? 1 : 0, "days").format("YYYY-MM-DD"),
           })
           .then(() => {})
           .catch(() => !err);
