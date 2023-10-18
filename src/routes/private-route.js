@@ -13,8 +13,8 @@ const PrivateRoute = () => {
     //   ?.find((cookie) => cookie?.includes("token"))
     //   ?.split("=")[1];
     let email = localStorage.getItem("email");
-    // const vercel = "http://localhost:5000/";
-    const vercel = "https://dashboard-hrm-system-backend.vercel.app/";
+    const vercel = "http://localhost:5000/";
+    // const vercel = "https://dashboard-hrm-system-backend.vercel.app/";
     if (token && email) {
       fetch(`${vercel}auth/verify`, {
         method: "POST",
