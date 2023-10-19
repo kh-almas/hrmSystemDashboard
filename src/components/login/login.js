@@ -1,7 +1,7 @@
 // import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "../../axios";
@@ -16,6 +16,16 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   console.log("Error: ", errors);
+
+  useEffect(() => {
+    const token = localStorage.getItem("access-token");
+    const id = localStorage.getItem("id");
+    const email = localStorage.getItem("email");
+
+    if (token && id && email) {
+      navigate(`${process.env.PUBLIC_URL}/dashboard/hrm/employee`);
+    }
+  }, [navigate]);
 
   const onSubmit = (data) => {
     // console.log("Value: ", data);
@@ -32,7 +42,7 @@ const Login = () => {
           localStorage.setItem("id", id);
           localStorage.setItem("email", email);
           setMatch(true);
-          navigate(`${process.env.PUBLIC_URL}/dashboard/hrm/employee`);
+          navigate(0);
         } else {
           setMatch(false);
         }

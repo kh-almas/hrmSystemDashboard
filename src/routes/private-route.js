@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import axios from "../axios";
 
 const PrivateRoute = () => {
   const [auth, setAuth] = useState(false);
@@ -14,30 +15,17 @@ const PrivateRoute = () => {
     //   ?.split("=")[1];
     let email = localStorage.getItem("email");
     // const vercel = "http://localhost:5000/";
-    const vercel = "https://dashboard-hrm-system-backend.vercel.app/";
     if (token && email) {
-      fetch(`${vercel}auth/verify`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ email }),
-      })
+      axios
+        .post("/auth/verify")
         .then((res) => {
-          return res.json();
-        })
-        .then((json) => {
-          // console.log(json);
-
-          if (json.body.decoded.email === email) {
+          if (res.data?.body?.decoded?.email === email) {
             setAuth(true);
           }
         })
         .catch((err) => {
           setAuth(false);
-          // console.log(err);
+          console.log(err);
           // localStorage.removeItem("access-token");
           localStorage.removeItem("id");
           localStorage.removeItem("email");
