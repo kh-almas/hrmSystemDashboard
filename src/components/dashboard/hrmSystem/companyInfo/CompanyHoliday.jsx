@@ -24,6 +24,7 @@ const CompanyHoliday = () => {
     const [holiday, setHoliday] = useState([]);
     const [modal, setModal] = useState(false);
     const [oldData, setOldData] = useState({});
+    const [status, setStatus] = useState('');
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
     const [allHolidayStatus, allHolidayReFetch, allHoliday, allHolidayError] = GetAllHoliday();
     const {register, handleSubmit, formState: { errors },} = useForm();
@@ -42,7 +43,8 @@ const CompanyHoliday = () => {
     };
 
     const onSubmit = (data) => {
-        console.log(data);
+        // console.log(data);
+        data.status = status;
         axios.post('/hrm-system/holiday', data)
             .then(info => {
                 if(info?.status == 200)
@@ -193,8 +195,7 @@ const CompanyHoliday = () => {
                                 labelName={"Status"}
                                 placeholder={"Select an option"}
                                 options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                                validation={{...register("status", {required: true})}}
-                                error={errors?.status}
+                                setValue={setStatus}
                             />
                         </div>
 

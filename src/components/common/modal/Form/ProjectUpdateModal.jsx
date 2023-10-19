@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import BaseModal from "../BaseModal";
 import Select from "../Select";
 import Input from "../Input";
@@ -11,6 +11,8 @@ import Swal from "sweetalert2";
 const ProjectUpdateModal = ({company, allProjectReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
+    const [status, setStatus] = useState('');
+    const [singleCompany, setSingleCompany] = useState('');
 
     useEffect(() => {
         reset();
@@ -23,8 +25,8 @@ const ProjectUpdateModal = ({company, allProjectReFetch, oldData, dataUpdateModa
             'start_date':data.start_date ? data.start_date : oldData.start_date,
             'end_date':data.end_date ? data.end_date : oldData.end_date,
             'total_employees':data.total_employees ? data.total_employees : oldData.total_employees,
-            'company_id':data.company_id ? data.company_id : oldData.company_id,
-            'status':data.status ? data.status : oldData.status
+            'company_id':singleCompany ? singleCompany : oldData.company_id,
+            'status':status ? status : oldData.status
         }
 
         axios.put(`/hrm-system/project/${oldData.id}`, updatedData)
@@ -75,9 +77,7 @@ const ProjectUpdateModal = ({company, allProjectReFetch, oldData, dataUpdateModa
                                 labelName={"Company"}
                                 placeholder={"Select an option"}
                                 options={company}
-                                previous={oldData?.company_id}
-                                validation={{...register("company_id")}}
-                                error={errors?.company_id}
+                                setValue={setSingleCompany}
                             />
                         </div>
                     </div>
@@ -138,9 +138,7 @@ const ProjectUpdateModal = ({company, allProjectReFetch, oldData, dataUpdateModa
                                 labelName={"Status"}
                                 placeholder={"Select an option"}
                                 options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                                validation={{...register("status")}}
-                                previous={oldData?.status}
-                                error={errors?.status}
+                                setValue={setStatus}
                             />
                         </div>
                     </div>

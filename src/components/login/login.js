@@ -32,7 +32,7 @@ const Login = () => {
           localStorage.setItem("id", id);
           localStorage.setItem("email", email);
           setMatch(true);
-          navigate(`${process.env.PUBLIC_URL}/dashboard/default`);
+          navigate(`${process.env.PUBLIC_URL}/dashboard/hrm/employee`);
         } else {
           setMatch(false);
         }

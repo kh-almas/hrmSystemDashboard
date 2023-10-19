@@ -62,7 +62,7 @@ const ManualAttendance = () => {
     const setDateWise = e => {
         const value = e.target.value
         setDatewise(value);
-        console.log(value);
+        // console.log(value);
     }
 
     useEffect( () => {
