@@ -21,7 +21,8 @@ const CompanyProject = () => {
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allProjectStatus, allProjectReFetch, allProject, allProjectError] = GetAllProject();
     const {register, handleSubmit, formState: { errors },} = useForm();
-
+    const [status, setStatus] = useState('');
+    const [singleCompany, setSingleCompany] = useState('');
 
     useEffect(() => {
         setCompany([])
@@ -35,7 +36,7 @@ const CompanyProject = () => {
     }, [allCompany])
 
     useEffect(() => {
-        setProject(allProject?.data?.body?.data?.data);
+        setProject(allProject?.data?.body?.data);
     }, [allProject])
 
     const toggle = () => {
@@ -47,6 +48,8 @@ const CompanyProject = () => {
     };
 
     const onSubmit = (data) => {
+        data.statussss = status;
+        data.company_id = singleCompany;
         axios.post('/hrm-system/project', data)
             .then(info => {
                 if(info?.status == 200)
@@ -207,8 +210,7 @@ const CompanyProject = () => {
                                     labelName={"Company"}
                                     placeholder={"Select an option"}
                                     options={company}
-                                    validation={{...register("company_id", {required: true})}}
-                                    error={errors?.company_id}
+                                    setValue={setSingleCompany}
                                 />
                             </div>
                         </div>
@@ -265,8 +267,7 @@ const CompanyProject = () => {
                                     labelName={"Status"}
                                     placeholder={"Select an option"}
                                     options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                                    validation={{...register("status", {required: true})}}
-                                    error={errors?.status}
+                                    setValue={setStatus}
                                 />
                             </div>
                         </div>

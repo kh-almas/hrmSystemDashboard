@@ -24,6 +24,7 @@ import WeekdayUpdateModal from "../../../common/modal/Form/WeekdayUpdateModal";
 
 const Weekday = () => {
     const [weekday, setWeekday] = useState([]);
+    const [status, setStatus] = useState('');
     const [modal, setModal] = useState(false);
     const [oldData, setOldData] = useState({});
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
@@ -44,7 +45,8 @@ const Weekday = () => {
     };
 
     const onSubmit = (data) => {
-        console.log(data);
+        // console.log(data);
+        data.status = status;
         axios.post('/hrm-system/weekday', data)
             .then(info => {
                 if(info?.status == 200)
@@ -197,8 +199,7 @@ const Weekday = () => {
                                 labelName={"Status"}
                                 placeholder={"Select an option"}
                                 options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                                validation={{...register("status", {required: true})}}
-                                error={errors?.status}
+                                setValue={setStatus}
                             />
                         </div>
 

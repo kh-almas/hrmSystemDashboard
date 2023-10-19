@@ -18,10 +18,7 @@ const HolidayUpdateModal = ({
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  useEffect(() => {
-    reset();
-  }, [oldData]);
+    const [status, setStatus] = useState('');
 
   const onSubmit = (data) => {
     const updatedData = {
@@ -29,6 +26,10 @@ const HolidayUpdateModal = ({
       status: data.status ? data.status : oldData.status,
     };
 
+    const onSubmit = (data) => {
+        const updatedData = {
+            'date':data.date ? data.date : oldData.date,
+            'status':status ? status : oldData.status
     axios
       .put(`/hrm-system/holiday/${oldData.id}`, updatedData)
       .then((info) => {
@@ -54,63 +55,45 @@ const HolidayUpdateModal = ({
         });
       });
   };
+    }
 
-  return (
-    <>
-      <BaseModal
-        title={"Update Holiday"}
-        dataModal={dataUpdateModal}
-        dataToggle={dataUpdateToggle}
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <Input
-              labelName={"Title"}
-              inputName={"title"}
-              inputType={"text"}
-              defaultValue={oldData?.title}
-              validation={{
-                ...register("title", { required: true }),
-              }}
-            />
-          </div>
-          <div>
-            <Input
-              labelName={"Date"}
-              inputName={"date"}
-              inputType={"date"}
-              defaultValue={oldData?.date}
-              validation={{
-                ...register("date", { required: true }),
-              }}
-            />
-          </div>
-          {/* <div>
-            <Select
-              labelName={"Status"}
-              placeholder={"Select an option"}
-              previous={oldData?.status}
-              options={[
-                { id: "Active", value: "Active" },
-                { id: "Inactive", value: "Inactive" },
-              ]}
-              validation={{ ...register("status", { required: true }) }}
-              error={errors?.status}
-            />
-          </div> */}
+    return (
+        <>
+            <BaseModal title={"Update Holiday"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div>
+                        <Input
+                            labelName={"Holiday"}
+                            inputName={"name"}
+                            inputType={"date"}
+                            defaultValue={oldData?.date}
+                            validation={{
+                                ...register("date", { required: true }),
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <Select
+                            labelName={"Status"}
+                            placeholder={"Select an option"}
+                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
+                            setValue={setStatus}
+                        />
+                    </div>
 
-          <div className="d-flex justify-content-end">
-            <Button color="danger" onClick={dataUpdateToggle} className="me-2">
-              Cancel
-            </Button>
-            <Button color="primary" type="submit">
-              Create
-            </Button>
-          </div>
-        </form>
-      </BaseModal>
-    </>
-  );
+
+                    <div className="d-flex justify-content-end">
+                        <Button color="danger" onClick={dataUpdateToggle} className="me-2">
+                            Cancel
+                        </Button>
+                        <Button color="primary" type="submit">
+                            Update
+                        </Button>
+                    </div>
+                </form>
+            </BaseModal>
+        </>
+    );
 };
 
 export default HolidayUpdateModal;

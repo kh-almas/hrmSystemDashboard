@@ -11,17 +11,13 @@ import Input from "../../../common/modal/Input";
 import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
 
 const CompanyHoliday = () => {
-  const [holiday, setHoliday] = useState([]);
-  const [modal, setModal] = useState(false);
-  const [oldData, setOldData] = useState({});
-  const [dataUpdateModal, setDataUpdateModal] = useState(false);
-  const [allHolidayStatus, allHolidayReFetch, allHoliday, allHolidayError] =
-    GetAllHoliday();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+    const [holiday, setHoliday] = useState([]);
+    const [modal, setModal] = useState(false);
+    const [oldData, setOldData] = useState({});
+    const [status, setStatus] = useState('');
+    const [dataUpdateModal, setDataUpdateModal] = useState(false);
+    const [allHolidayStatus, allHolidayReFetch, allHoliday, allHolidayError] = GetAllHoliday();
+    const {register, handleSubmit, formState: { errors },} = useForm();
 
   useEffect(() => {
     setHoliday(allHoliday?.data?.body?.data);
@@ -37,12 +33,32 @@ const CompanyHoliday = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-
-    if (data.dateTo) {
-      const dateFrom = moment(data.dateFrom, "YYYY-MM-DD");
-      const dateTo = moment(data.dateTo, "YYYY-MM-DD");
-      const dayDiff = dateTo.diff(dateFrom, "days");
-      // console.log(dayDiff);
+    const onSubmit = (data) => {
+        // console.log(data);
+        data.status = status;
+        axios.post('/hrm-system/holiday', data)
+            .then(info => {
+                if(info?.status == 200)
+                {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setModal(!modal);
+                }
+                allHolidayReFetch();
+            })
+            .catch(e => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`
+                })
+            })
+    };
 
       let err = false;
       for (let I = 0; I <= dayDiff; I++) {
@@ -258,28 +274,28 @@ const CompanyHoliday = () => {
                 }}
               />
             </div>
-            <div>
-              <Input
-                labelName={"Date To"}
-                inputName={"date-to"}
-                inputType={"date"}
-                validation={{
-                  ...register("dateTo"),
-                }}
-              />
-            </div>
-            {/* <div>
-              <Select
-                labelName={"Status"}
-                placeholder={"Select an option"}
-                options={[
-                  { id: "Active", value: "Active" },
-                  { id: "Inactive", value: "Inactive" },
-                ]}
-                validation={{ ...register("status", { required: true }) }}
-                error={errors?.status}
-              />
-            </div> */}
+            <Modal isOpen={modal} toggle={toggle}>
+                <ModalHeader toggle={toggle}>Holiday Entry</ModalHeader>
+                <ModalBody>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <div>
+                            <Input
+                                labelName={"Holiday"}
+                                inputName={"name"}
+                                inputType={"date"}
+                                validation={{
+                                    ...register("date", { required: true }),
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Status"}
+                                placeholder={"Select an option"}
+                                options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
+                                setValue={setStatus}
+                            />
+                        </div>
 
             <div className="d-flex justify-content-end">
               <Button color="danger" onClick={toggle} className="me-2">

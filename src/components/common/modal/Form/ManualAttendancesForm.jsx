@@ -21,12 +21,11 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     const [shift, setShift] = useState([]);
 
 
-    const [selectedOrganization, setSelectedOrganization] = useState("11");
-    const [selectedCompany, setSelectedCompany] = useState("2");
-    const [selectedBranch, setSelectedBranch] = useState("8");
-    const [selectedShift, setSelectedShift] = useState("2");
+    const [selectedOrganization, setSelectedOrganization] = useState("1");
+    const [selectedCompany, setSelectedCompany] = useState("");
+    const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedShift, setSelectedShift] = useState("");
     const [employeeId, setEmployeeId] = useState('');
-    const [attendanceType, setAttendanceType] = useState('');
     const [status, setStatus] = useState('Active');
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployee();
@@ -34,7 +33,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
-    // console.log("allCompany?.data?.body?.data?.data",allCompany?.data?.body?.data?.data)
+    // console.log(employeeId)
     useEffect( () => {
         setEmployee([])
         if(selectedShift !== "")
@@ -108,8 +107,9 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
         data.shift_id = selectedShift;
         data.device_id = "device_5681234";
         data.employee_id= employeeId;
-        data.attendance_type= attendanceType;
+        data.attendance_type= '1';
         data.status= status;
+        // console.log(data)
 
         axios.post('/hrm-system/manual-attendance', data)
             .then(info => {
@@ -127,8 +127,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                     refetch();
                     setSelectedCompany('');
                     setSelectedBranch('');
-                    setEmployeeId('')
-                    setAttendanceType('')
+                    setEmployeeId('');
                     setSelectedShift('');
                     setStatus('Active');
                 }
@@ -185,23 +184,13 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                             placeholder={"Select an option"}
                             options={employee}
                             // validation={{...register("employee_id", {required: true})}}
-                            error={errors?.employee_id}
+                            // error={errors?.employee_id}
                             setValue={setEmployeeId}
                         />
                     </div>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
-                        <div>
-                            <Select
-                                labelName={"Attendance Type"}
-                                placeholder={"Select an option"}
-                                options={[{id: "Type 1", value: "Type 1"}, {id: "Type 2", value: "Type 2"}]}
-                                // validation={{...register("attendance_type", {required: true})}}
-                                error={errors?.attendance_type}
-                                setValue={setAttendanceType}
-                            />
-                        </div>
                         <div>
                             <Input
                                 labelName={"Card Number"}

@@ -127,6 +127,7 @@ const CompanyBranch = () => {
                             )
                         }
                         allBranchReFetch();
+                        isDarty()
                     })
                     .catch(e => {
                         console.log(e);

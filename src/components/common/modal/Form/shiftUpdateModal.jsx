@@ -22,7 +22,7 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = getAllOrganization();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
 
-    const [selectedOrganization, setSelectedOrganization] = useState("11");
+    const [selectedOrganization, setSelectedOrganization] = useState("1");
     const [selectedCompany, setSelectedCompany] = useState("");
     const [selectedBranch, setSelectedBranch] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("");
@@ -95,7 +95,7 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
             'name':data.name ? data.name : oldData.name,
             'start_time': data.start_time ? data.start_time : formattedTimeForUpdate(oldData.start_time),
             'end_time':data.end_time ? data.end_time : formattedTimeForUpdate(oldData.end_time),
-            'weekends':weekdays ? JSON.stringify(weekdays) : oldData.weekends,
+            'weekends':weekdays.length !== 0 ? JSON.stringify(weekdays) : oldData.weekends,
             'note':data.note ? data.note : oldData.note,
             'status':selectedStatus ? selectedStatus : oldData.status
         }

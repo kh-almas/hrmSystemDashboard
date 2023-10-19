@@ -35,7 +35,7 @@ const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal
 
     const onSubmit = (data) => {
         const updatedData = {
-            'company_id':selectedCompany ? selectedCompany : oldData.name,
+            'company_id':selectedCompany ? selectedCompany : oldData.company_id,
             'name':data.name ? data.name : oldData.name,
             'details': data.details ? data.details : oldData.details,
             'status':status ? status : oldData.status

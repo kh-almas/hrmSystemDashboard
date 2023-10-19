@@ -21,7 +21,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = getAllOrganization();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
 
-    const [selectedOrganization, setSelectedOrganization] = useState("11");
+    const [selectedOrganization, setSelectedOrganization] = useState("1");
     const [selectedCompany, setSelectedCompany] = useState("");
     const [selectedBranch, setSelectedBranch] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("Active");
@@ -74,7 +74,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
         data.OrgId = selectedOrganization;
         data.CompanyId = selectedCompany;
         data.BranchId = selectedBranch;
-        data.Status = selectedStatus;
+        data.isInActive = selectedStatus;
         // console.log(data);
 
         axios.post('/hrm-system/machine/info', data)
