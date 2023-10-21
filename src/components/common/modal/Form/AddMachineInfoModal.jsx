@@ -172,14 +172,14 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                                 error={errors?.Location}
                             />
                         </div>
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Status"}
-                            placeholder={"Select an option"}
-                            options={[{id: "0", value: "Active"}, {id: "1", value: "Inactive"}]}
-                            setValue={setSelectedStatus}
-                        />
+                        <div>
+                            <Select
+                                labelName={"Status"}
+                                placeholder={"Select an option"}
+                                options={[{id: "0", value: "Active"}, {id: "1", value: "Inactive"}]}
+                                setValue={setSelectedStatus}
+                            />
+                        </div>
                     </div>
 
                     <div className="d-flex justify-content-end">

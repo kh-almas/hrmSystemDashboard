@@ -65,7 +65,7 @@ const body_styles = StyleSheet.create({
                           <View  style={emp_styles.headerContainer}>
                               <Text>Employee Name: {item?.emp_name}</Text>
                               <Text>Employee Code: {item?.card_no}</Text>
-                              <Text>Department: {item?.dept_name}</Text>
+                              <Text>Types of Employment: {item?.dept_name}</Text>
                           </View>
                           <View style={styles.tableContainer}>
                               <View style={header_styles.container}>
