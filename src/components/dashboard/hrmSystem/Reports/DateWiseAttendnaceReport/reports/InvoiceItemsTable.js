@@ -138,7 +138,7 @@ const InvoiceItemsTable = ({data}) => {
                                             <Text style={rowStyles.date}>{attendance?.date ? attendance?.date : 'N/A'}</Text>
                                             <Text style={rowStyles.code}>{attendance?.c_no ? attendance?.c_no : 'N/A'}</Text>
                                             <Text style={rowStyles.name}>{attendance?.employee_name ? attendance?.employee_name : 'N/A'}</Text>
-                                            <Text style={rowStyles.designation}>Designation</Text>
+                                            <Text style={rowStyles.designation}>{attendance?.desig_name ? attendance?.desig_name : 'N/A'}</Text>
                                             <Text style={rowStyles.InTime}>{attendance?.in_time ? attendance?.in_time : 'N/A'}</Text>
                                             <Text style={rowStyles.OutTime}>{attendance?.out_time ? attendance?.out_time : 'N/A'}</Text>
                                             <Text style={rowStyles.LateIn}>{attendance?.late ? attendance?.late : 'N/A'}</Text>

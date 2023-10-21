@@ -8,6 +8,7 @@ import getEmployeeWiseAttendanceReportsAPI from "../../../common/Query/hrm/forSo
 import {Download} from "react-feather";
 import {PDFDownloadLink} from "@react-pdf/renderer";
 import Invoice from "./EmployWiseAttendanceReport/reports/Invoice";
+import moment from "moment/moment";
 
 const EmployeeWiseAttendanceReport = () => {
     const [data, setData] = useState([]);
@@ -17,6 +18,9 @@ const EmployeeWiseAttendanceReport = () => {
     const [dateTo, setDateTo] = useState("");
 
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = getEmployee();
+
+    const totalMinutes = time => Math.round(moment.duration(time).asMinutes());
+    const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm:ss").format("h:mm A");
 
     // console.log(data)
     const removeSearch = () => {
@@ -140,11 +144,11 @@ const EmployeeWiseAttendanceReport = () => {
                                         info?.data?.map((singleItem, index)=>
                                             <tr key={index}>
                                                 <td>{singleItem?.date ? singleItem?.date : "N/A"}</td>
-                                                <td>{singleItem?.in_time ? singleItem?.in_time : "N/A"}</td>
-                                                <td>{singleItem?.out_time ? singleItem?.out_time : "N/A"}</td>
-                                                <td>{singleItem?.late ? singleItem?.late : "N/A"}</td>
-                                                <td>{singleItem?.early_out ? singleItem?.early_out : "N/A"}</td>
-                                                <td>{singleItem?.over_time ? singleItem?.over_time : "N/A"}</td>
+                                                <td>{singleItem?.in_time ? formattedTime(singleItem?.in_time) : "N/A"}</td>
+                                                <td>{singleItem?.out_time ? formattedTime(singleItem?.out_time) : "N/A"}</td>
+                                                <td>{singleItem?.late && totalMinutes(singleItem?.late) != '0' ? <span className="badge text-bg-danger">{totalMinutes(singleItem?.late)}m</span> : "N/A"}</td>
+                                                <td>{singleItem?.early_out && totalMinutes(singleItem?.early_out) != '0' ? <span className="badge text-bg-danger">{totalMinutes(singleItem?.early_out)}m</span> : "N/A"}</td>
+                                                <td>{singleItem?.over_time && totalMinutes(singleItem?.over_time) != '0' ? <span className="badge text-bg-danger">{totalMinutes(singleItem?.over_time)}m</span> : "N/A"}</td>
                                                 {/*<td>{singleItem?.status ? singleItem?.status : "N/A"}</td>*/}
                                             </tr>
                                         )
