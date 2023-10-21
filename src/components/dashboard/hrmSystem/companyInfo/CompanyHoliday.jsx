@@ -21,6 +21,7 @@ const CompanyHoliday = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
   useEffect(() => {
@@ -67,6 +68,7 @@ const CompanyHoliday = () => {
         });
         setModal(!modal);
         allHolidayReFetch();
+        reset();
       } else {
         Swal.fire({
           icon: "error",
@@ -91,6 +93,7 @@ const CompanyHoliday = () => {
             setModal(!modal);
           }
           allHolidayReFetch();
+          reset();
         })
         .catch((e) => {
           Swal.fire({

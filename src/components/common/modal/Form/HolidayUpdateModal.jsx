@@ -25,6 +25,7 @@ const HolidayUpdateModal = ({
 
   const onSubmit = (data) => {
     const updatedData = {
+      title: data.title ? data.title : oldData.title,
       date: data.date ? data.date : oldData.date,
       status: data.status ? data.status : oldData.status,
     };
