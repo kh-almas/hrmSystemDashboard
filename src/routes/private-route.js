@@ -37,7 +37,7 @@ const PrivateRoute = () => {
         })
         .catch((err) => {
           setAuth(false);
-          console.log(err);
+          // console.log(err);
           // localStorage.removeItem("access-token");
           localStorage.removeItem("id");
           localStorage.removeItem("email");

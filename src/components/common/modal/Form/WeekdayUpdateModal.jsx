@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import BaseModal from "../BaseModal";
 import Select from "../Select";
 import Input from "../Input";
@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 const WeekdayUpdateModal = ({allWeekdayReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
+    const [status, setStatus] = useState('');
 
     useEffect(() => {
         reset();
@@ -19,7 +20,7 @@ const WeekdayUpdateModal = ({allWeekdayReFetch, oldData, dataUpdateModal, dataUp
     const onSubmit = (data) => {
         const updatedData = {
             'name':data.name ? data.name : oldData.name,
-            'status':data.status ? data.status : oldData.status
+            'status':status ? status : oldData.status
         }
 
         axios.put(`/hrm-system/weekday/${oldData.id}`, updatedData)
@@ -67,10 +68,8 @@ const WeekdayUpdateModal = ({allWeekdayReFetch, oldData, dataUpdateModal, dataUp
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            previous={oldData?.status}
                             options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            validation={{...register("status", {required: true})}}
-                            error={errors?.status}
+                            setValue={setStatus}
                         />
                     </div>
 

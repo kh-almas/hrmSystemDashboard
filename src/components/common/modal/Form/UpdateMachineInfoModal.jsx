@@ -27,7 +27,7 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
     const [selectedBranch, setSelectedBranch] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("Active");
 
-    console.log('oldData',oldData?.id);
+    console.log('oldData',oldData);
 
     useEffect(() => {
         setOrganization([])
@@ -81,15 +81,15 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
         // data.BranchId = selectedBranch;
         // data.Status = selectedStatus;
         const updatedData = {
-            'OrgId':selectedOrganization ? selectedOrganization : oldData.organization_id,
-            'CompanyId':selectedCompany ? selectedCompany : oldData.company_id,
-            'BranchId':selectedBranch ? selectedBranch : oldData.branch_id,
+            'OrgId':selectedOrganization ? selectedOrganization : oldData.OrgId,
+            'CompanyId':selectedCompany ? selectedCompany : oldData.CompanyId,
+            'BranchId':selectedBranch ? selectedBranch : oldData.BranchId,
             'MachineNo': data.MachineNo ? data.MachineNo : oldData.MachineNo,
             'MachineIP': data.MachineIP ? data.MachineIP : oldData.MachineIP,
             'MachinePort':data.MachinePort ? data.MachinePort : oldData.MachinePort,
             'commKey':data.commKey ? data.commKey : oldData.commKey,
             'Location':data.Location ? data.Location : oldData.Location,
-            'isInActive':selectedStatus ? selectedStatus : oldData.status
+            'isInActive':selectedStatus ? selectedStatus : oldData.isInActive
         }
 
         axios.put(`/hrm-system/machine/info/${oldData?.id}`, updatedData)
@@ -198,7 +198,7 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
                             placeholder={"Select an option"}
                             options={[{id: "0", value: "Active"}, {id: "1", value: "Inactive"}]}
                             setValue={setSelectedStatus}
-                            previous={oldData?.Status}
+                            previous={oldData?.isInActive}
                         />
                     </div>
 

@@ -164,57 +164,45 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
     return (
         <>
             <BaseModal title={"Update Manual Attendance"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
-                <div className="row row-cols-1 row-cols-lg-2">
-                    <div>
-                        <Select
-                            labelName={"Company:"}
-                            placeholder={"Select an option"}
-                            options={company}
-                            previous={oldData?.company_id}
-                            setValue={setSelectedCompany}
-                        />
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Branch:"}
-                            placeholder={"Select an option"}
-                            options={branch}
-                            previous={oldData?.branch_id}
-                            setValue={setSelectedBranch}
-                        />
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Shift:"}
-                            placeholder={"Select an option"}
-                            options={shift}
-                            previous={oldData?.shift_id}
-                            setValue={setSelectedShift}
-                        />
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Employee Name"}
-                            placeholder={"Select an option"}
-                            options={employee}
-                            previous={oldData?.employee_id}
-                            error={errors?.employee_id}
-                            setValue={setEmployeeId}
-                        />
-                    </div>
-                </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
-                        {/*<div>*/}
-                        {/*    <Select*/}
-                        {/*        labelName={"Attendance Type"}*/}
-                        {/*        placeholder={"Select an option"}*/}
-                        {/*        options={[{id: "Type 1", value: "Type 1"}, {id: "Type 2", value: "Type 2"}]}*/}
-                        {/*        previous={oldData?.attendance_type}*/}
-                        {/*        error={errors?.attendance_type}*/}
-                        {/*        setValue={setAttendanceType}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
+                        <div>
+                            <Select
+                                labelName={"Company:"}
+                                placeholder={"Select an option"}
+                                options={company}
+                                previous={oldData?.company_id}
+                                setValue={setSelectedCompany}
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Branch:"}
+                                placeholder={"Select an option"}
+                                options={branch}
+                                previous={oldData?.branch_id}
+                                setValue={setSelectedBranch}
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Shift:"}
+                                placeholder={"Select an option"}
+                                options={shift}
+                                previous={oldData?.shift_id}
+                                setValue={setSelectedShift}
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Employee Name"}
+                                placeholder={"Select an option"}
+                                options={employee}
+                                previous={oldData?.employee_id}
+                                error={errors?.employee_id}
+                                setValue={setEmployeeId}
+                            />
+                        </div>
                         <div>
                             <Input
                                 labelName={"Date"}

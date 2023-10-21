@@ -38,7 +38,7 @@ const MainRoutes = () => {
               exact
               path={`${process.env.PUBLIC_URL}`}
               element={
-                <Navigate to={`${process.env.PUBLIC_URL}/dashboard/default`} />
+                <Navigate to={`${process.env.PUBLIC_URL}/dashboard/hrm/employee`} />
               }
             />
             <Route element={<PrivateRoute />}>

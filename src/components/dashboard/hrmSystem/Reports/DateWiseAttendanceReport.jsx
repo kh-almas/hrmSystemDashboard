@@ -141,7 +141,7 @@ const DateWiseAttendanceReport = () => {
 
                                 <PDFDownloadLink
                                     className="btn btn-danger btn-lg" style={{padding: "0 10px 3px 10px", borderRadius: "5px"}}
-                                    document={<Invoice data={data}></Invoice>} fileName="somename.pdf">
+                                    document={<Invoice data={data}></Invoice>} fileName="datewise-attendance.pdf">
                                     <Download size={'12px'}></Download>
                                 </PDFDownloadLink>
                                 {/*</button>*/}

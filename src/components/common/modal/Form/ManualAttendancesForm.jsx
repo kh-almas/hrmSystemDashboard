@@ -33,7 +33,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
-    // console.log("allCompany?.data?.body?.data?.data",allCompany?.data?.body?.data?.data)
+    // console.log(employeeId)
     useEffect( () => {
         setEmployee([])
         if(selectedShift !== "")
@@ -103,10 +103,11 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
         data.company_id = selectedCompany;
         data.branch_id = selectedBranch;
         data.shift_id = selectedShift;
-        data.devloyee_id= employeeId;
-        data.atice_id = "";
-        data.emptendance_type= '2';
+        data.device_id = "";
+        data.employee_id= employeeId;
+        data.attendance_type= '2';
         data.status= status;
+        // console.log(data)
 
         axios.post('/hrm-system/manual-attendance', data)
             .then(info => {
@@ -124,7 +125,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                     refetch();
                     setSelectedCompany('');
                     setSelectedBranch('');
-                    setEmployeeId('')
+                    setEmployeeId('');
                     setSelectedShift('');
                     setStatus('Active');
                 }
@@ -143,53 +144,40 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     return (
         <>
             <BaseModal title={"Manual Attendance"} dataModal={dataModal} dataToggle={dataToggle}>
-                <div className="row row-cols-1 row-cols-lg-2">
-
-                    <div>
-                        <Select
-                            labelName={"Company:"}
-                            placeholder={"Select an option"}
-                            options={company}
-                            setValue={setSelectedCompany}
-                        />
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Branch:"}
-                            placeholder={"Select an option"}
-                            options={branch}
-                            setValue={setSelectedBranch}
-                        />
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Shift:"}
-                            placeholder={"Select an option"}
-                            options={shift}
-                            setValue={setSelectedShift}
-                        />
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Employee Name"}
-                            placeholder={"Select an option"}
-                            options={employee}
-                            setValue={setEmployeeId}
-                        />
-                    </div>
-                </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
-                        {/*<div>*/}
-                        {/*    <Select*/}
-                        {/*        labelName={"Attendance Type"}*/}
-                        {/*        placeholder={"Select an option"}*/}
-                        {/*        options={[{id: "Type 1", value: "Type 1"}, {id: "Type 2", value: "Type 2"}]}*/}
-                        {/*        // validation={{...register("attendance_type", {required: true})}}*/}
-                        {/*        error={errors?.attendance_type}*/}
-                        {/*        setValue={setAttendanceType}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
+                        <div>
+                            <Select
+                                labelName={"Company:"}
+                                placeholder={"Select an option"}
+                                options={company}
+                                setValue={setSelectedCompany}
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Branch:"}
+                                placeholder={"Select an option"}
+                                options={branch}
+                                setValue={setSelectedBranch}
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Shift:"}
+                                placeholder={"Select an option"}
+                                options={shift}
+                                setValue={setSelectedShift}
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Employee Name"}
+                                placeholder={"Select an option"}
+                                options={employee}
+                                setValue={setEmployeeId}
+                            />
+                        </div>
                         <div>
                             <Input
                                 labelName={"Date"}

@@ -74,7 +74,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
         data.OrgId = selectedOrganization;
         data.CompanyId = selectedCompany;
         data.BranchId = selectedBranch;
-        data.Status = selectedStatus;
+        data.isInActive = selectedStatus;
         // console.log(data);
 
         axios.post('/hrm-system/machine/info', data)

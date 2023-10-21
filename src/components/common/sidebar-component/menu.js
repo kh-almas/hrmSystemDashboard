@@ -1,14 +1,14 @@
 import { Box, Headphones, Home } from "react-feather";
 
 export const MENUITEMS = [
-  {
-    title: "Dashboard",
-    icon: Home,
-    type: "sub",
-    badgeType: "primary",
-    active: false,
-    children: [{ path: "/dashboard/default", title: "Default", type: "link" }],
-  },
+  // {
+  //   title: "Dashboard",
+  //   icon: Home,
+  //   type: "sub",
+  //   badgeType: "primary",
+  //   active: false,
+  //   children: [{ path: "/dashboard/default", title: "Default", type: "link" }],
+  // },
   {
     title: "HRM System",
     icon: Box,
@@ -19,11 +19,6 @@ export const MENUITEMS = [
         path: "/dashboard/hrm/employee",
         title: "Employee Setup ",
         type: "link",
-      },
-      {
-        title: "User Resignation",
-        type: "link",
-        path: "/dashboard/user/resignation",
       },
       {
         title: "Attendance",
@@ -44,11 +39,11 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/attendance/manual",
           },
-          {
-            title: "Shift Schedule",
-            type: "link",
-            path: "/dashboard/hrm/shift/schedule",
-          },
+          // {
+          //   title: "Shift Schedule",
+          //   type: "link",
+          //   path: "/dashboard/hrm/shift/schedule",
+          // },
           // {
           //   title: "employee Shift",
           //   type: "link",
@@ -125,72 +120,77 @@ export const MENUITEMS = [
       //     { title: "Payslip", type: "link", path: "/dashboard/hrm/payslip" },
       //   ],
       // },
-      {
-        title: "Leave Management Setup",
-        type: "sub",
-        children: [
-          {
-            title: "Leave Type",
-            type: "link",
-            path: "/dashboard/hrm/leave-type",
-          },
-          {
-            title: "Application",
-            type: "link",
-            path: "/dashboard/hrm/leave-application",
-          },
-          {
-            title: "Leave Setup",
-            type: "link",
-            path: "/dashboard/hrm/leave-setup",
-          },
-          {
-            title: "Employee Leave",
-            type: "link",
-            path: "/dashboard/hrm/Employee-leave",
-          },
-          {
-            title: "Leave Approval",
-            type: "link",
-            path: "/dashboard/hrm/Employee-leave/approval",
-          },
-        ],
-      },
+      // {
+      //   title: "Leave Management Setup",
+      //   type: "sub",
+      //   children: [
+      //     {
+      //       title: "Leave Type",
+      //       type: "link",
+      //       path: "/dashboard/hrm/leave-type",
+      //     },
+      //     {
+      //       title: "Application",
+      //       type: "link",
+      //       path: "/dashboard/hrm/leave-application",
+      //     },
+      //     {
+      //       title: "Leave Setup",
+      //       type: "link",
+      //       path: "/dashboard/hrm/leave-setup",
+      //     },
+      //     {
+      //       title: "Employee Leave",
+      //       type: "link",
+      //       path: "/dashboard/hrm/Employee-leave",
+      //     },
+      //     {
+      //       title: "Leave Approval",
+      //       type: "link",
+      //       path: "/dashboard/hrm/Employee-leave/approval",
+      //     },
+      //   ],
+      // },
       {
         title: "Reports",
         type: "sub",
         children: [
           {
-            title: "Daily Attendance",
+            title: "Employee Summary Report",
             type: "link",
-            path: "/dashboard/hrm/attendance/daily",
+            path: "/dashboard/hrm/summary/report",
           },
           {
             title: "Date wise Attendance",
             type: "link",
             path: "/dashboard/hrm/attendance/datewise",
           },
-          {
-            title: "Employee Movements",
-            type: "link",
-            path: "/dashboard/hrm/employee/movements",
-          },
-          {
-            title: "Leave",
-            type: "link",
-            path: "/dashboard/hrm/employee/leave",
-          },
-          {
-            title: "Manual Attendance",
-            type: "link",
-            path: "/dashboard/hrm/attendance/manual/report",
-          },
+          // {
+          //   title: "Employee Movements",
+          //   type: "link",
+          //   path: "/dashboard/hrm/employee/movements",
+          // },
+          // {
+          //   title: "Leave",
+          //   type: "link",
+          //   path: "/dashboard/hrm/employee/leave",
+          // },
+          // {
+          //   title: "Manual Attendance",
+          //   type: "link",
+          //   path: "/dashboard/hrm/attendance/manual/report",
+          // },
           {
             title: "Employee wise Attendance",
             type: "link",
             path: "/dashboard/hrm/attendance/single",
           },
         ],
+      },
+      {
+        title: "User Registration",
+        type: "link",
+        path: "/dashboard/user/resignation",
       },
       // {
       //   title: "Performance Setup",
