@@ -446,11 +446,10 @@ const ManualAttendance = () => {
                 {/*<p className="mt-3">Showing {totalItemCount} to {totalItemCount} of {totalItemCount} entries</p>*/}
             </div>
 
-            <ManualAttendancesForm refetch={refetch} dataModal={dataModal} dataToggle={dataToggle}></ManualAttendancesForm>
-
+            <ManualAttendancesForm refetch={isDarty} dataModal={dataModal} dataToggle={dataToggle}></ManualAttendancesForm>
             {
                 oldData ?
-                    <ManualAttendancesUpdateForm refetch={refetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>
+                    <ManualAttendancesUpdateForm refetch={isDarty} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>
                     : ''
             }
 
