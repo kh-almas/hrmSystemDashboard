@@ -21,7 +21,7 @@ const EmployeeShiftForm = ({dataModal, dataToggle, refetch}) => {
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = GetAllShift();
     const [allShiftScheduleStatus, allShiftScheduleReFetch, allShiftSchedule, allShiftScheduleError] = GetAllShiftSchedule();
 
-    console.log(allShiftSchedule);
+    // console.log(allShiftSchedule);
     useEffect( () => {
         setEmployee([])
         allEmployee?.data?.body?.data?.data?.map(item => {

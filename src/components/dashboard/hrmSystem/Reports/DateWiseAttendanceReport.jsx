@@ -7,6 +7,7 @@ import getDailyAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getD
 import {PDFDownloadLink} from "@react-pdf/renderer";
 import Invoice from "./DateWiseAttendnaceReport/reports/Invoice";
 import {Download} from "react-feather";
+import moment from "moment";
 
 
 const DateWiseAttendanceReport = () => {
@@ -19,6 +20,9 @@ const DateWiseAttendanceReport = () => {
     const [company, setCompany] = useState([]);
     const [branch, setBranch] = useState([]);
     const [data, setData] = useState([]);
+
+    const totalMinutes = time => Math.round(moment.duration(time).asMinutes());
+    const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm:ss").format("h:mm A");
 
 
     const removeSearch = () => {
@@ -186,12 +190,11 @@ const DateWiseAttendanceReport = () => {
                                                         <td>{attendance?.c_no ? attendance?.c_no : 'N/A'}</td>
                                                         <td>{attendance?.employee_name ? attendance?.employee_name : 'N/A'}</td>
                                                         <td>{attendance?.desig_name ? attendance?.desig_name : 'N/A'}</td>
-                                                        <td>{attendance?.in_time ? attendance?.in_time : 'N/A'}</td>
-                                                        <td>{attendance?.out_time ? attendance?.out_time : 'N/A'}</td>
-                                                        <td>{attendance?.late ? attendance?.late : 'N/A'}</td>
-                                                        <td>{attendance?.early_out ? attendance?.early_out : 'N/A'}</td>
-                                                        <td>{attendance?.over_time ? attendance?.over_time : 'N/A'}</td>
-                                                        {console.log(attendance)}
+                                                        <td>{attendance?.in_time ? formattedTime(attendance?.in_time) : 'N/A'}</td>
+                                                        <td>{attendance?.out_time ? formattedTime(attendance?.out_time) : 'N/A'}</td>
+                                                        <td>{attendance?.late && totalMinutes(attendance?.late) != '0' ? <span class="badge text-bg-danger">{totalMinutes(attendance?.late)}m</span> : 'N/A'}</td>
+                                                        <td>{attendance?.early_out && totalMinutes(attendance?.early_out) != '0' ? <span className="badge text-bg-danger">{totalMinutes(attendance?.early_out)}m</span> : 'N/A'}</td>
+                                                        <td>{attendance?.over_time && totalMinutes(attendance?.over_time) != '0' ? <span className="badge text-bg-danger">{totalMinutes(attendance?.over_time)}m</span> : 'N/A'}</td>
                                                     </tr>
 
                                                 )
