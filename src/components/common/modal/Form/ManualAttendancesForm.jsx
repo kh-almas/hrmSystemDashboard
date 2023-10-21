@@ -21,12 +21,11 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     const [shift, setShift] = useState([]);
 
 
-    const [selectedOrganization, setSelectedOrganization] = useState("11");
-    const [selectedCompany, setSelectedCompany] = useState("2");
-    const [selectedBranch, setSelectedBranch] = useState("8");
-    const [selectedShift, setSelectedShift] = useState("2");
+    const [selectedOrganization, setSelectedOrganization] = useState("1");
+    const [selectedCompany, setSelectedCompany] = useState("");
+    const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedShift, setSelectedShift] = useState("");
     const [employeeId, setEmployeeId] = useState('');
-    const [attendanceType, setAttendanceType] = useState('');
     const [status, setStatus] = useState('Active');
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployee();
@@ -93,9 +92,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
         }
     }, [allShift, selectedBranch])
 
-
-
-    const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
+    const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm:ss");
 
     const onSubmit = (data) => {
         const in_time = formattedTime(data.in_time);
@@ -106,9 +103,9 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
         data.company_id = selectedCompany;
         data.branch_id = selectedBranch;
         data.shift_id = selectedShift;
-        data.device_id = "device_5681234";
-        data.employee_id= employeeId;
-        data.attendance_type= attendanceType;
+        data.devloyee_id= employeeId;
+        data.atice_id = "";
+        data.emptendance_type= '2';
         data.status= status;
 
         axios.post('/hrm-system/manual-attendance', data)
@@ -128,7 +125,6 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                     setSelectedCompany('');
                     setSelectedBranch('');
                     setEmployeeId('')
-                    setAttendanceType('')
                     setSelectedShift('');
                     setStatus('Active');
                 }
@@ -154,8 +150,6 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                             labelName={"Company:"}
                             placeholder={"Select an option"}
                             options={company}
-                            // validation={{...register("employee_id", {required: true})}}
-                            // error={errors?.employee_id}
                             setValue={setSelectedCompany}
                         />
                     </div>
@@ -164,8 +158,6 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                             labelName={"Branch:"}
                             placeholder={"Select an option"}
                             options={branch}
-                            // validation={{...register("employee_id", {required: true})}}
-                            // error={errors?.employee_id}
                             setValue={setSelectedBranch}
                         />
                     </div>
@@ -174,8 +166,6 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                             labelName={"Shift:"}
                             placeholder={"Select an option"}
                             options={shift}
-                            // validation={{...register("employee_id", {required: true})}}
-                            // error={errors?.employee_id}
                             setValue={setSelectedShift}
                         />
                     </div>
@@ -184,33 +174,22 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                             labelName={"Employee Name"}
                             placeholder={"Select an option"}
                             options={employee}
-                            // validation={{...register("employee_id", {required: true})}}
-                            error={errors?.employee_id}
                             setValue={setEmployeeId}
                         />
                     </div>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
-                        <div>
-                            <Select
-                                labelName={"Attendance Type"}
-                                placeholder={"Select an option"}
-                                options={[{id: "Type 1", value: "Type 1"}, {id: "Type 2", value: "Type 2"}]}
-                                // validation={{...register("attendance_type", {required: true})}}
-                                error={errors?.attendance_type}
-                                setValue={setAttendanceType}
-                            />
-                        </div>
-                        <div>
-                            <Input
-                                labelName={"Card Number"}
-                                inputName={"cardNo"}
-                                inputType={"cardNo"}
-                                validation={{...register("card_no", {required: true})}}
-                                error={errors?.card_no}
-                            />
-                        </div>
+                        {/*<div>*/}
+                        {/*    <Select*/}
+                        {/*        labelName={"Attendance Type"}*/}
+                        {/*        placeholder={"Select an option"}*/}
+                        {/*        options={[{id: "Type 1", value: "Type 1"}, {id: "Type 2", value: "Type 2"}]}*/}
+                        {/*        // validation={{...register("attendance_type", {required: true})}}*/}
+                        {/*        error={errors?.attendance_type}*/}
+                        {/*        setValue={setAttendanceType}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                         <div>
                             <Input
                                 labelName={"Date"}
@@ -224,7 +203,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                             <Input
                                 labelName={"Clock In"}
                                 inputName={"inTime"}
-                                inputType={"time"}
+                                inputType={"datetime-local"}
                                 validation={{...register("in_time", {required: true})}}
                                 error={errors?.in_time}
                             />
@@ -233,7 +212,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                             <Input
                                 labelName={"Clock Out"}
                                 inputName={"outTime"}
-                                inputType={"time"}
+                                inputType={"datetime-local"}
                                 validation={{...register("out_time", {required: true})}}
                                 error={errors?.out_time}
                             />
@@ -249,7 +228,6 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                                     {id: "Sick Leave", value: "Sick Leave"},
                                     {id: "Vacation", value: "Vacation"},
                                 ]}
-                                // validation={{...register("status", {required: true})}}
                                 error={errors?.status}
                                 setValue={setStatus}
                             />
