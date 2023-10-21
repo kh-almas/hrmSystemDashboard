@@ -71,7 +71,7 @@ const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal
 
     return (
         <>
-            <BaseModal title={"Update Department"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+            <BaseModal title={"Update Types of Employment"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Select
@@ -84,10 +84,10 @@ const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal
                     </div>
                     <div>
                         <Input
-                            labelName={"Department Name"}
+                            labelName={"Types of Employment"}
                             inputName={"name"}
                             inputType={"text"}
-                            placeholder={"Enter department name"}
+                            placeholder={"Enter types of employment name"}
                             defaultValue={oldData?.name}
                             validation={{
                                 ...register("name", { required: true }),

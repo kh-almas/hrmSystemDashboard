@@ -43,10 +43,10 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                     <div className="col">
                         <div>
                             <Input
-                                labelName={"Job Code"}
+                                labelName={"Employee ID"}
                                 inputName={"job_code"}
                                 inputType={"text"}
-                                placeholder={"Enter job code"}
+                                placeholder={"Enter employee id"}
                                 defaultValue={employeeData?.job_code}
                                 validation={{
                                     ...register("job_code"),
@@ -245,10 +245,10 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                     <div className="col">
                         <div>
                             <Input
-                                labelName={"Employee machine ID"}
+                                labelName={"Secondary ID"}
                                 inputName={"emp_machine_id"}
                                 inputType={"number"}
-                                placeholder={"Employee machine ID"}
+                                placeholder={"Employee secondary id"}
                                 validation={{
                                     ...register("emp_machine_id"),
                                 }}

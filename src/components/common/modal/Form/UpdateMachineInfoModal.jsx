@@ -191,15 +191,15 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
                                 defaultValue={oldData?.Location}
                             />
                         </div>
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Status"}
-                            placeholder={"Select an option"}
-                            options={[{id: "0", value: "Active"}, {id: "1", value: "Inactive"}]}
-                            setValue={setSelectedStatus}
-                            previous={oldData?.isInActive}
-                        />
+                        <div>
+                            <Select
+                                labelName={"Status"}
+                                placeholder={"Select an option"}
+                                options={[{id: "0", value: "Active"}, {id: "1", value: "Inactive"}]}
+                                setValue={setSelectedStatus}
+                                previous={oldData?.isInActive}
+                            />
+                        </div>
                     </div>
 
                     <div className="d-flex justify-content-end">

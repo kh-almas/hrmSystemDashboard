@@ -99,7 +99,7 @@ const SectionUpdateModal = ({allSectionReFetch, oldData, dataUpdateModal, dataUp
                     </div>
                     <div>
                         <Select
-                            labelName={"Department"}
+                            labelName={"Types of Employment"}
                             placeholder={"Select an option"}
                             options={department}
                             previous={oldData?.department_id}

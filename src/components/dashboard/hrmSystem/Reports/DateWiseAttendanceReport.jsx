@@ -170,11 +170,12 @@ const DateWiseAttendanceReport = () => {
                                                 <th scope="col">{"Date"}</th>
                                                 <th scope="col">{"Employee Code"}</th>
                                                 <th scope="col">{"Employee Name"}</th>
+                                                <th scope="col">{"Designation"}</th>
                                                 <th scope="col">{"In Time"}</th>
                                                 <th scope="col">{"Out Time"}</th>
                                                 <th scope="col">{"Late In"}</th>
                                                 <th scope="col">{"Early Out"}</th>
-                                                <th scope="col">{"Status"}</th>
+                                                <th scope="col">{"Overtime"}</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -184,12 +185,15 @@ const DateWiseAttendanceReport = () => {
                                                         <td>{attendance?.date ? attendance?.date : 'N/A'}</td>
                                                         <td>{attendance?.c_no ? attendance?.c_no : 'N/A'}</td>
                                                         <td>{attendance?.employee_name ? attendance?.employee_name : 'N/A'}</td>
+                                                        <td>{attendance?.desig_name ? attendance?.desig_name : 'N/A'}</td>
                                                         <td>{attendance?.in_time ? attendance?.in_time : 'N/A'}</td>
                                                         <td>{attendance?.out_time ? attendance?.out_time : 'N/A'}</td>
                                                         <td>{attendance?.late ? attendance?.late : 'N/A'}</td>
                                                         <td>{attendance?.early_out ? attendance?.early_out : 'N/A'}</td>
-                                                        <td>{attendance?.status ? attendance?.status : 'N/A'}</td>
+                                                        <td>{attendance?.over_time ? attendance?.over_time : 'N/A'}</td>
+                                                        {console.log(attendance)}
                                                     </tr>
+
                                                 )
                                             }
 

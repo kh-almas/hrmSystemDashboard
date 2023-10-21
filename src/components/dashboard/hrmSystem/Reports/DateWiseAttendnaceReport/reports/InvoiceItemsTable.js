@@ -130,7 +130,7 @@ const InvoiceItemsTable = ({data}) => {
                                         <Text style={HeaderStyles.OutTime}>Out Time</Text>
                                         <Text style={HeaderStyles.LateIn}>Late In</Text>
                                         <Text style={HeaderStyles.EarlyOut}>Early Out</Text>
-                                        <Text style={HeaderStyles.status}>Status</Text>
+                                        <Text style={HeaderStyles.status}>Overtime</Text>
                                     </View>
                                     {
                                         branch?.branch?.attendance?.map((attendance, index) =>
@@ -143,7 +143,7 @@ const InvoiceItemsTable = ({data}) => {
                                             <Text style={rowStyles.OutTime}>{attendance?.out_time ? attendance?.out_time : 'N/A'}</Text>
                                             <Text style={rowStyles.LateIn}>{attendance?.late ? attendance?.late : 'N/A'}</Text>
                                             <Text style={rowStyles.EarlyOut}>{attendance?.early_out ? attendance?.early_out : 'N/A'}</Text>
-                                            <Text style={rowStyles.status}>{attendance?.status ? attendance?.status : 'N/A'}</Text>
+                                            <Text style={rowStyles.status}>{attendance?.Overtime ? attendance?.Overtime : 'N/A'}</Text>
                                         </View>
                                         )
                                     }
