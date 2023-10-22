@@ -148,7 +148,7 @@ const EmployeeWiseAttendanceReport = () => {
                                                 <td>{singleItem?.out_time ? formattedTime(singleItem?.out_time) : "N/A"}</td>
                                                 <td>{singleItem?.late && totalMinutes(singleItem?.late) != '0' ? <span className="badge text-bg-danger">{totalMinutes(singleItem?.late)}m</span> : "N/A"}</td>
                                                 <td>{singleItem?.early_out && totalMinutes(singleItem?.early_out) != '0' ? <span className="badge text-bg-danger">{totalMinutes(singleItem?.early_out)}m</span> : "N/A"}</td>
-                                                <td>{singleItem?.over_time && totalMinutes(singleItem?.over_time) != '0' ? <span className="badge text-bg-danger">{totalMinutes(singleItem?.over_time)}m</span> : "N/A"}</td>
+                                                <td>{singleItem?.over_time && totalMinutes(singleItem?.over_time) != '0' ? <span className="badge text-bg-success">{totalMinutes(singleItem?.over_time)}m</span> : "N/A"}</td>
                                                 {/*<td>{singleItem?.status ? singleItem?.status : "N/A"}</td>*/}
                                             </tr>
                                         )

@@ -194,7 +194,7 @@ const DateWiseAttendanceReport = () => {
                                                         <td>{attendance?.out_time ? formattedTime(attendance?.out_time) : 'N/A'}</td>
                                                         <td>{attendance?.late && totalMinutes(attendance?.late) != '0' ? <span class="badge text-bg-danger">{totalMinutes(attendance?.late)}m</span> : 'N/A'}</td>
                                                         <td>{attendance?.early_out && totalMinutes(attendance?.early_out) != '0' ? <span className="badge text-bg-danger">{totalMinutes(attendance?.early_out)}m</span> : 'N/A'}</td>
-                                                        <td>{attendance?.over_time && totalMinutes(attendance?.over_time) != '0' ? <span className="badge text-bg-danger">{totalMinutes(attendance?.over_time)}m</span> : 'N/A'}</td>
+                                                        <td>{attendance?.over_time && totalMinutes(attendance?.over_time) != '0' ? <span className="badge text-bg-success">{totalMinutes(attendance?.over_time)}m</span> : 'N/A'}</td>
                                                     </tr>
 
                                                 )
