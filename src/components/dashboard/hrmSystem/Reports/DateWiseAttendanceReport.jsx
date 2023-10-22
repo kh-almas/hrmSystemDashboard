@@ -88,10 +88,10 @@ const DateWiseAttendanceReport = () => {
                 </div>
                 <div className="d-flex justify-content-center">
 
-                    <div>
-                        <Link to={`/dashboard/hrm/attendance/datewise/pdf?startdate=${dateFrom}&enddate=${dateTo}&setcompany=${selectedCompany}&setbranch=${selectedBranch}`} target="_blank" className="ms-3 btn btn-primary">View
-                            PDF</Link>
-                    </div>
+                    {/*<div>*/}
+                    {/*    <Link to={`/dashboard/hrm/attendance/datewise/pdf?startdate=${dateFrom}&enddate=${dateTo}&setcompany=${selectedCompany}&setbranch=${selectedBranch}`} target="_blank" className="ms-3 btn btn-primary">View*/}
+                    {/*        PDF</Link>*/}
+                    {/*</div>*/}
                     {/*<div>*/}
                     {/*    <PDFDownloadLink document={<Invoice />} fileName="somename.pdf">*/}
                     {/*        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}*/}
