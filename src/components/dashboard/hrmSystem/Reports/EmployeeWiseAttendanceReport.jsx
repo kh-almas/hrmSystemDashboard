@@ -86,7 +86,7 @@ const EmployeeWiseAttendanceReport = () => {
 
                     <div className="col">
                         <Select
-                            labelName={"Status"}
+                            labelName={"Employee"}
                             placeholder={"Select an option"}
                             options={employee}
                             setValue={setSelectedEmployee}
