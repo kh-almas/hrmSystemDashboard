@@ -1,21 +1,15 @@
 import React, { useState } from "react";
 import Select from "react-select";
 
-const ReactSelect = ({
-  labelName,
-  options,
-  defaultValue,
-  validation,
-  placeholder,
-  error,
-  previous,
-  setValue,
-}) => {
+const ReactSelect = ({labelName, options, defaultValue, validation, placeholder, error, previous, setValue}) => {
   const [newOption, setNewOption] = useState([]);
   const data = options.map((data) => ({
     value: data.id,
     label: data.value,
   }));
+
+  // console.log('data',data , typeof data);
+  // console.log("previous", previous, typeof previous);
 
   const handleChange = (selectedOption) => {
     // Ensure that selectedOption is defined
@@ -63,11 +57,12 @@ const ReactSelect = ({
             {error && <span className="text-danger">(Required)</span>}
           </label>
           <div>
+            {/*{console.log(data.find((option) => option.value == previous))}*/}
             <Select
               className={`customeStyle ${error && "is-invalid"}`}
               id={labelName}
               onChange={handleChange} // Remove the arrow function here
-              defaultValue={data.find((option) => option.id == previous)}
+              defaultValue={data.find((option) => option.value == previous)}
               {...validation}
               options={data}
               styles={customStyles}

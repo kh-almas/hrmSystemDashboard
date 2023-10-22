@@ -28,8 +28,9 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     const [selectedStatus, setSelectedStatus] = useState("");
     const [dayDiff, setDaydiff] = useState(false);
 
+    // console.log("oldData",oldData);
     // console.log("company",company);
-    //
+
     useEffect(() => {
         setOrganization([])
         allOrganization?.data?.body?.data?.data?.map(item => {
@@ -75,7 +76,6 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
         setSelectedCompany(oldData?.company_id);
         const difference = oldData?.DayDiff === 1 ? true: false;
         setDaydiff(difference);
-        // console.log("old", typeof difference)
         reset();
     },[oldData])
 
@@ -217,13 +217,13 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                         </div>
                     </div>
                     <div>
-                        <Select
-                            labelName={"Status"}
-                            placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            previous={oldData?.status}
-                            setValue={setSelectedStatus}
-                        />
+                        {/*<Select*/}
+                        {/*    labelName={"Status"}*/}
+                        {/*    placeholder={"Select an option"}*/}
+                        {/*    options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}*/}
+                        {/*    previous={oldData?.status}*/}
+                        {/*    setValue={setSelectedStatus}*/}
+                        {/*/>*/}
                     </div>
 
                     <div className="d-flex justify-content-end">
