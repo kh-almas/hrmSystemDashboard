@@ -2,6 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Text} from '@react-pdf/renderer';
 import InvoiceTableHeader from './InvoiceTableHeader';
 import InvoiceTableRow from './InvoiceTableRow';
+import moment from "moment/moment";
 
 const tableRowsCount = 11;
 
@@ -107,6 +108,8 @@ const rowStyles = StyleSheet.create({
 
 const InvoiceItemsTable = ({data}) => {
     const allItems = [];
+    const totalMinutes = time => Math.round(moment.duration(time).asMinutes());
+    const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm:ss").format("h:mm A");
     return (
         <>
             {data?.map(com => <View>
@@ -139,11 +142,11 @@ const InvoiceItemsTable = ({data}) => {
                                             <Text style={rowStyles.code}>{attendance?.c_no ? attendance?.c_no : 'N/A'}</Text>
                                             <Text style={rowStyles.name}>{attendance?.employee_name ? attendance?.employee_name : 'N/A'}</Text>
                                             <Text style={rowStyles.designation}>{attendance?.desig_name ? attendance?.desig_name : 'N/A'}</Text>
-                                            <Text style={rowStyles.InTime}>{attendance?.in_time ? attendance?.in_time : 'N/A'}</Text>
-                                            <Text style={rowStyles.OutTime}>{attendance?.out_time ? attendance?.out_time : 'N/A'}</Text>
-                                            <Text style={rowStyles.LateIn}>{attendance?.late ? attendance?.late : 'N/A'}</Text>
-                                            <Text style={rowStyles.EarlyOut}>{attendance?.early_out ? attendance?.early_out : 'N/A'}</Text>
-                                            <Text style={rowStyles.status}>{attendance?.Overtime ? attendance?.Overtime : 'N/A'}</Text>
+                                            <Text style={rowStyles.InTime}>{attendance?.in_time ? formattedTime(attendance?.in_time) : 'N/A'}</Text>
+                                            <Text style={rowStyles.OutTime}>{attendance?.out_time ? formattedTime(attendance?.out_time) : 'N/A'}</Text>
+                                            <Text style={rowStyles.LateIn}>{attendance?.late ? totalMinutes(attendance?.late) : 'N/A'}</Text>
+                                            <Text style={rowStyles.EarlyOut}>{attendance?.early_out ? totalMinutes(attendance?.early_out) : 'N/A'}</Text>
+                                            <Text style={rowStyles.status}>{attendance?.Overtime ? totalMinutes(attendance?.Overtime) : 'N/A'}</Text>
                                         </View>
                                         )
                                     }
