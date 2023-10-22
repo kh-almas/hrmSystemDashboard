@@ -88,7 +88,7 @@ const EmployeeSummeryReport = () => {
 
                     <div className="col">
                         <Select
-                            labelName={"Status"}
+                            labelName={"Employee"}
                             placeholder={"Select an option"}
                             options={employee}
                             setValue={setSelectedEmployee}
@@ -142,7 +142,7 @@ const EmployeeSummeryReport = () => {
                                                 <td>{emp?.totalAbsent ? emp?.totalAbsent : 'N/A'}</td>
                                                 <td>{emp?.totalLate ? emp?.totalLate : 'N/A'}</td>
                                                 <td>{emp?.totalEarlyOut ? emp?.totalEarlyOut : 'N/A'}</td>
-                                                <td>{emp?.totalOverTime && totalMinutes(emp?.totalOverTime) != '0' ? <span className="badge text-bg-success">${totalMinutes(emp?.totalOverTime)}m</span> : 'N/A'}</td>
+                                                <td>{emp?.totalOverTime && totalMinutes(emp?.totalOverTime) != '0' ? <span className="badge text-bg-success">{totalMinutes(emp?.totalOverTime)}m</span> : 'N/A'}</td>
                                             </tr>
                                         )
                                     }
