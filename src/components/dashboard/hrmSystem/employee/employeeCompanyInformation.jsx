@@ -255,14 +255,14 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                 <div className="col">
                     <div style={{ position: "relative" }}>
                         <p onClick={departmentToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
-                            New Department
+                            New Types of Employment
                             <span><i className="icofont icofont-plus-circle"></i></span>
                             <AddDepartmentModal reFetch={allDepartmentReFetch} modal={departmentModal} toggle={departmentToggle} />
                         </p>
 
                         <div>
                             <Select
-                                labelName={"Department"}
+                                labelName={"Types of Employment"}
                                 placeholder={"Select an option"}
                                 options={department}
                                 setValue={setSelectedDepartment}

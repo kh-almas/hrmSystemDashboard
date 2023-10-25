@@ -77,7 +77,7 @@ export const MENUITEMS = [
             path: "/dashboard/hrm/branch",
           },
           {
-            title: "Department",
+            title: "Types of Employment",
             type: "link",
             path: "/dashboard/hrm/department",
           },
@@ -120,37 +120,37 @@ export const MENUITEMS = [
       //     { title: "Payslip", type: "link", path: "/dashboard/hrm/payslip" },
       //   ],
       // },
-      // {
-      //   title: "Leave Management Setup",
-      //   type: "sub",
-      //   children: [
-      //     {
-      //       title: "Leave Type",
-      //       type: "link",
-      //       path: "/dashboard/hrm/leave-type",
-      //     },
-      //     {
-      //       title: "Application",
-      //       type: "link",
-      //       path: "/dashboard/hrm/leave-application",
-      //     },
-      //     {
-      //       title: "Leave Setup",
-      //       type: "link",
-      //       path: "/dashboard/hrm/leave-setup",
-      //     },
-      //     {
-      //       title: "Employee Leave",
-      //       type: "link",
-      //       path: "/dashboard/hrm/Employee-leave",
-      //     },
-      //     {
-      //       title: "Leave Approval",
-      //       type: "link",
-      //       path: "/dashboard/hrm/Employee-leave/approval",
-      //     },
-      //   ],
-      // },
+      {
+        title: "Leave Management Setup",
+        type: "sub",
+        children: [
+          {
+            title: "Leave Type",
+            type: "link",
+            path: "/dashboard/hrm/leave-type",
+          },
+          {
+            title: "Application",
+            type: "link",
+            path: "/dashboard/hrm/leave-application",
+          },
+          {
+            title: "Leave Setup",
+            type: "link",
+            path: "/dashboard/hrm/leave-setup",
+          },
+          {
+            title: "Employee Leave",
+            type: "link",
+            path: "/dashboard/hrm/Employee-leave",
+          },
+          {
+            title: "Leave Approval",
+            type: "link",
+            path: "/dashboard/hrm/Employee-leave/approval",
+          },
+        ],
+      },
       {
         title: "Reports",
         type: "sub",

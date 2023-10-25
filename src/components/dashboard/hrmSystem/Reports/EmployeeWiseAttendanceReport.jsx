@@ -122,7 +122,7 @@ const EmployeeWiseAttendanceReport = () => {
                         <div>
                             <h6 className="fw-bold">Employee Name: {info?.emp_name}</h6>
                             <p className="fw-bold mb-1">Employee Code: {info?.card_no}</p>
-                            <p className="fw-bold mb-1">Department: {info?.dept_name}</p>
+                            <p className="fw-bold mb-1">Types of Employment: {info?.dept_name}</p>
                         </div>
                         <hr/>
                         <div>
