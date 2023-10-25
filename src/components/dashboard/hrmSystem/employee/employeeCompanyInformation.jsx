@@ -51,6 +51,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
     const [allSalaryGradeStatus, allSalaryGradeReFetch, allSalaryGrade, allSalaryGradeError] = GetAllSalaryGrade();
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
+    const [selectedOrganization, setSelectedOrganization] = useState('');
     const [selectedCompany, setSelectedCompany] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('');
     const [selectedDepartment, setSelectedDepartment] = useState('');
@@ -63,6 +64,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
 
     const EmployeeCompanyInformation = data => {
         setAllData(data);
+        data.organization_id = selectedOrganization;
         data.company_id = selectedCompany;
         data.branch_id = selectedBranch;
         data.department_id = selectedDepartment;
@@ -76,7 +78,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
     useEffect(() => {
         EmployeeCompanyInformation(allData);
         // console.log(processData)
-    }, [selectedCompany, selectedBranch, selectedDepartment, selectedSection, selectedEmployeeGrade, selectedSalaryGrade, selectedShift])
+    }, [selectedOrganization, selectedCompany, selectedBranch, selectedDepartment, selectedSection, selectedEmployeeGrade, selectedSalaryGrade, selectedShift])
 
 
     // console.log(allSalaryGrade?.data?.body?.data);
@@ -195,25 +197,24 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
     return (
         <form onChange={handleSubmit(EmployeeCompanyInformation)} className="mt-3">
             <div className="row">
-                {/*<div className="col">*/}
-                {/*    <div style={{ position: "relative" }}>*/}
-                {/*        <p onClick={organizationToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">*/}
-                {/*            New Organization*/}
-                {/*            <span><i className="icofont icofont-plus-circle"></i></span>*/}
-                {/*            <AddOrganizationModal reFetch={allOrganizationReFetch} modal={organizationModal} toggle={organizationToggle} />*/}
-                {/*        </p>*/}
+                <div className="col">
+                    <div style={{ position: "relative" }}>
+                        {/*<p onClick={organizationToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">*/}
+                        {/*    New Organization*/}
+                        {/*    <span><i className="icofont icofont-plus-circle"></i></span>*/}
+                        {/*    <AddOrganizationModal reFetch={allOrganizationReFetch} modal={organizationModal} toggle={organizationToggle} />*/}
+                        {/*</p>*/}
 
-                {/*        <div>*/}
-                {/*            <Select*/}
-                {/*                labelName={"Organization"}*/}
-                {/*                placeholder={"Select an option"}*/}
-                {/*                options={organization}*/}
-                {/*                validation={{...register("organization")}}*/}
-                {/*                error={errors.branch}*/}
-                {/*            />*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+                        <div>
+                            <Select
+                                labelName={"Organization"}
+                                placeholder={"Select an option"}
+                                options={organization}
+                                setValue={setSelectedOrganization}
+                            />
+                        </div>
+                    </div>
+                </div>
                 <div className="col">
                     <div style={{ position: "relative" }}>
                         {/*<p onClick={CompanyToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">*/}
@@ -255,14 +256,14 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                 <div className="col">
                     <div style={{ position: "relative" }}>
                         <p onClick={departmentToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
-                            New Types of Employment
+                            New Department
                             <span><i className="icofont icofont-plus-circle"></i></span>
                             <AddDepartmentModal reFetch={allDepartmentReFetch} modal={departmentModal} toggle={departmentToggle} />
                         </p>
 
                         <div>
                             <Select
-                                labelName={"Types of Employment"}
+                                labelName={"Department"}
                                 placeholder={"Select an option"}
                                 options={department}
                                 setValue={setSelectedDepartment}
