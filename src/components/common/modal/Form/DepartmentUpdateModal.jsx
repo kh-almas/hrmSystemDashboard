@@ -71,7 +71,7 @@ const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal
 
     return (
         <>
-            <BaseModal title={"Update Types of Employment"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+            <BaseModal title={"Department"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Select

@@ -56,7 +56,7 @@ const AddDepartmentModal = ({modal, toggle, reFetch}) => {
 
     return (
         <>
-            <BaseModal title={"Add Types of Employment"} dataModal={modal} dataToggle={toggle}>
+            <BaseModal title={"Department"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Select

@@ -233,10 +233,10 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                             labelName={"Employee Type"}
                             placeholder={"Select an option"}
                             options={[
-                                {id: "Part-time employees", value: "Part-time employees"},
-                                {id: "Full-time employees", value: "Full-time employees"},
-                                {id: "Contractual employee", value: "Contractual employee"},
-                                {id: "Temporary employees", value: "Temporary employees"},
+                                {id: "UL_Contractor", value: "UL_Contractor"},
+                                {id: "CTL_Contractor", value: "CTL_Contractor"},
+                                {id: "CTL", value: "CTL"},
+                                {id: "ULVSBL", value: "ULVSBL"},
                             ]}
                             setValue={setEmployeeType}
                             previous={employeeData?.employee_type}

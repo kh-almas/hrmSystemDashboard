@@ -88,7 +88,7 @@ const body_styles = StyleSheet.create({
                                           <Text style={body_styles.width}>{emp?.totalAbsent}</Text>
                                           <Text style={body_styles.width}>{emp?.totalLate}</Text>
                                           <Text style={body_styles.width}>{emp?.totalEarlyOut}</Text>
-                                          <Text style={body_styles.width}>{totalMinutes(emp?.totalOverTime)}</Text>
+                                          <Text style={body_styles.width}>{`${totalMinutes(emp?.totalOverTime)}m`}</Text>
                                       </View>
                                   )
                               }

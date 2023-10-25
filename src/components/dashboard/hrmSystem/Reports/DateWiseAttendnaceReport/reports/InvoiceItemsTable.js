@@ -144,9 +144,9 @@ const InvoiceItemsTable = ({data}) => {
                                             <Text style={rowStyles.designation}>{attendance?.desig_name ? attendance?.desig_name : 'N/A'}</Text>
                                             <Text style={rowStyles.InTime}>{attendance?.in_time ? formattedTime(attendance?.in_time) : 'N/A'}</Text>
                                             <Text style={rowStyles.OutTime}>{attendance?.out_time ? formattedTime(attendance?.out_time) : 'N/A'}</Text>
-                                            <Text style={rowStyles.LateIn}>{attendance?.late ? totalMinutes(attendance?.late) : 'N/A'}</Text>
-                                            <Text style={rowStyles.EarlyOut}>{attendance?.early_out ? totalMinutes(attendance?.early_out) : 'N/A'}</Text>
-                                            <Text style={rowStyles.status}>{attendance?.Overtime ? totalMinutes(attendance?.Overtime) : 'N/A'}</Text>
+                                            <Text style={rowStyles.LateIn}>{attendance?.late ? `${totalMinutes(attendance?.late)}m` : 'N/A'}</Text>
+                                            <Text style={rowStyles.EarlyOut}>{attendance?.early_out ? `${totalMinutes(attendance?.early_out)}m` : 'N/A'}</Text>
+                                            <Text style={rowStyles.status}>{attendance?.Overtime ? `${attendance?.Overtime}m` : 'N/A'}</Text>
                                         </View>
                                         )
                                     }

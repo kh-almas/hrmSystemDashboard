@@ -8,17 +8,23 @@ import {PDFDownloadLink} from "@react-pdf/renderer";
 import Invoice from "./DateWiseAttendnaceReport/reports/Invoice";
 import {Download} from "react-feather";
 import moment from "moment";
+import getAllDepartment from "../../../common/Query/hrm/GetAllDepartment";
 
 
 const DateWiseAttendanceReport = () => {
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
+    const [allDepartmentStatus, allDepartmentReFetch, allDepartment, allDepartmentError] = getAllDepartment();
     const [selectedCompany, setSelectedCompany] = useState("");
     const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedDepartment, setSelectedDepartment] = useState("");
     const [dateFrom, setDateForm] = useState("");
     const [dateTo, setDateTo] = useState("");
     const [company, setCompany] = useState([]);
     const [branch, setBranch] = useState([]);
+    const [department, setDepartment] = useState([]);
+
+
     const [data, setData] = useState([]);
 
     const totalMinutes = time => Math.round(moment.duration(time).asMinutes());
@@ -33,7 +39,7 @@ const DateWiseAttendanceReport = () => {
     }
     useEffect(() => {
         const getDailyAttendanceReport = async () => {
-            const getData = await getDailyAttendanceReportsAPI(selectedCompany, selectedBranch, dateFrom, dateTo);
+            const getData = await getDailyAttendanceReportsAPI(selectedCompany, selectedBranch, dateFrom, dateTo, selectedDepartment);
             setData(getData?.data?.body?.data?.data);
             // console.log(getData?.data?.body?.data?.data);
         }
@@ -51,6 +57,17 @@ const DateWiseAttendanceReport = () => {
                 setCompany(prevCompany => [...prevCompany, set_data]);
             })
     }, [allCompany])
+
+    useEffect(() => {
+        setDepartment([])
+            allDepartment?.data?.body?.data?.data?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setDepartment(prevDepartment => [...prevDepartment, set_data]);
+            })
+    }, [allDepartment, selectedDepartment])
 
     useEffect(() => {
         setBranch([])
@@ -127,6 +144,16 @@ const DateWiseAttendanceReport = () => {
                                 placeholder={"Select an option"}
                                 options={branch}
                                 setValue={setSelectedBranch}
+                            />
+                        </div>
+                    </div>
+                    <div className="col">
+                        <div>
+                            <Select
+                                labelName={"Department"}
+                                placeholder={"Select an option"}
+                                options={department}
+                                setValue={setSelectedDepartment}
                             />
                         </div>
                     </div>

@@ -85,9 +85,9 @@ const body_styles = StyleSheet.create({
                                           <Text style={body_styles.width}>{singleItem?.date ? singleItem?.date : "N/A"}</Text>
                                           <Text style={body_styles.width}>{singleItem?.in_time ? formattedTime(singleItem?.in_time) : "N/A"}</Text>
                                           <Text style={body_styles.width}>{singleItem?.out_time ? formattedTime(singleItem?.out_time) : "N/A"}</Text>
-                                          <Text style={body_styles.width}>{singleItem?.late ? totalMinutes(singleItem?.late) : "N/A"}</Text>
-                                          <Text style={body_styles.width}>{singleItem?.early_out ? totalMinutes(singleItem?.early_out) : "N/A"}</Text>
-                                          <Text style={body_styles.width}>{singleItem?.over_time ? totalMinutes(singleItem?.over_time) : "N/A"}</Text>
+                                          <Text style={body_styles.width}>{singleItem?.late ? `${totalMinutes(singleItem?.late)}m` : "N/A"}</Text>
+                                          <Text style={body_styles.width}>{singleItem?.early_out ? `${totalMinutes(singleItem?.early_out)}m` : "N/A"}</Text>
+                                          <Text style={body_styles.width}>{singleItem?.over_time ? `${totalMinutes(singleItem?.over_time)}m` : "N/A"}</Text>
                                       </View>
                                   )
                               }
