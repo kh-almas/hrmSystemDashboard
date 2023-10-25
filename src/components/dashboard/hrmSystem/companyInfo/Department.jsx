@@ -146,7 +146,7 @@ const Department = () => {
 
     return (
         <>
-            <Breadcrumb parent="HRM System" title="Manage Department" />
+            <Breadcrumb parent="HRM System" title="Department" />
             <div
                 style={{
                     display: "flex",

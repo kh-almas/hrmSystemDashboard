@@ -92,7 +92,7 @@ const AddSectionModal = ({modal, toggle, reFetch}) => {
                     </div>
                     <div>
                         <Select
-                            labelName={"Department"}
+                            labelName={"Types of Employment"}
                             placeholder={"Select an option"}
                             options={department}
                             setValue={setSelectedDepartment}

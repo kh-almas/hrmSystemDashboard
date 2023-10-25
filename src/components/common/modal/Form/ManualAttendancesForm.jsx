@@ -92,9 +92,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
         }
     }, [allShift, selectedBranch])
 
-
-
-    const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
+    const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm:ss");
 
     const onSubmit = (data) => {
         const in_time = formattedTime(data.in_time);
@@ -105,9 +103,9 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
         data.company_id = selectedCompany;
         data.branch_id = selectedBranch;
         data.shift_id = selectedShift;
-        data.device_id = "device_5681234";
+        data.device_id = "";
         data.employee_id= employeeId;
-        data.attendance_type= '1';
+        data.attendance_type= '2';
         data.status= status;
         // console.log(data)
 
@@ -146,58 +144,38 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     return (
         <>
             <BaseModal title={"Manual Attendance"} dataModal={dataModal} dataToggle={dataToggle}>
-                <div className="row row-cols-1 row-cols-lg-2">
-
-                    <div>
-                        <Select
-                            labelName={"Company:"}
-                            placeholder={"Select an option"}
-                            options={company}
-                            // validation={{...register("employee_id", {required: true})}}
-                            // error={errors?.employee_id}
-                            setValue={setSelectedCompany}
-                        />
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Branch:"}
-                            placeholder={"Select an option"}
-                            options={branch}
-                            // validation={{...register("employee_id", {required: true})}}
-                            // error={errors?.employee_id}
-                            setValue={setSelectedBranch}
-                        />
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Shift:"}
-                            placeholder={"Select an option"}
-                            options={shift}
-                            // validation={{...register("employee_id", {required: true})}}
-                            // error={errors?.employee_id}
-                            setValue={setSelectedShift}
-                        />
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Employee Name"}
-                            placeholder={"Select an option"}
-                            options={employee}
-                            // validation={{...register("employee_id", {required: true})}}
-                            // error={errors?.employee_id}
-                            setValue={setEmployeeId}
-                        />
-                    </div>
-                </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
-                            <Input
-                                labelName={"Card Number"}
-                                inputName={"cardNo"}
-                                inputType={"cardNo"}
-                                validation={{...register("card_no", {required: true})}}
-                                error={errors?.card_no}
+                            <Select
+                                labelName={"Company:"}
+                                placeholder={"Select an option"}
+                                options={company}
+                                setValue={setSelectedCompany}
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Branch:"}
+                                placeholder={"Select an option"}
+                                options={branch}
+                                setValue={setSelectedBranch}
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Shift:"}
+                                placeholder={"Select an option"}
+                                options={shift}
+                                setValue={setSelectedShift}
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Employee Name"}
+                                placeholder={"Select an option"}
+                                options={employee}
+                                setValue={setEmployeeId}
                             />
                         </div>
                         <div>
@@ -213,7 +191,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                             <Input
                                 labelName={"Clock In"}
                                 inputName={"inTime"}
-                                inputType={"time"}
+                                inputType={"datetime-local"}
                                 validation={{...register("in_time", {required: true})}}
                                 error={errors?.in_time}
                             />
@@ -222,7 +200,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                             <Input
                                 labelName={"Clock Out"}
                                 inputName={"outTime"}
-                                inputType={"time"}
+                                inputType={"datetime-local"}
                                 validation={{...register("out_time", {required: true})}}
                                 error={errors?.out_time}
                             />
@@ -238,7 +216,6 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                                     {id: "Sick Leave", value: "Sick Leave"},
                                     {id: "Vacation", value: "Vacation"},
                                 ]}
-                                // validation={{...register("status", {required: true})}}
                                 error={errors?.status}
                                 setValue={setStatus}
                             />

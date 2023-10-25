@@ -28,7 +28,7 @@ const EmployeSetup = () => {
             // console.log(setItem);
             const getData = await getEmployeeAPI(currentPage, howManyItem, searchData);
             setData(getData?.data?.body?.data?.data);
-            console.log(getData?.data?.body?.data?.data);
+            // console.log(getData?.data?.body?.data?.data);
 
             const totalItem = getData?.data?.body?.data?.count
             setTotalDBRow(totalItem);
@@ -135,7 +135,7 @@ const EmployeSetup = () => {
                                         <th scope="col">{"Phone"}</th>
                                         <th scope="col">{"Branch"}</th>
                                         <th scope="col">{"Department"}</th>
-                                        <th scope="col">{"Desigmation"}</th>
+                                        {/*<th scope="col">{"Designation"}</th>*/}
                                         {/*<th scope="col">{"Date Of Joining"}</th>*/}
                                         <th scope="col">{"Action"}</th>
                                     </tr>
@@ -150,9 +150,9 @@ const EmployeSetup = () => {
                                                     <td>{item?.full_name}</td>
                                                     <td>{item?.email}</td>
                                                     <td>{item?.phone}</td>
-                                                    <td>{item?.branch_id}</td>
-                                                    <td>{item?.department_id}</td>
-                                                    <td>{item?.designation_id}</td>
+                                                    <td>{item?.branch_name}</td>
+                                                    <td>{item?.dept_name}</td>
+                                                    {/*<td>{item?.deg_name}</td>*/}
                                                     {/*<td>{item?.joining_date}</td>*/}
                                                     <td>
                                                         <div>

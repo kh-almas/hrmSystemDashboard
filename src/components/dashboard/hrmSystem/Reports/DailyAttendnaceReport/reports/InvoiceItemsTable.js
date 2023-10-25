@@ -2,6 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Text} from '@react-pdf/renderer';
 import InvoiceTableHeader from './InvoiceTableHeader';
 import InvoiceTableRow from './InvoiceTableRow';
+import moment from "moment";
 
 const tableRowsCount = 11;
 
@@ -58,6 +59,8 @@ const body_styles = StyleSheet.create({
 
 
   const InvoiceItemsTable = ({data}) => {
+      const totalMinutes = time => Math.round(moment.duration(time).asMinutes());
+      const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm:ss").format("h:mm A");
       return (
           <>
               {
@@ -85,7 +88,7 @@ const body_styles = StyleSheet.create({
                                           <Text style={body_styles.width}>{emp?.totalAbsent}</Text>
                                           <Text style={body_styles.width}>{emp?.totalLate}</Text>
                                           <Text style={body_styles.width}>{emp?.totalEarlyOut}</Text>
-                                          <Text style={body_styles.width}>{emp?.totalOverTime}</Text>
+                                          <Text style={body_styles.width}>{`${totalMinutes(emp?.totalOverTime)}m`}</Text>
                                       </View>
                                   )
                               }

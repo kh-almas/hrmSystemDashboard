@@ -64,19 +64,19 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
 
     const EmployeeCompanyInformation = data => {
         setAllData(data);
-        data.company = selectedCompany;
-        data.branch = selectedBranch;
-        data.department = selectedDepartment;
-        data.section = selectedSection;
-        data.employeeGrade = selectedEmployeeGrade;
-        data.salaryGrade = selectedSalaryGrade;
-        data.shift = selectedShift;
+        data.company_id = selectedCompany;
+        data.branch_id = selectedBranch;
+        data.department_id = selectedDepartment;
+        data.section_id = selectedSection;
+        data.employee_grade_id = selectedEmployeeGrade;
+        data.salary_grade_id = selectedSalaryGrade;
+        data.shift_id = selectedShift;
         setProcessData({ ...processData, company: data });
     }
 
     useEffect(() => {
         EmployeeCompanyInformation(allData);
-    }, [company, branch, department, section, employeeGrade, salaryGrade, shift])
+    }, [selectedCompany, selectedBranch, selectedDepartment, selectedSection, selectedEmployeeGrade, selectedSalaryGrade, selectedShift])
 
 
     // console.log(allSalaryGrade?.data?.body?.data);

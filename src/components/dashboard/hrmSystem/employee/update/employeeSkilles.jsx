@@ -75,7 +75,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData, employeeD
                 // navigate("/dashboard/hrm/employee");
             })
             .catch(e => {
-                // console.log(e)
+                console.log(e)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',

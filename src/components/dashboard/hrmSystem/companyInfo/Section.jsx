@@ -160,7 +160,7 @@ const Section = () => {
                                     <tr>
                                         <th scope="col">{"ID"}</th>
                                         <th scope="col">{"Name"}</th>
-                                        <th scope="col">{"Department"}</th>
+                                        <th scope="col">{"Types of Employment"}</th>
                                         <th scope="col">{"Status"}</th>
                                         <th scope="col">{"Action"}</th>
                                     </tr>
@@ -171,7 +171,7 @@ const Section = () => {
                                             <tr key={index}>
                                                 <td>{index + 1}</td>
                                                 <td>{item?.name}</td>
-                                                <td>{item?.department_id}</td>
+                                                <td>{item?.dept_name}</td>
                                                 <td>{item?.status}</td>
                                                 <td>
                                                     <div className="d-flex justify-content-center">

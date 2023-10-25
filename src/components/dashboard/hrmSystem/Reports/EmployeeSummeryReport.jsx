@@ -8,6 +8,7 @@ import Select from "../../../common/modal/Select";
 import {PDFDownloadLink} from "@react-pdf/renderer";
 import {Download} from "react-feather";
 import Invoice from "./DailyAttendnaceReport/reports/Invoice";
+import moment from "moment/moment";
 
 
 const EmployeeSummeryReport = () => {
@@ -18,6 +19,9 @@ const EmployeeSummeryReport = () => {
     const [dateTo, setDateTo] = useState("");
 
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = getEmployee();
+
+    const totalMinutes = time => Math.round(moment.duration(time).asMinutes());
+    const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm:ss").format("h:mm A");
 
     // console.log(data)
     const removeSearch = () => {
@@ -84,7 +88,7 @@ const EmployeeSummeryReport = () => {
 
                     <div className="col">
                         <Select
-                            labelName={"Status"}
+                            labelName={"Employee"}
                             placeholder={"Select an option"}
                             options={employee}
                             setValue={setSelectedEmployee}
@@ -132,13 +136,13 @@ const EmployeeSummeryReport = () => {
                                     {
                                         item?.employees?.map((emp, index) =>
                                             <tr key={index}>
-                                                <td>{emp?.emp_name}</td>
-                                                <td>{emp?.emp_designation}</td>
-                                                <td>{emp?.totalPresent}</td>
-                                                <td>{emp?.totalAbsent}</td>
-                                                <td>{emp?.totalLate}</td>
-                                                <td>{emp?.totalEarlyOut}</td>
-                                                <td>{emp?.totalOverTime}</td>
+                                                <td>{emp?.emp_name ? emp?.emp_name : 'N/A'}</td>
+                                                <td>{emp?.emp_designation ? emp?.emp_designation : 'N/A'}</td>
+                                                <td>{emp?.totalPresent ? emp?.totalPresent : 'N/A'}</td>
+                                                <td>{emp?.totalAbsent ? emp?.totalAbsent : 'N/A'}</td>
+                                                <td>{emp?.totalLate ? emp?.totalLate : 'N/A'}</td>
+                                                <td>{emp?.totalEarlyOut ? emp?.totalEarlyOut : 'N/A'}</td>
+                                                <td>{emp?.totalOverTime && totalMinutes(emp?.totalOverTime) != '0' ? <span className="badge text-bg-success">{totalMinutes(emp?.totalOverTime)}m</span> : 'N/A'}</td>
                                             </tr>
                                         )
                                     }

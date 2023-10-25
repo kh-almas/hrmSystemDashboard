@@ -43,10 +43,10 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                     <div className="col">
                         <div>
                             <Input
-                                labelName={"Job Code"}
+                                labelName={"Employee ID"}
                                 inputName={"job_code"}
                                 inputType={"text"}
-                                placeholder={"Enter job code"}
+                                placeholder={"Enter employee id"}
                                 defaultValue={employeeData?.job_code}
                                 validation={{
                                     ...register("job_code"),
@@ -233,10 +233,10 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                             labelName={"Employee Type"}
                             placeholder={"Select an option"}
                             options={[
-                                {id: "Part-time employees", value: "Part-time employees"},
-                                {id: "Full-time employees", value: "Full-time employees"},
-                                {id: "Contractual employee", value: "Contractual employee"},
-                                {id: "Temporary employees", value: "Temporary employees"},
+                                {id: "UL_Contractor", value: "UL_Contractor"},
+                                {id: "CTL_Contractor", value: "CTL_Contractor"},
+                                {id: "CTL", value: "CTL"},
+                                {id: "ULVSBL", value: "ULVSBL"},
                             ]}
                             setValue={setEmployeeType}
                             previous={employeeData?.employee_type}
@@ -245,10 +245,10 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                     <div className="col">
                         <div>
                             <Input
-                                labelName={"Employee machine ID"}
+                                labelName={"Secondary ID"}
                                 inputName={"emp_machine_id"}
                                 inputType={"number"}
-                                placeholder={"Employee machine ID"}
+                                placeholder={"Employee secondary id"}
                                 validation={{
                                     ...register("emp_machine_id"),
                                 }}

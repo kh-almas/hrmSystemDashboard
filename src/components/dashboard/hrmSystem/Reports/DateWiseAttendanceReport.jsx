@@ -7,18 +7,28 @@ import getDailyAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getD
 import {PDFDownloadLink} from "@react-pdf/renderer";
 import Invoice from "./DateWiseAttendnaceReport/reports/Invoice";
 import {Download} from "react-feather";
+import moment from "moment";
+import getAllDepartment from "../../../common/Query/hrm/GetAllDepartment";
 
 
 const DateWiseAttendanceReport = () => {
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
+    const [allDepartmentStatus, allDepartmentReFetch, allDepartment, allDepartmentError] = getAllDepartment();
     const [selectedCompany, setSelectedCompany] = useState("");
     const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedDepartment, setSelectedDepartment] = useState("");
     const [dateFrom, setDateForm] = useState("");
     const [dateTo, setDateTo] = useState("");
     const [company, setCompany] = useState([]);
     const [branch, setBranch] = useState([]);
+    const [department, setDepartment] = useState([]);
+
+
     const [data, setData] = useState([]);
+
+    const totalMinutes = time => Math.round(moment.duration(time).asMinutes());
+    const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm:ss").format("h:mm A");
 
 
     const removeSearch = () => {
@@ -29,7 +39,7 @@ const DateWiseAttendanceReport = () => {
     }
     useEffect(() => {
         const getDailyAttendanceReport = async () => {
-            const getData = await getDailyAttendanceReportsAPI(selectedCompany, selectedBranch, dateFrom, dateTo);
+            const getData = await getDailyAttendanceReportsAPI(selectedCompany, selectedBranch, dateFrom, dateTo, selectedDepartment);
             setData(getData?.data?.body?.data?.data);
             // console.log(getData?.data?.body?.data?.data);
         }
@@ -47,6 +57,17 @@ const DateWiseAttendanceReport = () => {
                 setCompany(prevCompany => [...prevCompany, set_data]);
             })
     }, [allCompany])
+
+    useEffect(() => {
+        setDepartment([])
+            allDepartment?.data?.body?.data?.data?.map(item => {
+                const set_data = {
+                    id: item.id,
+                    value: item.name
+                }
+                setDepartment(prevDepartment => [...prevDepartment, set_data]);
+            })
+    }, [allDepartment, selectedDepartment])
 
     useEffect(() => {
         setBranch([])
@@ -84,10 +105,10 @@ const DateWiseAttendanceReport = () => {
                 </div>
                 <div className="d-flex justify-content-center">
 
-                    <div>
-                        <Link to={`/dashboard/hrm/attendance/datewise/pdf?startdate=${dateFrom}&enddate=${dateTo}&setcompany=${selectedCompany}&setbranch=${selectedBranch}`} target="_blank" className="ms-3 btn btn-primary">View
-                            PDF</Link>
-                    </div>
+                    {/*<div>*/}
+                    {/*    <Link to={`/dashboard/hrm/attendance/datewise/pdf?startdate=${dateFrom}&enddate=${dateTo}&setcompany=${selectedCompany}&setbranch=${selectedBranch}`} target="_blank" className="ms-3 btn btn-primary">View*/}
+                    {/*        PDF</Link>*/}
+                    {/*</div>*/}
                     {/*<div>*/}
                     {/*    <PDFDownloadLink document={<Invoice />} fileName="somename.pdf">*/}
                     {/*        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download now!')}*/}
@@ -123,6 +144,16 @@ const DateWiseAttendanceReport = () => {
                                 placeholder={"Select an option"}
                                 options={branch}
                                 setValue={setSelectedBranch}
+                            />
+                        </div>
+                    </div>
+                    <div className="col">
+                        <div>
+                            <Select
+                                labelName={"Department"}
+                                placeholder={"Select an option"}
+                                options={department}
+                                setValue={setSelectedDepartment}
                             />
                         </div>
                     </div>
@@ -170,11 +201,12 @@ const DateWiseAttendanceReport = () => {
                                                 <th scope="col">{"Date"}</th>
                                                 <th scope="col">{"Employee Code"}</th>
                                                 <th scope="col">{"Employee Name"}</th>
+                                                <th scope="col">{"Designation"}</th>
                                                 <th scope="col">{"In Time"}</th>
                                                 <th scope="col">{"Out Time"}</th>
                                                 <th scope="col">{"Late In"}</th>
                                                 <th scope="col">{"Early Out"}</th>
-                                                <th scope="col">{"Status"}</th>
+                                                <th scope="col">{"Overtime"}</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -184,12 +216,14 @@ const DateWiseAttendanceReport = () => {
                                                         <td>{attendance?.date ? attendance?.date : 'N/A'}</td>
                                                         <td>{attendance?.c_no ? attendance?.c_no : 'N/A'}</td>
                                                         <td>{attendance?.employee_name ? attendance?.employee_name : 'N/A'}</td>
-                                                        <td>{attendance?.in_time ? attendance?.in_time : 'N/A'}</td>
-                                                        <td>{attendance?.out_time ? attendance?.out_time : 'N/A'}</td>
-                                                        <td>{attendance?.late ? attendance?.late : 'N/A'}</td>
-                                                        <td>{attendance?.early_out ? attendance?.early_out : 'N/A'}</td>
-                                                        <td>{attendance?.status ? attendance?.status : 'N/A'}</td>
+                                                        <td>{attendance?.desig_name ? attendance?.desig_name : 'N/A'}</td>
+                                                        <td>{attendance?.in_time ? formattedTime(attendance?.in_time) : 'N/A'}</td>
+                                                        <td>{attendance?.out_time ? formattedTime(attendance?.out_time) : 'N/A'}</td>
+                                                        <td>{attendance?.late && totalMinutes(attendance?.late) != '0' ? <span class="badge text-bg-danger">{totalMinutes(attendance?.late)}m</span> : 'N/A'}</td>
+                                                        <td>{attendance?.early_out && totalMinutes(attendance?.early_out) != '0' ? <span className="badge text-bg-danger">{totalMinutes(attendance?.early_out)}m</span> : 'N/A'}</td>
+                                                        <td>{attendance?.over_time && totalMinutes(attendance?.over_time) != '0' ? <span className="badge text-bg-success">{totalMinutes(attendance?.over_time)}m</span> : 'N/A'}</td>
                                                     </tr>
+
                                                 )
                                             }
 

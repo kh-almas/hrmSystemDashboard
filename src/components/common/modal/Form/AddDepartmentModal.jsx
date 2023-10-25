@@ -56,7 +56,7 @@ const AddDepartmentModal = ({modal, toggle, reFetch}) => {
 
     return (
         <>
-            <BaseModal title={"Add Department"} dataModal={modal} dataToggle={toggle}>
+            <BaseModal title={"Department"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Select
@@ -68,10 +68,10 @@ const AddDepartmentModal = ({modal, toggle, reFetch}) => {
                     </div>
                     <div>
                         <Input
-                            labelName={"Department Name"}
+                            labelName={"Types of Employment"}
                             inputName={"name"}
                             inputType={"text"}
-                            placeholder={"Enter department name"}
+                            placeholder={"Enter types of employment name"}
                             validation={{
                                 ...register("name", { required: true }),
                             }}

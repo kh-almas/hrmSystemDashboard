@@ -2,6 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Text} from '@react-pdf/renderer';
 import InvoiceTableHeader from './InvoiceTableHeader';
 import InvoiceTableRow from './InvoiceTableRow';
+import moment from "moment/moment";
 
 const tableRowsCount = 11;
 
@@ -57,6 +58,8 @@ const body_styles = StyleSheet.create({
 });
 
   const InvoiceItemsTable = ({data}) => {
+      const totalMinutes = time => Math.round(moment.duration(time).asMinutes());
+      const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm:ss").format("h:mm A");
       return (
           <>
               {
@@ -80,11 +83,11 @@ const body_styles = StyleSheet.create({
                                   item?.data?.map((singleItem, index) =>
                                       <View key={index} style={body_styles.row}>
                                           <Text style={body_styles.width}>{singleItem?.date ? singleItem?.date : "N/A"}</Text>
-                                          <Text style={body_styles.width}>{singleItem?.in_time ? singleItem?.in_time : "N/A"}</Text>
-                                          <Text style={body_styles.width}>{singleItem?.out_time ? singleItem?.out_time : "N/A"}</Text>
-                                          <Text style={body_styles.width}>{singleItem?.late ? singleItem?.late : "N/A"}</Text>
-                                          <Text style={body_styles.width}>{singleItem?.early_out ? singleItem?.early_out : "N/A"}</Text>
-                                          <Text style={body_styles.width}>{singleItem?.over_time ? singleItem?.over_time : "N/A"}</Text>
+                                          <Text style={body_styles.width}>{singleItem?.in_time ? formattedTime(singleItem?.in_time) : "N/A"}</Text>
+                                          <Text style={body_styles.width}>{singleItem?.out_time ? formattedTime(singleItem?.out_time) : "N/A"}</Text>
+                                          <Text style={body_styles.width}>{singleItem?.late ? `${totalMinutes(singleItem?.late)}m` : "N/A"}</Text>
+                                          <Text style={body_styles.width}>{singleItem?.early_out ? `${totalMinutes(singleItem?.early_out)}m` : "N/A"}</Text>
+                                          <Text style={body_styles.width}>{singleItem?.over_time ? `${totalMinutes(singleItem?.over_time)}m` : "N/A"}</Text>
                                       </View>
                                   )
                               }
