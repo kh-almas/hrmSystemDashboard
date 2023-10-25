@@ -54,6 +54,7 @@ const EmployeeSummeryReport = () => {
     const datetoFn = e => {
         setDateTo(e.target.value);
     }
+
     const dateformFn = e => {
         setDateForm(e.target.value)
     }
