@@ -22,7 +22,7 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = getAllOrganization();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
 
-    const [selectedOrganization, setSelectedOrganization] = useState("1");
+    const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
     const [selectedCompany, setSelectedCompany] = useState("");
     const [selectedBranch, setSelectedBranch] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("Active");

@@ -196,7 +196,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
     }, [allSalaryGrade])
     return (
         <form onChange={handleSubmit(EmployeeCompanyInformation)} className="mt-3">
-            <div className="row">
+            <div className="row row-cols-1 row-cols-md-2">
                 <div className="col">
                     <div style={{ position: "relative" }}>
                         {/*<p onClick={organizationToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">*/}
@@ -251,8 +251,6 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="row">
                 <div className="col">
                     <div style={{ position: "relative" }}>
                         <p onClick={departmentToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
@@ -289,8 +287,6 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="row">
                 <div className="col">
                     <div style={{ position: "relative" }}>
                         <p onClick={employeeGradeToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">
@@ -327,9 +323,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="row">
-                <div className="col-6">
+                <div className="col">
                     <div style={{ position: "relative" }}>
                         {/*<p onClick={shiftToggle} style={{position: "absolute", right: "14px", cursor: "pointer",}} className="text-primary">*/}
                         {/*    New shift*/}
