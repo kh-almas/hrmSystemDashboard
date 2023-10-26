@@ -36,9 +36,11 @@ const Login = () => {
         const token = res.data.body.token;
         const id = res.data.body.id;
         const email = res.data.body.email;
+        const org_id = res.data.body.org_id;
         if (token && id && email) {
           // document.cookie = `token=${token}; path=/`;
           localStorage.setItem("access-token", token);
+          localStorage.setItem("org_id", org_id);
           localStorage.setItem("id", id);
           localStorage.setItem("email", email);
           setMatch(true);

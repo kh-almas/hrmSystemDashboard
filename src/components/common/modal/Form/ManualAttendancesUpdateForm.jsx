@@ -21,7 +21,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
     const [shift, setShift] = useState([]);
 
 
-    const [selectedOrganization, setSelectedOrganization] = useState("1");
+    const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
     const [selectedCompany, setSelectedCompany] = useState("");
     const [selectedBranch, setSelectedBranch] = useState("");
     const [selectedShift, setSelectedShift] = useState("");
