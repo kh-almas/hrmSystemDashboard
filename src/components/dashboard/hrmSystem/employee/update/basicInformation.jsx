@@ -11,13 +11,14 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
     const EmployeeInformation = data => {
+
         setAllData(data);
         data.status = "Active";
         data.name_title = nameTitle;
         data.gender = gander;
         data.employee_type = employeeType;
-        data.full_name = `${nameTitle ? nameTitle : ''} ${data.first_name ? data.first_name : ''} ${data.last_name ? data.last_name : ''}`;
-        setProcessData({ ...processData, basicInfo: data });
+        const abs = {...processData, ...data}
+        setProcessData({ ...abs });
     }
 
     useEffect(() => {

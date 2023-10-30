@@ -73,7 +73,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
         data.employee_grade_id = selectedEmployeeGrade;
         data.salary_grade_id = selectedSalaryGrade;
         data.shift_id = selectedShift;
-        setProcessData({ ...processData, company: data });
+        const abs = {...processData, ...data}
+        setProcessData({ ...abs });
     }
 
     useEffect(() => {

@@ -11,7 +11,7 @@ import {useParams} from "react-router-dom";
 
 const EditEmploySetup = () => {
     const {id} = useParams();
-    console.log(id);
+    // console.log(id);
     const [IconWithTab, setIconWithTab] = useState('1');
     const [processData, setProcessData] = useState({});
     const [employeeData, setEmployeeData] = useState({});
@@ -26,7 +26,7 @@ const EditEmploySetup = () => {
                 // console.log(info?.data?.body?.data);
                 setEmployeeData(info?.data?.body?.data?.data);
                 setContactData(info?.data?.body?.data?.contact);
-                console.log(info?.data?.body?.data?.data);
+                // console.log(info?.data?.body?.data?.data);
             })
             .catch(e => {
                 console.log(e);
