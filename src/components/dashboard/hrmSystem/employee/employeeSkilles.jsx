@@ -7,54 +7,30 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
     const EmployeeSkillesInformation = data => {
-        setProcessData({ ...processData, skill: data });
-        const finalData = { ...processData, skill: data }
+        const abs = {...processData, ...data}
+        setProcessData({ ...abs });
+        const finalData = { ...abs }
 
         // console.log("this is fine", finalData);
 
         const formData = new FormData();
 
         const appendToFormData = (object, parentKey) => {
-            // console.log(object, parentKey);
             for (let key in object) {
-                if (object.hasOwnProperty(key)) {
-                    const value = object[key];
-                    const currentKey = parentKey ? `${parentKey}[${key}]` : key;
-
-                    // console.log(currentKey);
-                    if(currentKey !== "basicInfo[image][0]" && currentKey !== "basicInfo[cv][0]" && currentKey !== "contact"){
-                        if (typeof value === 'object' && !Array.isArray(value)) {
-                            appendToFormData(value, currentKey);
-                        } else if (Array.isArray(value)) {
-                            value.forEach((item, index) => {
-                                appendToFormData({ [index]: item }, `${currentKey}[${index}]`);
-                            });
-                        } else {
-                            // console.log(currentKey, value);
-                            formData.append(currentKey, value);
-                        }
-                    }else{
-                        if(currentKey === "contact"){
-                            // console.log("akjsdhfi", currentKey, JSON.stringify(value));
-                            formData.append(currentKey, JSON.stringify(value));
-                        }else if(currentKey === "basicInfo[image][0]"){
-                            formData.append('image', value);
-                        }else{
-                            formData.append('cv', value);
-                        }
-                        // console.log(value);
-
+                if (key === 'cv' || key === 'image') {
+                    if (object[key][0]) {
+                        formData.append(key, object[key][0]);
                     }
+                } else if(key === 'contact'){
+                    formData.append(key, JSON.stringify(object[key]));
+                } else {
+                    formData.append(key, object[key]);
                 }
             }
-        };
+        }
 
-        const processed = appendToFormData(finalData);
+        appendToFormData(finalData);
 
-        // for (let pair of formData.entries()) {
-        //     console.log("data",pair[0]+ ', ' + pair[1]);
-        // }
-        // console.log(...formData);
 
 
 
@@ -99,7 +75,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
                 // navigate("/dashboard/hrm/employee");
             })
             .catch(e => {
-                console.log(e)
+                console.log(e);
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -120,7 +96,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
                         className="form-control"
                         id="exampleFormControlTextarea4"
                         rows="5"
-                        {...register("skill")}
+                        {...register("skills")}
                     ></textarea>
                 </div>
 

@@ -14,7 +14,6 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
     const EmployeeContactInformation = data => {
         setContact(preData => [data, ...preData]);
         // setEditContactData([]);
-
         reset();
     }
     useEffect(() => {
@@ -44,10 +43,10 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
         setIsDelete(!isDeleted);
     }
 
-    const handleMainForm = () => {
-        setProcessData(previousData => [...previousData, contact]);
-        // setIconWithTab("4");
-    }
+    // const handleMainForm = () => {
+    //     setProcessData(previousData => [...previousData, contact]);
+    //     // setIconWithTab("4");
+    // }
 
     return (
         <>
