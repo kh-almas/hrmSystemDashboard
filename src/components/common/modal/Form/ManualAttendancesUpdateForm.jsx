@@ -22,8 +22,8 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
 
 
     const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
-    const [selectedCompany, setSelectedCompany] = useState("");
-    const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
+    const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
     const [selectedShift, setSelectedShift] = useState("");
     const [employeeId, setEmployeeId] = useState('');
     const [attendanceType, setAttendanceType] = useState('');
@@ -34,20 +34,14 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
+
     const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm");
     const formattedTimeForUpdate = time => moment(time, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm:ss");
 
-
+    console.log(selectedShift);
     useEffect(() => {
-        const in_time = formattedTime(oldData.in_time);
-        oldData.in_time = in_time;
-        console.log(oldData.in_time);
-        const late = formattedTime(oldData.late);
-        oldData.late = late;
-        const out_time = formattedTime(oldData.out_time);
-        oldData.out_time = out_time;
-        const over_time = formattedTime(oldData.over_time);
-        oldData.over_time = over_time;
+        setSelectedShift(oldData?.shift_id);
+        setEmployeeId(oldData.employee_id);
     }, [oldData])
 
     useEffect( () => {
@@ -55,7 +49,6 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
         if(selectedShift !== "")
         {
             const sortData = allEmployee?.data?.body?.data?.data?.filter(data => parseInt(data.shift_id) === parseInt(selectedShift))
-            // console.log("sortData",sortData);
             sortData?.map(item => {
                 const set_data = {
                     id: item.id,
@@ -110,6 +103,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
 
 
     const onSubmit = (data) => {
+        console.log(data);
         const in_time = formattedTimeForUpdate(data.in_time);
         data.in_time = in_time;
         const out_time = formattedTimeForUpdate(data.out_time);
@@ -120,6 +114,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
         data.shift_id = selectedShift;
         data.employee_id= employeeId;
         data.attendance_type = '2';
+        data.status = status;
         const updatedData = {
             'organization_id':selectedOrganization ? selectedOrganization : oldData.organization_id,
             'company_id': selectedCompany ? selectedCompany : oldData.company_id,
@@ -166,24 +161,24 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
             <BaseModal title={"Update Manual Attendance"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
-                        <div>
-                            <Select
-                                labelName={"Company:"}
-                                placeholder={"Select an option"}
-                                options={company}
-                                previous={oldData?.company_id}
-                                setValue={setSelectedCompany}
-                            />
-                        </div>
-                        <div>
-                            <Select
-                                labelName={"Branch:"}
-                                placeholder={"Select an option"}
-                                options={branch}
-                                previous={oldData?.branch_id}
-                                setValue={setSelectedBranch}
-                            />
-                        </div>
+                        {/*<div>*/}
+                        {/*    <Select*/}
+                        {/*        labelName={"Company:"}*/}
+                        {/*        placeholder={"Select an option"}*/}
+                        {/*        options={company}*/}
+                        {/*        previous={oldData?.company_id}*/}
+                        {/*        setValue={setSelectedCompany}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
+                        {/*<div>*/}
+                        {/*    <Select*/}
+                        {/*        labelName={"Branch:"}*/}
+                        {/*        placeholder={"Select an option"}*/}
+                        {/*        options={branch}*/}
+                        {/*        previous={oldData?.branch_id}*/}
+                        {/*        setValue={setSelectedBranch}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                         <div>
                             <Select
                                 labelName={"Shift:"}
@@ -194,14 +189,16 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
                             />
                         </div>
                         <div>
+
                             <Select
                                 labelName={"Employee Name"}
                                 placeholder={"Select an option"}
                                 options={employee}
-                                previous={oldData?.employee_id}
-                                error={errors?.employee_id}
+                                previous={employeeId}
+                                // error={errors?.employee_id}
                                 setValue={setEmployeeId}
                             />
+
                         </div>
                         <div>
                             <Input
@@ -245,15 +242,18 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
                                     {id: "Vacation", value: "Vacation"},
                                 ]}
                                 error={errors?.status}
-                                previous={oldData?.status}
+                                previous={oldData.status}
                                 setValue={setStatus}
                             />
+                            {
+                                // console.log('status',oldData.status)
+                            }
                         </div>
                     </div>
 
 
                     <div className="d-flex justify-content-end">
-                        <Button color="danger" onClick={dataUpdateToggle} className="me-2">
+                        <Button color="danger" onClick={() =>dataUpdateToggle('')} className="me-2">
                             Cancel
                         </Button>
                         <Button color="primary" type="submit">

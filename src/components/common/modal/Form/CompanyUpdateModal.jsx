@@ -9,7 +9,7 @@ import axios from "../../../../axios";
 import Swal from "sweetalert2";
 
 const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, oldData, allCompanyReFetch}) => {
-    const [selectedOrganization, setSelectedOrganization] = useState('');
+    const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
     const [selectedStatus, setSelectedStatus] = useState('');
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
@@ -65,17 +65,17 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
             <BaseModal title={"Update Company"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
-                        <div>
-                            <Select
-                                labelName={"Organization"}
-                                placeholder={"Select an option"}
-                                options={organization}
-                                previous={oldData.organization_id}
-                                // validation={{...register("organization_id")}}
-                                // error={errors?.organization_id}
-                                setValue={setSelectedOrganization}
-                            />
-                        </div>
+                        {/*<div>*/}
+                        {/*    <Select*/}
+                        {/*        labelName={"Organization"}*/}
+                        {/*        placeholder={"Select an option"}*/}
+                        {/*        options={organization}*/}
+                        {/*        previous={oldData.organization_id}*/}
+                        {/*        // validation={{...register("organization_id")}}*/}
+                        {/*        // error={errors?.organization_id}*/}
+                        {/*        setValue={setSelectedOrganization}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                         <div>
                             <Input
                                 labelName={"Company Name"}
@@ -132,8 +132,6 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
                                 validation={{ ...register("phone") }}
                             />
                         </div>
-                    </div>
-                    <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Input
                                 labelName={"Country"}
@@ -154,18 +152,16 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
                                 validation={{ ...register("zip") }}
                             />
                         </div>
-                    </div>
-                    <div>
-                        <Input
-                            labelName={"Address"}
-                            inputName={"address"}
-                            placeholder={"Enter your address"}
-                            inputType={"text"}
-                            defaultValue={oldData.address}
-                            validation={{ ...register("address") }}
-                        />
-                    </div>
-                    <div className="row row-cols-1 row-cols-lg-2">
+                        <div>
+                            <Input
+                                labelName={"Address"}
+                                inputName={"address"}
+                                placeholder={"Enter your address"}
+                                inputType={"text"}
+                                defaultValue={oldData.address}
+                                validation={{ ...register("address") }}
+                            />
+                        </div>
                         <div>
                             <Input
                                 labelName={"Info"}

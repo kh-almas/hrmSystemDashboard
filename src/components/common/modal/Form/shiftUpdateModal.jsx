@@ -23,8 +23,8 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
 
     const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
-    const [selectedCompany, setSelectedCompany] = useState("");
-    const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
+    const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
     const [selectedStatus, setSelectedStatus] = useState("");
     const [dayDiff, setDaydiff] = useState(false);
 
@@ -132,39 +132,39 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
             <BaseModal title={"Update Shift Entry"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
-                        <div>
-                            <Select
-                                labelName={"Company"}
-                                placeholder={"Select an option"}
-                                options={company}
-                                previous={oldData?.company_id}
-                                setValue={setSelectedCompany}
-                            />
-                        </div>
+                        {/*<div>*/}
+                        {/*    <Select*/}
+                        {/*        labelName={"Company"}*/}
+                        {/*        placeholder={"Select an option"}*/}
+                        {/*        options={company}*/}
+                        {/*        previous={oldData?.company_id}*/}
+                        {/*        setValue={setSelectedCompany}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
 
-                        <div>
-                            <Select
-                                labelName={"Branch"}
-                                placeholder={"Select an option"}
-                                options={branch}
-                                previous={oldData?.branch_id}
-                                setValue={setSelectedBranch}
-                            />
-                        </div>
-                        <div>
-                            <Input
-                                labelName={"Shift Name"}
-                                inputName={"name"}
-                                inputType={"text"}
-                                defaultValue={oldData?.name}
-                                placeholder={"Enter shift name"}
-                                validation={{
-                                    ...register("name"),
-                                }}
-                            />
-                        </div>
+                        {/*<div>*/}
+                        {/*    <Select*/}
+                        {/*        labelName={"Branch"}*/}
+                        {/*        placeholder={"Select an option"}*/}
+                        {/*        options={branch}*/}
+                        {/*        previous={oldData?.branch_id}*/}
+                        {/*        setValue={setSelectedBranch}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                     </div>
 
+                    <div>
+                        <Input
+                            labelName={"Shift Name"}
+                            inputName={"name"}
+                            inputType={"text"}
+                            defaultValue={oldData?.name}
+                            placeholder={"Enter shift name"}
+                            validation={{
+                                ...register("name"),
+                            }}
+                        />
+                    </div>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Input
@@ -217,13 +217,13 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                         </div>
                     </div>
                     <div>
-                        {/*<Select*/}
-                        {/*    labelName={"Status"}*/}
-                        {/*    placeholder={"Select an option"}*/}
-                        {/*    options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}*/}
-                        {/*    previous={oldData?.status}*/}
-                        {/*    setValue={setSelectedStatus}*/}
-                        {/*/>*/}
+                        <Select
+                            labelName={"Status"}
+                            placeholder={"Select an option"}
+                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
+                            previous={oldData?.status}
+                            setValue={setSelectedStatus}
+                        />
                     </div>
 
                     <div className="d-flex justify-content-end">

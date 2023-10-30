@@ -40,7 +40,7 @@ const ManualAttendance = () => {
 
     const [modal, setModal] = useState();
     const [date, setDate] = useState(true);
-    const [oldData, setOldDate] = useState();
+    const [oldData, setOldDate] = useState('');
     const [data, setData] = useState([]);
     const [totalItemCount, setTotalItemCount] = useState();
     const {register, reset, handleSubmit, formState: { errors },} = useForm();
@@ -48,6 +48,7 @@ const ManualAttendance = () => {
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [selectedMonth, setSelectedMonth] =useState('');
+
 
     const setMonth = e => {
         const value = e.target.value
@@ -131,7 +132,7 @@ const ManualAttendance = () => {
     };
 
     const dataUpdateToggle = (data) => {
-        setOldDate(null);
+        // setOldDate('');
 
         // axios.get(`/hrm-system/manual-attendance/${id}`)
         //     .then(info => {
@@ -142,8 +143,12 @@ const ManualAttendance = () => {
         //     .catch(e => {
         //         // console.log(e);
         //     })
+
+
         setOldDate(data);
+        console.log('1',data)
         setDataUpdateModal(!dataUpdateModal);
+        console.log('2',data)
     };
 
     const deleteAttendance = id => {
@@ -447,11 +452,9 @@ const ManualAttendance = () => {
             </div>
 
             <ManualAttendancesForm refetch={isDarty} dataModal={dataModal} dataToggle={dataToggle}></ManualAttendancesForm>
-            {
-                oldData ?
-                    <ManualAttendancesUpdateForm refetch={isDarty} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>
-                    : ''
-            }
+
+            <ManualAttendancesUpdateForm refetch={isDarty} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>
+
 
         </>
     );

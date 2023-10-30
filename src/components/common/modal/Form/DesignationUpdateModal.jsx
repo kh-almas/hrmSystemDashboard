@@ -18,8 +18,8 @@ const DesignationUpdateModal = ({allDesignationReFetch, oldData, dataUpdateModal
     const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = GetAllOrganization();
 
 
-    const [selectedOrganization, setSelectedOrganization] = useState('');
-    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
+    const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedStatus, setSelectedStatus] = useState('Active');
 
     useEffect(() => {
@@ -90,24 +90,24 @@ const DesignationUpdateModal = ({allDesignationReFetch, oldData, dataUpdateModal
         <>
             <BaseModal title={"Update Designation"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <Select
-                            labelName={"Organization"}
-                            placeholder={"Select an option"}
-                            options={organization}
-                            previous={oldData.organization_id}
-                            setValue={setSelectedOrganization}
-                        />
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Company"}
-                            placeholder={"Select an option"}
-                            options={company}
-                            previous={oldData.company_id}
-                            setValue={setSelectedCompany}
-                        />
-                    </div>
+                    {/*<div>*/}
+                    {/*    <Select*/}
+                    {/*        labelName={"Organization"}*/}
+                    {/*        placeholder={"Select an option"}*/}
+                    {/*        options={organization}*/}
+                    {/*        previous={oldData.organization_id}*/}
+                    {/*        setValue={setSelectedOrganization}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+                    {/*<div>*/}
+                    {/*    <Select*/}
+                    {/*        labelName={"Company"}*/}
+                    {/*        placeholder={"Select an option"}*/}
+                    {/*        options={company}*/}
+                    {/*        previous={oldData.company_id}*/}
+                    {/*        setValue={setSelectedCompany}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                     <div>
                         <Input
                             labelName={"Designation Name"}

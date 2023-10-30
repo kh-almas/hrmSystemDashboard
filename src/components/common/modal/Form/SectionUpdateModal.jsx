@@ -17,8 +17,8 @@ const SectionUpdateModal = ({allSectionReFetch, oldData, dataUpdateModal, dataUp
     const [allDepartmentStatus, allDepartmentReFetch, allDepartment, allDepartmentError] = GetAllDepartment();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
 
-    const [selectedDepartment, setSelectedDepartment] = useState('');
-    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedDepartment, setSelectedDepartment] = useState(localStorage.getItem("dept_id"));
+    const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedStatus, setSelectedStatus] = useState('');
 
     useEffect(() => {
@@ -88,24 +88,24 @@ const SectionUpdateModal = ({allSectionReFetch, oldData, dataUpdateModal, dataUp
         <>
             <BaseModal title={"Update Section"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <Select
-                            labelName={"Company"}
-                            placeholder={"Select an option"}
-                            options={company}
-                            previous={oldData?.company_id}
-                            setValue={setSelectedCompany}
-                        />
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Types of Employment"}
-                            placeholder={"Select an option"}
-                            options={department}
-                            previous={oldData?.department_id}
-                            setValue={setSelectedDepartment}
-                        />
-                    </div>
+                    {/*<div>*/}
+                    {/*    <Select*/}
+                    {/*        labelName={"Company"}*/}
+                    {/*        placeholder={"Select an option"}*/}
+                    {/*        options={company}*/}
+                    {/*        previous={oldData?.company_id}*/}
+                    {/*        setValue={setSelectedCompany}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+                    {/*<div>*/}
+                    {/*    <Select*/}
+                    {/*        labelName={"Department"}*/}
+                    {/*        placeholder={"Select an option"}*/}
+                    {/*        options={department}*/}
+                    {/*        previous={oldData?.department_id}*/}
+                    {/*        setValue={setSelectedDepartment}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                     <div>
                         <Input
                             labelName={"Section Name"}

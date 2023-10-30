@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import GetAllOrganization from "../../Query/hrm/GetAllOrganization";
 
 const AddCompanyModal = ({ modal, toggle, reFetch }) => {
-    const [selectedOrganization, setSelectedOrganization] = useState('');
+    const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
     const [selectedStatus, setSelectedStatus] = useState('');
     const [organization, setOrganization] = useState([]);
     const {register, handleSubmit, formState: { errors },} = useForm();
@@ -62,14 +62,14 @@ const AddCompanyModal = ({ modal, toggle, reFetch }) => {
                 <form onSubmit={handleSubmit(onSubmit)}>
 
                     <div className="row row-cols-1 row-cols-lg-2">
-                        <div>
-                            <Select
-                                labelName={"Organization"}
-                                placeholder={"Select an option"}
-                                options={organization}
-                                setValue={setSelectedOrganization}
-                            />
-                        </div>
+                        {/*<div>*/}
+                        {/*    <Select*/}
+                        {/*        labelName={"Organization"}*/}
+                        {/*        placeholder={"Select an option"}*/}
+                        {/*        options={organization}*/}
+                        {/*        setValue={setSelectedOrganization}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                         <div>
                             <Input
                                 labelName={"Company Name"}
@@ -121,8 +121,6 @@ const AddCompanyModal = ({ modal, toggle, reFetch }) => {
                                 validation={{ ...register("phone", { required: true }) }}
                             />
                         </div>
-                    </div>
-                    <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Input
                                 labelName={"Country"}
@@ -141,17 +139,15 @@ const AddCompanyModal = ({ modal, toggle, reFetch }) => {
                                 validation={{ ...register("zip", { required: true }) }}
                             />
                         </div>
-                    </div>
-                    <div>
-                        <Input
-                            labelName={"Address"}
-                            inputName={"address"}
-                            placeholder={"Enter your address"}
-                            inputType={"text"}
-                            validation={{ ...register("address", { required: true }) }}
-                        />
-                    </div>
-                    <div className="row row-cols-1 row-cols-lg-2">
+                        <div>
+                            <Input
+                                labelName={"Address"}
+                                inputName={"address"}
+                                placeholder={"Enter your address"}
+                                inputType={"text"}
+                                validation={{ ...register("address", { required: true }) }}
+                            />
+                        </div>
                         <div>
                             <Input
                                 labelName={"Info"}

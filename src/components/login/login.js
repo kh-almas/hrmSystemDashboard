@@ -37,10 +37,16 @@ const Login = () => {
         const id = res.data.body.id;
         const email = res.data.body.email;
         const org_id = res.data.body.org_id;
+        const com_id = res.data.body.com_id;
+        const branch_id = res.data.body.branch_id;
+        const dept_id = res.data.body.dept_id;
         if (token && id && email) {
           // document.cookie = `token=${token}; path=/`;
           localStorage.setItem("access-token", token);
           localStorage.setItem("org_id", org_id);
+          localStorage.setItem("com_id", com_id);
+          localStorage.setItem("branch_id", branch_id);
+          localStorage.setItem("dept_id", dept_id);
           localStorage.setItem("id", id);
           localStorage.setItem("email", email);
           setMatch(true);

@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 
 const AddBranchModal = ({modal, toggle, reFetch}) => {
     const [company, setCompany] = useState([]);
-    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedStatus, setSelectedStatus] = useState('');
     const {register, handleSubmit, formState: { errors },} = useForm();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
@@ -58,14 +58,14 @@ const AddBranchModal = ({modal, toggle, reFetch}) => {
         <>
             <BaseModal title={"Add Branch"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <Select
-                            labelName={"Company"}
-                            placeholder={"Select an option"}
-                            options={company}
-                            setValue={setSelectedCompany}
-                        />
-                    </div>
+                    {/*<div>*/}
+                    {/*    <Select*/}
+                    {/*        labelName={"Company"}*/}
+                    {/*        placeholder={"Select an option"}*/}
+                    {/*        options={company}*/}
+                    {/*        setValue={setSelectedCompany}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                     <div>
                         <Input
                             labelName={"Branch Name"}

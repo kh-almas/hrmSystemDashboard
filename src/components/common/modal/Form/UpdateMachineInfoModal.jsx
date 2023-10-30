@@ -23,11 +23,13 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
 
     const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
-    const [selectedCompany, setSelectedCompany] = useState("");
-    const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
+    const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
     const [selectedStatus, setSelectedStatus] = useState("Active");
 
-    console.log('oldData',oldData);
+    // console.log('oldData',oldData);
+
+    // console.log('selectedCompany', selectedCompany)
 
     useEffect(() => {
         setOrganization([])
@@ -68,9 +70,11 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
         }
     }, [allBranch, selectedCompany])
 
+
     useEffect(() => {
-        setSelectedCompany(oldData?.company_id)
-        reset();
+        setSelectedCompany(oldData?.CompanyId)
+        // console.log(oldData);
+        // reset();
     },[oldData])
 
     const formattedTimeForUpdate = time => moment(time, "HH:mm").format("HH:mm:ss");
@@ -118,29 +122,32 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
             })
     }
 
+
     return (
         <>
             <BaseModal title={"Update Machine Entry"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
-                        <div>
-                            <Select
-                                labelName={"Company"}
-                                placeholder={"Select an option"}
-                                options={company}
-                                setValue={setSelectedCompany}
-                                previous={oldData?.CompanyId}
-                            />
-                        </div>
-                        <div>
-                            <Select
-                                labelName={"Branch"}
-                                placeholder={"Select an option"}
-                                options={branch}
-                                setValue={setSelectedBranch}
-                                previous={oldData?.BranchId}
-                            />
-                        </div>
+                        {/*<div>*/}
+                        {/*    <Select*/}
+                        {/*        labelName={"Company"}*/}
+                        {/*        placeholder={"Select an option"}*/}
+                        {/*        options={company}*/}
+                        {/*        setValue={setSelectedCompany}*/}
+                        {/*        previous={oldData?.CompanyId}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
+                        {/*<div>*/}
+                        {/*    <Select*/}
+                        {/*        labelName={"Branch"}*/}
+                        {/*        placeholder={"Select an option"}*/}
+                        {/*        options={branch}*/}
+                        {/*        setValue={setSelectedBranch}*/}
+                        {/*        previous={oldData?.BranchId}*/}
+                        {/*    />*/}
+
+                        {/*    /!*{console.log(oldData?.BranchId)}*!/*/}
+                        {/*</div>*/}
                         <div>
                             <Input
                                 labelName={"Machine Number"}
@@ -197,8 +204,9 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
                                 placeholder={"Select an option"}
                                 options={[{id: "0", value: "Active"}, {id: "1", value: "Inactive"}]}
                                 setValue={setSelectedStatus}
-                                previous={oldData?.isInActive}
+                                previous={oldData?.isInactive}
                             />
+                            {console.log( oldData.isInactive)}
                         </div>
                     </div>
 
