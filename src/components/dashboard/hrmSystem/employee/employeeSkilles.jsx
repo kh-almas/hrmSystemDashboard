@@ -11,78 +11,68 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
         setProcessData({ ...abs });
         const finalData = { ...abs }
 
-        // console.log("this is fine", finalData);
+        console.log("this is fine", finalData);
+        if(
+            !finalData.job_code &&
+            !finalData.first_name &&
+            !finalData.email &&
+            !finalData.phone &&
+            !finalData.employee_type &&
+            !finalData.department_id &&
+            !finalData.section_id &&
+            !finalData.company_id &&
+            !finalData.branch_id &&
+            !finalData.shift_id
+        ){
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Employee ID, First Name, Email, Phone, Employee Type, Company, Department, Section, Branch, Shift is required',
+                showConfirmButton: false,
+                timer: 3500
+            })
+        }else {
+            const formData = new FormData();
 
-        const formData = new FormData();
-
-        const appendToFormData = (object, parentKey) => {
-            for (let key in object) {
-                if (key === 'cv' || key === 'image') {
-                    if (object[key][0]) {
-                        formData.append(key, object[key][0]);
+            const appendToFormData = (object, parentKey) => {
+                for (let key in object) {
+                    if (key === 'cv' || key === 'image') {
+                        if (object[key][0]) {
+                            formData.append(key, object[key][0]);
+                        }
+                    } else if(key === 'contact'){
+                        formData.append(key, JSON.stringify(object[key]));
+                    } else {
+                        formData.append(key, object[key]);
                     }
-                } else if(key === 'contact'){
-                    formData.append(key, JSON.stringify(object[key]));
-                } else {
-                    formData.append(key, object[key]);
                 }
             }
-        }
+            appendToFormData(finalData);
 
-        appendToFormData(finalData);
-
-
-
-
-        // console.log(processed);
-        // const FinalData = [...processData, data];
-        // // Merge all key-value pairs into a single object
-        // const mergedObject = {};
-        //
-        // FinalData.forEach(item => {
-        //     if (Array.isArray(item)) {
-        //         // If the item is an array, loop through its elements
-        //         item.forEach(innerItem => {
-        //             Object.keys(innerItem).forEach(key => {
-        //                 mergedObject[key] = innerItem[key];
-        //             });
-        //         });
-        //     } else {
-        //         // If the item is an object, loop through its keys
-        //         Object.keys(item).forEach(key => {
-        //             mergedObject[key] = item[key];
-        //         });
-        //     }
-        // });
-        // console.log("final", mergedObject);
-        // const formData = new FormData();
-        //
-        // for (const key in data) {
-        //     formData.append(key, data[key]);
-        // }
-        axios.post('/hrm-system/employee', formData)
-            .then(info => {
-                if (info?.status == 200) {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    // console.log("got the result",info);
-                }
-                // navigate("/dashboard/hrm/employee");
-            })
-            .catch(e => {
-                console.log(e);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message}`,
+            axios.post('/hrm-system/employee', formData)
+                .then(info => {
+                    if (info?.status == 200) {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Your work has been saved',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        // console.log("got the result",info);
+                    }
+                    reset();
+                    // navigate("/dashboard/hrm/employee");
                 })
-            })
-        reset();
+                .catch(e => {
+                    console.log(e);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `something wrong`,
+                    })
+                })
+        }
     }
 
     return (
