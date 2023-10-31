@@ -77,7 +77,7 @@ export const MENUITEMS = [
             path: "/dashboard/hrm/branch",
           },
           {
-            title: "Types of Employment",
+            title: "Department",
             type: "link",
             path: "/dashboard/hrm/department",
           },
@@ -101,11 +101,11 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/hrm/weekday",
           },
-          {
-            title: "Project",
-            type: "link",
-            path: "/dashboard/hrm/project",
-          },
+          // {
+          //   title: "Project",
+          //   type: "link",
+          //   path: "/dashboard/hrm/project",
+          // },
         ],
       },
       // {

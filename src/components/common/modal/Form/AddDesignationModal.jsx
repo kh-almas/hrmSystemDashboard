@@ -17,8 +17,8 @@ const AddDesignationModal = ({modal, toggle, reFetch}) => {
     const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = GetAllOrganization();
 
 
-    const [selectedOrganization, setSelectedOrganization] = useState('');
-    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
+    const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedStatus, setSelectedStatus] = useState('');
 
     useEffect(() => {
@@ -67,8 +67,7 @@ const AddDesignationModal = ({modal, toggle, reFetch}) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                    footer: '<a href="">Why do I have this issue?</a>'
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`
                 })
             })
     };
@@ -77,24 +76,24 @@ const AddDesignationModal = ({modal, toggle, reFetch}) => {
         <>
             <BaseModal title={"Add Designation"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <Select
-                            labelName={"Organization"}
-                            placeholder={"Select an option"}
-                            options={organization}
-                            // validation={{...register("organization_id", {required: true})}}
-                            // error={errors?.organization_id}
-                            setValue={setSelectedOrganization}
-                        />
-                    </div>
-                    <div>
-                        <Select
-                            labelName={"Company"}
-                            placeholder={"Select an option"}
-                            options={company}
-                            setValue={setSelectedCompany}
-                        />
-                    </div>
+                    {/*<div>*/}
+                    {/*    <Select*/}
+                    {/*        labelName={"Organization"}*/}
+                    {/*        placeholder={"Select an option"}*/}
+                    {/*        options={organization}*/}
+                    {/*        // validation={{...register("organization_id", {required: true})}}*/}
+                    {/*        // error={errors?.organization_id}*/}
+                    {/*        setValue={setSelectedOrganization}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+                    {/*<div>*/}
+                    {/*    <Select*/}
+                    {/*        labelName={"Company"}*/}
+                    {/*        placeholder={"Select an option"}*/}
+                    {/*        options={company}*/}
+                    {/*        setValue={setSelectedCompany}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                     <div>
                         <Input
                             labelName={"Designation Name"}

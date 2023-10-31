@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 
 const BranchUpdateModal = ({company, allBranchReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
-    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedStatus, setSelectedStatus] = useState('');
 
     useEffect(() => {
@@ -59,15 +59,15 @@ const BranchUpdateModal = ({company, allBranchReFetch, oldData, dataUpdateModal,
         <>
             <BaseModal title={"Update Branch"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <Select
-                            labelName={"Company"}
-                            placeholder={"Select an option"}
-                            options={company}
-                            previous={oldData?.company_id}
-                            setValue={setSelectedCompany}
-                        />
-                    </div>
+                    {/*<div>*/}
+                    {/*    <Select*/}
+                    {/*        labelName={"Company"}*/}
+                    {/*        placeholder={"Select an option"}*/}
+                    {/*        options={company}*/}
+                    {/*        previous={oldData?.company_id}*/}
+                    {/*        setValue={setSelectedCompany}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                     <div>
                         <Input
                             labelName={"Branch Name"}

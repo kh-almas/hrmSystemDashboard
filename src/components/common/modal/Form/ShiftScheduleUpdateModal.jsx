@@ -16,9 +16,6 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
 
-    console.log(oldData?.status);
-
-
     const onSubmit = (data) => {
         const updatedData = {
             'date_from':data.date_from ? data.date_from : oldData.date_from,
@@ -55,7 +52,7 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
     }
     return (
         <>
-            <BaseModal title={"Update Shift Entry"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
+            <BaseModal title={"Update Shift Schedule"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>

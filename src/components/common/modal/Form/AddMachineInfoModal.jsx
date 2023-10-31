@@ -22,8 +22,8 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
 
     const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
-    const [selectedCompany, setSelectedCompany] = useState("");
-    const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
+    const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
     const [selectedStatus, setSelectedStatus] = useState("Active");
 
     // const [weekdays, setWeekdays] = useState('');
@@ -106,22 +106,22 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
             <BaseModal title={"Add Machine Information"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
-                        <div>
-                            <Select
-                                labelName={"Company"}
-                                placeholder={"Select an option"}
-                                options={company}
-                                setValue={setSelectedCompany}
-                            />
-                        </div>
-                        <div>
-                            <Select
-                                labelName={"Branch"}
-                                placeholder={"Select an option"}
-                                options={branch}
-                                setValue={setSelectedBranch}
-                            />
-                        </div>
+                        {/*<div>*/}
+                        {/*    <Select*/}
+                        {/*        labelName={"Company"}*/}
+                        {/*        placeholder={"Select an option"}*/}
+                        {/*        options={company}*/}
+                        {/*        setValue={setSelectedCompany}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
+                        {/*<div>*/}
+                        {/*    <Select*/}
+                        {/*        labelName={"Branch"}*/}
+                        {/*        placeholder={"Select an option"}*/}
+                        {/*        options={branch}*/}
+                        {/*        setValue={setSelectedBranch}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                         <div>
                             <Input
                                 labelName={"Machine Number"}

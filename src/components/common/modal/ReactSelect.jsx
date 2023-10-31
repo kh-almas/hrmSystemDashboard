@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Select from "react-select";
 
 const ReactSelect = ({labelName, options, defaultValue, validation, placeholder, error, previous, setValue}) => {
   const [newOption, setNewOption] = useState([]);
+  const [dxzfghsbh, dfxfcghnfgbxgn] = useState({});
+  const [findDefaultValue, setFindDefaultValue] = useState({});
   const data = options.map((data) => ({
     value: data.id,
     label: data.value,
   }));
 
+  // useEffect(() => {
+  //   console.log('data', data)
+  //   console.log('previous', previous)
+  //   const sjkdfgh = data.find((option) => option.value == previous);
+  //   console.log('sjkdfgh',sjkdfgh);
+  // }, []);
+
   // console.log('data',data , typeof data);
-  // console.log("previous", previous, typeof previous);
+  console.log("previous", previous, typeof previous);
 
   const handleChange = (selectedOption) => {
     // Ensure that selectedOption is defined
@@ -57,7 +66,7 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
             {error && <span className="text-danger">(Required)</span>}
           </label>
           <div>
-            {/*{console.log(data.find((option) => option.value == previous))}*/}
+            {/*{console.log('vvvv', data.find((option) => option.value == previous))}*/}
             <Select
               className={`customeStyle ${error && "is-invalid"}`}
               id={labelName}
@@ -69,6 +78,7 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
               isSearchable={true} // This enables the search functionality
               placeholder={placeholder}
             />
+            {console.log('vvvv',data)}
           </div>
         </div>
       </div>

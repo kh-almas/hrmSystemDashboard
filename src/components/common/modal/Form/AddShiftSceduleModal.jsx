@@ -53,7 +53,7 @@ const AddShiftSceduleModal = ({modal, toggle, reFetch, shift}) => {
 
     return (
         <>
-            <BaseModal title={"Add Shift"} dataModal={modal} dataToggle={toggle}>
+            <BaseModal title={"Add Shift Schedule"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>

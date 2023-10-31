@@ -12,7 +12,7 @@ import GetAllCompany from "../../Query/hrm/GetAllCompany";
 const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [company, setCompany] = useState([]);
-    const [selectedCompany, setSelectedCompany] = useState('');
+    const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [status, setStatus] = useState('');
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
 
@@ -73,15 +73,15 @@ const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal
         <>
             <BaseModal title={"Department"} dataModal={dataUpdateModal} dataToggle={dataUpdateToggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <Select
-                            labelName={"Company"}
-                            placeholder={"Select an option"}
-                            options={company}
-                            setValue={setSelectedCompany}
-                            previous={oldData?.company_id}
-                        />
-                    </div>
+                    {/*<div>*/}
+                    {/*    <Select*/}
+                    {/*        labelName={"Company"}*/}
+                    {/*        placeholder={"Select an option"}*/}
+                    {/*        options={company}*/}
+                    {/*        setValue={setSelectedCompany}*/}
+                    {/*        previous={oldData?.company_id}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                     <div>
                         <Input
                             labelName={"Types of Employment"}
