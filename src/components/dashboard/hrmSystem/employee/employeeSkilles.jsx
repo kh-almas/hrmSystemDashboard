@@ -13,15 +13,15 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
 
         console.log("this is fine", finalData);
         if(
-            !finalData.job_code &&
-            !finalData.first_name &&
-            !finalData.email &&
-            !finalData.phone &&
-            !finalData.employee_type &&
-            !finalData.department_id &&
-            !finalData.section_id &&
-            !finalData.company_id &&
-            !finalData.branch_id &&
+            !finalData.job_code ||
+            !finalData.first_name ||
+            !finalData.email ||
+            !finalData.phone ||
+            !finalData.employee_type ||
+            !finalData.department_id ||
+            !finalData.section_id ||
+            !finalData.company_id ||
+            !finalData.branch_id ||
             !finalData.shift_id
         ){
             Swal.fire({

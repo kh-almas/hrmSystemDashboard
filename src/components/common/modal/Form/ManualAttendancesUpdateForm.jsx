@@ -38,7 +38,7 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
     const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm");
     const formattedTimeForUpdate = time => moment(time, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm:ss");
 
-    console.log(selectedShift);
+    // console.log(selectedShift);
     useEffect(() => {
         setSelectedShift(oldData?.shift_id);
         setEmployeeId(oldData.employee_id);
@@ -146,12 +146,19 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
                 }
             })
             .catch(e => {
-                // console.log(e)
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`
-                })
+                if(e?.response?.data?.body?.errno == 409){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `Can not duplicate attendance`
+                    })
+                }else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `${e?.response?.data?.body?.message?.details[0].message}`
+                    })
+                }
             })
     };
 

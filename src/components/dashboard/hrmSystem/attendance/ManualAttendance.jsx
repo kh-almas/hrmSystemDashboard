@@ -48,19 +48,37 @@ const ManualAttendance = () => {
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [selectedMonth, setSelectedMonth] =useState('');
+    const [shortDate, setShortDate] = useState('');
+    const [isShortDateChange, setIsShortDateChange] = useState(false);
 
+    const removeSearch = () => {
+        setShortDate('');
+        setDatewise('');
+        setSelectedCompany('');
+        setSelectedBranch('');
+    }
+
+
+    // useEffect(() => {
+    //     const dateObj = new Date();
+    //     // get the month in this format of 04, the same for months
+    //     const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+    //     const year = dateObj.getFullYear();
+    //     const shortDateFormate = `${year}-${month}`;
+    //     setShortDate(shortDateFormate);
+    // }, [isShortDateChange]);
 
     const setMonth = e => {
         const value = e.target.value
-        // console.log("month1", value);
+        console.log("month1", value);
         const startOfMonth = moment(value, 'YYYY-MM').clone().startOf('month').format('YYYY-MM-DD');
         const endOfMonth = moment(value, 'YYYY-MM').clone().endOf('month').format('YYYY-MM-DD');
         setStartDate(startOfMonth);
         setEndDate(endOfMonth);
-
+        setShortDate(value);
     }
 
-    const setDateWise = e => {
+    const setDateWiseFn = e => {
         const value = e.target.value
         setDatewise(value);
         // console.log(value);
@@ -117,11 +135,7 @@ const ManualAttendance = () => {
         }
     }
 
-    const dateObj = new Date();
-    // get the month in this format of 04, the same for months
-    const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
-    const year = dateObj.getFullYear();
-    const shortDate = `${year}-${month}`;
+
 
     const toggle = () => {
         setModal(!modal);
@@ -187,6 +201,8 @@ const ManualAttendance = () => {
         })
     }
 
+
+
     const csvSubmit= (data) => {
         const formData = new FormData();
         formData.append('csv', data.csv[0]);
@@ -249,7 +265,7 @@ const ManualAttendance = () => {
             </div>
             <div className="card" style={{padding: "20px"}}>
                 <div className="row">
-                    <div className="col-sm-12 col-xl-2">
+                    <div className="col-2">
                         <label htmlFor="exampleFormControlInput1">Type</label>
                         <div className="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
                             <div className="radio radio-primary">
@@ -280,72 +296,52 @@ const ManualAttendance = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-sm-12 col-xl-5">
-                        <div className="row">
-                            {date && (
-                                <div className="col">
-                                    <label htmlFor="exampleFormControlInput1">Month</label>
-                                    <input
-                                        onChange={setMonth}
-                                        className="form-control"
-                                        required={true}
-                                        type="month"
-                                        defaultValue={shortDate}
-                                    />
-                                </div>
-                            )}
-                            {!date && (
-                                <div className="col">
-                                    <label htmlFor="exampleFormControlInput1">Date</label>
-                                    <input onChange={setDateWise} className="form-control" required={true} type="date"/>
-                                </div>
-                            )}
-                            <div className="col">
-                                <Select
-                                    labelName={"Company:"}
-                                    placeholder={"Select an option"}
-                                    options={company}
-                                    // validation={{...register("employee_id", {required: true})}}
-                                    // error={errors?.employee_id}
-                                    setValue={setSelectedCompany}
-                                />
-                            </div>
+                    {date && (
+                        <div className="col">
+                            <label htmlFor="exampleFormControlInput1">Month</label>
+                            <input
+                                onChange={setMonth}
+                                className="form-control"
+                                required={true}
+                                type="month"
+                                value={shortDate}
+                            />
                         </div>
+                    )}
+                    {!date && (
+                        <div className="col">
+                            <label htmlFor="exampleFormControlInput1">Date</label>
+                            <input onChange={setDateWiseFn} value={datewise} className="form-control" required={true} type="date"/>
+                        </div>
+                    )}
+                    <div className="col">
+                        <Select
+                            labelName={"Company:"}
+                            placeholder={"Select an option"}
+                            options={company}
+                            // validation={{...register("employee_id", {required: true})}}
+                            // error={errors?.employee_id}
+                            setValue={setSelectedCompany}
+                        />
                     </div>
-                    <div className="col-sm-12 col-xl-5">
-                        <div className="row">
-                            <div className="col">
-                                <div className="col">
-                                    <Select
-                                        labelName={"Branch:"}
-                                        placeholder={"Select an option"}
-                                        options={branch}
-                                        // validation={{...register("employee_id", {required: true})}}
-                                        // error={errors?.employee_id}
-                                        setValue={setSelectedBranch}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col">
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        gap: "20px",
-                                        marginTop: "20px",
-                                    }}
-                                >
-
-                                    <button
-                                        onClick={toggle}
-                                        className="btn btn-primary btn-lg"
-                                        style={{padding: "5px 15px"}}
-                                    >
-                                        <i className="fa fa-paste"></i>
-                                    </button>
-                                </div>
-                            </div>
+                    <div className="col">
+                        <Select
+                            labelName={"Branch:"}
+                            placeholder={"Select an option"}
+                            options={branch}
+                            // validation={{...register("employee_id", {required: true})}}
+                            // error={errors?.employee_id}
+                            setValue={setSelectedBranch}
+                        />
+                    </div>
+                    <div className="col-1">
+                        <div  style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "25px"}}>
+                            <button className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}} onClick={() => removeSearch()}>
+                                <i style={{fontSize: '8px'}} className= "icon-close"></i>
+                            </button>
+                            <button onClick={toggle} className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}}>
+                                <i style={{fontSize: '12px'}} className="fa fa-cloud-upload"></i>
+                            </button>
                         </div>
                     </div>
                 </div>

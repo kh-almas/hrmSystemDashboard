@@ -46,12 +46,19 @@ const BranchUpdateModal = ({company, allBranchReFetch, oldData, dataUpdateModal,
                 }
             })
             .catch(e => {
-                console.log(e)
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`
-                })
+                if(e?.response?.data?.body?.message?.errno == 1062){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `Can not duplicate branch name`
+                    })
+                }else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `${e?.response?.data?.body?.message?.details[0].message}`
+                    })
+                }
             })
     }
 

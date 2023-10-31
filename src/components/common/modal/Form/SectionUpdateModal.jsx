@@ -20,6 +20,7 @@ const SectionUpdateModal = ({allSectionReFetch, oldData, dataUpdateModal, dataUp
     const [selectedDepartment, setSelectedDepartment] = useState(localStorage.getItem("dept_id"));
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedStatus, setSelectedStatus] = useState('');
+    // const[isChange, setIsChange] = useState(false);
 
     useEffect(() => {
         setDepartment([])
@@ -54,10 +55,10 @@ const SectionUpdateModal = ({allSectionReFetch, oldData, dataUpdateModal, dataUp
     const onSubmit = (data) => {
         const updatedData = {
             'name': data.name ? data.name : oldData.name,
+            'company_id': selectedCompany ? selectedCompany : oldData.company_id,
             'department_id':data.department_id ? data.department_id : oldData.department_id,
-            'status':data.status ? data.status : oldData.status
+            'status': selectedStatus ? selectedStatus : oldData.status
         }
-
         axios.put(`/hrm-system/section/${oldData.id}`, updatedData)
             .then(info => {
                 console.log(info)

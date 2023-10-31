@@ -120,23 +120,25 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    dataToggle(false);
-                    reset();
-                    refetch();
-                    setSelectedCompany('');
-                    setSelectedBranch('');
-                    setEmployeeId('');
-                    setSelectedShift('');
-                    setStatus('Active');
+                    setStatus('Present');
                 }
 
             })
             .catch(e => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`
-                })
+                // console.log(e)
+                if(e?.response?.data?.body?.errno == 409){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `Can not duplicate attendance`
+                    })
+                }else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `${e?.response?.data?.body?.message?.details[0].message}`
+                    })
+                }
             })
     };
 

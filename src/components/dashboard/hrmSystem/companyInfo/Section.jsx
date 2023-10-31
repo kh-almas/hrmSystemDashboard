@@ -25,12 +25,12 @@ const Section = () => {
     const isDarty = () =>
     {
         setIsChange(!isChange);
+        console.log('dkjfhgkdsfjhgdifdzukhg', isChange)
     }
 
-    const [department, setDepartment] = useState([]);
     const [modal, setModal] = useState(false);
     const [oldData, setOldData] = useState({});
-    const [branch, setBranch] = useState([]);
+    const [section, setSection] = useState([]);
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
     const [allDepartmentStatus, allDepartmentReFetch, allDepartment, allDepartmentError] = GetAllDepartment();
     const [allSectionStatus, allSectionReFetch, allSection, allSectionError] = GetAllSection();
@@ -38,19 +38,8 @@ const Section = () => {
 
 
     useEffect(() => {
-        setDepartment([])
-        allDepartment?.data?.body?.data?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setDepartment(prevDepartment => [...prevDepartment, set_data]);
-        })
-    }, [allDepartment])
-
-    useEffect(() => {
-        setBranch(allSection?.data?.body?.data);
-    }, [allSection])
+        setSection(allSection?.data?.body?.data);
+    }, [allSection, isChange])
 
     const toggle = () => {
         setModal(!modal);
@@ -58,31 +47,6 @@ const Section = () => {
     const dataUpdateToggle = (item) => {
         setOldData(item);
         setDataUpdateModal(!dataUpdateModal);
-    };
-
-    const onSubmit = (data) => {
-        axios.post('/hrm-system/section', data)
-            .then(info => {
-                if(info?.status == 200)
-                {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    setModal(!modal);
-                }
-                allSectionReFetch();
-            })
-            .catch(e => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                })
-            })
     };
 
     const deleteShift = id => {
@@ -167,7 +131,7 @@ const Section = () => {
                                     </thead>
                                     <tbody>
                                     {
-                                        branch?.map((item, index) =>
+                                        section?.map((item, index) =>
                                             <tr key={index}>
                                                 <td>{index + 1}</td>
                                                 <td>{item?.name}</td>
@@ -194,10 +158,10 @@ const Section = () => {
                     </div>
                 </div>
             </div>
-            <AddSectionModal modal={modal} toggle={toggle} reFetch={isDarty}></AddSectionModal>
+            <AddSectionModal modal={modal} toggle={toggle} reFetch={allSectionReFetch}></AddSectionModal>
             {
                 oldData ?
-                    <SectionUpdateModal allSectionReFetch={isDarty} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></SectionUpdateModal>
+                    <SectionUpdateModal allSectionReFetch={allSectionReFetch} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></SectionUpdateModal>
                     : ''
             }
         </>

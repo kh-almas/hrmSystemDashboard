@@ -101,11 +101,20 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                  reFetch();
              })
              .catch(e => {
-                 Swal.fire({
-                     icon: 'error',
-                     title: 'Oops...',
-                     text: `${e?.response?.data?.body?.message?.details[0].message}`
-                 })
+                 // console.log(e);
+                 if(e?.response?.data?.body?.message?.errno == 1062){
+                     Swal.fire({
+                         icon: 'error',
+                         title: 'Oops...',
+                         text: `Can not duplicate shift name`
+                     })
+                 }else {
+                     Swal.fire({
+                         icon: 'error',
+                         title: 'Oops...',
+                         text: `${e?.response?.data?.body?.message?.details[0].message}`
+                     })
+                 }
              })
     }
 

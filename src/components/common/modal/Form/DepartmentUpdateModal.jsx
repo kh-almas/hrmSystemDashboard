@@ -60,12 +60,19 @@ const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal
                 }
             })
             .catch(e => {
-                console.log(e)
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`
-                })
+                if(e?.response?.data?.body?.message?.errno == 1062){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `Can not duplicate department name`
+                    })
+                }else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `${e?.response?.data?.body?.message?.details[0].message}`
+                    })
+                }
             })
     }
 
@@ -84,10 +91,10 @@ const OrganizationUpdateModal = ({allDepartmentReFetch, oldData, dataUpdateModal
                     {/*</div>*/}
                     <div>
                         <Input
-                            labelName={"Types of Employment"}
+                            labelName={"Department"}
                             inputName={"name"}
                             inputType={"text"}
-                            placeholder={"Enter types of employment name"}
+                            placeholder={"Enter Department name"}
                             defaultValue={oldData?.name}
                             validation={{
                                 ...register("name", { required: true }),

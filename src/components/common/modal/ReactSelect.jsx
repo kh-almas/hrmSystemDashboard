@@ -18,7 +18,7 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
   // }, []);
 
   // console.log('data',data , typeof data);
-  console.log("previous", previous, typeof previous);
+  // console.log("previous", previous, typeof previous);
 
   const handleChange = (selectedOption) => {
     // Ensure that selectedOption is defined
@@ -78,7 +78,7 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
               isSearchable={true} // This enables the search functionality
               placeholder={placeholder}
             />
-            {console.log('vvvv',data)}
+            {/*{console.log('vvvv',data)}*/}
           </div>
         </div>
       </div>

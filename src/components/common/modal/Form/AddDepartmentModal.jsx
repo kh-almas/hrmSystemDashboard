@@ -46,11 +46,19 @@ const AddDepartmentModal = ({modal, toggle, reFetch}) => {
                 reFetch();
             })
             .catch(e => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                })
+                if(e?.response?.data?.body?.message?.errno == 1062){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `Can not duplicate department name`
+                    })
+                }else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `${e?.response?.data?.body?.message?.details[0].message}`
+                    })
+                }
             })
     };
 
@@ -68,10 +76,10 @@ const AddDepartmentModal = ({modal, toggle, reFetch}) => {
                     {/*</div>*/}
                     <div>
                         <Input
-                            labelName={"Types of Employment"}
+                            labelName={"Department Name"}
                             inputName={"name"}
                             inputType={"text"}
-                            placeholder={"Enter types of employment name"}
+                            placeholder={"Enter department name"}
                             validation={{
                                 ...register("name", { required: true }),
                             }}

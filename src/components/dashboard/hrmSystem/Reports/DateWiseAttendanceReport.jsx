@@ -159,7 +159,7 @@ const DateWiseAttendanceReport = () => {
                     </div>
                     <div className="col-1">
                         {/*<div className="col-1">*/}
-                            <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "25px",}}>
+                            <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "25px"}}>
                                 <button className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}} onClick={() => removeSearch()}>
                                     <i style={{fontSize: '8px'}} className= "icon-close"></i>
                                 </button>

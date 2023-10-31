@@ -38,7 +38,7 @@ const Shift = () => {
             // console.log(setItem);
             const getData = await getMatchineInfoAPI(currentPage, howManyItem, searchData);
             setMachineInfo(getData?.data?.body?.data?.data);
-            // console.log(getData?.data?.body?.data?.data);
+            console.log(getData?.data?.body?.data?.data);
 
             const totalItem = getData?.data?.body?.data?.count
             setTotalDBRow(totalItem);
@@ -165,7 +165,6 @@ const Shift = () => {
                                         <th scope="col">{"Machine Port"}</th>
                                         <th scope="col">{"Common Key"}</th>
                                         <th scope="col">{"Location"}</th>
-                                        <th scope="col">{"Status"}</th>
                                         <th scope="col">{"Action"}</th>
                                     </tr>
                                     </thead>
@@ -182,7 +181,6 @@ const Shift = () => {
                                                 <td>{item?.MachinePort}</td>
                                                 <td>{item?.commKey}</td>
                                                 <td>{item?.Location}</td>
-                                                <td>{item?.status}</td>
                                                 <td>
                                                     <div className="d-flex justify-content-center">
                                                         <button onClick={() => dataUpdateToggle(item)} className="btn me-2" style={{backgroundColor: "skyblue", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>

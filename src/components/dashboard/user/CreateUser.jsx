@@ -6,15 +6,13 @@ import {Button, Modal, ModalBody, ModalHeader, Pagination, PaginationItem, Pagin
 import moment from "moment/moment";
 import axios from "../../../axios";
 import Swal from "sweetalert2";
-import ShiftUpdateModal from "../../common/modal/Form/shiftUpdateModal";
-import AddShiftModal from "../../common/modal/Form/AddShiftModal";
-import getShiftAPI from "../../common/Query/hrm/forSort/getShiftAPI";
-import Select from "../../common/modal/Select";
 import Input from "../../common/modal/Input";
-import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import getUserAPI from "../../common/Query/hrm/forSort/getUserAPI";
+import GetEmployee from "../../common/Query/hrm/GetEmployee";
+import Select from "../../common/modal/Select";
 
 const CreateUser = () => {
+    const [employee, setEmployee] = useState([]);
     const [pageCount, setPageCount] = useState(1);
     const [howManyItem, setHowManyItem] = useState('10');
     const [currentPage, setCurrentPage] = useState('1');
@@ -31,6 +29,8 @@ const CreateUser = () => {
     const [shiftModal, setShiftModal] = useState(false);
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
     const {register, handleSubmit, formState: { errors },} = useForm();
+    const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployee();
+    const [employeeId, setEmployeeId] = useState('');
 
     useEffect( () => {
         const getUserdata= async () => {
@@ -47,6 +47,17 @@ const CreateUser = () => {
         getUserdata();
 
     }, [isChange])
+
+
+    useEffect( () => {
+        allEmployee?.data?.body?.data?.data?.map(item => {
+            const set_data = {
+                id: item.id,
+                value: item?.full_name
+            }
+            setEmployee(prevEmployee => [...prevEmployee, set_data]);
+        })
+    }, [allEmployee])
 
 
 
@@ -131,11 +142,11 @@ const CreateUser = () => {
                 <form onSubmit={handleSubmit(onSubmit)} className="mb-2">
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
-                            <Input
-                                labelName={"Email"}
-                                inputName={"email"}
-                                inputType={"email"}
-                                validation={{ ...register("email", { required: true }) }}
+                            <Select
+                                labelName={"Employee Name"}
+                                placeholder={"Select an option"}
+                                options={employee}
+                                setValue={setEmployeeId}
                             />
                         </div>
                         <div>

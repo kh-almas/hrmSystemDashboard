@@ -40,27 +40,48 @@ const Attendance = () => {
 
     const [modal, setModal] = useState();
     const [date, setDate] = useState(true);
+    const [oldData, setOldDate] = useState('');
     const [data, setData] = useState([]);
     const [totalItemCount, setTotalItemCount] = useState();
     const {register, reset, handleSubmit, formState: { errors },} = useForm();
+    const [status, refetch, manualAttendance, error] = GetManualAttendance();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [selectedMonth, setSelectedMonth] =useState('');
+    const [shortDate, setShortDate] = useState('');
+    const [isShortDateChange, setIsShortDateChange] = useState(false);
+
+    const removeSearch = () => {
+        setShortDate('');
+        setDatewise('');
+        setSelectedCompany('');
+        setSelectedBranch('');
+    }
+
+
+    // useEffect(() => {
+    //     const dateObj = new Date();
+    //     // get the month in this format of 04, the same for months
+    //     const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+    //     const year = dateObj.getFullYear();
+    //     const shortDateFormate = `${year}-${month}`;
+    //     setShortDate(shortDateFormate);
+    // }, [isShortDateChange]);
 
     const setMonth = e => {
         const value = e.target.value
-        // console.log("month1", value);
+        console.log("month1", value);
         const startOfMonth = moment(value, 'YYYY-MM').clone().startOf('month').format('YYYY-MM-DD');
         const endOfMonth = moment(value, 'YYYY-MM').clone().endOf('month').format('YYYY-MM-DD');
         setStartDate(startOfMonth);
         setEndDate(endOfMonth);
-
+        setShortDate(value);
     }
 
-    const setDateWise = e => {
+    const setDateWiseFn = e => {
         const value = e.target.value
         setDatewise(value);
-        console.log(value);
+        // console.log(value);
     }
 
     useEffect( () => {
@@ -114,15 +135,72 @@ const Attendance = () => {
         }
     }
 
-    const dateObj = new Date();
-    // get the month in this format of 04, the same for months
-    const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
-    const year = dateObj.getFullYear();
-    const shortDate = `${year}-${month}`;
+
 
     const toggle = () => {
         setModal(!modal);
     };
+
+    const dataToggle = () => {
+        setDataModal(!dataModal);
+    };
+
+    const dataUpdateToggle = (data) => {
+        // setOldDate('');
+
+        // axios.get(`/hrm-system/manual-attendance/${id}`)
+        //     .then(info => {
+        //         // setOldDate(info.data.body.data[0]);
+        //
+        //         // console.log("info.data.body.data", info.data.body.data)
+        //     })
+        //     .catch(e => {
+        //         // console.log(e);
+        //     })
+
+
+        setOldDate(data);
+        console.log('1',data)
+        setDataUpdateModal(!dataUpdateModal);
+        console.log('2',data)
+    };
+
+    const deleteAttendance = id => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`/hrm-system/manual-attendance/${id}`)
+                    .then(info => {
+                        if(info?.status == 200)
+                        {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                            // refetch();
+                        }
+                        setIsChange(!isChange);
+                    })
+                    .catch(e => {
+                        // console.log(e);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                        })
+                    })
+            }
+        })
+    }
+
 
 
     const csvSubmit= (data) => {
@@ -169,9 +247,25 @@ const Attendance = () => {
     return (
         <>
             <Breadcrumb parent="HRM System" title="Manage Manual Attendance List"/>
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    marginBottom: "20px",
+                }}
+            >
+                <button
+                    onClick={dataToggle}
+                    className="btn btn-pill btn-info btn-air-info btn-air-info"
+                    style={{padding: "7px 13px", borderRadius: "5px"}}
+                >
+                    <i className="fa fa-plus"></i>
+                </button>
+            </div>
             <div className="card" style={{padding: "20px"}}>
                 <div className="row">
-                    <div className="col-sm-12 col-xl-2">
+                    <div className="col-2">
                         <label htmlFor="exampleFormControlInput1">Type</label>
                         <div className="form-group m-t-15 m-checkbox-inline mb-0 custom-radio-ml">
                             <div className="radio radio-primary">
@@ -202,72 +296,52 @@ const Attendance = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-sm-12 col-xl-5">
-                        <div className="row">
-                            {date && (
-                                <div className="col">
-                                    <label htmlFor="exampleFormControlInput1">Month</label>
-                                    <input
-                                        onChange={setMonth}
-                                        className="form-control"
-                                        required={true}
-                                        type="month"
-                                        defaultValue={shortDate}
-                                    />
-                                </div>
-                            )}
-                            {!date && (
-                                <div className="col">
-                                    <label htmlFor="exampleFormControlInput1">Date</label>
-                                    <input onChange={setDateWise} className="form-control" required={true} type="date"/>
-                                </div>
-                            )}
-                            <div className="col">
-                                <Select
-                                    labelName={"Company:"}
-                                    placeholder={"Select an option"}
-                                    options={company}
-                                    // validation={{...register("employee_id", {required: true})}}
-                                    // error={errors?.employee_id}
-                                    setValue={setSelectedCompany}
-                                />
-                            </div>
+                    {date && (
+                        <div className="col">
+                            <label htmlFor="exampleFormControlInput1">Month</label>
+                            <input
+                                onChange={setMonth}
+                                className="form-control"
+                                required={true}
+                                type="month"
+                                value={shortDate}
+                            />
                         </div>
+                    )}
+                    {!date && (
+                        <div className="col">
+                            <label htmlFor="exampleFormControlInput1">Date</label>
+                            <input onChange={setDateWiseFn} value={datewise} className="form-control" required={true} type="date"/>
+                        </div>
+                    )}
+                    <div className="col">
+                        <Select
+                            labelName={"Company:"}
+                            placeholder={"Select an option"}
+                            options={company}
+                            // validation={{...register("employee_id", {required: true})}}
+                            // error={errors?.employee_id}
+                            setValue={setSelectedCompany}
+                        />
                     </div>
-                    <div className="col-sm-12 col-xl-5">
-                        <div className="row">
-                            <div className="col">
-                                <div className="col">
-                                    <Select
-                                        labelName={"Branch:"}
-                                        placeholder={"Select an option"}
-                                        options={branch}
-                                        // validation={{...register("employee_id", {required: true})}}
-                                        // error={errors?.employee_id}
-                                        setValue={setSelectedBranch}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col">
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        gap: "20px",
-                                        marginTop: "20px",
-                                    }}
-                                >
-
-                                    <button
-                                        onClick={toggle}
-                                        className="btn btn-primary btn-lg"
-                                        style={{padding: "5px 15px"}}
-                                    >
-                                        <i className="fa fa-paste"></i>
-                                    </button>
-                                </div>
-                            </div>
+                    <div className="col">
+                        <Select
+                            labelName={"Branch:"}
+                            placeholder={"Select an option"}
+                            options={branch}
+                            // validation={{...register("employee_id", {required: true})}}
+                            // error={errors?.employee_id}
+                            setValue={setSelectedBranch}
+                        />
+                    </div>
+                    <div className="col-1">
+                        <div  style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "25px"}}>
+                            <button className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}} onClick={() => removeSearch()}>
+                                <i style={{fontSize: '8px'}} className= "icon-close"></i>
+                            </button>
+                            <button onClick={toggle} className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}}>
+                                <i style={{fontSize: '12px'}} className="fa fa-cloud-upload"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -315,6 +389,7 @@ const Attendance = () => {
                             <th scope="col">{"Late"}</th>
                             <th scope="col">{"Early Leaving"}</th>
                             <th scope="col">{"Overtime"}</th>
+                            <th scope="col">{"Action"}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -333,6 +408,16 @@ const Attendance = () => {
                                         <td>{timeFormat(item?.late) ?? 'N/A'}</td>
                                         <td>{timeFormat(item?.early_out) ?? 'N/A'}</td>
                                         <td>{timeFormat(item?.over_time) ?? 'N/A'}</td>
+                                        <td>
+                                            <div className="d-flex justify-content-center">
+                                                <button onClick={() => dataUpdateToggle(item)} className="btn me-2" style={{backgroundColor: "skyblue", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>
+                                                    <i className="icofont icofont-pencil-alt-5  rounded" style={{backgroundColor: "skyblue", color: "#ffffff",}}></i>
+                                                </button>
+                                                <button onClick={() => deleteAttendance(item.id)} className="btn" style={{backgroundColor: "#ff3a6e", color: "#ffffff", padding: "7px 13px", borderRadius: "5px"}}>
+                                                    <i className="icofont icofont-trash rounded" style={{backgroundColor: "#ff3a6e", color: "#ffffff",}}></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 )
                                 :
@@ -361,6 +446,11 @@ const Attendance = () => {
                 </div>
                 {/*<p className="mt-3">Showing {totalItemCount} to {totalItemCount} of {totalItemCount} entries</p>*/}
             </div>
+
+            <ManualAttendancesForm refetch={isDarty} dataModal={dataModal} dataToggle={dataToggle}></ManualAttendancesForm>
+
+            <ManualAttendancesUpdateForm refetch={isDarty} oldData={oldData} dataUpdateModal={dataUpdateModal} dataUpdateToggle={dataUpdateToggle}></ManualAttendancesUpdateForm>
+
 
         </>
     );
