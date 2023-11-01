@@ -25,58 +25,70 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
     const [selectedShift, setSelectedShift] = useState("");
-    const [employeeId, setEmployeeId] = useState('');
-    const [status, setStatus] = useState('Active');
+    const [selectedEmployee, setSelectedEmployee] = useState('');
+    const [status, setStatus] = useState('Present');
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployee();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
-    // console.log(employeeId)
+
+    const handleChangeForUpdateShift = (selected) => {
+        setSelectedShift(selected);
+    };
+
+    const handleChangeForUpdateEmployee = (selected) => {
+        setSelectedEmployee(selected);
+    };
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
+
+
     useEffect( () => {
         setEmployee([])
         if(selectedShift !== "")
         {
-            const sortData = allEmployee?.data?.body?.data?.data?.filter(data => parseInt(data.shift_id) === parseInt(selectedShift))
-            // console.log("sortData",sortData);
+            const sortData = allEmployee?.data?.body?.data?.data?.filter(data => parseInt(data.shift_id) === parseInt(selectedShift?.value))
             sortData?.map(item => {
                 const set_data = {
-                    id: item.id,
-                    value: item?.full_name
+                    value: item.id,
+                    label: item?.full_name
                 }
                 setEmployee(prevEmployee => [...prevEmployee, set_data]);
             })
         }
     }, [allEmployee, selectedShift])
 
-    useEffect(() => {
-        setCompany([])
-        if (selectedOrganization !== ""){
-            const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
-            sortedData?.map(item => {
-                const set_data = {
-                    id: item?.id,
-                    value: item?.name
-                }
-                setCompany(prevCompany => [...prevCompany, set_data]);
-            })
-        }
-    }, [allCompany, selectedOrganization])
+    // useEffect(() => {
+    //     setCompany([])
+    //     if (selectedOrganization !== ""){
+    //         const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+    //         sortedData?.map(item => {
+    //             const set_data = {
+    //                 value: item?.id,
+    //                 label: item?.name
+    //             }
+    //             setCompany(prevCompany => [...prevCompany, set_data]);
+    //         })
+    //     }
+    // }, [allCompany, selectedOrganization])
 
-    useEffect(() => {
-        setBranch([])
-        if (selectedCompany !== ""){
-            const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
-            sortedData?.map(item => {
-                const set_data = {
-                    id: item?.id,
-                    value: item?.name
-                }
-                setBranch(prevBranch => [...prevBranch, set_data]);
-            })
-        }
-    }, [allBranch, selectedCompany])
+    // useEffect(() => {
+    //     setBranch([])
+    //     if (selectedCompany !== ""){
+    //         const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+    //         sortedData?.map(item => {
+    //             const set_data = {
+    //                 value: item?.id,
+    //                 label: item?.name
+    //             }
+    //             setBranch(prevBranch => [...prevBranch, set_data]);
+    //         })
+    //     }
+    // }, [allBranch, selectedCompany])
 
     useEffect(() => {
         setShift([])
@@ -84,8 +96,8 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
             const sortedData = allShift?.data?.body?.data?.data?.filter((data) => parseInt(data.branch_id) === parseInt(selectedBranch))
             sortedData?.map(item => {
                 const set_data = {
-                    id: item?.id,
-                    value: item?.name
+                    value: item?.id,
+                    label: item?.name
                 }
                 setShift(prevShift => [...prevShift, set_data]);
             })
@@ -102,12 +114,11 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
         data.organization_id = selectedOrganization;
         data.company_id = selectedCompany;
         data.branch_id = selectedBranch;
-        data.shift_id = selectedShift;
+        data.shift_id = selectedShift?.value;
         data.device_id = "";
-        data.employee_id= employeeId;
+        data.employee_id= selectedEmployee?.value;
         data.attendance_type= '2';
-        data.status= status;
-        // console.log(data)
+        data.status= status?.value;
 
         axios.post('/hrm-system/manual-attendance', data)
             .then(info => {
@@ -121,11 +132,12 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                         timer: 1500
                     })
                     setStatus('Present');
+                    refetch();
+                    dataToggle()
                 }
 
             })
             .catch(e => {
-                // console.log(e)
                 if(e?.response?.data?.body?.errno == 409){
                     Swal.fire({
                         icon: 'error',
@@ -166,10 +178,11 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                         {/*</div>*/}
                         <div>
                             <Select
-                                labelName={"Shift:"}
+                                labelName={"Shift"}
                                 placeholder={"Select an option"}
                                 options={shift}
                                 setValue={setSelectedShift}
+                                cngFn={handleChangeForUpdateShift}
                             />
                         </div>
                         <div>
@@ -177,7 +190,8 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                                 labelName={"Employee Name"}
                                 placeholder={"Select an option"}
                                 options={employee}
-                                setValue={setEmployeeId}
+                                setValue={setSelectedEmployee}
+                                cngFn={handleChangeForUpdateEmployee}
                             />
                         </div>
                         <div>
@@ -212,14 +226,15 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                                 labelName={"Status"}
                                 placeholder={"Select an option"}
                                 options={[
-                                    {id: "Present", value: "Present"},
-                                    {id: "Absent", value: "Absent"},
-                                    {id: "On Leave", value: "On Leave"},
-                                    {id: "Sick Leave", value: "Sick Leave"},
-                                    {id: "Vacation", value: "Vacation"},
+                                    {value: "Present", label: "Present"},
+                                    {value: "Absent", label: "Absent"},
+                                    {value: "On Leave", label: "On Leave"},
+                                    {value: "Sick Leave", label: "Sick Leave"},
+                                    {value: "Vacation", label: "Vacation"},
                                 ]}
                                 error={errors?.status}
                                 setValue={setStatus}
+                                cngFn={handleChangeForUpdateStatus}
                             />
                         </div>
                     </div>

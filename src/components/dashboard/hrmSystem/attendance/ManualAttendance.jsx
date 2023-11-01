@@ -49,7 +49,6 @@ const ManualAttendance = () => {
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [selectedMonth, setSelectedMonth] =useState('');
     const [shortDate, setShortDate] = useState('');
-    const [isShortDateChange, setIsShortDateChange] = useState(false);
 
     const removeSearch = () => {
         setShortDate('');
@@ -58,19 +57,8 @@ const ManualAttendance = () => {
         setSelectedBranch('');
     }
 
-
-    // useEffect(() => {
-    //     const dateObj = new Date();
-    //     // get the month in this format of 04, the same for months
-    //     const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
-    //     const year = dateObj.getFullYear();
-    //     const shortDateFormate = `${year}-${month}`;
-    //     setShortDate(shortDateFormate);
-    // }, [isShortDateChange]);
-
     const setMonth = e => {
         const value = e.target.value
-        console.log("month1", value);
         const startOfMonth = moment(value, 'YYYY-MM').clone().startOf('month').format('YYYY-MM-DD');
         const endOfMonth = moment(value, 'YYYY-MM').clone().endOf('month').format('YYYY-MM-DD');
         setStartDate(startOfMonth);
@@ -81,16 +69,13 @@ const ManualAttendance = () => {
     const setDateWiseFn = e => {
         const value = e.target.value
         setDatewise(value);
-        // console.log(value);
     }
 
     useEffect( () => {
         const getManualAttendance= async () => {
             const setItem = howManyItem < totalDBRow ? howManyItem : totalDBRow;
-            // console.log(setItem);
             const getData = await getManualAttendanceAPI(url, currentPage, howManyItem, searchData, selectedBranch, selectedCompany, startDate, endDate, datewise);
             setData(getData?.data?.body?.data?.data);
-            // console.log("sdjhsakdfvhnsadklvhnldfn",getData?.data?.body?.data?.data);
 
             const totalItem = getData?.data?.body?.data?.count
             setTotalItemCount(totalItem);
@@ -127,15 +112,12 @@ const ManualAttendance = () => {
         }
     }, [allBranch, selectedCompany])
 
-
     const timeFormat = time => {
         if (time){
             const timeArray = time.split(":");
             return `${timeArray[0]}h ${timeArray[1]}m`;
         }
     }
-
-
 
     const toggle = () => {
         setModal(!modal);
@@ -146,23 +128,8 @@ const ManualAttendance = () => {
     };
 
     const dataUpdateToggle = (data) => {
-        // setOldDate('');
-
-        // axios.get(`/hrm-system/manual-attendance/${id}`)
-        //     .then(info => {
-        //         // setOldDate(info.data.body.data[0]);
-        //
-        //         // console.log("info.data.body.data", info.data.body.data)
-        //     })
-        //     .catch(e => {
-        //         // console.log(e);
-        //     })
-
-
         setOldDate(data);
-        console.log('1',data)
         setDataUpdateModal(!dataUpdateModal);
-        console.log('2',data)
     };
 
     const deleteAttendance = id => {
@@ -185,12 +152,10 @@ const ManualAttendance = () => {
                                 'Your file has been deleted.',
                                 'success'
                             )
-                            // refetch();
                         }
                         setIsChange(!isChange);
                     })
                     .catch(e => {
-                        // console.log(e);
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
@@ -217,12 +182,9 @@ const ManualAttendance = () => {
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    // console.log("got the result",info);
                 }
-                // navigate("/dashboard/hrm/employee");
             })
             .catch(e => {
-                // console.log(e)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -319,8 +281,6 @@ const ManualAttendance = () => {
                             labelName={"Company:"}
                             placeholder={"Select an option"}
                             options={company}
-                            // validation={{...register("employee_id", {required: true})}}
-                            // error={errors?.employee_id}
                             setValue={setSelectedCompany}
                         />
                     </div>
@@ -329,8 +289,6 @@ const ManualAttendance = () => {
                             labelName={"Branch:"}
                             placeholder={"Select an option"}
                             options={branch}
-                            // validation={{...register("employee_id", {required: true})}}
-                            // error={errors?.employee_id}
                             setValue={setSelectedBranch}
                         />
                     </div>
