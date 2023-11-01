@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Modal, ModalBody, ModalHeader} from "reactstrap";
+import {Button} from "reactstrap";
 import Input from "../Input";
 import Select from "../Select";
 import BaseModal from "../BaseModal";
@@ -8,8 +8,6 @@ import axios from "../../../../axios";
 import Swal from "sweetalert2";
 import moment from "moment";
 import GetEmployee from "../../Query/hrm/GetEmployee";
-import GetAllWeekday from "../../Query/hrm/GetAllWeekday";
-import GetAllShift from "../../Query/hrm/GetAllShift";
 import GetAllCompany from "../../Query/hrm/GetAllCompany";
 import getAllBranch from "../../Query/hrm/GetAllBranch";
 import getAllShift from "../../Query/hrm/GetAllShift";
@@ -19,73 +17,104 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
     const [company, setCompany] = useState([]);
     const [branch, setBranch] = useState([]);
     const [shift, setShift] = useState([]);
-
-
     const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
+
     const [selectedShift, setSelectedShift] = useState("");
+    const [selectedEmployee, setSelectedEmployee] = useState("");
     const [employeeId, setEmployeeId] = useState('');
+    const [status, setStatus] = useState('');
+
     const [attendanceType, setAttendanceType] = useState('');
-    const [status, setStatus] = useState('Active');
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployee();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
-
+    const [statusOptions, setStatusOptions] = useState([
+        {value: "Present", label: "Present"},
+        {value: "Absent", label: "Absent"},
+        {value: "On Leave", label: "On Leave"},
+        {value: "Sick Leave", label: "Sick Leave"},
+        {value: "Vacation", label: "Vacation"},
+    ])
     const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm");
     const formattedTimeForUpdate = time => moment(time, "YYYY-MM-DD HH:mm").format("YYYY-MM-DD HH:mm:ss");
 
-    // console.log(selectedShift);
     useEffect(() => {
-        setSelectedShift(oldData?.shift_id);
-        setEmployeeId(oldData.employee_id);
+        const filterShift = shift?.find(data => data.value == oldData?.shift_id)
+        setSelectedShift(filterShift);
     }, [oldData])
+
+
+    useEffect(() => {
+        const filterEmployee = employee?.find(data => data?.value == oldData?.employee_id)
+        setSelectedEmployee(filterEmployee);
+    }, [oldData, selectedShift, employee])
+
+
+    useEffect(() => {
+        const filterStatus = statusOptions?.find(data => data.value == oldData?.status)
+        setStatus(filterStatus);
+    }, [oldData])
+
+
+    const handleChangeForUpdateShift = (selected) => {
+        setSelectedShift(selected);
+    };
+
+    const handleChangeForUpdateEmployee = (selected) => {
+        setSelectedEmployee(selected);
+    };
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     useEffect( () => {
         setEmployee([])
-        if(selectedShift !== "")
+        if(selectedShift?.value !== "")
         {
-            const sortData = allEmployee?.data?.body?.data?.data?.filter(data => parseInt(data.shift_id) === parseInt(selectedShift))
+            const sortData = allEmployee?.data?.body?.data?.data?.filter(data => data.shift_id == selectedShift?.value)
             sortData?.map(item => {
                 const set_data = {
-                    id: item.id,
-                    value: item?.full_name
+                    value: item.id,
+                    label: item?.full_name
                 }
                 setEmployee(prevEmployee => [...prevEmployee, set_data]);
             })
         }
     }, [allEmployee, selectedShift])
 
-    useEffect(() => {
-        setCompany([])
-        if (selectedOrganization !== ""){
-            const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
-            sortedData?.map(item => {
-                const set_data = {
-                    id: item?.id,
-                    value: item?.name
-                }
-                setCompany(prevCompany => [...prevCompany, set_data]);
-            })
-        }
-    }, [allCompany, selectedOrganization])
+    // useEffect(() => {
+    //     setCompany([])
+    //     if (selectedOrganization !== ""){
+    //         const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+    //         sortedData?.map(item => {
+    //             const set_data = {
+    //                 value: item?.id,
+    //                 label: item?.name
+    //             }
+    //             setCompany(prevCompany => [...prevCompany, set_data]);
+    //         })
+    //     }
+    // }, [allCompany, selectedOrganization])
 
-    useEffect(() => {
-        setBranch([])
-        if (selectedCompany !== ""){
-            const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
-            sortedData?.map(item => {
-                const set_data = {
-                    id: item?.id,
-                    value: item?.name
-                }
-                setBranch(prevBranch => [...prevBranch, set_data]);
-            })
-        }
-    }, [allBranch, selectedCompany])
+    // useEffect(() => {
+    //     setBranch([])
+    //     if (selectedCompany !== ""){
+    //         const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+    //         sortedData?.map(item => {
+    //             const set_data = {
+    //                 value: item?.id,
+    //                 label: item?.name
+    //             }
+    //             setBranch(prevBranch => [...prevBranch, set_data]);
+    //         })
+    //     }
+    // }, [allBranch, selectedCompany])
 
     useEffect(() => {
         setShift([])
@@ -93,17 +122,15 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
             const sortedData = allShift?.data?.body?.data?.data?.filter((data) => parseInt(data.branch_id) === parseInt(selectedBranch))
             sortedData?.map(item => {
                 const set_data = {
-                    id: item?.id,
-                    value: item?.name
+                    value: item?.id,
+                    label: item?.name
                 }
                 setShift(prevShift => [...prevShift, set_data]);
             })
         }
     }, [allShift, selectedBranch])
 
-
     const onSubmit = (data) => {
-        console.log(data);
         const in_time = formattedTimeForUpdate(data.in_time);
         data.in_time = in_time;
         const out_time = formattedTimeForUpdate(data.out_time);
@@ -111,27 +138,22 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
         data.organization_id = selectedOrganization;
         data.company_id = selectedCompany;
         data.branch_id = selectedBranch;
-        data.shift_id = selectedShift;
-        data.employee_id= employeeId;
         data.attendance_type = '2';
-        data.status = status;
         const updatedData = {
             'organization_id':selectedOrganization ? selectedOrganization : oldData.organization_id,
             'company_id': selectedCompany ? selectedCompany : oldData.company_id,
             'branch_id': selectedBranch ? selectedBranch : oldData.branch_id,
             'attendance_type': data.attendance_type ? data.attendance_type : oldData.attendance_type,
             'date':data.date ? data.date : oldData.date,
-            'employee_id': employeeId ? employeeId : oldData.employee_id,
+            'employee_id': selectedEmployee?.value ? selectedEmployee?.value : oldData.employee_id,
             'in_time':data.in_time ? data.in_time : oldData.in_time,
             'out_time':data.out_time ? data.out_time : oldData.out_time,
-            'shift_id':data.shift_id ? data.shift_id : oldData.shift_id,
-            'status':data.status ? data.status : oldData.status
+            'shift_id': selectedShift?.value ? selectedShift?.value : oldData.shift_id,
+            'status': status?.value ? status?.value : oldData.status
         }
-
 
         axios.put(`/hrm-system/manual-attendance/${oldData.id}`, updatedData)
             .then(info => {
-                // console.log(info)
                 if(info?.status == 200)
                 {
                     Swal.fire({
@@ -188,24 +210,24 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
                         {/*</div>*/}
                         <div>
                             <Select
-                                labelName={"Shift:"}
+                                labelName={"Shift"}
                                 placeholder={"Select an option"}
                                 options={shift}
-                                previous={oldData?.shift_id}
+                                previous={selectedShift}
                                 setValue={setSelectedShift}
+                                cngFn={handleChangeForUpdateShift}
                             />
                         </div>
                         <div>
-
                             <Select
                                 labelName={"Employee Name"}
                                 placeholder={"Select an option"}
                                 options={employee}
-                                previous={employeeId}
+                                previous={selectedEmployee}
                                 // error={errors?.employee_id}
-                                setValue={setEmployeeId}
+                                setValue={selectedEmployee}
+                                cngFn={handleChangeForUpdateEmployee}
                             />
-
                         </div>
                         <div>
                             <Input
@@ -241,20 +263,11 @@ const ManualAttendancesForm = ({dataUpdateModal, dataUpdateToggle, oldData, refe
                             <Select
                                 labelName={"Status"}
                                 placeholder={"Select an option"}
-                                options={[
-                                    {id: "Present", value: "Present"},
-                                    {id: "Absent", value: "Absent"},
-                                    {id: "On Leave", value: "On Leave"},
-                                    {id: "Sick Leave", value: "Sick Leave"},
-                                    {id: "Vacation", value: "Vacation"},
-                                ]}
-                                error={errors?.status}
-                                previous={oldData.status}
+                                options={statusOptions}
+                                previous={status}
                                 setValue={setStatus}
+                                cngFn={handleChangeForUpdateStatus}
                             />
-                            {
-                                // console.log('status',oldData.status)
-                            }
                         </div>
                     </div>
 
