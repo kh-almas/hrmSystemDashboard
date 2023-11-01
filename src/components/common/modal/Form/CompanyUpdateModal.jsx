@@ -13,6 +13,22 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
     const [selectedStatus, setSelectedStatus] = useState('');
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
+    const [status, setStatus] = useState('Active');
+
+    const [statusOptions, setStatusOptions] = useState([
+        {value: "Active", label: "Active"},
+        {value: "Inactive", label: "Inactive"}
+    ])
+
+    useEffect(() => {
+        const filterStatus = statusOptions?.find(data => data.value == oldData?.status)
+        setStatus(filterStatus);
+    }, [oldData])
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
+
     useEffect(() => {
         reset();
     },[oldData])
@@ -31,7 +47,7 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
             'country':data.country ? data.country : oldData.country,
             'zip':data.zip ? data.zip : oldData.zip,
             'info':data.info ? data.info : oldData.info,
-            'status':selectedStatus ? selectedStatus : oldData.status
+            'status':status?.value ? status?.value : oldData.status
         }
 
         axios.put(`/hrm-system/company/${oldData.id}`, updatedData)
@@ -206,11 +222,10 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            defaultValue={oldData.status}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            // validation={{...register("status")}}
-                            // error={errors?.status}
-                            setValue={setSelectedStatus}
+                            options={statusOptions}
+                            previous={status}
+                            setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

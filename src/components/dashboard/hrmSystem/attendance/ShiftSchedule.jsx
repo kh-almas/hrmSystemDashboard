@@ -60,8 +60,8 @@ const ShiftSchedule = () => {
         setShift([])
         allShift?.data?.body?.data?.data?.map(item => {
             const set_data = {
-                id: item.id,
-                value: item.name
+                value: item.id,
+                label: item.name
             }
             setShift(prevShift => [...prevShift, set_data]);
         })

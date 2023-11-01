@@ -9,12 +9,16 @@ import axios from "../../../../axios";
 import Swal from "sweetalert2";
 
 const AddOrganizationModal = ({modal, toggle, reFetch}) => {
-    const [selectedStatus, setSelectedStatus] = useState('');
     const {register, handleSubmit, formState: { errors },} = useForm();
+    const [status, setStatus] = useState('Active');
 
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     const onSubmit = (data) => {
-        data.status = selectedStatus;
+        data.status = status?.value;
+        console.log(data);
         axios.post('/hrm-system/organization', data)
             .then(info => {
                 if(info?.status == 200)
@@ -31,6 +35,7 @@ const AddOrganizationModal = ({modal, toggle, reFetch}) => {
                 reFetch();
             })
             .catch(e => {
+                console.log(e)
                 if(e?.response?.data?.body?.message?.errno == 1062){
                     Swal.fire({
                         icon: 'error',
@@ -168,8 +173,9 @@ const AddOrganizationModal = ({modal, toggle, reFetch}) => {
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            setValue={setSelectedStatus}
+                            options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
+                            setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

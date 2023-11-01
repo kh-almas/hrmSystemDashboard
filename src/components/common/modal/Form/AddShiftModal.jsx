@@ -25,52 +25,56 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
-    const [selectedStatus, setSelectedStatus] = useState("Active");
+    const [status, setStatus] = useState('Active');
 
     // const [weekdays, setWeekdays] = useState('');
     // console.log("company",company);
 
-    useEffect(() => {
-        setOrganization([])
-        allOrganization?.data?.body?.data?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setOrganization(prevOrganization => [...prevOrganization, set_data]);
-        })
-    }, [allOrganization])
+    // useEffect(() => {
+    //     setOrganization([])
+    //     allOrganization?.data?.body?.data?.data?.map(item => {
+    //         const set_data = {
+    //             id: item.id,
+    //             value: item.name
+    //         }
+    //         setOrganization(prevOrganization => [...prevOrganization, set_data]);
+    //     })
+    // }, [allOrganization])
 
-    useEffect(() => {
-        setCompany([])
-        if (selectedOrganization !== ""){
-            const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
-            // console.log("sortedData",sortedData)
-            sortedData?.map(item => {
-                const set_data = {
-                    id: item.id,
-                    value: item.name
-                }
-                setCompany(prevCompany => [...prevCompany, set_data]);
-            })
-        }
-    }, [allCompany, selectedOrganization])
+    // useEffect(() => {
+    //     setCompany([])
+    //     if (selectedOrganization !== ""){
+    //         const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+    //         // console.log("sortedData",sortedData)
+    //         sortedData?.map(item => {
+    //             const set_data = {
+    //                 id: item.id,
+    //                 value: item.name
+    //             }
+    //             setCompany(prevCompany => [...prevCompany, set_data]);
+    //         })
+    //     }
+    // }, [allCompany, selectedOrganization])
 
-    useEffect(() => {
-        setBranch([])
-        if (selectedCompany !== ""){
-            const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
-            sortedData?.map(item => {
-                const set_data = {
-                    id: item.id,
-                    value: item.name
-                }
-                setBranch(prevBranch => [...prevBranch, set_data]);
-            })
-        }
-    }, [allBranch, selectedCompany])
+    // useEffect(() => {
+    //     setBranch([])
+    //     if (selectedCompany !== ""){
+    //         const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+    //         sortedData?.map(item => {
+    //             const set_data = {
+    //                 id: item.id,
+    //                 value: item.name
+    //             }
+    //             setBranch(prevBranch => [...prevBranch, set_data]);
+    //         })
+    //     }
+    // }, [allBranch, selectedCompany])
 
     const formattedTime = time => moment(time, "HH:mm").format("HH:mm:ss");
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     const onSubmit = (data) => {
         const start_time = formattedTime(data.start_time);
@@ -81,9 +85,9 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
         data.organization_id = selectedOrganization;
         data.company_id = selectedCompany;
         data.branch_id = selectedBranch;
-        data.status = selectedStatus;
+        data.status = status?.value;
         data.weekends = JSON.stringify(weekdays);
-        console.log(data);
+        // console.log(data);
 
          axios.post('/hrm-system/shift', data)
              .then(info => {
@@ -204,10 +208,9 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            // validation={{...register("status", {required: true})}}
-                            // error={errors?.status}
-                            setValue={setSelectedStatus}
+                            options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
+                            setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

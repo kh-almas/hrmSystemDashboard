@@ -25,7 +25,21 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
     const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
-    const [selectedStatus, setSelectedStatus] = useState("Active");
+    const [status, setStatus] = useState('0');
+
+    const [statusOptions, setStatusOptions] = useState([
+        {value: "0", label: "Active"},
+        {value: "1", label: "Inactive"}
+    ])
+
+    useEffect(() => {
+        const filterStatus = statusOptions?.find(data => data.value == oldData?.isInActive)
+        setStatus(filterStatus);
+    }, [oldData])
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     // console.log('oldData',oldData);
 
@@ -93,7 +107,7 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
             'MachinePort':data.MachinePort ? data.MachinePort : oldData.MachinePort,
             'commKey':data.commKey ? data.commKey : oldData.commKey,
             'Location':data.Location ? data.Location : oldData.Location,
-            'isInActive':selectedStatus ? selectedStatus : oldData.isInActive
+            'isInActive': status?.value ? status?.value : oldData.status
         }
 
         axios.put(`/hrm-system/machine/info/${oldData?.id}`, updatedData)
@@ -210,11 +224,11 @@ const UpdateMachineInfoModal = ({dataUpdateModal, dataUpdateToggle, oldData, all
                             <Select
                                 labelName={"Status"}
                                 placeholder={"Select an option"}
-                                options={[{id: "0", value: "Active"}, {id: "1", value: "Inactive"}]}
-                                setValue={setSelectedStatus}
-                                previous={oldData?.isInactive}
+                                options={statusOptions}
+                                previous={status}
+                                setValue={setStatus}
+                                cngFn={handleChangeForUpdateStatus}
                             />
-                            {console.log( oldData.isInactive)}
                         </div>
                     </div>
 

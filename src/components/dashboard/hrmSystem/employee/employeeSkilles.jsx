@@ -12,26 +12,26 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
         const finalData = { ...abs }
 
         console.log("this is fine", finalData);
-        if(
-            !finalData.job_code ||
-            !finalData.first_name ||
-            !finalData.email ||
-            !finalData.phone ||
-            !finalData.employee_type ||
-            !finalData.department_id ||
-            !finalData.section_id ||
-            !finalData.company_id ||
-            !finalData.branch_id ||
-            !finalData.shift_id
-        ){
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Employee ID, First Name, Email, Phone, Employee Type, Company, Department, Section, Branch, Shift is required',
-                showConfirmButton: false,
-                timer: 3500
-            })
-        }else {
+        // if(
+        //     !finalData.job_code ||
+        //     !finalData.first_name ||
+        //     !finalData.email ||
+        //     !finalData.phone ||
+        //     !finalData.employee_type ||
+        //     !finalData.department_id ||
+        //     !finalData.section_id ||
+        //     !finalData.company_id ||
+        //     !finalData.branch_id ||
+        //     !finalData.shift_id
+        // ){
+        //     Swal.fire({
+        //         position: 'top-end',
+        //         icon: 'success',
+        //         title: 'Employee ID, First Name, Email, Phone, Employee Type, Company, Department, Section, Branch, Shift is required',
+        //         showConfirmButton: false,
+        //         timer: 3500
+        //     })
+        // }else {
             const formData = new FormData();
 
             const appendToFormData = (object, parentKey) => {
@@ -72,7 +72,7 @@ const EmployeeContact = ({setProcessData, setIconWithTab, processData}) => {
                         text: `something wrong`,
                     })
                 })
-        }
+        // }
     }
 
     return (

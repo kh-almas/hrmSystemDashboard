@@ -12,9 +12,40 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
     const [shiftForm, setShiftFrom] = useState('');
     const [shiftTo, setShiftTo] = useState('');
     const [activeOn, setActiveOn] = useState('');
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('Active');
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
+    const [statusOptions, setStatusOptions] = useState([
+        {value: "Active", label: "Active"},
+        {value: "Inactive", label: "Inactive"}
+    ])
+
+    const [activeONData, setActiveOnData] = useState([
+        {value: "Sunday", label: "Sunday"},
+        {value: "Monday", label: "Monday"},
+        {value: "Tuesday", label: "Tuesday"},
+        {value: "Wednesday", label: "Wednesday"},
+        {value: "Thursday", label: "Thursday"},
+        {value: "Friday", label: "Friday"},
+        {value: "Saturday", label: "Saturday"},
+    ])
+
+    useEffect(() => {
+        const filterStatus = statusOptions?.find(data => data.value == oldData?.status)
+        setStatus(filterStatus);
+
+        const filterActiveON = activeONData?.find(data => data.value == oldData?.active_on)
+        console.log('filterActiveON', filterActiveON)
+        setActiveOn(filterActiveON);
+    }, [oldData])
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
+
+    const handleChangeForUpdateActiveOn = (selected) => {
+        setActiveOn(selected);
+    };
 
     const onSubmit = (data) => {
         const updatedData = {
@@ -102,30 +133,20 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
                         <Select
                             labelName={"Active On"}
                             placeholder={"Select an option"}
-                            options={[
-                                {id: "Sunday", value: "Sunday"},
-                                {id: "Monday", value: "Monday"},
-                                {id: "Tuesday", value: "Tuesday"},
-                                {id: "Wednesday", value: "Wednesday"},
-                                {id: "Thursday", value: "Thursday"},
-                                {id: "Friday", value: "Friday"},
-                                {id: "Saturday", value: "Saturday"},
-                            ]}
+                            options={activeONData}
                             setValue={setActiveOn}
                             previous={oldData?.active_on}
-                            // validation={{...register("active_on")}}
-                            // error={errors?.active_on}
+                            cngFn={handleChangeForUpdateActiveOn}
                         />
                     </div>
                     <div>
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            previous={oldData?.status}
+                            options={statusOptions}
+                            previous={status}
                             setValue={setStatus}
-                            // validation={{...register("status")}}
-                            // error={errors?.status}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
                     <div className="d-flex justify-content-end">
