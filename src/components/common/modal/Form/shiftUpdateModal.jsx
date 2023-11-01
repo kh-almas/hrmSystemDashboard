@@ -27,53 +27,66 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
     const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
     const [selectedStatus, setSelectedStatus] = useState("");
     const [dayDiff, setDaydiff] = useState(false);
+    const [status, setStatus] = useState('Active');
+
+    const [statusOptions, setStatusOptions] = useState([
+        {value: "Active", label: "Active"},
+        {value: "Inactive", label: "Inactive"}
+    ])
+
+    useEffect(() => {
+        const filterStatus = statusOptions?.find(data => data.value == oldData?.status)
+        setStatus(filterStatus);
+    }, [oldData])
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     // console.log("oldData",oldData);
     // console.log("company",company);
 
-    useEffect(() => {
-        setOrganization([])
-        allOrganization?.data?.body?.data?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setOrganization(prevOrganization => [...prevOrganization, set_data]);
-        })
-    }, [allOrganization])
+    // useEffect(() => {
+    //     setOrganization([])
+    //     allOrganization?.data?.body?.data?.data?.map(item => {
+    //         const set_data = {
+    //             id: item.id,
+    //             value: item.name
+    //         }
+    //         setOrganization(prevOrganization => [...prevOrganization, set_data]);
+    //     })
+    // }, [allOrganization])
+
+    // useEffect(() => {
+    //     setCompany([])
+    //     if (selectedOrganization !== ""){
+    //         const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+    //         // console.log(sortedData);
+    //         sortedData?.map(item => {
+    //             const set_data = {
+    //                 id: item.id,
+    //                 value: item.name
+    //             }
+    //             setCompany(prevCompany => [...prevCompany, set_data]);
+    //         })
+    //     }
+    // }, [allCompany, selectedOrganization])
+
+    // useEffect(() => {
+    //     setBranch([])
+    //     if (selectedCompany !== ""){
+    //         const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+    //         sortedData?.map(item => {
+    //             const set_data = {
+    //                 id: item.id,
+    //                 value: item.name
+    //             }
+    //             setBranch(prevBranch => [...prevBranch, set_data]);
+    //         })
+    //     }
+    // }, [allBranch, selectedCompany])
 
     useEffect(() => {
-        setCompany([])
-        if (selectedOrganization !== ""){
-            const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
-            // console.log(sortedData);
-            sortedData?.map(item => {
-                const set_data = {
-                    id: item.id,
-                    value: item.name
-                }
-                setCompany(prevCompany => [...prevCompany, set_data]);
-            })
-        }
-    }, [allCompany, selectedOrganization])
-
-    useEffect(() => {
-        setBranch([])
-        if (selectedCompany !== ""){
-            const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
-            sortedData?.map(item => {
-                const set_data = {
-                    id: item.id,
-                    value: item.name
-                }
-                setBranch(prevBranch => [...prevBranch, set_data]);
-            })
-        }
-    }, [allBranch, selectedCompany])
-
-    useEffect(() => {
-        setSelectedOrganization(oldData?.organization_id);
-        setSelectedCompany(oldData?.company_id);
         const difference = oldData?.DayDiff === 1 ? true: false;
         setDaydiff(difference);
         reset();
@@ -97,13 +110,12 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
             'end_time':data.end_time ? data.end_time : formattedTimeForUpdate(oldData.end_time),
             'weekends':weekdays.length !== 0 ? JSON.stringify(weekdays) : oldData.weekends,
             'note':data.note ? data.note : oldData.note,
-            'status':selectedStatus ? selectedStatus : oldData.status
+            'status': status?.value ? status?.value : oldData.status
         }
 
         // console.log(updatedData);
         axios.put(`/hrm-system/shift/${oldData.id}`, updatedData)
             .then(info => {
-                // console.log("update",info)
                 if(info?.status == 200)
                 {
                     Swal.fire({
@@ -118,7 +130,6 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                 }
             })
             .catch(e => {
-                // console.log(e)
                 if(e?.response?.data?.body?.message?.errno == 1062){
                     Swal.fire({
                         icon: 'error',
@@ -228,9 +239,10 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            previous={oldData?.status}
-                            setValue={setSelectedStatus}
+                            options={statusOptions}
+                            previous={status}
+                            setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

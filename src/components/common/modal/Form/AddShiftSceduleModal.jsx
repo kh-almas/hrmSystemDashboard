@@ -13,18 +13,34 @@ import getAllOrganization from "../../Query/hrm/GetAllOrganization";
 import getAllBranch from "../../Query/hrm/GetAllBranch";
 
 const AddShiftSceduleModal = ({modal, toggle, reFetch, shift}) => {
+    const {register, reset, handleSubmit, formState: { errors },} = useForm();
+    const [status, setStatus] = useState('Active');
     const [shiftForm, setShiftFrom] = useState('');
     const [shiftTo, setShiftTo] = useState('');
     const [activeOn, setActiveOn] = useState('');
-    const [status, setStatus] = useState('');
-    const {register, reset, handleSubmit, formState: { errors },} = useForm();
 
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
+
+    const handleChangeForUpdateShiftForm = (selected) => {
+        setShiftFrom(selected);
+    };
+
+    const handleChangeForUpdateShiftTo = (selected) => {
+        setShiftTo(selected);
+    };
+
+    const handleChangeForUpdateActiveOn = (selected) => {
+        setActiveOn(selected);
+    };
 
     const onSubmit = (data) => {
-        data.shift_from = shiftForm;
-        data.shift_to = shiftTo;
-        data.active_on = activeOn;
-        data.status = status;
+        data.shift_from = shiftForm?.value;
+        data.shift_to = shiftTo?.value;
+        data.active_on = activeOn?.value;
+        data.status = status?.value;
         console.log(data);
         axios.post('/hrm-system/shift-schedule', data)
             .then(info => {
@@ -84,6 +100,7 @@ const AddShiftSceduleModal = ({modal, toggle, reFetch, shift}) => {
                                 setValue={setShiftFrom}
                                 // validation={{...register("shift_from", {required: true})}}
                                 // error={errors?.shift_from}
+                                cngFn={handleChangeForUpdateShiftForm}
                             />
                         </div>
                         <div>
@@ -94,6 +111,7 @@ const AddShiftSceduleModal = ({modal, toggle, reFetch, shift}) => {
                                 // validation={{...register("shift_to", {required: true})}}
                                 // error={errors?.shift_to}
                                 setValue={setShiftTo}
+                                cngFn={handleChangeForUpdateShiftTo}
                             />
                         </div>
                     </div>
@@ -102,27 +120,27 @@ const AddShiftSceduleModal = ({modal, toggle, reFetch, shift}) => {
                             labelName={"Active On"}
                             placeholder={"Select an option"}
                             options={[
-                                {id: "Sunday", value: "Sunday"},
-                                {id: "Monday", value: "Monday"},
-                                {id: "Tuesday", value: "Tuesday"},
-                                {id: "Wednesday", value: "Wednesday"},
-                                {id: "Thursday", value: "Thursday"},
-                                {id: "Friday", value: "Friday"},
-                                {id: "Saturday", value: "Saturday"},
+                                {value: "Sunday", label: "Sunday"},
+                                {value: "Monday", label: "Monday"},
+                                {value: "Tuesday", label: "Tuesday"},
+                                {value: "Wednesday", label: "Wednesday"},
+                                {value: "Thursday", label: "Thursday"},
+                                {value: "Friday", label: "Friday"},
+                                {value: "Saturday", label: "Saturday"},
                             ]}
                             // validation={{...register("active_on", {required: true})}}
                             // error={errors?.active_on}
                             setValue={setActiveOn}
+                            cngFn={handleChangeForUpdateActiveOn}
                         />
                     </div>
                     <div>
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            // validation={{...register("status", {required: true})}}
-                            // error={errors?.status}
+                            options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
                             setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
                     <div className="d-flex justify-content-end">

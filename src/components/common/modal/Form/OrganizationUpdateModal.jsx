@@ -9,9 +9,22 @@ import axios from "../../../../axios";
 import Swal from "sweetalert2";
 
 const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allOrganizationReFetch}) => {
-    const [selectedStatus, setSelectedStatus] = useState('');
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
+    const [status, setStatus] = useState('Active');
 
+    const [statusOptions, setStatusOptions] = useState([
+        {value: "Active", label: "Active"},
+        {value: "Inactive", label: "Inactive"}
+    ])
+
+    useEffect(() => {
+        const filterStatus = statusOptions?.find(data => data.value == oldData?.status)
+        setStatus(filterStatus);
+    }, [oldData])
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     useEffect(() => {
         reset();
@@ -30,7 +43,7 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
             'country':data.country ? data.country : oldData.country,
             'zip':data.zip ? data.zip : oldData.zip,
             'info':data.info ? data.info : oldData.info,
-            'status':selectedStatus ? selectedStatus : oldData.status
+            'status':status?.value ? status?.value : oldData.status
         }
 
         axios.put(`/hrm-system/organization/${oldData.id}`, updatedData)
@@ -198,9 +211,10 @@ const OrganizationUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, al
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            previous={oldData.status}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            setValue={setSelectedStatus}
+                            options={statusOptions}
+                            previous={status}
+                            setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

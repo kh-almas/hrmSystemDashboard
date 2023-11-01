@@ -24,58 +24,62 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
     const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
-    const [selectedStatus, setSelectedStatus] = useState("Active");
+    const [status, setStatus] = useState('0');
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     // const [weekdays, setWeekdays] = useState('');
     // console.log("company",company);
 
-    useEffect(() => {
-        setOrganization([])
-        allOrganization?.data?.body?.data?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setOrganization(prevOrganization => [...prevOrganization, set_data]);
-        })
-    }, [allOrganization])
+    // useEffect(() => {
+    //     setOrganization([])
+    //     allOrganization?.data?.body?.data?.data?.map(item => {
+    //         const set_data = {
+    //             id: item.id,
+    //             value: item.name
+    //         }
+    //         setOrganization(prevOrganization => [...prevOrganization, set_data]);
+    //     })
+    // }, [allOrganization])
 
-    useEffect(() => {
-        setCompany([])
-        if (selectedOrganization !== ""){
-            const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
-            // console.log("sortedData",sortedData)
-            sortedData?.map(item => {
-                const set_data = {
-                    id: item.id,
-                    value: item.name
-                }
-                setCompany(prevCompany => [...prevCompany, set_data]);
-            })
-        }
-    }, [allCompany, selectedOrganization])
+    // useEffect(() => {
+    //     setCompany([])
+    //     if (selectedOrganization !== ""){
+    //         const sortedData = allCompany?.data?.body?.data?.data?.filter((data) => parseInt(data.organization_id) === parseInt(selectedOrganization))
+    //         // console.log("sortedData",sortedData)
+    //         sortedData?.map(item => {
+    //             const set_data = {
+    //                 id: item.id,
+    //                 value: item.name
+    //             }
+    //             setCompany(prevCompany => [...prevCompany, set_data]);
+    //         })
+    //     }
+    // }, [allCompany, selectedOrganization])
 
-    useEffect(() => {
-        setBranch([])
-        if (selectedCompany !== ""){
-            const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
-            sortedData?.map(item => {
-                const set_data = {
-                    id: item.id,
-                    value: item.name
-                }
-                setBranch(prevBranch => [...prevBranch, set_data]);
-            })
-        }
-    }, [allBranch, selectedCompany])
+    // useEffect(() => {
+    //     setBranch([])
+    //     if (selectedCompany !== ""){
+    //         const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+    //         sortedData?.map(item => {
+    //             const set_data = {
+    //                 id: item.id,
+    //                 value: item.name
+    //             }
+    //             setBranch(prevBranch => [...prevBranch, set_data]);
+    //         })
+    //     }
+    // }, [allBranch, selectedCompany])
 
 
     const onSubmit = (data) => {
         data.OrgId = selectedOrganization;
         data.CompanyId = selectedCompany;
         data.BranchId = selectedBranch;
-        data.isInActive = selectedStatus;
-        // console.log(data);
+        data.isInActive = status?.value;
+        console.log(data);
 
         axios.post('/hrm-system/machine/info', data)
             .then(info => {
@@ -185,8 +189,9 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                             <Select
                                 labelName={"Status"}
                                 placeholder={"Select an option"}
-                                options={[{id: "0", value: "Active"}, {id: "1", value: "Inactive"}]}
-                                setValue={setSelectedStatus}
+                                options={[{value: "0", label: "Active"}, {value: "1", label: "Inactive"}]}
+                                setValue={setStatus}
+                                cngFn={handleChangeForUpdateStatus}
                             />
                         </div>
                     </div>

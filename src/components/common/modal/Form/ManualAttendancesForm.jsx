@@ -33,7 +33,6 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [allShiftStatus, allShiftReFetch, allShift, allShiftError] = getAllShift();
 
-
     const handleChangeForUpdateShift = (selected) => {
         setSelectedShift(selected);
     };
@@ -232,7 +231,7 @@ const ManualAttendancesForm = ({dataModal, dataToggle, refetch}) => {
                                     {value: "Sick Leave", label: "Sick Leave"},
                                     {value: "Vacation", label: "Vacation"},
                                 ]}
-                                error={errors?.status}
+                                // error={errors?.status}
                                 setValue={setStatus}
                                 cngFn={handleChangeForUpdateStatus}
                             />

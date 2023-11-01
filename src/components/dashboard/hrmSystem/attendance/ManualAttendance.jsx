@@ -29,14 +29,18 @@ const ManualAttendance = () => {
     }
 
     const [branch, setBranch] = useState([]);
-    const [selectedBranch, setSelectedBranch] = useState("");
     const [company, setCompany] = useState([]);
-    const [selectedCompany, setSelectedCompany] = useState("");
     const [dataModal, setDataModal] = useState(false);
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [datewise, setDatewise] = useState('');
+
+    const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedCompany, setSelectedCompany] = useState("");
+
+    const [selectedBranchInfo, setSelectedBranchInfo] = useState({value: '', label: 'Select an option'});
+    const [selectedCompanyInfo, setSelectedCompanyInfo] = useState({value: '', label: 'Select an option'});
 
     const [modal, setModal] = useState();
     const [date, setDate] = useState(true);
@@ -50,11 +54,25 @@ const ManualAttendance = () => {
     const [selectedMonth, setSelectedMonth] =useState('');
     const [shortDate, setShortDate] = useState('');
 
+    const handleChangeForUpdateCompany = (selected) => {
+        setSelectedCompany(selected?.value);
+        setSelectedCompanyInfo(selected);
+    };
+
+    const handleChangeForUpdateBranch = (selected) => {
+        setSelectedBranch(selected?.value);
+        setSelectedBranchInfo(selected);
+    };
+
     const removeSearch = () => {
+        setStartDate('');
+        setEndDate('')
         setShortDate('');
         setDatewise('');
-        setSelectedCompany('');
         setSelectedBranch('');
+        setSelectedCompany('');
+        setSelectedCompanyInfo({value: '', label: 'Select an option'});
+        setSelectedBranchInfo({value: '', label: 'Select an option'});
     }
 
     const setMonth = e => {
@@ -91,8 +109,8 @@ const ManualAttendance = () => {
         setCompany([])
         allCompany?.data?.body?.data?.data?.map(item => {
             const set_data = {
-                id: item.id,
-                value: item.name
+                value: item.id,
+                label: item.name
             }
             setCompany(prevCompany => [...prevCompany, set_data]);
         })
@@ -104,8 +122,8 @@ const ManualAttendance = () => {
             const sortedData = allBranch?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
             sortedData?.map(item => {
                 const set_data = {
-                    id: item.id,
-                    value: item.name
+                    value: item.id,
+                    label: item.name
                 }
                 setBranch(prevBranch => [...prevBranch, set_data]);
             })
@@ -278,18 +296,22 @@ const ManualAttendance = () => {
                     )}
                     <div className="col">
                         <Select
-                            labelName={"Company:"}
+                            labelName={"Company"}
                             placeholder={"Select an option"}
                             options={company}
                             setValue={setSelectedCompany}
+                            previous={selectedCompanyInfo}
+                            cngFn={handleChangeForUpdateCompany}
                         />
                     </div>
                     <div className="col">
                         <Select
-                            labelName={"Branch:"}
+                            labelName={"Branch"}
                             placeholder={"Select an option"}
                             options={branch}
                             setValue={setSelectedBranch}
+                            previous={selectedBranchInfo}
+                            cngFn={handleChangeForUpdateBranch}
                         />
                     </div>
                     <div className="col-1">

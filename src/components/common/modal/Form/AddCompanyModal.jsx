@@ -11,11 +11,14 @@ import GetAllOrganization from "../../Query/hrm/GetAllOrganization";
 
 const AddCompanyModal = ({ modal, toggle, reFetch }) => {
     const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
-    const [selectedStatus, setSelectedStatus] = useState('');
     const [organization, setOrganization] = useState([]);
     const {register, handleSubmit, formState: { errors },} = useForm();
     const [allOrganizationStatus, allOrganizationReFetch, allOrganization, allOrganizationError] = GetAllOrganization();
+    const [status, setStatus] = useState('Active');
 
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     useEffect(() => {
         setOrganization([]);
@@ -30,7 +33,7 @@ const AddCompanyModal = ({ modal, toggle, reFetch }) => {
 
     const onSubmit = (data) => {
         data.organization_id = selectedOrganization;
-        data.status = selectedStatus;
+        data.status = status?.value;
         // console.log(data);
         axios.post('/hrm-system/company', data)
             .then(info => {
@@ -190,8 +193,9 @@ const AddCompanyModal = ({ modal, toggle, reFetch }) => {
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            setValue={setSelectedStatus}
+                            options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
+                            setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 
