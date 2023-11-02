@@ -19,7 +19,11 @@ const AddDesignationModal = ({modal, toggle, reFetch}) => {
 
     const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
-    const [selectedStatus, setSelectedStatus] = useState('');
+    const [status, setStatus] = useState('Active');
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     useEffect(() => {
         setCompany([])
@@ -46,7 +50,7 @@ const AddDesignationModal = ({modal, toggle, reFetch}) => {
     const onSubmit = (data) => {
         data.organization_id = selectedOrganization;
         data.company_id = selectedCompany;
-        data.status = selectedStatus;
+        data.status = status?.value;
         axios.post('/hrm-system/designation', data)
             .then(info => {
                 if(info?.status == 200)
@@ -127,8 +131,9 @@ const AddDesignationModal = ({modal, toggle, reFetch}) => {
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            setValue={setSelectedStatus}
+                            options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
+                            setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

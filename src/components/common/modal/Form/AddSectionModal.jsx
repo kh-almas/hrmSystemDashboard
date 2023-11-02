@@ -19,42 +19,46 @@ const AddSectionModal = ({modal, toggle, reFetch}) => {
 
     const [selectedDepartment, setSelectedDepartment] = useState(localStorage.getItem("dept_id"));
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
-    const [selectedStatus, setSelectedStatus] = useState('');
+    const [status, setStatus] = useState('Active');
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
 
     // console.log(allDepartment);
 
-    useEffect(() => {
-        setDepartment([])
-        if (selectedCompany !== ""){
-            const sortedData = allDepartment?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
-            console.log("sortedData",sortedData)
-            sortedData?.map(item => {
-                const set_data = {
-                    id: item.id,
-                    value: item.name
-                }
-                setDepartment(prevDepartment => [...prevDepartment, set_data]);
-            })
-        }
-    }, [allCompany, selectedCompany])
+    // useEffect(() => {
+    //     setDepartment([])
+    //     if (selectedCompany !== ""){
+    //         const sortedData = allDepartment?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
+    //         console.log("sortedData",sortedData)
+    //         sortedData?.map(item => {
+    //             const set_data = {
+    //                 id: item.id,
+    //                 value: item.name
+    //             }
+    //             setDepartment(prevDepartment => [...prevDepartment, set_data]);
+    //         })
+    //     }
+    // }, [allCompany, selectedCompany])
 
-    useEffect(() => {
-        setCompany([])
-        allCompany?.data?.body?.data?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setCompany(prevShift => [...prevShift, set_data]);
-        })
-    }, [allCompany])
+    // useEffect(() => {
+    //     setCompany([])
+    //     allCompany?.data?.body?.data?.data?.map(item => {
+    //         const set_data = {
+    //             id: item.id,
+    //             value: item.name
+    //         }
+    //         setCompany(prevShift => [...prevShift, set_data]);
+    //     })
+    // }, [allCompany])
 
 
     const onSubmit = (data) => {
         data.department_id = selectedDepartment;
         data.company_id = selectedCompany;
-        data.status = selectedStatus;
+        data.status = status?.value;
         axios.post('/hrm-system/section', data)
             .then(info => {
                 if(info?.status == 200)
@@ -113,8 +117,9 @@ const AddSectionModal = ({modal, toggle, reFetch}) => {
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            setValue={setSelectedStatus}
+                            options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
+                            setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

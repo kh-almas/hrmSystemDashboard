@@ -11,11 +11,22 @@ import Swal from "sweetalert2";
 const BranchUpdateModal = ({company, allBranchReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
-    const [selectedStatus, setSelectedStatus] = useState('');
+    const [status, setStatus] = useState('Active');
+
+    const [statusOptions, setStatusOptions] = useState([
+        {value: "Active", label: "Active"},
+        {value: "Inactive", label: "Inactive"}
+    ])
 
     useEffect(() => {
+        const filterStatus = statusOptions?.find(data => data.value == oldData?.status)
+        setStatus(filterStatus);
         reset();
-    },[oldData])
+    }, [oldData])
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     const onSubmit = (data) => {
         const updatedData = {
@@ -24,7 +35,7 @@ const BranchUpdateModal = ({company, allBranchReFetch, oldData, dataUpdateModal,
             'email':data.email ? data.email : oldData.email,
             'phone':data.phone ? data.phone : oldData.phone,
             'address':data.address ? data.address : oldData.address,
-            'status':selectedStatus ? selectedStatus : oldData.status
+            'status': status?.value ? status?.value : oldData.status
         }
 
         axios.put(`/hrm-system/branch/${oldData.id}`, updatedData)
@@ -41,8 +52,6 @@ const BranchUpdateModal = ({company, allBranchReFetch, oldData, dataUpdateModal,
                     })
                     dataUpdateToggle(false);
                     allBranchReFetch();
-                    setSelectedCompany('');
-                    setSelectedStatus('');
                 }
             })
             .catch(e => {
@@ -123,9 +132,10 @@ const BranchUpdateModal = ({company, allBranchReFetch, oldData, dataUpdateModal,
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            previous={oldData?.status}
-                            setValue={setSelectedStatus}
+                            options={statusOptions}
+                            previous={status}
+                            setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

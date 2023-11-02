@@ -23,15 +23,12 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
     useEffect(() => {
         const filterStatus = statusOptions?.find(data => data.value == oldData?.status)
         setStatus(filterStatus);
+        reset();
     }, [oldData])
 
     const handleChangeForUpdateStatus = (selected) => {
         setStatus(selected);
     };
-
-    useEffect(() => {
-        reset();
-    },[oldData])
 
     const onSubmit = (data) => {
         const updatedData = {
@@ -227,7 +224,7 @@ const CompanyUpdateModal = ({organization, dataUpdateModal, dataUpdateToggle, ol
                             setValue={setStatus}
                             cngFn={handleChangeForUpdateStatus}
                         />
-                    </div>
+                     </div>
 
 
                     <div className="d-flex justify-content-end">

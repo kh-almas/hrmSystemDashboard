@@ -11,16 +11,27 @@ import Swal from "sweetalert2";
 const WeekdayUpdateModal = ({allWeekdayReFetch, oldData, dataUpdateModal, dataUpdateToggle}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('Active');
+
+    const [statusOptions, setStatusOptions] = useState([
+        {value: "Active", label: "Active"},
+        {value: "Inactive", label: "Inactive"}
+    ])
 
     useEffect(() => {
+        const filterStatus = statusOptions?.find(data => data.value == oldData?.status)
+        setStatus(filterStatus);
         reset();
-    },[oldData])
+    }, [oldData])
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     const onSubmit = (data) => {
         const updatedData = {
             'name':data.name ? data.name : oldData.name,
-            'status':status ? status : oldData.status
+            'status': status?.value ? status?.value : oldData.status
         }
 
         axios.put(`/hrm-system/weekday/${oldData.id}`, updatedData)
@@ -68,8 +79,10 @@ const WeekdayUpdateModal = ({allWeekdayReFetch, oldData, dataUpdateModal, dataUp
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
+                            options={statusOptions}
+                            previous={status}
                             setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

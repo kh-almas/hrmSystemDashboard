@@ -13,8 +13,12 @@ const AddDepartmentModal = ({modal, toggle, reFetch}) => {
     const {register, handleSubmit, formState: { errors },} = useForm();
     const [company, setCompany] = useState([]);
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
-    const [status, setStatus] = useState('');
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
+    const [status, setStatus] = useState('Active');
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     useEffect(() => {
         setCompany([]);
@@ -29,7 +33,7 @@ const AddDepartmentModal = ({modal, toggle, reFetch}) => {
 
     const onSubmit = (data) => {
         data.company_id = selectedCompany;
-        data.status = status;
+        data.status = status?.value;
         axios.post('/hrm-system/department', data)
             .then(info => {
                 if(info?.status == 200)
@@ -98,8 +102,9 @@ const AddDepartmentModal = ({modal, toggle, reFetch}) => {
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
+                            options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
                             setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

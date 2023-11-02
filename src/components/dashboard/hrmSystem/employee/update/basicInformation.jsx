@@ -11,19 +11,61 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
     const EmployeeInformation = data => {
-
         setAllData(data);
         data.status = "Active";
-        data.name_title = nameTitle;
-        data.gender = gander;
-        data.employee_type = employeeType;
+        data.name_title = nameTitle?.value;
+        data.gender = gander?.value;
+        data.employee_type = employeeType?.value;
         const abs = {...processData, ...data}
         setProcessData({ ...abs });
     }
-
     useEffect(() => {
         EmployeeInformation(allData);
     }, [nameTitle, gander])
+
+
+    const nameTitleOptions = [
+        {value: "Mr", label: "Mr"},
+        {value: "Mrs", label: "Mrs"},
+    ]
+
+    const empTypeOption = [
+        {value: "UL_Contractor", label: "UL_Contractor"},
+        {value: "CTL_Contractor", label: "CTL_Contractor"},
+        {value: "CTL", label: "CTL"},
+        {value: "ULVSBL", label: "ULVSBL"},
+    ]
+
+    const genderOption = [
+        {value: "Male", label: "Male"},
+        {value: "Female", label: "Female"},
+        {value: "Other", label: "Other"},
+    ]
+
+
+    useEffect(() => {
+        const filterNameTitle = nameTitleOptions?.find(data => data.value == employeeData?.name_title)
+        setNameTitle(filterNameTitle);
+        // console.log(filterNameTitle, 'filterNameTitle')
+
+        const filterEmpType = empTypeOption?.find(data => data.value == employeeData?.employee_type)
+        setEmployeeType(filterEmpType);
+
+        const filterGender = genderOption?.find(data => data.value == employeeData?.gender)
+        setGander(filterGender);
+    }, [employeeData])
+
+    const handleChangeForNameTitle = (selected) => {
+        setNameTitle(selected);
+    };
+
+    const handleChangeForEnpType = (selected) => {
+        setEmployeeType(selected);
+    };
+
+    const handleChangeForGender = (selected) => {
+        setGander(selected);
+    };
 
     return (
         <>
@@ -33,12 +75,10 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                         <Select
                             labelName={"Name Title"}
                             placeholder={"Select an option"}
-                            previous={employeeData?.name_title}
-                            options={[
-                                {id: "Mr", value: "Mr"},
-                                {id: "Mrs", value: "Mrs"},
-                            ]}
+                            options={nameTitleOptions}
+                            previous={nameTitle}
                             setValue={setNameTitle}
+                            cngFn={handleChangeForNameTitle}
                         />
                     </div>
                     <div className="col">
@@ -210,7 +250,7 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                                 validation={{
                                     ...register("date_of_birth"),
                                 }}
-                                defaultValue={employeeData?.date}
+                                defaultValue={employeeData?.date_of_birth}
                                 error={errors.date_of_birth}
                             />
                         </div>
@@ -225,6 +265,7 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                                 validation={{
                                     ...register("joining_date"),
                                 }}
+                                defaultValue={employeeData?.joining_date}
                                 error={errors.joining_date}
                             />
                         </div>
@@ -233,14 +274,9 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                         <Select
                             labelName={"Employee Type"}
                             placeholder={"Select an option"}
-                            options={[
-                                {id: "UL_Contractor", value: "UL_Contractor"},
-                                {id: "CTL_Contractor", value: "CTL_Contractor"},
-                                {id: "CTL", value: "CTL"},
-                                {id: "ULVSBL", value: "ULVSBL"},
-                            ]}
+                            options={empTypeOption}
                             setValue={setEmployeeType}
-                            previous={employeeData?.employee_type}
+                            previous={employeeType}
                         />
                     </div>
                     <div className="col">
@@ -261,13 +297,8 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData, employee
                         <Select
                             labelName={"Gander"}
                             placeholder={"Select an option"}
-                            options={[
-                                {id: "Male", value: "Male"},
-                                {id: "Female", value: "Female"},
-                                {id: "Other", value: "Other"},
-                            ]}
-                            // validation={{...register("gender")}}
-                            // error={errors.gender}
+                            options={genderOption}
+                            previous={gander}
                             setValue={setGander}
                         />
                     </div>

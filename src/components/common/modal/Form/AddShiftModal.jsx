@@ -101,11 +101,12 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                          timer: 1500
                      })
                      toggle();
+                     reset();
                  }
                  reFetch();
              })
              .catch(e => {
-                 // console.log(e);
+                 console.log(e);
                  if(e?.response?.data?.body?.message?.errno == 1062){
                      Swal.fire({
                          icon: 'error',
@@ -204,14 +205,25 @@ const AddShiftModal = ({modal, toggle, reFetch}) => {
                         </div>
                     </div>
 
-                    <div>
-                        <Select
-                            labelName={"Status"}
-                            placeholder={"Select an option"}
-                            options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
-                            setValue={setStatus}
-                            cngFn={handleChangeForUpdateStatus}
-                        />
+                    <div className="row row-cols-1 row-cols-lg-2">
+                        <div>
+                            <Input
+                                labelName={"Gross Time"}
+                                inputName={"gross_time"}
+                                inputType={"text"}
+                                validation={{ ...register("gross_time", { required: true }) }}
+                            />
+                        </div>
+
+                        <div>
+                            <Select
+                                labelName={"Status"}
+                                placeholder={"Select an option"}
+                                options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
+                                setValue={setStatus}
+                                cngFn={handleChangeForUpdateStatus}
+                            />
+                        </div>
                     </div>
 
                     <div className="d-flex justify-content-end">
