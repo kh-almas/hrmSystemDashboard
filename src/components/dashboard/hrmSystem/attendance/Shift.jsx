@@ -215,6 +215,7 @@ const Shift = () => {
                                         <th scope="col">{"Shift Name"}</th>
                                         <th scope="col">{"Start Time"}</th>
                                         <th scope="col">{"End Time"}</th>
+                                        <th scope="col">{"Gross Time"}</th>
                                         <th scope="col">{"Weekend"}</th>
                                         <th scope="col">{"Status"}</th>
                                         <th scope="col">{"Action"}</th>
@@ -228,6 +229,7 @@ const Shift = () => {
                                                 <td>{item?.name}</td>
                                                 <td>{timeFormat(item?.start_time)}</td>
                                                 <td>{timeFormat(item?.end_time)}</td>
+                                                <td>{item?.gross_time ? `${item?.gross_time}m` : `N/A`}</td>
                                                 <td>{
                                                     JSON.parse(item?.weekends).map((item) => <span class="badge text-bg-info">{item}</span>)
                                                 }</td>

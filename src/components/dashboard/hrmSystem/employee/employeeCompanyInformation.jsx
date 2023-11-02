@@ -60,18 +60,50 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
     const [selectedSalaryGrade, setSelectedSalaryGrade] = useState('');
     const [selectedShift, setSelectedShift] = useState('');
 
+    const handleChangeForOrg = (selected) => {
+        setSelectedOrganization(selected);
+    };
+
+    const handleChangeForCompany = (selected) => {
+        setSelectedCompany(selected);
+    };
+
+    const handleChangeForBranch = (selected) => {
+        setSelectedBranch(selected);
+    };
+
+    const handleChangeForDept = (selected) => {
+        setSelectedDepartment(selected);
+    };
+
+    const handleChangeForSection = (selected) => {
+        setSelectedSection(selected);
+    };
+
+    const handleChangeForEmployeeGrade = (selected) => {
+        setSelectedEmployeeGrade(selected);
+    };
+
+    const handleChangeForSalaryGrade = (selected) => {
+        setSelectedSalaryGrade(selected);
+    };
+
+    const handleChangeForShift = (selected) => {
+        setSelectedShift(selected);
+    };
+
     const [allData, setAllData] = useState({});
 
     const EmployeeCompanyInformation = data => {
         setAllData(data);
-        data.organization_id = selectedOrganization;
-        data.company_id = selectedCompany;
-        data.branch_id = selectedBranch;
-        data.department_id = selectedDepartment;
-        data.section_id = selectedSection;
-        data.employee_grade_id = selectedEmployeeGrade;
-        data.salary_grade_id = selectedSalaryGrade;
-        data.shift_id = selectedShift;
+        data.organization_id = selectedOrganization?.value;
+        data.company_id = selectedCompany?.value;
+        data.branch_id = selectedBranch?.value;
+        data.department_id = selectedDepartment?.value;
+        data.section_id = selectedSection?.value;
+        data.employee_grade_id = selectedEmployeeGrade?.value;
+        data.salary_grade_id = selectedSalaryGrade?.value;
+        data.shift_id = selectedShift?.value;
         const abs = {...processData, ...data}
         setProcessData({ ...abs });
     }
@@ -112,8 +144,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
         setShift([]);
         allShift?.data?.body?.data?.data?.map(item => {
             const set_data = {
-                id: item?.id,
-                value: item?.name
+                value: item?.id,
+                label: item?.name
             }
             setShift(prevEmployeeGrade => [...prevEmployeeGrade, set_data]);
         })
@@ -123,8 +155,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
         setEmployeeGrade([]);
         allEmployeeGrade?.data?.body?.data?.map(item => {
             const set_data = {
-                id: item?.id,
-                value: item?.grade_name
+                value: item?.id,
+                label: item?.grade_name
             }
             setEmployeeGrade(prevEmployeeGrade => [...prevEmployeeGrade, set_data]);
         })
@@ -134,8 +166,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
         setDepartment([]);
         allDepartment?.data?.body?.data?.data?.map(item => {
             const set_data = {
-                id: item?.id,
-                value: item?.name
+                value: item?.id,
+                label: item?.name
             }
             setDepartment(prevDepartment => [...prevDepartment, set_data]);
         })
@@ -145,8 +177,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
         setCompany([]);
         allCompany?.data?.body?.data?.data?.map(item => {
             const set_data = {
-                id: item?.id,
-                value: item?.name
+                value: item?.id,
+                label: item?.name
             }
             setCompany(prevCompany => [...prevCompany, set_data]);
         })
@@ -156,8 +188,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
         setBranch([]);
         allBranch?.data?.body?.data?.data?.map(item => {
             const set_data = {
-                id: item?.id,
-                value: item?.name
+                value: item?.id,
+                label: item?.name
             }
             setBranch(prevBranch => [...prevBranch, set_data]);
         })
@@ -167,8 +199,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
         setOrganization([]);
         allOrganization?.data?.body?.data?.data?.map(item => {
             const set_data = {
-                id: item?.id,
-                value: item?.name
+                value: item?.id,
+                label: item?.name
             }
             setOrganization(prevOrganization => [...prevOrganization, set_data]);
         })
@@ -178,8 +210,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
         setSection([]);
         allSection?.data?.body?.data?.map(item => {
             const set_data = {
-                id: item?.id,
-                value: item?.name
+                value: item?.id,
+                label: item?.name
             }
             setSection(prevDepartment => [...prevDepartment, set_data]);
         })
@@ -189,8 +221,8 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
         setSalaryGrade([]);
         allSalaryGrade?.data?.body?.data?.map(item => {
             const set_data = {
-                id: item?.id,
-                value: item?.salary_grade_name
+                value: item?.id,
+                label: item?.salary_grade_name
             }
             setSalaryGrade(prevSalaryGrade => [...prevSalaryGrade, set_data]);
         })
@@ -212,6 +244,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 placeholder={"Select an option"}
                                 options={organization}
                                 setValue={setSelectedOrganization}
+                                cngFn={handleChangeForOrg}
                             />
                         </div>
                     </div>
@@ -230,6 +263,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 placeholder={"Select an option"}
                                 options={company}
                                 setValue={setSelectedCompany}
+                                cngFn={handleChangeForCompany}
                             />
                         </div>
                     </div>
@@ -248,6 +282,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 placeholder={"Select an option"}
                                 options={branch}
                                 setValue={setSelectedBranch}
+                                cngFn={handleChangeForBranch}
                             />
                         </div>
                     </div>
@@ -266,6 +301,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 placeholder={"Select an option"}
                                 options={department}
                                 setValue={setSelectedDepartment}
+                                cngFn={handleChangeForDept}
                             />
                         </div>
                     </div>
@@ -284,6 +320,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 placeholder={"Select an option"}
                                 options={section}
                                 setValue={setSelectedSection}
+                                cngFn={handleChangeForSection}
                             />
                         </div>
                     </div>
@@ -302,6 +339,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 placeholder={"Select an option"}
                                 options={employeeGrade}
                                 setValue={setSelectedEmployeeGrade}
+                                cngFn={handleChangeForEmployeeGrade}
                             />
                         </div>
                     </div>
@@ -320,6 +358,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 placeholder={"Select an option"}
                                 options={salaryGrade}
                                 setValue={setSelectedSalaryGrade}
+                                cngFn={handleChangeForSalaryGrade}
                             />
                         </div>
                     </div>
@@ -338,6 +377,7 @@ const EmployeeCompanyInformation = ({setProcessData, setIconWithTab, processData
                                 placeholder={"Select an option"}
                                 options={shift}
                                 setValue={setSelectedShift}
+                                cngFn={handleChangeForShift}
                             />
                         </div>
                     </div>

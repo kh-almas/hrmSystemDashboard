@@ -14,21 +14,26 @@ const AddBranchModal = ({modal, toggle, reFetch}) => {
     const [selectedStatus, setSelectedStatus] = useState('');
     const {register, handleSubmit, formState: { errors },} = useForm();
     const [allCompanyStatus, allCompanyReFetch, allCompany, allCompanyError] = GetAllCompany();
+    const [status, setStatus] = useState();
 
-    useEffect(() => {
-        setCompany([])
-        allCompany?.data?.body?.data?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setCompany(prevShift => [...prevShift, set_data]);
-        })
-    }, [allCompany])
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
+
+    // useEffect(() => {
+    //     setCompany([])
+    //     allCompany?.data?.body?.data?.data?.map(item => {
+    //         const set_data = {
+    //             id: item.id,
+    //             value: item.name
+    //         }
+    //         setCompany(prevShift => [...prevShift, set_data]);
+    //     })
+    // }, [allCompany])
 
     const onSubmit = (data) => {
         data.company_id = selectedCompany;
-        data.status = selectedStatus;
+        data.status = status?.value;
         // console.log(data);
         axios.post('/hrm-system/branch', data)
             .then(info => {
@@ -118,8 +123,9 @@ const AddBranchModal = ({modal, toggle, reFetch}) => {
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            setValue={setSelectedStatus}
+                            options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
+                            setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

@@ -20,33 +20,44 @@ const DesignationUpdateModal = ({allDesignationReFetch, oldData, dataUpdateModal
 
     const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
-    const [selectedStatus, setSelectedStatus] = useState('Active');
+    const [status, setStatus] = useState('Active');
+
+    const [statusOptions, setStatusOptions] = useState([
+        {value: "Active", label: "Active"},
+        {value: "Inactive", label: "Inactive"}
+    ])
 
     useEffect(() => {
-        setCompany([])
-        allCompany?.data?.body?.data?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setCompany(prevShift => [...prevShift, set_data]);
-        })
-    }, [allCompany])
-
-    useEffect(() => {
-        setOrganization([]);
-        allOrganization?.data?.body?.data?.data?.map(item => {
-            const set_data = {
-                id: item?.id,
-                value: item?.name
-            }
-            setOrganization(prevOrganization => [...prevOrganization, set_data]);
-        })
-    }, [allOrganization])
-
-    useEffect(() => {
+        const filterStatus = statusOptions?.find(data => data.value == oldData?.status)
+        setStatus(filterStatus);
         reset();
-    },[oldData])
+    }, [oldData])
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
+
+    // useEffect(() => {
+    //     setCompany([])
+    //     allCompany?.data?.body?.data?.data?.map(item => {
+    //         const set_data = {
+    //             id: item.id,
+    //             value: item.name
+    //         }
+    //         setCompany(prevShift => [...prevShift, set_data]);
+    //     })
+    // }, [allCompany])
+
+    // useEffect(() => {
+    //     setOrganization([]);
+    //     allOrganization?.data?.body?.data?.data?.map(item => {
+    //         const set_data = {
+    //             id: item?.id,
+    //             value: item?.name
+    //         }
+    //         setOrganization(prevOrganization => [...prevOrganization, set_data]);
+    //     })
+    // }, [allOrganization])
 
     const onSubmit = (data) => {
         const updatedData = {
@@ -54,7 +65,7 @@ const DesignationUpdateModal = ({allDesignationReFetch, oldData, dataUpdateModal
             'company_id':selectedCompany ? selectedCompany : oldData.company_id,
             'name':data.name ? data.name : oldData.name,
             'details':data.details ? data.details : oldData.details,
-            'status':selectedStatus ? selectedStatus : oldData.status
+            'status': status?.value ? status?.value : oldData.status
         }
 
         axios.put(`/hrm-system/designation/${oldData.id}`, updatedData)
@@ -71,9 +82,6 @@ const DesignationUpdateModal = ({allDesignationReFetch, oldData, dataUpdateModal
                     })
                     dataUpdateToggle(false);
                     allDesignationReFetch();
-                    setSelectedOrganization('');
-                    setSelectedCompany('');
-                    setSelectedStatus('Active');
                 }
             })
             .catch(e => {
@@ -143,9 +151,10 @@ const DesignationUpdateModal = ({allDesignationReFetch, oldData, dataUpdateModal
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            previous={oldData?.status}
-                            setValue={setSelectedStatus}
+                            options={statusOptions}
+                            previous={status}
+                            setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

@@ -19,14 +19,29 @@ const SectionUpdateModal = ({allSectionReFetch, oldData, dataUpdateModal, dataUp
 
     const [selectedDepartment, setSelectedDepartment] = useState(localStorage.getItem("dept_id"));
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
-    const [selectedStatus, setSelectedStatus] = useState('');
-    // const[isChange, setIsChange] = useState(false);
+
+    const [status, setStatus] = useState('Active');
+
+    const [statusOptions, setStatusOptions] = useState([
+        {value: "Active", label: "Active"},
+        {value: "Inactive", label: "Inactive"}
+    ])
+
+    useEffect(() => {
+        const filterStatus = statusOptions?.find(data => data.value == oldData?.status)
+        setStatus(filterStatus);
+        reset();
+    }, [oldData])
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     useEffect(() => {
         setDepartment([])
         if (selectedCompany !== ""){
             const sortedData = allDepartment?.data?.body?.data?.data?.filter((data) => parseInt(data.company_id) === parseInt(selectedCompany))
-            console.log("sortedData",sortedData)
+            // console.log("sortedData",sortedData)
             sortedData?.map(item => {
                 const set_data = {
                     id: item.id,
@@ -37,27 +52,23 @@ const SectionUpdateModal = ({allSectionReFetch, oldData, dataUpdateModal, dataUp
         }
     }, [allCompany, selectedCompany])
 
-    useEffect(() => {
-        setCompany([])
-        allCompany?.data?.body?.data?.data?.map(item => {
-            const set_data = {
-                id: item.id,
-                value: item.name
-            }
-            setCompany(prevShift => [...prevShift, set_data]);
-        })
-    }, [allCompany])
-
-    useEffect(() => {
-        reset();
-    },[oldData])
+    // useEffect(() => {
+    //     setCompany([])
+    //     allCompany?.data?.body?.data?.data?.map(item => {
+    //         const set_data = {
+    //             id: item.id,
+    //             value: item.name
+    //         }
+    //         setCompany(prevShift => [...prevShift, set_data]);
+    //     })
+    // }, [allCompany])
 
     const onSubmit = (data) => {
         const updatedData = {
             'name': data.name ? data.name : oldData.name,
             'company_id': selectedCompany ? selectedCompany : oldData.company_id,
             'department_id':data.department_id ? data.department_id : oldData.department_id,
-            'status': selectedStatus ? selectedStatus : oldData.status
+            'status': status?.value ? status?.value : oldData.status
         }
         axios.put(`/hrm-system/section/${oldData.id}`, updatedData)
             .then(info => {
@@ -123,9 +134,10 @@ const SectionUpdateModal = ({allSectionReFetch, oldData, dataUpdateModal, dataUp
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                            previous={oldData?.status}
-                            setValue={setSelectedStatus}
+                            options={statusOptions}
+                            previous={status}
+                            setValue={setStatus}
+                            cngFn={handleChangeForUpdateStatus}
                         />
                     </div>
 

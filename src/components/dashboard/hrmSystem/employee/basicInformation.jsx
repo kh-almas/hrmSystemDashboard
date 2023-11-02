@@ -14,22 +14,32 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
     const {register, reset, handleSubmit, formState: {errors},} = useForm();
 
     console.log(processData);
-    // console.log(nameTitle);
     const EmployeeInformation = data => {
         setAllData(data);
         data.status = "Active";
-        data.name_title = nameTitle;
-        data.gender = gander;
-        data.employee_type = employeeType;
-        data.full_name = `${nameTitle ? nameTitle : ''} ${data.first_name ? data.first_name : ''} ${data.last_name ? data.last_name : ''}`;
+        data.name_title = nameTitle?.value;
+        data.gender = gander?.value;
+        data.employee_type = employeeType?.value;
+        data.full_name = `${nameTitle?.value ? nameTitle?.value : ''} ${data.first_name ? data.first_name : ''} ${data.last_name ? data.last_name : ''}`;
         const abs = {...processData, ...data}
         setProcessData({ ...abs });
-        // console.log(data);
     }
 
     useEffect(() => {
         EmployeeInformation(allData);
-    }, [nameTitle, gander])
+    }, [nameTitle, gander, employeeType])
+
+    const handleChangeForNameTitle = (selected) => {
+        setNameTitle(selected);
+    };
+
+    const handleChangeForEnpType = (selected) => {
+        setEmployeeType(selected);
+    };
+
+    const handleChangeForGender = (selected) => {
+        setGander(selected);
+    };
 
     return (
         <>
@@ -40,10 +50,11 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                             labelName={"Name Title"}
                             placeholder={"Select an option"}
                             options={[
-                                {id: "Mr", value: "Mr"},
-                                {id: "Mrs", value: "Mrs"},
+                                {value: "Mr", label: "Mr"},
+                                {value: "Mrs", label: "Mrs"},
                             ]}
                             setValue={setNameTitle}
+                            cngFn={handleChangeForNameTitle}
                         />
                     </div>
                     <div className="col">
@@ -227,12 +238,13 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                             labelName={"Employee Type"}
                             placeholder={"Select an option"}
                             options={[
-                                {id: "UL_Contractor", value: "UL_Contractor"},
-                                {id: "CTL_Contractor", value: "CTL_Contractor"},
-                                {id: "CTL", value: "CTL"},
-                                {id: "ULVSBL", value: "ULVSBL"},
+                                {value: "UL_Contractor", label: "UL_Contractor"},
+                                {value: "CTL_Contractor", label: "CTL_Contractor"},
+                                {value: "CTL", label: "CTL"},
+                                {value: "ULVSBL", label: "ULVSBL"},
                             ]}
                             setValue={setEmployeeType}
+                            cngFn={handleChangeForEnpType}
                         />
                     </div>
                     <div className="col">
@@ -254,13 +266,12 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                             labelName={"Gander"}
                             placeholder={"Select an option"}
                             options={[
-                                {id: "Male", value: "Male"},
-                                {id: "Female", value: "Female"},
-                                {id: "Other", value: "Other"},
+                                {value: "Male", label: "Male"},
+                                {value: "Female", label: "Female"},
+                                {value: "Other", label: "Other"},
                             ]}
-                            // validation={{...register("gender")}}
-                            // error={errors.gender}
                             setValue={setGander}
+                            cngFn={handleChangeForGender}
                         />
                     </div>
                     <div className="col">
@@ -278,13 +289,6 @@ const BasicInformation = ({setProcessData, setIconWithTab, processData}) => {
                         </div>
                     </div>
                 </div>
-                {/*<div className="d-flex justify-content-end">*/}
-                {/*    <button className="btn btn-primary mt-2"*/}
-                {/*            style={{width: "max-content", marginLeft: "auto", marginBottom: "30px"}}*/}
-                {/*            type="submit">*/}
-                {/*        Next*/}
-                {/*    </button>*/}
-                {/*</div>*/}
             </form>
         </>
     );

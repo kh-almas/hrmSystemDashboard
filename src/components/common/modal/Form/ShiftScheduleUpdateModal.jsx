@@ -35,8 +35,13 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
         setStatus(filterStatus);
 
         const filterActiveON = activeONData?.find(data => data.value == oldData?.active_on)
-        console.log('filterActiveON', filterActiveON)
         setActiveOn(filterActiveON);
+
+        const filterShiftForm = shift?.find(data => data.value == oldData?.shift_from)
+        setShiftFrom(filterShiftForm);
+
+        const filterShiftTo= shift?.find(data => data.value == oldData?.shift_to)
+        setShiftTo(filterShiftTo);
     }, [oldData])
 
     const handleChangeForUpdateStatus = (selected) => {
@@ -47,14 +52,22 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
         setActiveOn(selected);
     };
 
+    const handleChangeForUpdateShiftForm = (selected) => {
+        setShiftFrom(selected);
+    };
+
+    const handleChangeForUpdateShiftTo = (selected) => {
+        setShiftTo(selected);
+    };
+
     const onSubmit = (data) => {
         const updatedData = {
             'date_from':data.date_from ? data.date_from : oldData.date_from,
             'date_to': data.date_to ? data.date_to : oldData.date_to,
-            'shift_from':shiftForm ? shiftForm : oldData.shift_from,
-            'shift_to':shiftTo ? shiftTo : oldData.shift_to,
-            'active_on':activeOn ? activeOn : oldData.active_on,
-            'status':status ? status : oldData.status
+            'shift_from':shiftForm?.value ? shiftForm?.value : oldData.shift_from,
+            'shift_to':shiftTo?.value ? shiftTo?.value : oldData.shift_to,
+            'active_on': activeOn?.value ? activeOn?.value : oldData.active_on,
+            'status': status?.value ? status?.value : oldData.status
         }
 
         axios.put(`/hrm-system/shift-schedule/${oldData.id}`, updatedData)
@@ -112,9 +125,8 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
                                 placeholder={"Select an option"}
                                 options={shift}
                                 setValue={setShiftFrom}
-                                previous={oldData?.shift_from}
-                                // validation={{...register("shift_from")}}
-                                // error={errors?.shift_from}
+                                previous={shiftForm}
+                                cngFn={handleChangeForUpdateShiftForm}
                             />
                         </div>
                         <div>
@@ -123,9 +135,8 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
                                 placeholder={"Select an option"}
                                 options={shift}
                                 setValue={setShiftTo}
-                                previous={oldData?.shift_to}
-                                // validation={{...register("shift_to")}}
-                                // error={errors?.shift_to}
+                                previous={shiftTo}
+                                cngFn={handleChangeForUpdateShiftTo}
                             />
                         </div>
                     </div>
@@ -135,7 +146,7 @@ const ShiftScheduleUpdateModal = ({allShiftScheduleReFetch, oldData, dataUpdateM
                             placeholder={"Select an option"}
                             options={activeONData}
                             setValue={setActiveOn}
-                            previous={oldData?.active_on}
+                            previous={activeOn}
                             cngFn={handleChangeForUpdateActiveOn}
                         />
                     </div>

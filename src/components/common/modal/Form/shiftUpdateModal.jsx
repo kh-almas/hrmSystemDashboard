@@ -110,7 +110,8 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
             'end_time':data.end_time ? data.end_time : formattedTimeForUpdate(oldData.end_time),
             'weekends':weekdays.length !== 0 ? JSON.stringify(weekdays) : oldData.weekends,
             'note':data.note ? data.note : oldData.note,
-            'status': status?.value ? status?.value : oldData.status
+            'status': status?.value ? status?.value : oldData.status,
+            'gross_time': data.gross_time ? data.gross_time : oldData.gross_time
         }
 
         // console.log(updatedData);
@@ -235,16 +236,28 @@ const ShiftUpdateModal = ({dataUpdateModal, dataUpdateToggle, oldData, allShiftR
                             <label className="mt-0" htmlFor="inline-sqr-1">is Date Changed</label>
                         </div>
                     </div>
-                    <div>
-                        <Select
-                            labelName={"Status"}
-                            placeholder={"Select an option"}
-                            options={statusOptions}
-                            previous={status}
-                            setValue={setStatus}
-                            cngFn={handleChangeForUpdateStatus}
-                        />
+                    <div className="row row-cols-1 row-cols-lg-2">
+                        <div>
+                            <Input
+                                labelName={"Gross Time"}
+                                inputName={"gross_time"}
+                                inputType={"text"}
+                                defaultValue={oldData?.gross_time}
+                                validation={{ ...register("gross_time", { required: true }) }}
+                            />
+                        </div>
+                        <div>
+                            <Select
+                                labelName={"Status"}
+                                placeholder={"Select an option"}
+                                options={statusOptions}
+                                previous={status}
+                                setValue={setStatus}
+                                cngFn={handleChangeForUpdateStatus}
+                            />
+                        </div>
                     </div>
+
 
                     <div className="d-flex justify-content-end">
                         <Button color="danger" onClick={dataUpdateToggle} className="me-2">

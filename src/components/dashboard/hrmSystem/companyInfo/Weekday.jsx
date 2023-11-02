@@ -10,27 +10,21 @@ import Select from "../../../common/modal/Select";
 import moment from "moment/moment";
 import axios from "../../../../axios";
 import Swal from "sweetalert2";
-import ShiftUpdateModal from "../../../common/modal/Form/shiftUpdateModal";
-import GetAllOrganization from "../../../common/Query/hrm/GetAllOrganization";
-import OrganizationUpdateModal from "../../../common/modal/Form/OrganizationUpdateModal";
-import DepartmentUpdateModal from "../../../common/modal/Form/DepartmentUpdateModal";
-import GetAllDepartment from "../../../common/Query/hrm/GetAllDepartment";
-import DesignationUpdateModal from "../../../common/modal/Form/DesignationUpdateModal";
-import GetAllDesignation from "../../../common/Query/hrm/GetAllDesignation";
-import GetAllHoliday from "../../../common/Query/hrm/GetAllHoliday";
-import HolidayUpdateModal from "../../../common/modal/Form/HolidayUpdateModal";
 import GetAllWeekday from "../../../common/Query/hrm/GetAllWeekday";
 import WeekdayUpdateModal from "../../../common/modal/Form/WeekdayUpdateModal";
 
 const Weekday = () => {
     const [weekday, setWeekday] = useState([]);
-    const [status, setStatus] = useState('');
     const [modal, setModal] = useState(false);
     const [oldData, setOldData] = useState({});
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
     const [allWeekdayStatus, allWeekdayReFetch, allWeekday, allWeekdayError] = GetAllWeekday();
     const {register, handleSubmit, formState: { errors },} = useForm();
+    const [status, setStatus] = useState('Active');
 
+    const handleChangeForUpdateStatus = (selected) => {
+        setStatus(selected);
+    };
 
     useEffect(() => {
         setWeekday(allWeekday?.data?.body?.data);
@@ -46,7 +40,7 @@ const Weekday = () => {
 
     const onSubmit = (data) => {
         // console.log(data);
-        data.status = status;
+        data.status = status?.value;
         axios.post('/hrm-system/weekday', data)
             .then(info => {
                 if(info?.status == 200)
@@ -66,8 +60,7 @@ const Weekday = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`,
-                    footer: '<a href="">Why do I have this issue?</a>'
+                    text: `${e?.response?.data?.body?.message?.details[0].message}`
                 })
             })
     };
@@ -195,12 +188,15 @@ const Weekday = () => {
                             />
                         </div>
                         <div>
-                            <Select
-                                labelName={"Status"}
-                                placeholder={"Select an option"}
-                                options={[{id: "Active", value: "Active"}, {id: "Inactive", value: "Inactive"}]}
-                                setValue={setStatus}
-                            />
+                            <div>
+                                <Select
+                                    labelName={"Status"}
+                                    placeholder={"Select an option"}
+                                    options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
+                                    setValue={setStatus}
+                                    cngFn={handleChangeForUpdateStatus}
+                                />
+                            </div>
                         </div>
 
 
