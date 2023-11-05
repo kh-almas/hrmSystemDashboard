@@ -46,7 +46,7 @@ const DateWiseAttendanceReport = () => {
             tableSeparator: "===============",
             quotationSymbol: '"',
             filename: "ActiveReportsJS-Sample.csv",
-            isReadOnly: true,
+            isReadOnly: false,
         }
     };
 
