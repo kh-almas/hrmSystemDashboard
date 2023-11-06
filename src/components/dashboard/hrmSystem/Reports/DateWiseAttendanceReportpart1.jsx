@@ -4,7 +4,7 @@ import * as arjs from '@grapecity/activereports-react';
 import "@grapecity/activereports/styles/light-blue-ui.css";
 import "@grapecity/activereports/styles/light-blue-viewer.css";
 // import './../../../../../public/report.rdlx-json';
-import './style.css';
+import './DateWiseAttendnaceReport/style.css';
 import "@grapecity/activereports/pdfexport";
 import "@grapecity/activereports/htmlexport";
 import "@grapecity/activereports/tabulardataexport";
@@ -37,16 +37,6 @@ const DateWiseAttendanceReport = () => {
             multiPage: true,
             embedImages: "external",
             outputType: "html",
-        },
-
-        'tabular-data': {
-            outputType: "plain",
-            colSeparator: ",",
-            rowSeparator: "/n",
-            tableSeparator: "===============",
-            quotationSymbol: '"',
-            filename: "ActiveReportsJS-Sample.csv",
-            isReadOnly: false,
         }
     };
 
