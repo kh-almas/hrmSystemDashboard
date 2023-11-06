@@ -9,6 +9,7 @@
     "@fullcalendar/interaction": "^6.1.4",
     "@fullcalendar/react": "^6.1.4",
     "@fullcalendar/timegrid": "^6.1.4",
+    "@grapecity/activereports-react": "^4.1.0",
     "@headlessui/react": "^1.7.16",
     "@heroicons/react": "^2.0.18",
     "@react-google-maps/api": "^2.18.1",
@@ -93,8 +94,8 @@
     "world-map-geojson": "^1.0.2"
   },
   "scripts": {
-    "start": "react-scripts --max_old_space_size=8096 start",
-    "build": "react-scripts --max_old_space_size=8096 build",
+    "start": "react-scripts --max_old_space_size=8192 start",
+    "build": "react-scripts --max_old_space_size=8192 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

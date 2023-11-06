@@ -63,13 +63,13 @@ const DateWiseAttendanceReport = () => {
 
     useEffect(() => {
         setCompany([])
-        allCompany?.data?.body?.data?.data?.map(item => {
-            const set_data = {
-                value: item.id,
-                label: item.name
-            }
-            setCompany(prevCompany => [...prevCompany, set_data]);
-        })
+            allCompany?.data?.body?.data?.data?.map(item => {
+                const set_data = {
+                    value: item.id,
+                    label: item.name
+                }
+                setCompany(prevCompany => [...prevCompany, set_data]);
+            })
     }, [allCompany])
 
     // useEffect(() => {
@@ -175,24 +175,24 @@ const DateWiseAttendanceReport = () => {
                     {/*</div>*/}
                     <div className="col-1">
                         {/*<div className="col-1">*/}
-                        <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "25px"}}>
-                            <button className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}} onClick={() => removeSearch()}>
-                                <i style={{fontSize: '8px'}} className= "icon-close"></i>
-                            </button>
-                            <Link to={`/dashboard/hrm/attendance/datewise/pdf?dateFrom=${dateFrom}&dateTo=${dateTo}&selectedCompany=${selectedCompany}&selectedBranch=${selectedBranch}`} target={"_blank"} className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}}>
-                                <i style={{fontSize: '8px'}} className= "icon-eye"></i>
-                            </Link>
-                            {/*<button  onClick={() => removeSearch()}>*/}
-                            {/*    /!*<i style={{fontSize: '8px'}} data-feather="download"></i>*!/*/}
-                            {/*    */}
+                            <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "25px"}}>
+                                <button className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}} onClick={() => removeSearch()}>
+                                    <i style={{fontSize: '8px'}} className= "icon-close"></i>
+                                </button>
+                                <Link to={`/dashboard/hrm/attendance/datewise/pdf?dateFrom=${dateFrom}&dateTo=${dateTo}&selectedCompany=${selectedCompany}&selectedBranch=${selectedBranch}`} target={"_blank"} className="btn btn-danger btn-lg " style={{padding: "0 10px 3px 10px", borderRadius: "5px", marginRight : '3px'}}>
+                                    <i style={{fontSize: '8px'}} className= "icon-eye"></i>
+                                </Link>
+                                {/*<button  onClick={() => removeSearch()}>*/}
+                                {/*    /!*<i style={{fontSize: '8px'}} data-feather="download"></i>*!/*/}
+                                {/*    */}
 
-                            <PDFDownloadLink
-                                className="btn btn-danger btn-lg" style={{padding: "0 10px 3px 10px", borderRadius: "5px"}}
-                                document={<Invoice data={data}></Invoice>} fileName="datewise-attendance.pdf">
-                                <Download size={'12px'}></Download>
-                            </PDFDownloadLink>
-                            {/*</button>*/}
-                        </div>
+                                <PDFDownloadLink
+                                    className="btn btn-danger btn-lg" style={{padding: "0 10px 3px 10px", borderRadius: "5px"}}
+                                    document={<Invoice data={data}></Invoice>} fileName="datewise-attendance.pdf">
+                                    <Download size={'12px'}></Download>
+                                </PDFDownloadLink>
+                                {/*</button>*/}
+                            </div>
                         {/*</div>*/}
                     </div>
                 </div>

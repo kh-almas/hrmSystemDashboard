@@ -15,13 +15,19 @@ const EmployeeSummeryReport = () => {
     const [data, setData] = useState([]);
     const [employee, setEmployee] = useState([]);
     const [selectedEmployee, setSelectedEmployee] = useState('');
+    const [selectedEmployeeInfo, setSelectedEmployeeInfo] = useState({});
     const [dateFrom, setDateForm] = useState("");
     const [dateTo, setDateTo] = useState("");
 
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = getEmployee();
 
     const totalMinutes = time => Math.round(moment.duration(time).asMinutes());
-    const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm:ss").format("h:mm A");
+    // const formattedTime = time => moment(time, "YYYY-MM-DD HH:mm:ss").format("h:mm A");
+
+    const handleChangeForUpdateEmployee = (selected) => {
+        setSelectedEmployee(selected?.value);
+        setSelectedEmployeeInfo(selected);
+    };
 
     // console.log(data)
     const removeSearch = () => {
@@ -43,8 +49,8 @@ const EmployeeSummeryReport = () => {
         setEmployee([])
         allEmployee?.data?.body?.data?.data?.map(item => {
             const set_data = {
-                id: item.id,
-                value: item.full_name
+                value: item.id,
+                label: item.full_name
             }
             setEmployee(prevEmployee => [...prevEmployee, set_data]);
         })
@@ -93,6 +99,7 @@ const EmployeeSummeryReport = () => {
                             placeholder={"Select an option"}
                             options={employee}
                             setValue={setSelectedEmployee}
+                            cngFn={handleChangeForUpdateEmployee}
                         />
                     </div>
 
