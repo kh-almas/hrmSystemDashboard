@@ -30,7 +30,12 @@ const CreateUser = () => {
     const [dataUpdateModal, setDataUpdateModal] = useState(false);
     const {register, handleSubmit, formState: { errors },} = useForm();
     const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] = GetEmployee();
-    const [employeeId, setEmployeeId] = useState('');
+    const [employeeInfo, setEmployeeInfo] = useState('');
+
+
+    const handleChangeForUpdateStatus = (selected) => {
+        setEmployeeInfo(selected);
+    };
 
     useEffect( () => {
         const getUserdata= async () => {
@@ -52,8 +57,8 @@ const CreateUser = () => {
     useEffect( () => {
         allEmployee?.data?.body?.data?.data?.map(item => {
             const set_data = {
-                id: item.id,
-                value: item?.full_name
+                value: item.id,
+                label: item?.full_name
             }
             setEmployee(prevEmployee => [...prevEmployee, set_data]);
         })
@@ -62,6 +67,7 @@ const CreateUser = () => {
 
 
     const onSubmit = (data) => {
+        data.userId = employeeInfo?.value;
         axios.post('/users', data)
             .then(info => {
                 if(info?.status == 200)
@@ -78,10 +84,12 @@ const CreateUser = () => {
                 isDarty();
             })
             .catch(e => {
+                console.log(e)
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: `${e?.response?.data?.body?.message?.details[0].message}`
+                    // text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                    text: `gfvcnhjgvhj`
                 })
             })
     };
@@ -146,7 +154,8 @@ const CreateUser = () => {
                                 labelName={"Employee Name"}
                                 placeholder={"Select an option"}
                                 options={employee}
-                                setValue={setEmployeeId}
+                                setValue={setEmployeeInfo}
+                                cngFn={handleChangeForUpdateStatus}
                             />
                         </div>
                         <div>

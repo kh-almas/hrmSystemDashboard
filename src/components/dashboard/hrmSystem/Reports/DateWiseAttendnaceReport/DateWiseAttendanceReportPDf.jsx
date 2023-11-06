@@ -22,65 +22,51 @@ const DateWiseAttendanceReportPDf = () => {
 
     const convertedDate = moment(dateFrom).format('MM/DD/YYYY')
 
-    console.log('data', data);
-    useEffect(() => {
-        // console.log(dateFrom);
-        const convertedDate = moment(dateFrom).format('MM/DD/YYYY')
+    async function loadData() {
+        const headers = new Headers();
 
-        // console.log(convertedDate)
-        axios.get(`/hrm-system/reports/check?date='${convertedDate}'`)
-            .then(data => {
-                setData(data?.data?.body?.data?.data);
-            })
-            .then(e => console.log(e))
-        // const employeeWiseMovementReport = async () => {
-        //     const getData = await getEmployeeMovementReportsAPI(selectedEmployee, dateFrom, dateTo);
-        //     setData(getData?.data?.body?.data);
-        // }
-        // employeeWiseMovementReport();
+        const dataRequest = new Request(
+            `https://hrm-system-backend.vercel.app/hrm-system/reports/check?date='${convertedDate}'`,
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("access-token"),
+                },
+            }
+        );
 
-    }, [selectedEmployee, dateFrom, dateTo])
+        const response = await fetch(dataRequest);
+        const data = await response.json();
+        return data;
+    }
 
-    const exportsSettings = {
-        pdf: {
-            title: "ActiveReportsJS Sample",
-            author: "GrapeCity",
-            subject: "Web Reporting",
-            keywords: "reporting, sample",
-            // userPassword: "pwd",
-            // ownerPassword: "ownerPwd",
-            printing: "true",
-            copying: false,
-            modifying: false,
-            annotating: false,
-            contentAccessibility: false,
-            documentAssembly: false,
-            pdfVersion: "1.7",
-            autoPrint: false,
-            filename: "ActiveReportsJS-Sample.pdf",
-        },
-        html: {
-            title: "ActiveReportsJS Sample",
-            filename: "ActiveReportsJS-Sample.html",
-            autoPrint: true,
-            multiPage: true,
-            embedImages: "external",
-            outputType: "html",
+    async function loadReport() {
+        // load report definition from the file
+        const reportResponse = await fetch(
+            "/reports/final.rdlx-json"
+        );
+        const report = await reportResponse.json();
+        return report;
+    }
+
+    const viewerRef = React.useRef();
+    React.useEffect(() => {
+        async function openReport() {
+            const data = await loadData();
+            const report = await loadReport();
+            console.log(report);
+            report.DataSources[0].ConnectionProperties.ConnectString =
+                "jsondata=" + JSON.stringify(data);
+            viewerRef.current.Viewer.open(report);
         }
-    };
-
-    const availableExports = ["pdf", "html", "tabular-data"];
-    // const availableExports = ["pdf", "tabular-data"];
+        openReport();
+    }, []);
 
     return (
-        <div id="viewer-host" style={{width: '100%', height: "100vh"}}>
-            <Viewer
-                report={{
-                    Uri: "/reports/report.rdlx-json",
-                }}
-                exportsSettings={exportsSettings}
-                availableExports={availableExports}
-            />
+        <div>
+            <div id="viewer-host" style={{width: '100%', height: '100vh'}}>
+                <Viewer ref={viewerRef} />
+            </div>
         </div>
     );
 };
