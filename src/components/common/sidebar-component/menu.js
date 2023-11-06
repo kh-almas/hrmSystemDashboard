@@ -156,6 +156,11 @@ export const MENUITEMS = [
         type: "sub",
         children: [
           {
+            title: "Check grid",
+            type: "link",
+            path: "/dashboard/hrm/grid",
+          },
+          {
             title: "Date wise Attendance",
             type: "link",
             path: "/dashboard/hrm/attendance/datewise",
