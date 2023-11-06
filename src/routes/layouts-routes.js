@@ -155,6 +155,7 @@ import CompanyProject from "../components/dashboard/hrmSystem/companyInfo/Compan
 import Role from "../components/dashboard/Role";
 import MachineInfo from "../components/dashboard/hrmSystem/attendance/MachineInfo";
 import CreateUser from "../components/dashboard/user/CreateUser";
+import GridCheck from "../components/dashboard/hrmSystem/Reports/GridCheck";
 
 export const routes = [
   {
@@ -296,6 +297,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/summary/report/pdf`,
     Component: <DailyAttendanceReportPDf />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/hrm/grid`,
+    Component: <GridCheck/>,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/datewise`,
