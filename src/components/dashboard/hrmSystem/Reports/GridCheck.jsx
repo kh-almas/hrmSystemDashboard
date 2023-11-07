@@ -255,19 +255,28 @@ const GridCheck = () => {
                         enableColumnResizing
                         enableGrouping
                         enableStickyHeader
-                        // enableStickyFooter
                         initialState={{
                             density: 'compact',
                             expanded: true, //expand all groups by default
-                            grouping: [groupingItem],
-                            // grouping: ['date'], //an array of columns to group by by default (can be multiple)
+                            grouping: [groupingItem], //an array of columns to group by by default (can be multiple)
                             pagination: { pageIndex: 0, pageSize: 20 },
                             // sorting: [{ id: 'state', desc: false }], //sort by state by default
                         }}
                         muiToolbarAlertBannerChipProps={{ color: 'secondary' }}
                         muiTableContainerProps={{ sx: { maxHeight: 700 } }}
                     />
-                    : <></>
+                    : <div style={{height: "100vh"}}>
+                        <div className="d-flex align-items-center justify-content-center">
+                            <div className="loader-box">
+                                <div className="loader">
+                                    <div className="line bg-primary"></div>
+                                    <div className="line bg-primary"></div>
+                                    <div className="line bg-primary"></div>
+                                    <div className="line bg-primary"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             }
         </>
 
