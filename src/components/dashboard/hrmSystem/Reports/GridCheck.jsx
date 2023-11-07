@@ -1,114 +1,163 @@
-import React, { useMemo } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import { Box, Stack } from '@mui/material';
 import { MaterialReactTable } from 'material-react-table';
-import { data } from './makeData';
+// import { data } from './makeData';
+import getDailyAttendanceReportsAPI from "../../../common/Query/hrm/forSort/getDailyAttendanceReportsAPI";
 
 const GridCheck = () => {
-    const averageSalary = useMemo(
-        () => data.reduce((acc, curr) => acc + curr.salary, 0) / data.length,
-        [],
-    );
+    const [data, setData] = useState([]);
 
-    const maxAge = useMemo(
-        () => data.reduce((acc, curr) => Math.max(acc, curr.age), 0),
-        [],
-    );
+    // const averageSalary = useMemo(
+    //     () => data.reduce((acc, curr) => acc + curr.salary, 0) / data.length,
+    //     [],
+    // );
+    //
+    // const maxAge = useMemo(
+    //     () => data.reduce((acc, curr) => Math.max(acc, curr.age), 0),
+    //     [],
+    // );
 
     const columns = useMemo(
         () => [
             {
-                header: 'First Name',
-                accessorKey: 'firstName',
-                enableGrouping: false, //do not let this column be grouped
+                header: 'Date',
+                accessorKey: 'date',
             },
             {
-                header: 'Last Name',
-                accessorKey: 'lastName',
+                header: 'Name',
+                accessorKey: 'employee_name',
+                enableGrouping: false,
             },
             {
-                header: 'Age',
-                accessorKey: 'age',
-                aggregationFn: 'max', //show the max age in the group (lots of pre-built aggregationFns to choose from)
+                header: 'Designation',
+                accessorKey: 'desig_name',
+            },
+            {
+                header: 'In Time',
+                accessorKey: 'in_time',
+            },
+            {
+                header: 'Out Time',
+                accessorKey: 'out_time',
+            },
+            {
+                header: 'Late',
+                accessorKey: 'late',
+            },
+            {
+                header: 'Early Out',
+                accessorKey: 'early_out',
+            },
+            {
+                header: 'Over Time',
+                accessorKey: 'over_time',
+            },
+            // {
+            //     header: 'First Name',
+            //     accessorKey: 'firstName',
+            //     enableGrouping: false, //do not let this column be grouped
+            // },
+            // {
+            //     header: 'Last Name',
+            //     accessorKey: 'lastName',
+            // },
+            // {
+            //     header: 'Age',
+            //     accessorKey: 'age',
+            //     aggregationFn: 'max', //show the max age in the group (lots of pre-built aggregationFns to choose from)
                 //required to render an aggregated cell
-                AggregatedCell: ({ cell, table }) => (
-                    <>
-                        Oldest by{' '}
-                        {table.getColumn(cell.row.groupingColumnId ?? '').columnDef.header}:{' '}
-                        <Box
-                            sx={{ color: 'info.main', display: 'inline', fontWeight: 'bold' }}
-                        >
-                            {cell.getValue()}
-                        </Box>
-                    </>
-                ),
-                Footer: () => (
-                    <Stack>
-                        Max Age:
-                        <Box color="warning.main">{Math.round(maxAge)}</Box>
-                    </Stack>
-                ),
-            },
-            {
-                header: 'Gender',
-                accessorKey: 'gender',
+                // AggregatedCell: ({ cell, table }) => (
+                //     <>
+                //         Oldest by{' '}
+                //         {table.getColumn(cell.row.groupingColumnId ?? '').columnDef.header}:{' '}
+                //         <Box
+                //             sx={{ color: 'info.main', display: 'inline', fontWeight: 'bold' }}
+                //         >
+                //             {cell.getValue()}
+                //         </Box>
+                //     </>
+                // ),
+                // Footer: () => (
+                //     <Stack>
+                //         Max Age:
+                //         <Box color="warning.main">{Math.round(maxAge)}</Box>
+                //     </Stack>
+                // ),
+            // },
+            // {
+            //     header: 'Gender',
+            //     accessorKey: 'gender',
                 //optionally, customize the cell render when this column is grouped. Make the text blue and pluralize the word
-                GroupedCell: ({ cell, row }) => (
-                    <Box sx={{ color: 'primary.main' }}>
-                        <strong>{cell.getValue()}s </strong> ({row.subRows?.length})
-                    </Box>
-                ),
-            },
-            {
-                header: 'State',
-                accessorKey: 'state',
-            },
-            {
-                header: 'Salary',
-                accessorKey: 'salary',
-                aggregationFn: 'mean',
+                // GroupedCell: ({ cell, row }) => (
+                //     <Box sx={{ color: 'primary.main' }}>
+                //         <strong>{cell.getValue()}s </strong> ({row.subRows?.length})
+                //     </Box>
+                // ),
+            // },
+            // {
+            //     header: 'State',
+            //     accessorKey: 'state',
+            // },
+            // {
+            //     header: 'Salary',
+            //     accessorKey: 'salary',
+            //     aggregationFn: 'mean',
                 //required to render an aggregated cell, show the average salary in the group
-                AggregatedCell: ({ cell, table }) => (
-                    <>
-                        Average by{' '}
-                        {table.getColumn(cell.row.groupingColumnId ?? '').columnDef.header}:{' '}
-                        <Box sx={{ color: 'success.main', fontWeight: 'bold' }}>
-                            {cell.getValue()?.toLocaleString?.('en-US', {
-                                style: 'currency',
-                                currency: 'USD',
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
-                            })}
-                        </Box>
-                    </>
-                ),
-                //customize normal cell render on normal non-aggregated rows
-                Cell: ({ cell }) => (
-                    <>
-                        {cell.getValue()?.toLocaleString?.('en-US', {
-                            style: 'currency',
-                            currency: 'USD',
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                        })}
-                    </>
-                ),
-                Footer: () => (
-                    <Stack>
-                        Average Salary:
-                        <Box color="warning.main">
-                            {averageSalary?.toLocaleString?.('en-US', {
-                                style: 'currency',
-                                currency: 'USD',
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
-                            })}
-                        </Box>
-                    </Stack>
-                ),
-            },
+                // AggregatedCell: ({ cell, table }) => (
+                //     <>
+                //         Average by{' '}
+                //         {table.getColumn(cell.row.groupingColumnId ?? '').columnDef.header}:{' '}
+                //         <Box sx={{ color: 'success.main', fontWeight: 'bold' }}>
+                //             {cell.getValue()?.toLocaleString?.('en-US', {
+                //                 style: 'currency',
+                //                 currency: 'USD',
+                //                 minimumFractionDigits: 0,
+                //                 maximumFractionDigits: 0,
+                //             })}
+                //         </Box>
+                //     </>
+                // ),
+                // //customize normal cell render on normal non-aggregated rows
+                // Cell: ({ cell }) => (
+                //     <>
+                //         {cell.getValue()?.toLocaleString?.('en-US', {
+                //             style: 'currency',
+                //             currency: 'USD',
+                //             minimumFractionDigits: 0,
+                //             maximumFractionDigits: 0,
+                //         })}
+                //     </>
+                // ),
+                // Footer: () => (
+                //     <Stack>
+                //         Average Salary:
+                //         <Box color="warning.main">
+                //             {averageSalary?.toLocaleString?.('en-US', {
+                //                 style: 'currency',
+                //                 currency: 'USD',
+                //                 minimumFractionDigits: 0,
+                //                 maximumFractionDigits: 0,
+                //             })}
+                //         </Box>
+                //     </Stack>
+                // ),
+            // },
         ],
-        [averageSalary, maxAge],
+        // [averageSalary, maxAge],
+        [],
     );
+
+    useEffect(() => {
+        // console.log('selectedCompany', selectedCompany, 'selectedBranch', selectedBranch, 'dateFrom', dateFrom, 'dateTo', dateTo, 'selectedDepartment', selectedDepartment)
+        const getDailyAttendanceReport = async () => {
+            const getData = await getDailyAttendanceReportsAPI();
+            setData(getData?.data?.body?.data?.data[0]?.branch[0]?.branch?.attendance);
+            console.log(getData?.data?.body?.data?.data[0]?.branch[0]?.branch?.attendance);
+        }
+        getDailyAttendanceReport();
+
+    }, [])
+
 
     return (
         <MaterialReactTable
@@ -121,9 +170,9 @@ const GridCheck = () => {
             initialState={{
                 density: 'compact',
                 expanded: true, //expand all groups by default
-                grouping: ['state'], //an array of columns to group by by default (can be multiple)
+                grouping: ['date'], //an array of columns to group by by default (can be multiple)
                 pagination: { pageIndex: 0, pageSize: 20 },
-                sorting: [{ id: 'state', desc: false }], //sort by state by default
+                // sorting: [{ id: 'state', desc: false }], //sort by state by default
             }}
             muiToolbarAlertBannerChipProps={{ color: 'secondary' }}
             muiTableContainerProps={{ sx: { maxHeight: 700 } }}
