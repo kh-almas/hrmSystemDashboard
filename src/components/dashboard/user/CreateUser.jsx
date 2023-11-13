@@ -64,8 +64,6 @@ const CreateUser = () => {
         })
     }, [allEmployee])
 
-
-
     const onSubmit = (data) => {
         data.userId = employeeInfo?.value;
         axios.post('/users', data)
