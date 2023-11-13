@@ -6,7 +6,7 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.0.1",
     "@emotion/react": "^11.11.1",
-    "@emotion/style": "^0.8.0",
+    "@emotion/styled": "^11.11.0",
     "@fullcalendar/daygrid": "^6.1.4",
     "@fullcalendar/interaction": "^6.1.4",
     "@fullcalendar/react": "^6.1.4",
@@ -15,7 +15,8 @@
     "@headlessui/react": "^1.7.16",
     "@heroicons/react": "^2.0.18",
     "@mui/icons-material": "^5.14.16",
-    "@mui/material": "^5.14.16",
+    "@mui/material": "^5.14.17",
+    "@mui/x-data-grid": "^6.18.0",
     "@mui/x-date-pickers": "^6.18.0",
     "@react-google-maps/api": "^2.18.1",
     "@react-pdf/renderer": "^3.1.12",
@@ -36,7 +37,7 @@
     "knob": "^1.1.0",
     "leaflet": "^1.9.3",
     "lodash": "^4.17.21",
-    "material-react-table": "^2.0.2",
+    "material-react-table": "^2.0.3",
     "multiselect-react-dropdown": "^2.0.25",
     "query-string": "^8.1.0",
     "react-ace": "^10.1.0",
@@ -100,8 +101,8 @@
     "world-map-geojson": "^1.0.2"
   },
   "scripts": {
-    "start": "react-scripts --max_old_space_size=8192 start",
-    "build": "react-scripts --max_old_space_size=8192 build",
+    "start": "react-scripts --max_old_space_size=8128 start --port 3001",
+    "build": "react-scripts --max_old_space_size=8096 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

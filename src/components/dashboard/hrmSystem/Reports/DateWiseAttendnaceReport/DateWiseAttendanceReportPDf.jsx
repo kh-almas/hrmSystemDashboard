@@ -24,6 +24,7 @@ const DateWiseAttendanceReportPDf = () => {
 
     async function loadData() {
         const headers = new Headers();
+
         const dataRequest = new Request(
             `https://hrm-system-backend.vercel.app/hrm-system/reports/check?date='${convertedDate}'`,
             {
@@ -53,6 +54,7 @@ const DateWiseAttendanceReportPDf = () => {
         async function openReport() {
             const data = await loadData();
             const report = await loadReport();
+            console.log(report);
             report.DataSources[0].ConnectionProperties.ConnectString =
                 "jsondata=" + JSON.stringify(data);
             viewerRef.current.Viewer.open(report);

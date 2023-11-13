@@ -155,7 +155,9 @@ import CompanyProject from "../components/dashboard/hrmSystem/companyInfo/Compan
 import Role from "../components/dashboard/Role";
 import MachineInfo from "../components/dashboard/hrmSystem/attendance/MachineInfo";
 import CreateUser from "../components/dashboard/user/CreateUser";
-import GridCheck from "../components/dashboard/hrmSystem/Reports/GridCheck";
+import MaterialReactTableExample from "../components/common/component/material-react-table-example";
+import DropdownTable from "../components/common/component/DropdownTable";
+import DropdownTable2 from "../components/common/component/DropdownTable2";
 
 export const routes = [
   {
@@ -299,10 +301,6 @@ export const routes = [
     Component: <DailyAttendanceReportPDf />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/hrm/grid`,
-    Component: <GridCheck/>,
-  },
-  {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/attendance/datewise`,
     Component: <DateWiseAttendanceReport />,
   },
@@ -419,6 +417,18 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/user/resignation`,
     Component: <CreateUser />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/table`,
+    Component: <MaterialReactTableExample />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/dropdown`,
+    Component: <DropdownTable />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/dropdown2`,
+    Component: <DropdownTable2 />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/admin/trip`,

@@ -156,11 +156,6 @@ export const MENUITEMS = [
         type: "sub",
         children: [
           {
-            title: "Check grid",
-            type: "link",
-            path: "/dashboard/hrm/grid",
-          },
-          {
             title: "Date wise Attendance",
             type: "link",
             path: "/dashboard/hrm/attendance/datewise",
@@ -196,6 +191,21 @@ export const MENUITEMS = [
         title: "User Registration",
         type: "link",
         path: "/dashboard/user/resignation",
+      },
+      {
+        title: "Table",
+        type: "link",
+        path: "/dashboard/table",
+      },
+      {
+        title: "Dropdown",
+        type: "link",
+        path: "/dashboard/dropdown",
+      },
+      {
+        title: "Dropdown2",
+        type: "link",
+        path: "/dashboard/dropdown2",
       },
       // {
       //   title: "Performance Setup",
@@ -374,235 +384,235 @@ export const MENUITEMS = [
       // },
     ],
   },
-  // {
-  //   title: "Inventory Management",
-  //   icon: Box,
-  //   type: "sub",
-  //   active: false,
-  //   children: [
-  //     {
-  //       title: "Project",
-  //       type: "sub",
-  //       children: [
-  //         {
-  //           title: "Default Team",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/default-team",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       title: "Sale",
-  //       type: "sub",
-  //       children: [
-  //         {
-  //           title: "Sale",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/sale/sales",
-  //         },
-  //         {
-  //           title: "Sale Return",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/sale/return",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       title: "Contacts",
-  //       type: "sub",
-  //       children: [
-  //         {
-  //           title: "Add Contacts ",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/contacts/add-contacts",
-  //         },
-  //         {
-  //           title: "Supplier",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/contacts/supplier",
-  //         },
-  //         {
-  //           title: "Customer",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/contacts/customer",
-  //         },
-  //         {
-  //           title: "Settings",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/contacts/settings",
-  //         },
-  //       ],
-  //     },
-  //
-  //     //products
-  //     {
-  //       title: "Products",
-  //       type: "sub",
-  //       children: [
-  //         {
-  //           title: "Product List",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/products",
-  //         },
-  //         {
-  //           title: "Service",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/products/services",
-  //         },
-  //         {
-  //           title: "Add Product",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/products/add-product",
-  //         },
-  //         {
-  //           title: "Category",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/products/category",
-  //         },
-  //         {
-  //           title: "Brand",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/products/brand",
-  //         },
-  //         {
-  //           title: "Model",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/products/model",
-  //         },
-  //         {
-  //           title: "Unit Type",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/products/unit-type",
-  //         },
-  //         {
-  //           title: "Variant",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/products/variant",
-  //         },
-  //       ],
-  //     },
-  //     //inventory
-  //     {
-  //       title: "Inventory",
-  //       type: "sub",
-  //       children: [
-  //         {
-  //           title: "Add Opening Stock",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/inventory/add-opening-stock",
-  //         },
-  //         {
-  //           title: "Receive Your Product",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/inventory/product-receive",
-  //         },
-  //         {
-  //           title: "Product Costing(Sales)",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/inventory/product-costing",
-  //         },
-  //         {
-  //           title: "Stock Transfer",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/inventory/stock-transfer",
-  //         },
-  //         {
-  //           title: "Stock List",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/inventory/stock-list",
-  //         },
-  //         {
-  //           title: "Stock Report",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/inventory/stock-report",
-  //         },
-  //         {
-  //           title: "Product Movement",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/inventory/product-movement",
-  //         },
-  //         {
-  //           title: "Stock Adjustment",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/inventory/stock-adjustment",
-  //         },
-  //         {
-  //           title: "Product Info",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/inventory/product-info",
-  //         },
-  //       ],
-  //     },
-  //
-  //     //Purchase
-  //     {
-  //       title: "Purchase",
-  //       type: "sub",
-  //       children: [
-  //         {
-  //           title: "Purchase Order",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/purchase/order",
-  //         },
-  //         {
-  //           title: "Stock Alert List",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/purchase/stock-alert-list",
-  //         },
-  //         {
-  //           title: "Purchase Return List",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/purchase/return-list",
-  //         },
-  //         {
-  //           title: "C&F",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/purchase/c&f",
-  //         },
-  //       ],
-  //     },
-  //
-  //     {
-  //       path: "/dashboard/inventory-management/quotation",
-  //       title: "Quotation",
-  //       type: "link",
-  //     },
-  //
-  //     {
-  //       title: "Transfer",
-  //       type: "sub",
-  //       children: [
-  //         {
-  //           title: "Make A Transfer",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/transfer/make-transfer",
-  //         },
-  //         {
-  //           title: "Transfered Lists",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/transfer/transfered-list",
-  //         },
-  //       ],
-  //     },
-  //
-  //     {
-  //       title: "Location",
-  //       type: "sub",
-  //       children: [
-  //         {
-  //           title: "Branch",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/location/branch",
-  //         },
-  //         {
-  //           title: "Warehouse",
-  //           type: "link",
-  //           path: "/dashboard/inventory-management/location/warehouse",
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
+  {
+    title: "Inventory Management",
+    icon: Box,
+    type: "sub",
+    active: false,
+    children: [
+      {
+        title: "Project",
+        type: "sub",
+        children: [
+          {
+            title: "Default Team",
+            type: "link",
+            path: "/dashboard/inventory-management/default-team",
+          },
+        ],
+      },
+      {
+        title: "Sale",
+        type: "sub",
+        children: [
+          {
+            title: "Sale",
+            type: "link",
+            path: "/dashboard/inventory-management/sale/sales",
+          },
+          {
+            title: "Sale Return",
+            type: "link",
+            path: "/dashboard/inventory-management/sale/return",
+          },
+        ],
+      },
+      {
+        title: "Contacts",
+        type: "sub",
+        children: [
+          {
+            title: "Add Contacts ",
+            type: "link",
+            path: "/dashboard/inventory-management/contacts/add-contacts",
+          },
+          {
+            title: "Supplier",
+            type: "link",
+            path: "/dashboard/inventory-management/contacts/supplier",
+          },
+          {
+            title: "Customer",
+            type: "link",
+            path: "/dashboard/inventory-management/contacts/customer",
+          },
+          {
+            title: "Settings",
+            type: "link",
+            path: "/dashboard/inventory-management/contacts/settings",
+          },
+        ],
+      },
+
+      //products
+      {
+        title: "Products",
+        type: "sub",
+        children: [
+          {
+            title: "Product List",
+            type: "link",
+            path: "/dashboard/inventory-management/products",
+          },
+          {
+            title: "Service",
+            type: "link",
+            path: "/dashboard/inventory-management/products/services",
+          },
+          {
+            title: "Add Product",
+            type: "link",
+            path: "/dashboard/inventory-management/products/add-product",
+          },
+          {
+            title: "Category",
+            type: "link",
+            path: "/dashboard/inventory-management/products/category",
+          },
+          {
+            title: "Brand",
+            type: "link",
+            path: "/dashboard/inventory-management/products/brand",
+          },
+          {
+            title: "Model",
+            type: "link",
+            path: "/dashboard/inventory-management/products/model",
+          },
+          {
+            title: "Unit Type",
+            type: "link",
+            path: "/dashboard/inventory-management/products/unit-type",
+          },
+          {
+            title: "Variant",
+            type: "link",
+            path: "/dashboard/inventory-management/products/variant",
+          },
+        ],
+      },
+      //inventory
+      {
+        title: "Inventory",
+        type: "sub",
+        children: [
+          {
+            title: "Add Opening Stock",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/add-opening-stock",
+          },
+          {
+            title: "Receive Your Product",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/product-receive",
+          },
+          {
+            title: "Product Costing(Sales)",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/product-costing",
+          },
+          {
+            title: "Stock Transfer",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/stock-transfer",
+          },
+          {
+            title: "Stock List",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/stock-list",
+          },
+          {
+            title: "Stock Report",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/stock-report",
+          },
+          {
+            title: "Product Movement",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/product-movement",
+          },
+          {
+            title: "Stock Adjustment",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/stock-adjustment",
+          },
+          {
+            title: "Product Info",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/product-info",
+          },
+        ],
+      },
+
+      //Purchase
+      {
+        title: "Purchase",
+        type: "sub",
+        children: [
+          {
+            title: "Purchase Order",
+            type: "link",
+            path: "/dashboard/inventory-management/purchase/order",
+          },
+          {
+            title: "Stock Alert List",
+            type: "link",
+            path: "/dashboard/inventory-management/purchase/stock-alert-list",
+          },
+          {
+            title: "Purchase Return List",
+            type: "link",
+            path: "/dashboard/inventory-management/purchase/return-list",
+          },
+          {
+            title: "C&F",
+            type: "link",
+            path: "/dashboard/inventory-management/purchase/c&f",
+          },
+        ],
+      },
+
+      {
+        path: "/dashboard/inventory-management/quotation",
+        title: "Quotation",
+        type: "link",
+      },
+
+      {
+        title: "Transfer",
+        type: "sub",
+        children: [
+          {
+            title: "Make A Transfer",
+            type: "link",
+            path: "/dashboard/inventory-management/transfer/make-transfer",
+          },
+          {
+            title: "Transfered Lists",
+            type: "link",
+            path: "/dashboard/inventory-management/transfer/transfered-list",
+          },
+        ],
+      },
+
+      {
+        title: "Location",
+        type: "sub",
+        children: [
+          {
+            title: "Branch",
+            type: "link",
+            path: "/dashboard/inventory-management/location/branch",
+          },
+          {
+            title: "Warehouse",
+            type: "link",
+            path: "/dashboard/inventory-management/location/warehouse",
+          },
+        ],
+      },
+    ],
+  },
   //
   // {
   //   title: "Accounts",
