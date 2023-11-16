@@ -598,7 +598,7 @@ export const routes = [
     Component: <SaleReturn />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/add-contacts`,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/add-contacts/:product_type`,
     Component: <AddContacts />,
   },
   {

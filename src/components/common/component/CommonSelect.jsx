@@ -1,13 +1,8 @@
-import React, {useEffect, useState, useMemo} from 'react';
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/Input';
-import {MaterialReactTable, useMaterialReactTable,} from 'material-react-table';
+import React, {useEffect, useMemo, useState} from 'react';
 import axios from "../../../axios";
+import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
 
-const DropdownTable2 = () => {
+const CommonSelect = () => {
     const [data, setData] = useState([]);
     const [processedData, setProcessedData] = useState([]);
     const [isError, setIsError] = useState(false);
@@ -135,7 +130,7 @@ const DropdownTable2 = () => {
 
     const scrollbarStyles = {
         padding: "10px",
-        width: '50%',
+        width: '100%',
         zIndex: 5,
         position: "absolute",
         top: "80px",
@@ -146,18 +141,19 @@ const DropdownTable2 = () => {
     };
 
     return (
-        <div  style={{position: "relative"}}>
-            <div  style={{  maxHeight: "75px", overflowY: "scroll", display:'flex', flexWrap: 'wrap', marginTop: '10px', border: '1px solid #ccc', padding: '5px' }}>
-                {showSelectData.map((item, index) => (
-                    <div key={index} style={{ display:'flex',alignItems:'center', marginRight: '5px', marginBottom: '5px', position: 'relative' }}>
-                        <div style={{backgroundColor: "lightgray", padding: "5px 5px 3px 5px", borderRadius: "6px"}}>
-                            {item}
-                            <span>
+        <>
+            <div  style={{position: "relative", width: "100%"}}>
+                <div  style={{  height: "75px", overflowY: "scroll", display:'flex', flexWrap: 'wrap', border: '1px solid #ccc', padding: '5px' }}>
+                    {showSelectData.map((item, index) => (
+                        <div key={index} style={{ display:'flex',alignItems:'center', marginRight: '5px', marginBottom: '5px', position: 'relative' }}>
+                            <div style={{backgroundColor: "lightgray", padding: "5px 5px 3px 5px", borderRadius: "6px"}}>
+                                {item}
+                                <span>
                                 <i onClick={() => handleRemove(index)} style={{fontSize: "17px", cursor: 'pointer', marginLeft: "3px"}} className="icofont icofont-close-line"></i>
                             </span>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
                     <input
                         onClick={handleClose}
                         type="text"
@@ -167,46 +163,34 @@ const DropdownTable2 = () => {
                         placeholder="Type and press Enter to add items"
                         style={{ flex: 1, border: 'none', outline: 'none', maxHeight: "100px", overflowY: "scroll" }}
                     />
-            </div>
-            {/*<button onClick={() => setShowSelectData('')}>clear</button>*/}
-            <div>
-                <div class="container mt-5">
-                    <div class="card" style={{width: "18rem"}}>
-                        <img src="https://via.placeholder.com/150" className="card-img-top" alt="Placeholder Image" />
-                            <div class="card-body">
-                                <h5 class="card-title">Card Title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
-                            </div>
-                    </div>
                 </div>
+                {toggle &&
+                    <div style={scrollbarStyles}>
+                        <div style={{width:'100%', display:'flex', justifyContent:'flex-end'}}>
+                            <button
+                                onClick={() => setToggle(false)}
+                                style={{
+                                    borderRadius:'5px',
+                                    backgroundColor:'#627FF4',
+                                    border:0,
+                                    display:'flex',
+                                    alignItems:'center',
+                                    justifyContent:'center',
+                                    padding:'6px 12px',
+                                    width:'fit-content',
+                                    cursor: "pointer"}}>
+                                <i  className="icofont icofont-close-line-circled" style={{color: "white", fontSize: '25px', }}></i>
+                            </button>
+                        </div>
+                        <div style={{overflowY: "scroll", height: "400px",}}>
+                            <MaterialReactTable table={table}/>
+                        </div>
+                        {/*<MaterialReactTable sx={{'&::-webkit-scrollbar': { width: 0} }} table={table}/>*/}
+                    </div>
+                }
             </div>
-            {toggle &&
-                <div style={scrollbarStyles}>
-                    <div style={{width:'100%', display:'flex', justifyContent:'flex-end'}}>
-                        <button
-                            onClick={() => setToggle(false)}
-                            style={{
-                                borderRadius:'5px',
-                                backgroundColor:'#627FF4',
-                                border:0,
-                                display:'flex',
-                                alignItems:'center',
-                                justifyContent:'center',
-                                padding:'6px 12px',
-                                width:'fit-content',
-                                cursor: "pointer"}}>
-                            <i  className="icofont icofont-close-line-circled" style={{color: "white", fontSize: '25px', }}></i>
-                        </button>
-                    </div>
-                    <div style={{overflowY: "scroll", height: "400px",}}>
-                        <MaterialReactTable table={table}/>
-                    </div>
-                    {/*<MaterialReactTable sx={{'&::-webkit-scrollbar': { width: 0} }} table={table}/>*/}
-                </div>
-            }
-        </div>
+        </>
     );
 };
 
-export default DropdownTable2;
+export default CommonSelect;
