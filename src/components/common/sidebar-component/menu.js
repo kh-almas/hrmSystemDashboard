@@ -422,11 +422,6 @@ export const MENUITEMS = [
         type: "sub",
         children: [
           {
-            title: "Add Contacts ",
-            type: "link",
-            path: "/dashboard/inventory-management/contacts/add-contacts",
-          },
-          {
             title: "Supplier",
             type: "link",
             path: "/dashboard/inventory-management/contacts/supplier",

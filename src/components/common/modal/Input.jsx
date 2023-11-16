@@ -2,19 +2,26 @@ import React from "react";
 import {useForm} from "react-hook-form";
 
 const Input = ({labelName, inputName, inputType, placeholder, defaultValue, validation, error}) => {
+
+    const inputStyle = {
+        ':focus': {
+            outline: "none",
+            border: "1px solid #ccc",
+        },
+        fontSize: "11px",
+        height: "30px",
+        outline: "0px !important",
+        border: `1px solid ${error?.type === 'required'  ? "red" : "#ccc"}`,
+    }
     return (
         <>
             <div className="theme-form">
                 <div className="mb-2 form-group">
-                    <label style={{fontSize: "11px",}} htmlFor={inputName}>{`${labelName}:`} {error &&
-                        <span className="text-danger">(Required)</span>}</label>
+                    <label style={{fontSize: "11px",}} htmlFor={inputName}>{`${labelName}:`} {error?.type === 'required' ?
+                        <span className="text-danger">(Required)</span> : ''}</label>
                     <input
-                        style={{
-                            fontSize: "11px",
-                            height: "30px",
-                            outline: "0px !important",
-                        }}
-                        className={`form-control ${error && "is-invalid"}`}
+                        style={inputStyle}
+                        className={`form-control ${error?.type === 'required' ? "is-invalid" : ''}`}
                         id={inputName}
                         type={inputType}
                         name={inputName}
@@ -22,6 +29,7 @@ const Input = ({labelName, inputName, inputType, placeholder, defaultValue, vali
                         defaultValue={defaultValue}
                         {...validation}
                     />
+                    <span style={{fontSize: '10px'}}>{error?.type !== 'required' ? error?.message : ''}</span>
                 </div>
             </div>
         </>
