@@ -1,12 +1,14 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import { Box, Stack } from '@mui/material';
+import {Box, IconButton, MenuItem, Stack} from '@mui/material';
 import { MaterialReactTable } from 'material-react-table';
 import axios from "../../../axios";
+import {Edit as EditIcon, Delete as DeleteIcon, Email as EmailIcon} from '@mui/icons-material';
 
 const MaterialReactTableExample = () => {
     const [data, setData] = useState([]);
     const [tableInfo, setTableInfo] = useState([]);
     const [groupingItem, setGrouping] = useState('');
+    console.log(tableInfo)
 
     useEffect(() => {
         if(data?.length > 0 ){
@@ -104,18 +106,40 @@ const MaterialReactTableExample = () => {
                     <MaterialReactTable
                         columns={tableInfo}
                         data={data}
-                        enableColumnResizing
                         enableGrouping
                         enableStickyHeader
                         initialState={{
                             density: 'compact',
                             expanded: true, //expand all groups by default
-                            grouping: [groupingItem], //an array of columns to group by by default (can be multiple)
-                            pagination: { pageIndex: 0, pageSize: 20 },
+                            grouping: [groupingItem], //an array of columns to group by default (can be multiple)
+                            pagination: { pageIndex: 0, pageSize: 10 },
                             // sorting: [{ id: 'state', desc: false }], //sort by state by default
                         }}
                         muiToolbarAlertBannerChipProps={{ color: 'secondary' }}
-                        muiTableContainerProps={{ sx: { maxHeight: 700 } }}
+                        muiTableContainerProps={{ maxHeight: 700}}
+                        enableRowActions
+                        renderRowActions={({ row, table }) => (
+                            <Box sx={{ display: 'flex', flexWrap: 'nowrap' }}>
+
+                                <IconButton
+                                    color="secondary"
+                                    onClick={() => {
+                                        table.setEditingRow(row);
+                                    }}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                                <IconButton
+                                    color="error"
+                                    onClick={() => {
+                                        data.splice(row.index, 1); //assuming simple data table
+                                        setData([...data]);
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Box>
+                        )}
                     />
                     : <div style={{height: "100vh"}}>
                         <div className="d-flex align-items-center justify-content-center">

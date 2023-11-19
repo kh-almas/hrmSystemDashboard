@@ -7,49 +7,70 @@ import Single from "./Single";
 import getShiftAPI from "../../../common/Query/hrm/forSort/getShiftAPI";
 import getInventoryContact from "../../../common/Query/inventory/getInventoryContact";
 import {Pagination, PaginationItem, PaginationLink} from "reactstrap";
+import Swal from "sweetalert2";
+import axios from "../../../../axios";
+import DataTable from "../../../common/component/DataTable";
 
 const Supplier = () => {
-  const [pageCount, setPageCount] = useState(1);
-  const [howManyItem, setHowManyItem] = useState('2');
-  const [currentPage, setCurrentPage] = useState('1');
-  const [totalDBRow, setTotalDBRow] = useState(0);
-  const [searchData, setSearchData] = useState('');
-  const [isChange, setIsChange] = useState(false);
-  const isDarty = () =>
-  {
-    setIsChange(!isChange);
-  }
-
   const [data, setData] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
       const type = "customer";
-      const setItem = howManyItem < totalDBRow ? howManyItem : totalDBRow;
-      const getData = await getInventoryContact(type, currentPage, howManyItem, searchData);
+      const getData = await getInventoryContact(type);
       setData(getData?.data?.body?.data?.data);
-
-      const totalItem = getData?.data?.body?.data?.count;
-      console.log(totalItem, 'totalItem')
-      setTotalDBRow(totalItem);
-      const page = Math.ceil( totalItem / howManyItem);
-      setPageCount(page);
     };
     getData();
-  }, [howManyItem, currentPage, searchData, isUpdate]);
+  }, [isUpdate]);
 
-  const paginationItems = [];
+  const handleDelete = id => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`inventory-management/contacts/delete-contact/${id}`)
+            .then(info => {
+              if(info?.status == 200)
+              {
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: "Your file has been deleted.",
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              }
+              setIsUpdate(!isUpdate);
+            })
+            .catch(e => {
+              if(e?.response?.data?.body?.message?.sqlState === "23000")
+              {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: `Can not delete shift, if there have any attendance in this shift`,
+                })
+              }
+              // if (!empty(e?.response?.data?.body?.message?.details[0].message))
+              // {
+              //     Swal.fire({
+              //         icon: 'error',
+              //         title: 'Oops...',
+              //         text: `${e?.response?.data?.body?.message?.details[0].message}`,
+              //     })
+              // }
+            })
+      }
+    })
+  };
 
-  for (let i = 1; i <= pageCount; i++) {
-    paginationItems.push(
-        <PaginationItem key={i} active={i === parseInt(currentPage)}>
-          <PaginationLink onClick={() => setCurrentPage(i)}>
-            {i}
-          </PaginationLink>
-        </PaginationItem>
-    );
-  }
 
   return (
       <div>
@@ -67,7 +88,7 @@ const Supplier = () => {
               }}
           >
             <Link
-                to={"/dashboard/inventory-management/contacts/add-contacts/customer"}
+                to={"/dashboard/inventory-management/contacts/add-contacts/supplier"}
                 className="btn btn-pill btn-info btn-air-info btn-air-info mx-2"
             >
               <i className="fa fa-plus me-2"></i>
@@ -87,51 +108,38 @@ const Supplier = () => {
           <div className="row">
             <div className="col-sm-12">
               <div className="card" style={{ padding: "20px" }}>
-                <CommonSearchComponet setCurrentPage={setCurrentPage} searchData={searchData} setSearchData={setSearchData} howManyItem={howManyItem} setHowManyItem={setHowManyItem} />
-                <div className="table-responsive ">
-                  <table className="table ">
-                    <thead className=" table-border ">
-                    <tr className="">
-                      <th scope="col">{"Sl"}</th>
-                      <th scope="col">{"Image"}</th>
-                      <th scope="col">{"Supplier Name"}</th>
-                      <th scope="col">{"Email"}</th>
-                      <th scope="col">{"Phone"}</th>
-                      <th scope="col">{"Pay Term"}</th>
-                      <th scope="col">{"Tex Number"}</th>
-                      <th scope="col">{"Action"}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                      data?.map((item, index) => (
-                          <Single
-                              howManyItem={howManyItem}
-                              currentPage={currentPage}
-                              key={index}
-                              index={index}
-                              item={item}
-                              isUpdate={isUpdate}
-                              setIsUpdate={setIsUpdate}
-                          />
-                      ))
-                    }
-                    </tbody>
-                  </table>
-                </div>
-                <div className="mt-3 d-flex justify-content-end">
-                  <Pagination aria-label="Page navigation example" className="pagination-primary">
-                    <PaginationItem disabled={currentPage === 1 ? true : false}>
-                      <PaginationLink onClick={() => setCurrentPage(currentPage - 1)} previous href="#javascript" />
-                    </PaginationItem>
-
-                    {paginationItems}
-
-                    <PaginationItem disabled={currentPage === pageCount ? true : false}>
-                      <PaginationLink onClick={() => setCurrentPage(currentPage + 1)} next href="#javascript" />
-                    </PaginationItem>
-                  </Pagination>
-                </div>
+                <DataTable getAllData={data} handleDelete={handleDelete}></DataTable>
+                {/*<div className="table-responsive ">*/}
+                {/*  <table className="table ">*/}
+                {/*    <thead className=" table-border ">*/}
+                {/*      <tr className="">*/}
+                {/*        <th scope="col">{"Sl"}</th>*/}
+                {/*        <th scope="col">{"Image"}</th>*/}
+                {/*        <th scope="col">{"Supplier Name"}</th>*/}
+                {/*        <th scope="col">{"Email"}</th>*/}
+                {/*        <th scope="col">{"Phone"}</th>*/}
+                {/*        <th scope="col">{"Pay Term"}</th>*/}
+                {/*        <th scope="col">{"Tex Number"}</th>*/}
+                {/*        <th scope="col">{"Action"}</th>*/}
+                {/*      </tr>*/}
+                {/*    </thead>*/}
+                {/*    <tbody>*/}
+                {/*    {*/}
+                {/*      data?.map((item, index) => (*/}
+                {/*          <Single*/}
+                {/*              howManyItem={howManyItem}*/}
+                {/*              currentPage={currentPage}*/}
+                {/*              key={index}*/}
+                {/*              index={index}*/}
+                {/*              item={item}*/}
+                {/*              isUpdate={isUpdate}*/}
+                {/*              setIsUpdate={setIsUpdate}*/}
+                {/*          />*/}
+                {/*      ))*/}
+                {/*    }*/}
+                {/*    </tbody>*/}
+                {/*  </table>*/}
+                {/*</div>*/}
               </div>
             </div>
           </div>
