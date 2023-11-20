@@ -1,12 +1,89 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Breadcrumb from "../../../../common/breadcrumb";
 import FilesComponent from "../../../../common/filesComponent/FilesComponent";
-import CommonSearchComponet from "../../../../common/salaryCard/CommonSearchComponet";
-import Paginationbtn from "../../../../common/Paginationbtn";
-import Dropdownbtn from "../../../../common/button/Dropdownbtn";
+import AddVariantModal from "../../../../common/component/form/inventory/AddVariantModal";
+import DataTable from "../../../../common/component/DataTable";
+import Swal from "sweetalert2";
+import axios from "../../../../../axios";
+import getInventoryVariant from "../../../../common/Query/inventory/getInventoryVariant";
+import EditVariantModal from "../../../../common/component/form/inventory/EditVariantModal";
+
 const Variant = () => {
+    const [data, setData] = useState([]);
+    const [isChange, setIsChange] = useState(false);
+    const [modal, setModal] = useState(false);
+    const [editModal, setEditModal] = useState(false);
+    const [valueForEdit, setValueForEdit] = useState({});
+    // console.log(valueForEdit);
+    const isDarty = () =>
+    {
+        setIsChange(!isChange);
+    }
+    const toggle = () => {
+        setModal(!modal);
+    };
+
+    const updateToggle = () => {
+        setEditModal(!editModal);
+    };
+
+    useEffect(() => {
+        const getData = async () => {
+            const getData = await getInventoryVariant();
+            setData(getData?.data?.body?.data);
+        };
+        getData();
+    }, [isChange]);
+
+    const handleDelete = id => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`/inventory-management/variant/delete/${id}`)
+                    .then(info => {
+                        if(info?.status == 200)
+                        {
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Your file has been deleted.",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        isDarty();
+                    })
+                    .catch(e => {
+                        if(e?.response?.data?.body?.message?.sqlState === "23000")
+                        {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: `Can not delete shift, if there have any attendance in this shift`,
+                            })
+                        }
+                        // if (!empty(e?.response?.data?.body?.message?.details[0].message))
+                        // {
+                        //     Swal.fire({
+                        //         icon: 'error',
+                        //         title: 'Oops...',
+                        //         text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                        //     })
+                        // }
+                    })
+            }
+        })
+    };
+
   return (
-    <div>
+    <>
       <Breadcrumb parent="Inventory management" title="Variant" />
       <div
         style={{ padding: "0px 20px" }}
@@ -20,7 +97,7 @@ const Variant = () => {
             marginBottom: "20px",
           }}
         >
-          <button className="btn btn-pill btn-info btn-air-info btn-air-info">
+          <button onClick={toggle} className="btn btn-pill btn-info btn-air-info btn-air-info">
             Add Variant
           </button>
         </div>
@@ -31,43 +108,14 @@ const Variant = () => {
         <div className="row">
           <div className="col-sm-12">
             <div className="card" style={{ padding: "20px" }}>
-              <CommonSearchComponet />
-              <div className="table-responsive ">
-                <table className="table">
-                  <thead className=" table-border">
-                    <tr className="">
-                      <th scope="col">{"Id"}</th>
-                      <th scope="col">{"Variant Name"}</th>
-                      <th scope="col">{"Description"}</th>
-                      <th scope="col">{"Status"}</th>
-                      <th scope="col">{"Action"}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* <tr>
-                      <td>{"1"}</td>
-                      <td>{"Red"}</td>
-                      <td>{"Red"}</td>
-                      <td>
-                        {" "}
-                        <span className="badge text-bg-success">
-                          {" "}
-                          {"Active"}
-                        </span>
-                      </td>
-                      <td>
-                        <Dropdownbtn />
-                      </td>
-                    </tr> */}
-                  </tbody>
-                </table>
-              </div>
+                <DataTable getAllData={data} handleDelete={handleDelete} toggleUpdateModal={updateToggle} setValueForEdit={setValueForEdit} ></DataTable>
             </div>
-            <Paginationbtn />
           </div>
         </div>
       </div>
-    </div>
+        <AddVariantModal modal={modal} toggle={toggle} reFetch={isDarty}></AddVariantModal>
+        <EditVariantModal modal={editModal} toggle={updateToggle} reFetch={isDarty} valueForEdit={valueForEdit} ></EditVariantModal>
+    </>
   );
 };
 

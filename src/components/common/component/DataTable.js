@@ -5,7 +5,7 @@ import {Delete as DeleteIcon, Edit as EditIcon} from "@mui/icons-material";
 import axios from "../../../axios";
 import {Link} from "react-router-dom";
 
-const DataTable = ({ getAllData, handleDelete }) => {
+const DataTable = ({ getAllData, handleDelete, editLink = '', toggleUpdateModal, setValueForEdit }) => {
     const [data, setData] = useState([]);
     const [tableInfo, setTableInfo] = useState([]);
     const [groupingItem, setGrouping] = useState('');
@@ -123,17 +123,24 @@ const DataTable = ({ getAllData, handleDelete }) => {
                         renderRowActions={({ row, table }) => (
                             <Box sx={{ display: 'flex', flexWrap: 'nowrap', justifyContent: "center", alignItems: "center" }}>
 
-                                <Link to={`${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/edit-contacts/${row?.original?.id}`}>
-                                    <EditIcon />
-                                </Link>
-                                {/*<IconButton*/}
-                                {/*    color="secondary"*/}
-                                {/*    onClick={() => {*/}
-                                {/*        table.setEditingRow(row);*/}
-                                {/*    }}*/}
-                                {/*>*/}
-                                {/*    <EditIcon />*/}
-                                {/*</IconButton>*/}
+                                {
+                                    editLink ?
+                                        <Link to={`${process.env.PUBLIC_URL}${editLink}${row?.original?.id}`}>
+                                            <EditIcon />
+                                        </Link> :
+                                        <IconButton
+                                            color="secondary"
+                                            onClick={() => {
+                                                setValueForEdit(row);
+                                                toggleUpdateModal();
+                                            }}
+                                        >
+                                            <EditIcon />
+                                        </IconButton>
+
+                                }
+
+
                                 <IconButton
                                     color="error"
                                     onClick={() => {

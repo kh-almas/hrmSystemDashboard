@@ -108,7 +108,7 @@ const Supplier = () => {
           <div className="row">
             <div className="col-sm-12">
               <div className="card" style={{ padding: "20px" }}>
-                <DataTable getAllData={data} handleDelete={handleDelete}></DataTable>
+                <DataTable getAllData={data} handleDelete={handleDelete} editLink={'/dashboard/inventory-management/contacts/edit-contacts/'}></DataTable>
                 {/*<div className="table-responsive ">*/}
                 {/*  <table className="table ">*/}
                 {/*    <thead className=" table-border ">*/}
