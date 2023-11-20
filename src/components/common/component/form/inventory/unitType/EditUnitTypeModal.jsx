@@ -146,7 +146,7 @@ const EditUnitTypeModal = ({modal, toggle, reFetch, valueForEdit}) => {
 
     return (
         <>
-            <BaseModal title={"Add Variant"} dataModal={modal} dataToggle={toggle}>
+            <BaseModal title={"Add Unit Type"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Select
@@ -193,7 +193,7 @@ const EditUnitTypeModal = ({modal, toggle, reFetch, valueForEdit}) => {
                             Cancel
                         </Button>
                         <Button color="primary" type="submit">
-                            Create
+                            update
                         </Button>
                     </div>
                 </form>

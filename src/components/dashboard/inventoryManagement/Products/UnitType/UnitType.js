@@ -101,7 +101,7 @@ const UnitType = () => {
               }}
           >
             <button onClick={toggle} className="btn btn-pill btn-info btn-air-info btn-air-info">
-              Add Variant
+              Add Unit
             </button>
           </div>
 

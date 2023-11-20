@@ -136,7 +136,7 @@ const EditVariantModal = ({modal, toggle, reFetch, valueForEdit}) => {
 
     return (
         <>
-            <BaseModal title={"Add Variant"} dataModal={modal} dataToggle={toggle}>
+            <BaseModal title={"Edit Variant"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Input
@@ -185,7 +185,7 @@ const EditVariantModal = ({modal, toggle, reFetch, valueForEdit}) => {
                             Cancel
                         </Button>
                         <Button color="primary" type="submit">
-                            Create
+                            Update
                         </Button>
                     </div>
                 </form>

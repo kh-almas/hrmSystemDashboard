@@ -9,15 +9,15 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import axios from "../../../../../../axios";
 import Swal from "sweetalert2";
 
-const AddUnitTypeModal = ({modal, toggle, reFetch}) => {
+const AddModelModal = ({modal, toggle, reFetch}) => {
     const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
     const [status, setStatus] = useState({});
-    const [unitType, setUnitType] = useState({});
 
     const schema = yup
         .object({
+            name: yup.string().required("Name is required"),
             description: yup.string().required("Business name is required")
         })
         .required()
@@ -62,21 +62,13 @@ const AddUnitTypeModal = ({modal, toggle, reFetch}) => {
         setStatus(selected);
     };
 
-    const handleChangeForUnitType = async (selected) => {
-        await processManualError('unit_type', selected?.value, ['PCs', 'Weight'])
-        setUnitType(selected);
-    };
-
     const onSubmit = async (data) => {
         const checkStatus = await processManualError('status', status?.value, ['Active', 'Inactive'])
-        const checkUnitType = await processManualError('unit_type', unitType?.value, ['PCs', 'Weight'])
-        data.unit_type = unitType?.value;
         data.status = status?.value;
         data.company_id = selectedCompany;
         data.branch_id = selectedBranch;
-
-        if(checkStatus?.isValid !== false && checkUnitType?.isValid !== false){
-            axios.post('/inventory-management/unit-type/add', data)
+        if(checkStatus?.isValid !== false){
+            axios.post('/inventory-management/model/add', data)
                 .then(info => {
                     if(info?.status == 200)
                     {
@@ -113,20 +105,25 @@ const AddUnitTypeModal = ({modal, toggle, reFetch}) => {
                     }
                 })
         }
+
+
+
     }
 
     return (
         <>
-            <BaseModal title={"Add Unit Type"} dataModal={modal} dataToggle={toggle}>
+            <BaseModal title={"Add Model"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
-                        <Select
-                            labelName={"Unit type"}
-                            placeholder={"Select an option"}
-                            options={[{value: "PCs", label: "PCs"}, {value: "Weight", label: "Weight"}]}
-                            setValue={setUnitType}
-                            cngFn={handleChangeForUnitType}
-                            error={errors?.unit_type}
+                        <Input
+                            labelName={"Name"}
+                            inputName={"name"}
+                            inputType={"text"}
+                            placeholder={"Enter variant name"}
+                            validation={{
+                                ...register("name"),
+                            }}
+                            error={errors?.name}
                         />
                     </div>
                     <div className="form-group mb-3" style={{fontSize: "11px"}}>
@@ -156,7 +153,6 @@ const AddUnitTypeModal = ({modal, toggle, reFetch}) => {
                         />
                     </div>
 
-
                     <div className="d-flex justify-content-end">
                         <Button color="danger" onClick={toggle} className="me-2">
                             Cancel
@@ -171,4 +167,4 @@ const AddUnitTypeModal = ({modal, toggle, reFetch}) => {
     );
 };
 
-export default AddUnitTypeModal;
+export default AddModelModal;
