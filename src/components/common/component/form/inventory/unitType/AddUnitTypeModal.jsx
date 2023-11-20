@@ -1,23 +1,23 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState} from 'react';
 import {Button} from "reactstrap";
-import BaseModal from "../../../modal/BaseModal";
-import Input from "../../../modal/Input";
-import Select from "../../../modal/Select";
+import BaseModal from "../../../../modal/BaseModal";
+import Input from "../../../../modal/Input";
+import Select from "../../../../modal/Select";
 import {useForm} from "react-hook-form";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import axios from "../../../../../axios";
+import axios from "../../../../../../axios";
 import Swal from "sweetalert2";
 
-const EditVariantModal = ({modal, toggle, reFetch, valueForEdit}) => {
+const AddUnitTypeModal = ({modal, toggle, reFetch}) => {
+    const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
     const [status, setStatus] = useState({});
-    const [oldData, setOldData] = useState({});
+    const [unitType, setUnitType] = useState({});
 
     const schema = yup
         .object({
-            name: yup.string().required("Name is required"),
             description: yup.string().required("Business name is required")
         })
         .required()
@@ -28,18 +28,9 @@ const EditVariantModal = ({modal, toggle, reFetch, valueForEdit}) => {
         clearErrors,
         setError,
         formState: {errors},
-        reset,
     } = useForm({
-        defaultValues: useMemo(()=> {
-            return oldData;
-        }, [oldData]),
-        resolver: yupResolver(schema),
+        resolver: yupResolver(schema)
     });
-
-    useEffect(() => {
-        setOldData(valueForEdit?.original);
-        reset(oldData);
-    }, [reset,oldData,valueForEdit])
 
     const fieldValidation = (fieldName, value, fixedItem) => {
         const schema = yup.string()
@@ -66,18 +57,26 @@ const EditVariantModal = ({modal, toggle, reFetch, valueForEdit}) => {
         }
     }
 
+    const handleChangeForUpdateStatus = async (selected) => {
+        await processManualError('status', selected?.value, ['Active', 'Inactive'])
+        setStatus(selected);
+    };
+
+    const handleChangeForUnitType = async (selected) => {
+        await processManualError('unit_type', selected?.value, ['PCs', 'Weight'])
+        setUnitType(selected);
+    };
+
     const onSubmit = async (data) => {
         const checkStatus = await processManualError('status', status?.value, ['Active', 'Inactive'])
+        const checkUnitType = await processManualError('unit_type', unitType?.value, ['PCs', 'Weight'])
+        data.unit_type = unitType?.value;
+        data.status = status?.value;
+        data.company_id = selectedCompany;
+        data.branch_id = selectedBranch;
 
-        if(checkStatus?.isValid !== false){
-            const processData = {
-                company_id:selectedCompany,
-                branch_id: selectedBranch,
-                name: data?.name ?? oldData?.name_s,
-                description: data?.description ?? oldData?.description_s,
-                status: status?.value ?? oldData?.status_s_g
-            }
-            axios.put(`/inventory-management/variant/update/${oldData?.id}`, processData)
+        if(checkStatus?.isValid !== false && checkUnitType?.isValid !== false){
+            axios.post('/inventory-management/unit-type/add', data)
                 .then(info => {
                     if(info?.status == 200)
                     {
@@ -114,41 +113,20 @@ const EditVariantModal = ({modal, toggle, reFetch, valueForEdit}) => {
                     }
                 })
         }
-
-
-
     }
-
-    const [statusOptions, setStatusOptions] = useState([
-        {value: "Active", label: "Active"},
-        {value: "Inactive", label: "Inactive"}
-    ])
-
-    useEffect(() => {
-        const filterStatus = statusOptions?.find(data => data.value == oldData?.status_s_g)
-        setStatus(filterStatus);
-    }, [oldData])
-
-    const handleChangeForUpdateStatus = async (selected) => {
-        await processManualError('status', selected?.value, ['Active', 'Inactive'])
-        setStatus(selected);
-    };
 
     return (
         <>
             <BaseModal title={"Add Variant"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
-                        <Input
-                            labelName={"Name"}
-                            inputName={"name"}
-                            inputType={"text"}
-                            placeholder={"Enter variant name"}
-                            validation={{
-                                ...register("name"),
-                            }}
-                            error={errors?.name}
-                            defaultValue={oldData?.name_s}
+                        <Select
+                            labelName={"Unit type"}
+                            placeholder={"Select an option"}
+                            options={[{value: "PCs", label: "PCs"}, {value: "Weight", label: "Weight"}]}
+                            setValue={setUnitType}
+                            cngFn={handleChangeForUnitType}
+                            error={errors?.unit_type}
                         />
                     </div>
                     <div className="form-group mb-3" style={{fontSize: "11px"}}>
@@ -163,7 +141,6 @@ const EditVariantModal = ({modal, toggle, reFetch, valueForEdit}) => {
                             id="exampleFormControlTextarea4"
                             rows="3"
                             {...register("description")}
-                            defaultValue={oldData?.description_s}
                         ></textarea>
                     </div>
 
@@ -172,13 +149,13 @@ const EditVariantModal = ({modal, toggle, reFetch, valueForEdit}) => {
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={statusOptions}
+                            options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
                             setValue={setStatus}
                             cngFn={handleChangeForUpdateStatus}
                             error={errors?.status}
-                            previous={status}
                         />
                     </div>
+
 
                     <div className="d-flex justify-content-end">
                         <Button color="danger" onClick={toggle} className="me-2">
@@ -194,4 +171,4 @@ const EditVariantModal = ({modal, toggle, reFetch, valueForEdit}) => {
     );
 };
 
-export default EditVariantModal;
+export default AddUnitTypeModal;

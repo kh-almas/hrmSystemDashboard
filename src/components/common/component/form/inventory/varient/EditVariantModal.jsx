@@ -1,19 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {Button} from "reactstrap";
-import BaseModal from "../../../modal/BaseModal";
-import Input from "../../../modal/Input";
-import Select from "../../../modal/Select";
+import BaseModal from "../../../../modal/BaseModal";
+import Input from "../../../../modal/Input";
+import Select from "../../../../modal/Select";
 import {useForm} from "react-hook-form";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import axios from "../../../../../axios";
+import axios from "../../../../../../axios";
 import Swal from "sweetalert2";
 
-const AddVariantModal = ({modal, toggle, reFetch}) => {
-    const [selectedOrganization, setSelectedOrganization] = useState(localStorage.getItem("org_id"));
+const EditVariantModal = ({modal, toggle, reFetch, valueForEdit}) => {
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
     const [status, setStatus] = useState({});
+    const [oldData, setOldData] = useState({});
 
     const schema = yup
         .object({
@@ -28,9 +28,18 @@ const AddVariantModal = ({modal, toggle, reFetch}) => {
         clearErrors,
         setError,
         formState: {errors},
+        reset,
     } = useForm({
-        resolver: yupResolver(schema)
+        defaultValues: useMemo(()=> {
+            return oldData;
+        }, [oldData]),
+        resolver: yupResolver(schema),
     });
+
+    useEffect(() => {
+        setOldData(valueForEdit?.original);
+        reset();
+    }, [reset,oldData,valueForEdit])
 
     const fieldValidation = (fieldName, value, fixedItem) => {
         const schema = yup.string()
@@ -57,18 +66,18 @@ const AddVariantModal = ({modal, toggle, reFetch}) => {
         }
     }
 
-    const handleChangeForUpdateStatus = async (selected) => {
-        await processManualError('status', selected?.value, ['Active', 'Inactive'])
-        setStatus(selected);
-    };
-
     const onSubmit = async (data) => {
         const checkStatus = await processManualError('status', status?.value, ['Active', 'Inactive'])
-        data.status = status?.value;
-        data.company_id = selectedCompany;
-        data.branch_id = selectedBranch;
+
         if(checkStatus?.isValid !== false){
-            axios.post('/inventory-management/variant/add', data)
+            const processData = {
+                company_id:selectedCompany,
+                branch_id: selectedBranch,
+                name: data?.name ?? oldData?.name_s,
+                description: data?.description ?? oldData?.description_s,
+                status: status?.value ?? oldData?.status_s_g
+            }
+            axios.put(`/inventory-management/variant/update/${oldData?.id}`, processData)
                 .then(info => {
                     if(info?.status == 200)
                     {
@@ -110,6 +119,21 @@ const AddVariantModal = ({modal, toggle, reFetch}) => {
 
     }
 
+    const [statusOptions, setStatusOptions] = useState([
+        {value: "Active", label: "Active"},
+        {value: "Inactive", label: "Inactive"}
+    ])
+
+    useEffect(() => {
+        const filterStatus = statusOptions?.find(data => data.value == oldData?.status_s_g)
+        setStatus(filterStatus);
+    }, [oldData])
+
+    const handleChangeForUpdateStatus = async (selected) => {
+        await processManualError('status', selected?.value, ['Active', 'Inactive'])
+        setStatus(selected);
+    };
+
     return (
         <>
             <BaseModal title={"Add Variant"} dataModal={modal} dataToggle={toggle}>
@@ -124,6 +148,7 @@ const AddVariantModal = ({modal, toggle, reFetch}) => {
                                 ...register("name"),
                             }}
                             error={errors?.name}
+                            defaultValue={oldData?.name_s}
                         />
                     </div>
                     <div className="form-group mb-3" style={{fontSize: "11px"}}>
@@ -138,6 +163,7 @@ const AddVariantModal = ({modal, toggle, reFetch}) => {
                             id="exampleFormControlTextarea4"
                             rows="3"
                             {...register("description")}
+                            defaultValue={oldData?.description_s}
                         ></textarea>
                     </div>
 
@@ -146,10 +172,11 @@ const AddVariantModal = ({modal, toggle, reFetch}) => {
                         <Select
                             labelName={"Status"}
                             placeholder={"Select an option"}
-                            options={[{value: "Active", label: "Active"}, {value: "Inactive", label: "Inactive"}]}
+                            options={statusOptions}
                             setValue={setStatus}
                             cngFn={handleChangeForUpdateStatus}
                             error={errors?.status}
+                            previous={status}
                         />
                     </div>
 
@@ -167,4 +194,4 @@ const AddVariantModal = ({modal, toggle, reFetch}) => {
     );
 };
 
-export default AddVariantModal;
+export default EditVariantModal;

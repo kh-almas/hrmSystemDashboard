@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import Breadcrumb from "../../../../common/breadcrumb";
 import FilesComponent from "../../../../common/filesComponent/FilesComponent";
-import AddVariantModal from "../../../../common/component/form/inventory/AddVariantModal";
+import AddVariantModal from "../../../../common/component/form/inventory/varient/AddVariantModal";
 import DataTable from "../../../../common/component/DataTable";
 import Swal from "sweetalert2";
 import axios from "../../../../../axios";
 import getInventoryVariant from "../../../../common/Query/inventory/getInventoryVariant";
-import EditVariantModal from "../../../../common/component/form/inventory/EditVariantModal";
+import EditVariantModal from "../../../../common/component/form/inventory/varient/EditVariantModal";
 
 const Variant = () => {
     const [data, setData] = useState([]);
@@ -66,7 +66,7 @@ const Variant = () => {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: `Can not delete shift, if there have any attendance in this shift`,
+                                text: `Can not delete variant.`,
                             })
                         }
                         // if (!empty(e?.response?.data?.body?.message?.details[0].message))
