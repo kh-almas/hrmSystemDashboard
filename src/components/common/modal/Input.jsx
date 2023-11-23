@@ -17,7 +17,7 @@ const Input = ({labelName, inputName, inputType, placeholder, defaultValue, vali
         <>
             <div className="theme-form">
                 <div className="mb-2 form-group">
-                    <label style={{fontSize: "11px",}} htmlFor={inputName}>{`${labelName}:`} {error?.type === 'required' ?
+                    <label style={{fontSize: "11px",}} htmlFor={inputName}>{`${labelName ? `${labelName} :` : ''}`} {error?.type === 'required' ?
                         <span className="text-danger">(Required)</span> : ''}</label>
                     <input
                         style={inputStyle}
