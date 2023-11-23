@@ -207,6 +207,16 @@ export const MENUITEMS = [
         type: "link",
         path: "/dashboard/dropdown2",
       },
+      {
+        title: "Tree view",
+        type: "link",
+        path: "/dashboard/treeview",
+      },
+      {
+        title: "Tree view2",
+        type: "link",
+        path: "/dashboard/treeview2",
+      },
       // {
       //   title: "Performance Setup",
       //   type: "sub",

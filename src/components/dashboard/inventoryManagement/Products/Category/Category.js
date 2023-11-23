@@ -1,15 +1,13 @@
 import React, {useEffect, useState} from "react";
 import Breadcrumb from "../../../../common/breadcrumb";
 import FilesComponent from "../../../../common/filesComponent/FilesComponent";
-import CommonSearchComponet from "../../../../common/salaryCard/CommonSearchComponet";
-import Paginationbtn from "../../../../common/Paginationbtn";
-import getInventoryVariant from "../../../../common/Query/inventory/getInventoryVariant";
 import Swal from "sweetalert2";
 import axios from "../../../../../axios";
 import DataTable from "../../../../common/component/DataTable";
-import AddVariantModal from "../../../../common/component/form/inventory/varient/AddVariantModal";
-import EditVariantModal from "../../../../common/component/form/inventory/varient/EditVariantModal";
 import getInventoryCategory from "../../../../common/Query/inventory/getInventoryCategory";
+import AddCategoryModal from "../../../../common/component/form/inventory/Category/AddCategoryModal";
+import EditCategoryModal from "../../../../common/component/form/inventory/Category/EditCategoryModal";
+
 const Category = () => {
 
     const [data, setData] = useState([]);
@@ -17,7 +15,6 @@ const Category = () => {
     const [modal, setModal] = useState(false);
     const [editModal, setEditModal] = useState(false);
     const [valueForEdit, setValueForEdit] = useState({});
-    // console.log(valueForEdit);
     const isDarty = () =>
     {
         setIsChange(!isChange);
@@ -49,7 +46,7 @@ const Category = () => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`/inventory-management/variant/delete/${id}`)
+                axios.delete(`/inventory-management/category/delete/${id}`)
                     .then(info => {
                         if(info?.status == 200)
                         {
@@ -116,8 +113,8 @@ const Category = () => {
                   </div>
               </div>
           </div>
-          <AddVariantModal modal={modal} toggle={toggle} reFetch={isDarty}></AddVariantModal>
-          <EditVariantModal modal={editModal} toggle={updateToggle} reFetch={isDarty} valueForEdit={valueForEdit} ></EditVariantModal>
+          <AddCategoryModal isChange={isChange} modal={modal} toggle={toggle} reFetch={isDarty}></AddCategoryModal>
+          <EditCategoryModal isChange={isChange} modal={editModal} toggle={updateToggle} reFetch={isDarty} valueForEdit={valueForEdit} ></EditCategoryModal>
       </>
   );
 };

@@ -158,6 +158,8 @@ import CreateUser from "../components/dashboard/user/CreateUser";
 import MaterialReactTableExample from "../components/common/component/material-react-table-example";
 import DropdownTable from "../components/common/component/DropdownTable";
 import DropdownTable2 from "../components/common/component/DropdownTable2";
+import TreeViewExample from "../components/common/component/TreeViewExample";
+import TreeViewExample2 from "../components/common/component/TreeViewExample2";
 
 export const routes = [
   {
@@ -429,6 +431,14 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/dropdown2`,
     Component: <DropdownTable2 />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/treeview`,
+    Component: <TreeViewExample />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/treeview2`,
+    Component: <TreeViewExample2 />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/admin/trip`,
