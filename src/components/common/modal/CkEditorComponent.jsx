@@ -17,7 +17,7 @@ const CkEditorComponent = ({ label, content, setContent }) => {
             >
               {label}
             </label>
-            <div className="card">
+            <div>
               <CKEditors
                 activeclassName="p10"
                 fontSize_defaultLabel = '44px'

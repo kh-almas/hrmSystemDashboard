@@ -215,6 +215,9 @@ const AddCategoryModal = ({modal, toggle, reFetch, isChange}) => {
                     </div>
 
                     <div>
+                        <label htmlFor="exampleFormControlTextarea4">
+                            Select Category
+                        </label>
                         <DropdownTreeSelect
                             mode='radioSelect'
                             data={processData}

@@ -141,7 +141,6 @@ const AddModelModal = ({modal, toggle, reFetch}) => {
                         ></textarea>
                     </div>
 
-
                     <div>
                         <Select
                             labelName={"Status"}

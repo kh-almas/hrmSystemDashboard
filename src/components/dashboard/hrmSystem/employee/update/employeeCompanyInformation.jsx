@@ -5,7 +5,6 @@ import GetAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import GetAllDesignation from "../../../../common/Query/hrm/GetAllDesignation";
 import GetAllDepartment from "../../../../common/Query/hrm/GetAllDepartment";
 import Select from "../../../../common/modal/Select";
-import UnitModal from "../../../../common/AddProduct/Modal/UnitModal";
 import AddBranchModal from "../../../../common/modal/Form/AddBranchModal";
 import GetAllOrganization from "../../../../common/Query/hrm/GetAllOrganization";
 import AddOrganizationModal from "../../../../common/modal/Form/AddOrganizationModal";

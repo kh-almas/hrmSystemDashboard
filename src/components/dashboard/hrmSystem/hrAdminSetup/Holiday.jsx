@@ -92,7 +92,7 @@ const Holiday = () => {
         <CommonSearchComponet />
         <div className="table-responsive">
           <table className="table">
-            <thead className=" table-border">
+            <thead className="table-border">
               <tr>
                 <th scope="col">{"Occasion"}</th>
                 <th scope="col">{"Start Date"}</th>
