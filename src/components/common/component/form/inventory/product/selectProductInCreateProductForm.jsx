@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import axios from "../../../../../../axios";
 import {MaterialReactTable, useMaterialReactTable} from "material-react-table";
 
-const SelectProductInCreateProductForm = () => {
+const SelectProductInCreateProductForm = ({ setSelectedProductForCombo, updateSelectedProduct }) => {
     const [data, setData] = useState([]);
     const [processedData, setProcessedData] = useState([]);
     const [isError, setIsError] = useState(false);
@@ -19,14 +19,19 @@ const SelectProductInCreateProductForm = () => {
     });
     const [rowSelection, setRowSelection] = useState({});
     const [showSelectData, setShowSelectData] = useState([]);
+    const [showSelectDataAllInfo, setShowSelectDataAllInfo] = useState([]);
+    // console.log("rowSelection", rowSelection);
 
-    // console.log(rowSelection);
+    useEffect(() => {
+        setRowSelection(updateSelectedProduct);
+    }, [updateSelectedProduct])
+
     useEffect(() => {
         const keysArray = Object.keys(rowSelection);
-        console.log('keysArray', data);
-        keysArray?.map(singleKey => console.log(singleKey));
-        // data?.filter{singledata => singledata?.id ===  }
+        const filteredData = data?.filter(singleData => keysArray.includes(singleData?.id?.toString()));
         setShowSelectData(keysArray);
+        setShowSelectDataAllInfo(filteredData);
+        setSelectedProductForCombo(filteredData);
     }, [rowSelection]);
 
     const handleClose = (e) => {
@@ -37,15 +42,15 @@ const SelectProductInCreateProductForm = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                axios.get(`http://localhost:5000/hrm-system/employee/`)
+                axios.get(`/inventory-management/products/list`)
                     .then(getData => {
-                        setData(getData?.data?.body?.data?.data);
-                        setProcessedData(getData?.data?.body?.data?.data);
-                        setRowCount(getData?.data?.body?.data?.data?.length);
+                        setData(getData?.data?.body?.data);
+                        setProcessedData(getData?.data?.body?.data);
+                        setRowCount(getData?.data?.body?.data?.length);
                     })
             } catch (error) {
                 setIsError(true);
-                console.error(error);
+                // console.error(error);
                 return;
             }
             setIsRefetching(false);
@@ -56,12 +61,12 @@ const SelectProductInCreateProductForm = () => {
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'full_name',
-                header: 'Employee Name',
+                accessorKey: 'name',
+                header: 'Product name',
             },
             {
-                accessorKey: 'deg_name',
-                header: 'Designation',
+                accessorKey: 'sku',
+                header: 'SKU',
             },
         ],
         [],
@@ -148,10 +153,10 @@ const SelectProductInCreateProductForm = () => {
     return (
         <div  style={{position: "relative"}}>
             <div  style={{  height: "75px", overflowY: "scroll", display:'flex', flexWrap: 'wrap', marginTop: '3px', border: '1px solid #ccc', padding: '5px' }}>
-                {showSelectData.map((item, index) => (
+                {showSelectDataAllInfo.map((item, index) => (
                     <div key={index} style={{ display:'flex',alignItems:'center', marginRight: '5px', marginBottom: '5px', position: 'relative' }}>
                         <div style={{backgroundColor: "lightgray", padding: "5px 5px 3px 5px", borderRadius: "6px"}}>
-                            {item}
+                            {item?.name}
                             <span>
                                 <i onClick={() => handleRemove(index)} style={{fontSize: "17px", cursor: 'pointer', marginLeft: "3px"}} className="icofont icofont-close-line"></i>
                             </span>

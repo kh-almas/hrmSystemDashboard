@@ -98,7 +98,7 @@ const EditCategoryModal = ({modal, toggle, reFetch, valueForEdit, isChange}) => 
             }
         });
 
-        console.log("rootDirectories", rootDirectories)
+        // console.log("rootDirectories", rootDirectories)
         return rootDirectories;
     };
 
