@@ -217,6 +217,16 @@ export const MENUITEMS = [
         type: "link",
         path: "/dashboard/treeview2",
       },
+      {
+        title: "input",
+        type: "link",
+        path: "/dashboard/input",
+      },
+      {
+        title: "Image Uploader",
+        type: "link",
+        path: "/dashboard/image/uploader",
+      },
       // {
       //   title: "Performance Setup",
       //   type: "sub",
