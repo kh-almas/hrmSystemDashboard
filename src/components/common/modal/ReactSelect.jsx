@@ -35,7 +35,7 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
       <div className="theme-form">
         <div className="mb-3 form-group">
           <label style={{ fontSize: "11px" }} htmlFor={labelName}>
-            {`${labelName}:`}{" "}
+            {labelName? `${labelName}:` : ''}{" "}
             {error && <span className="text-danger">(Required)</span>}
           </label>
           <div>
