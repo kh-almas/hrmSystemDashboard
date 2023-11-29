@@ -163,6 +163,7 @@ import TreeViewExample2 from "../components/common/component/TreeViewExample2";
 import Input from "../components/common/modal/Input";
 import InputTest from "../components/common/component/InputTest";
 import ImageUploader from "../components/common/component/imageUpload/ImageUploader";
+import DropdownTable3 from "../components/common/component/DropdownTable3";
 
 export const routes = [
   {
@@ -434,6 +435,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/dropdown2`,
     Component: <DropdownTable2 />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/dropdown3`,
+    Component: <DropdownTable3 />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/treeview`,

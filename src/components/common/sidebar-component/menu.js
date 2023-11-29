@@ -208,6 +208,11 @@ export const MENUITEMS = [
         path: "/dashboard/dropdown2",
       },
       {
+        title: "Dropdown3",
+        type: "link",
+        path: "/dashboard/dropdown3",
+      },
+      {
         title: "Tree view",
         type: "link",
         path: "/dashboard/treeview",

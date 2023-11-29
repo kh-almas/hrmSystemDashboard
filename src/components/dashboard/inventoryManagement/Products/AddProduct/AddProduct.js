@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import Breadcrumb from "../../../../common/breadcrumb";
 import {useForm} from "react-hook-form";
 import Select from "../../../../common/modal/Select";
@@ -18,10 +18,14 @@ import SelectProductInCreateProductForm from "../../../../common/component/form/
 import Dropzone from 'react-dropzone-uploader';
 import {ToastContainer, toast} from 'react-toastify';
 // import 'react-dropzone-uploader/dist/styles.css';
-import TextField from "@mui/material/TextField";
 import axios from "../../../../../axios";
 import Swal from "sweetalert2";
 import {yupResolver} from "@hookform/resolvers/yup";
+import DropdownTable3 from "../../../../common/component/DropdownTable3";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import AutoComplete from "../../../../common/modal/AutoComplete";
 
 const AddProduct = () => {
     const [parentCategory, setParentCategory] = useState({});
@@ -40,6 +44,8 @@ const AddProduct = () => {
     // const updateProductForCombo = () => {
     //     console.log()
     // }
+
+    console.log("selectedProductForCombo", selectedProductForCombo)
 
     const removeItemFromProductList = (data) => {
         let processKey = {};
@@ -245,37 +251,37 @@ const AddProduct = () => {
         data.howManyProduct = selectedProductForCombo?.length;
         console.log(data)
 
-        axios.post('/inventory-management/products/add', data)
-            .then(info => {
-                if(info?.status == 200)
-                {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    // toggle();
-                }
-                // reFetch();
-            })
-            .catch(e => {
-                console.log(e)
-                if(e?.response?.data?.body?.message?.errno == 1062){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: `Can not duplicate branch name`
-                    })
-                }else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: `${e?.response?.data?.body?.message?.details[0].message}`
-                    })
-                }
-            })
+        // axios.post('/inventory-management/products/add', data)
+        //     .then(info => {
+        //         if(info?.status == 200)
+        //         {
+        //             Swal.fire({
+        //                 position: 'top-end',
+        //                 icon: 'success',
+        //                 title: 'Your work has been saved',
+        //                 showConfirmButton: false,
+        //                 timer: 1500
+        //             })
+        //             // toggle();
+        //         }
+        //         // reFetch();
+        //     })
+        //     .catch(e => {
+        //         console.log(e)
+        //         if(e?.response?.data?.body?.message?.errno == 1062){
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Oops...',
+        //                 text: `Can not duplicate branch name`
+        //             })
+        //         }else {
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Oops...',
+        //                 text: `${e?.response?.data?.body?.message?.details[0].message}`
+        //             })
+        //         }
+        //     })
     }
 
 
@@ -295,8 +301,73 @@ const AddProduct = () => {
     // }
 
 
+    const [MultiselectShow, setMultiselectShow] = useState(false)
+    // console.log(MultiselectShow);
+    const showMultiselectModal = () => {
+        setMultiselectShow(true);
+    }
+
+
+    const modalRef = useRef(null);
+    const excludedDivRef = useRef(null);
+
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+            const isClickInsideExcludedDiv = excludedDivRef.current && excludedDivRef.current.contains(event.target);
+            if (modalRef.current && modalRef.current.contains(event.target) && !isClickInsideExcludedDiv) {
+                console.log('modalRef.current', modalRef.current);
+                setMultiselectShow(false);
+            }
+        };
+
+        if (MultiselectShow) {
+            document.addEventListener("mousedown", handleOutsideClick);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick);
+        };
+    }, [MultiselectShow, modalRef]);
+
+
+    const columns = [
+        {
+            accessorKey: 'name',
+            header: 'Name',
+        },
+        {
+            accessorKey: 'sku',
+            header: 'SKU',
+        },
+        {
+            accessorKey: 'hsn',
+            header: 'HSN',
+        },
+        {
+            accessorKey: 'barcode_type',
+            header: 'Barcode',
+        },
+    ];
+    const [dataForMultiSelect, setDataForMultiSelect] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                axios.get(`/inventory-management/products/list`)
+                    .then(getData => {
+                        setDataForMultiSelect(getData?.data?.body?.data);
+                    })
+            } catch (error) {
+                console.error(error);
+                return;
+            }
+        };
+        fetchData()
+    }, []);
+
+
     return (
-        <div>
+        <div ref={modalRef}>
             <Breadcrumb parent="Inventory management" title="Add New Product"/>
             <div className="container-fluid">
                 <form onSubmit={handleSubmit(submitAddProductForm)}>
@@ -308,16 +379,13 @@ const AddProduct = () => {
                                         <div className="">
                                             <div class="pb-2 d-flex align-items-center justify-content-center">
                                                 <div class="form-check form-check-inline align-items-center">
-                                                    <input className="form-check-input" type="radio"
-                                                           name="inlineRadioOptions" id="inlineRadio1" value="option1"/>
+                                                    <input {...register("isRawMaterial")} className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1"/>
                                                     <label className="form-check-label" htmlFor="inlineRadio1">
                                                         Raw Material
                                                     </label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    <input className="form-check-input" type="radio"
-                                                           name="inlineRadioOptions" id="inlineRadio2" value="option2"
-                                                           checked={true}/>
+                                                    <input {...register("isRawMaterial")} className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="0" checked={true}/>
                                                     <label className="form-check-label" htmlFor="inlineRadio2">
                                                         Finish Product
                                                     </label>
@@ -350,7 +418,7 @@ const AddProduct = () => {
                                                 <Input
                                                     labelName={"Height"}
                                                     inputName={"height"}
-                                                    inputType={"text"}
+                                                    inputType={"number"}
                                                     placeholder={"height"}
                                                     validation={{
                                                         ...register("p_height"),
@@ -363,7 +431,7 @@ const AddProduct = () => {
                                                 <Input
                                                     labelName={"Width"}
                                                     inputName={"width"}
-                                                    inputType={"text"}
+                                                    inputType={"number"}
                                                     placeholder={"width"}
                                                     validation={{
                                                         ...register("p_width"),
@@ -376,7 +444,7 @@ const AddProduct = () => {
                                                 <Input
                                                     labelName={"Length"}
                                                     inputName={"length"}
-                                                    inputType={"text"}
+                                                    inputType={"number"}
                                                     placeholder={"Length"}
                                                     validation={{...register("p_length")}}
                                                 />
@@ -393,7 +461,7 @@ const AddProduct = () => {
                                                 <Input
                                                     labelName={"Height"}
                                                     inputName={"height"}
-                                                    inputType={"text"}
+                                                    inputType={"number"}
                                                     placeholder={"height"}
                                                     validation={{
                                                         ...register("package_height"),
@@ -406,7 +474,7 @@ const AddProduct = () => {
                                                 <Input
                                                     labelName={"Width"}
                                                     inputName={"width"}
-                                                    inputType={"text"}
+                                                    inputType={"number"}
                                                     placeholder={"width"}
                                                     validation={{
                                                         ...register("package_width"),
@@ -419,7 +487,7 @@ const AddProduct = () => {
                                                 <Input
                                                     labelName={"Length"}
                                                     inputName={"length"}
-                                                    inputType={"text"}
+                                                    inputType={"number"}
                                                     placeholder={"Length"}
                                                     validation={{...register("package_length")}}
                                                 />
@@ -717,21 +785,23 @@ const AddProduct = () => {
                                                                     ...register("tax"),
                                                                 }}
                                                             />
+                                                        </div>
 
-                                                            <div
-                                                                className="col-md-3 d-flex align-items-center mt-3 text-center mx-4">
-                                                                <input
-                                                                    className="form-control text-center rounded-4"
-                                                                    type="text"
-                                                                    name=""
-                                                                    placeholder="%"
-                                                                    value=""
-                                                                    readOnly
-                                                                />
-                                                            </div>
+                                                        <div>
+                                                            <Select
+                                                                labelName={"Tax Type"}
+                                                                placeholder={''}
+                                                                defaultValue={{value: "percent", label: "Percent"}}
+                                                                options={[{value: "percent", label: "Percent"}, {value: "value", label: "Value"}]}
+                                                                // setValue={setStatus}
+                                                                // cngFn={handleChangeForUpdateStatus}
+                                                            />
+                                                        </div>
+
+                                                        <div>
+                                                            <AutoComplete />
                                                         </div>
                                                         {/*) : ( "" )}*/}
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -757,7 +827,8 @@ const AddProduct = () => {
                                     <label htmlFor="exampleFormControlTextarea4" style={{fontSize: '11px'}}>
                                         Select Product
                                     </label>
-                                    <SelectProductInCreateProductForm updateSelectedProduct={updateSelectedProduct} setSelectedProductForCombo={setSelectedProductForCombo}></SelectProductInCreateProductForm>
+                                    {/*<DropdownTable3></DropdownTable3>*/}
+                                    <SelectProductInCreateProductForm data={dataForMultiSelect} excludedDivRef={excludedDivRef} showMultiselectModal={showMultiselectModal} MultiselectShow={MultiselectShow} columns={columns}  updateSelectedProduct={updateSelectedProduct} setSelectedProductForCombo={setSelectedProductForCombo}></SelectProductInCreateProductForm>
                                 </div>
 
                                 {/*// ) : ( "")}*/}
@@ -780,11 +851,16 @@ const AddProduct = () => {
                                                         <td>
                                                             <div>
                                                                 <TextField
+                                                                    disabled
                                                                     id="outlined-size-small"
-                                                                    defaultValue={singleData?.name}
+                                                                    value={singleData?.name}
                                                                     size="small"
                                                                     validation={{
                                                                         ...register(`product_id_${index}`,{ value: singleData?.id }),
+                                                                    }}
+                                                                    sx={{
+                                                                        width: '100%',
+                                                                        marginTop: '16px'
                                                                     }}
                                                                 />
                                                             </div>
@@ -826,15 +902,14 @@ const AddProduct = () => {
                                                                 />
                                                             </div>
                                                         </td>
-                                                        <td className="text-end">
-                                                            <div onClick={() => removeItemFromProductList(singleData?.id)}>
-                                                                <i className="fa fa-trash"></i>
+                                                        <td className="text-end" style={{display: "flex", justifyContent: "center", alignItems: 'center'}}>
+                                                            <div style={{border: 'none', backgroundColor: 'white', marginTop: '22px', marginBottom: '6px', cursor: "pointer" }} onClick={() => removeItemFromProductList(singleData?.id)}>
+                                                                <i className="fa fa-times" style={{fontSize: '20px'}}></i>
                                                             </div>
                                                         </td>
                                                     </tr>
                                                 )
                                             }
-
                                             </tbody>
                                         </table>
                                         : ''
@@ -846,10 +921,6 @@ const AddProduct = () => {
                     </div>
                     <Submitbtn name={"Add Product"}/>
                 </form>
-            </div>
-
-            <div class="card">
-                <p>hkg</p>
             </div>
 
 
