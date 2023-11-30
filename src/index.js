@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import MainRoutes from "./routes";
 import store from "./store";
 import {QueryClient, QueryClientProvider, useQuery} from "@tanstack/react-query";
+import CustomSelectProvider from "./components/Provider/CustomSelectProvider";
 
 // setup fake backend
 
@@ -16,11 +17,13 @@ const Root = () => {
     const queryClient = new QueryClient();
   return (
     <div className="App">
-      <Provider store={store}>
-          <QueryClientProvider client={queryClient}>
-              <MainRoutes />
-          </QueryClientProvider>
-      </Provider>
+        <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+                <CustomSelectProvider>
+                    <MainRoutes />
+                </CustomSelectProvider>
+            </QueryClientProvider>
+        </Provider>
     </div>
   );
 };
