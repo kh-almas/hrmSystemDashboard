@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, {Fragment, useContext} from "react";
 import { ToastContainer } from "react-toastify";
 import Footer from "./common/footer";
 import Header from "./common/header-component/header";
@@ -8,12 +8,14 @@ import ThemeCustomizer from "./common/theme-customizer";
 // import Loader from "./common/loader";
 import { Outlet } from "react-router-dom";
 import "../assets/index.css";
+import {SelectContext} from "./Provider/CustomSelectProvider";
 
 const AppLayout = (props) => {
+  const {modalRefForAddProductInInventory} = useContext(SelectContext);
   return (
     <Fragment>
       {/* <Loader /> */}
-      <div className="page-wrapper">
+      <div className="page-wrapper"  ref={modalRefForAddProductInInventory}>
         <div className="page-body-wrapper">
           <Header />
           <Sidebar />

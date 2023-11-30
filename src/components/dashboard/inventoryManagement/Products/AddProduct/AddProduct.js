@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
 import Breadcrumb from "../../../../common/breadcrumb";
 import {useForm} from "react-hook-form";
 import Select from "../../../../common/modal/Select";
@@ -26,6 +26,8 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import AutoComplete from "../../../../common/modal/AutoComplete";
+import CustomSelectProvider, {SelectContext} from "../../../../Provider/CustomSelectProvider";
+import DropdownTable4 from "../../../../common/component/DropdownTable4";
 
 const AddProduct = () => {
     const [parentCategory, setParentCategory] = useState({});
@@ -301,73 +303,36 @@ const AddProduct = () => {
     // }
 
 
-    const [MultiselectShow, setMultiselectShow] = useState(false)
-    // console.log(MultiselectShow);
-    const showMultiselectModal = () => {
-        setMultiselectShow(true);
-    }
+    // const [MultiselectShowForAddProductInInventory, setMultiselectShowForAddProductInInventory] = useState(false)
+    // // console.log(MultiselectShow);
+
+    //
+    // const modalRefForAddProductInInventory = useRef(null);
+    // const excludedDivRefForAddProductInInventory = useRef(null);
+    //
+    // useEffect(() => {
+    //     const handleOutsideClick = (event) => {
+    //         const isClickInsideExcludedDiv = excludedDivRefForAddProductInInventory.current && excludedDivRefForAddProductInInventory.current.contains(event.target);
+    //         if (modalRefForAddProductInInventory.current && modalRefForAddProductInInventory.current.contains(event.target) && !isClickInsideExcludedDiv) {
+    //             // console.log('modalRefForAddProductInInventory.current', modalRefForAddProductInInventory.current);
+    //             setMultiselectShowForAddProductInInventory(false);
+    //         }
+    //     };
+    //
+    //     if (MultiselectShowForAddProductInInventory) {
+    //         document.addEventListener("mousedown", handleOutsideClick);
+    //     }
+    //
+    //     return () => {
+    //         document.removeEventListener("mousedown", handleOutsideClick);
+    //     };
+    // }, [MultiselectShowForAddProductInInventory, modalRefForAddProductInInventory]);
 
 
-    const modalRef = useRef(null);
-    const excludedDivRef = useRef(null);
-
-    useEffect(() => {
-        const handleOutsideClick = (event) => {
-            const isClickInsideExcludedDiv = excludedDivRef.current && excludedDivRef.current.contains(event.target);
-            if (modalRef.current && modalRef.current.contains(event.target) && !isClickInsideExcludedDiv) {
-                console.log('modalRef.current', modalRef.current);
-                setMultiselectShow(false);
-            }
-        };
-
-        if (MultiselectShow) {
-            document.addEventListener("mousedown", handleOutsideClick);
-        }
-
-        return () => {
-            document.removeEventListener("mousedown", handleOutsideClick);
-        };
-    }, [MultiselectShow, modalRef]);
-
-
-    const columns = [
-        {
-            accessorKey: 'name',
-            header: 'Name',
-        },
-        {
-            accessorKey: 'sku',
-            header: 'SKU',
-        },
-        {
-            accessorKey: 'hsn',
-            header: 'HSN',
-        },
-        {
-            accessorKey: 'barcode_type',
-            header: 'Barcode',
-        },
-    ];
-    const [dataForMultiSelect, setDataForMultiSelect] = useState([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                axios.get(`/inventory-management/products/list`)
-                    .then(getData => {
-                        setDataForMultiSelect(getData?.data?.body?.data);
-                    })
-            } catch (error) {
-                console.error(error);
-                return;
-            }
-        };
-        fetchData()
-    }, []);
 
 
     return (
-        <div ref={modalRef}>
+        <div>
             <Breadcrumb parent="Inventory management" title="Add New Product"/>
             <div className="container-fluid">
                 <form onSubmit={handleSubmit(submitAddProductForm)}>
@@ -827,8 +792,9 @@ const AddProduct = () => {
                                     <label htmlFor="exampleFormControlTextarea4" style={{fontSize: '11px'}}>
                                         Select Product
                                     </label>
+                                    {/*<DropdownTable4></DropdownTable4>*/}
                                     {/*<DropdownTable3></DropdownTable3>*/}
-                                    <SelectProductInCreateProductForm data={dataForMultiSelect} excludedDivRef={excludedDivRef} showMultiselectModal={showMultiselectModal} MultiselectShow={MultiselectShow} columns={columns}  updateSelectedProduct={updateSelectedProduct} setSelectedProductForCombo={setSelectedProductForCombo}></SelectProductInCreateProductForm>
+                                    <SelectProductInCreateProductForm updateSelectedProduct={updateSelectedProduct} setSelectedProductForCombo={setSelectedProductForCombo}></SelectProductInCreateProductForm>
                                 </div>
 
                                 {/*// ) : ( "")}*/}
