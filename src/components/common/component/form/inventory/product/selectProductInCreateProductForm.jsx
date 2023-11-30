@@ -23,13 +23,13 @@ import axios from "../../../../../../axios";
 import CustomSelectProvider, {SelectContext} from "../../../../../Provider/CustomSelectProvider";
 
 const SelectProductInCreateProductForm = ({ setSelectedProductForCombo, updateSelectedProduct}) => {
-    const {
-        MultiselectShowForAddProductInInventory,
-        hideMultiselectModalForAddProductInInventoryFn,
-        setMultiselectShowForAddProductInInventory,
-        showMultiselectModalForAddProductInInventoryFn,
-        excludedDivRefForAddProductInInventory
-    } = useContext(SelectContext);
+    // const {
+    //     MultiselectShowForAddProductInInventory,
+    //     hideMultiselectModalForAddProductInInventoryFn,
+    //     setMultiselectShowForAddProductInInventory,
+    //     showMultiselectModalForAddProductInInventoryFn,
+    //     excludedDivRefForAddProductInInventory
+    // } = useContext(SelectContext);
     const [data, setData] = useState([]);
     const [rowSelection, setRowSelection] = useState([]);
     const [showSelectDataAllInfo, setShowSelectDataAllInfo] = useState([]);
@@ -142,7 +142,7 @@ const SelectProductInCreateProductForm = ({ setSelectedProductForCombo, updateSe
 
 
     return (
-        <div style={{width: '100vw', backgroundColor: 'transparent', position: 'relative'}}>
+        <div>
                 <Box
                     // onClick={showMultiselectModal}
                     sx={{
@@ -153,16 +153,23 @@ const SelectProductInCreateProductForm = ({ setSelectedProductForCombo, updateSe
                 >
                     <MRT_GlobalFilterTextField
                         table={table}
-                        onFocus={(e) => showMultiselectModalForAddProductInInventoryFn()}
-                        onBlur={(e) => hideMultiselectModalForAddProductInInventoryFn()}
+                        // onFocus={(e) => showMultiselectModalForAddProductInInventoryFn()}
+                        // onBlur={(e) => hideMultiselectModalForAddProductInInventoryFn()}
                     />
                 </Box>
             {
-                MultiselectShowForAddProductInInventory ?
+                show ?
                     <div>
-                        <div style={{width: '100vw', height: '100vh', backgroundColor: 'transparent', position: "absolute", zIndex: "100", }}>
-                            <div id="table" onClick={checkfn} ref={excludedDivRefForAddProductInInventory} style={{ backgroundColor: 'white', height: '400px', width: '500px', overflow: "hidden"}}>
-                                <TableContainer style={{height: '400px'}} onClick={(e) => showMultiselectModalForAddProductInInventoryFn()}>
+                        <div style={{
+                            width: '400px',
+                            height: '700px',
+                            backgroundColor: 'red',
+                            position: 'absolute',
+                        }}
+                             onClick={() => setShow(true)}
+                        >
+                            <div id="table" style={{ backgroundColor: 'white', height: '400px', width: '500px', overflow: "hidden"}}>
+                                <TableContainer style={{height: '400px'}}>
                                     <Table>
                                         {/* Use your own markup, customize however you want using the power of TanStack Table */}
                                         <TableHead style={{position: 'sticky', top: 0, zIndex:100, backgroundColor: 'white'}}>

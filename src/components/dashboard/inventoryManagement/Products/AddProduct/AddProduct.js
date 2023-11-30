@@ -792,9 +792,9 @@ const AddProduct = () => {
                                     <label htmlFor="exampleFormControlTextarea4" style={{fontSize: '11px'}}>
                                         Select Product
                                     </label>
-                                    {/*<DropdownTable4></DropdownTable4>*/}
+                                    <DropdownTable4 updateSelectedProduct={updateSelectedProduct} setSelectedProductForCombo={setSelectedProductForCombo}></DropdownTable4>
                                     {/*<DropdownTable3></DropdownTable3>*/}
-                                    <SelectProductInCreateProductForm updateSelectedProduct={updateSelectedProduct} setSelectedProductForCombo={setSelectedProductForCombo}></SelectProductInCreateProductForm>
+                                    {/*<SelectProductInCreateProductForm updateSelectedProduct={updateSelectedProduct} setSelectedProductForCombo={setSelectedProductForCombo}></SelectProductInCreateProductForm>*/}
                                 </div>
 
                                 {/*// ) : ( "")}*/}
