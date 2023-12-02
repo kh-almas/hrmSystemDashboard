@@ -7,11 +7,10 @@ import {
     useMaterialReactTable
 } from "material-react-table";
 import axios from "../../../../../../axios";
+import "./selectProductInCreateProductForm.css"
 
-const SelectProductInCreateProductForm = ({ setSelectedProductForCombo, updateSelectedProduct }) => {
-    const [show, setShow] = useState(false);
+const SelectProductInCreateProductForm = ({data, selectedDataKey, show, setShow, getSelectedData}) => {
     const containerRef = useRef(null);
-    const [data, setData] = useState([]);
     const [rowSelection, setRowSelection] = useState([]);
     const [selectedData, setSelectedData] = useState([]);
 
@@ -35,22 +34,9 @@ const SelectProductInCreateProductForm = ({ setSelectedProductForCombo, updateSe
         }
     };
 
-    const getSelectedData = (data) => {
-        console.log(data);
-        setShow(false);
-    }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`/inventory-management/products/list`);
-                setData(response?.data?.body?.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchData()
-    }, []);
+
+
 
     const columns = [
         {
@@ -109,10 +95,12 @@ const SelectProductInCreateProductForm = ({ setSelectedProductForCombo, updateSe
                         width: '400px',
                         backgroundColor: 'white',
                         position: 'absolute',
-                        zIndex: 10
+                        zIndex: 10,
+                        boxShadow: '4px 5px 25px 1px #737373',
+                        borderRadius: '7px'
                     }}
                 >
-                    <TableContainer style={{ height: '400px' }}>
+                    <TableContainer className="hideSidebar" style={{ height: '400px', borderRadius: '7px' }}>
                         <Table>
                             <TableHead style={{ position: 'sticky', top: 0, zIndex: 100, backgroundColor: 'white' }}>
                                 {table.getHeaderGroups().map((headerGroup) => (
@@ -133,7 +121,7 @@ const SelectProductInCreateProductForm = ({ setSelectedProductForCombo, updateSe
                             </TableHead>
                             <TableBody>
                                 {table.getRowModel().rows.map((row) => (
-                                    <TableRow style={{ cursor: 'pointer' }} key={row.id} selected={row.getIsSelected()} onClick={() => getSelectedData(row?.original)}>
+                                    <TableRow style={{ cursor: 'pointer', backgroundColor: selectedDataKey.includes(row?.id) ? '#eaebf3' : 'white' }} key={row.id} selected={row.getIsSelected()} onClick={() => getSelectedData(row?.original)}>
                                         {row.getVisibleCells().map((cell) => (
                                             <TableCell align="center" variant="body" key={cell.id}>
                                                 <MRT_TableBodyCellValue cell={cell} table={table} />

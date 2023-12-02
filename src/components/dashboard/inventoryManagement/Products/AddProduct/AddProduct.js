@@ -15,21 +15,13 @@ import getInventoryUnitType from "../../../../common/Query/inventory/getInventor
 import getInventoryBrand from "../../../../common/Query/inventory/getInventoryBrand";
 import getInventoryModel from "../../../../common/Query/inventory/getInventoryModel";
 import SelectProductInCreateProductForm from "../../../../common/component/form/inventory/product/selectProductInCreateProductForm";
-import Dropzone from 'react-dropzone-uploader';
-import {ToastContainer, toast} from 'react-toastify';
-// import 'react-dropzone-uploader/dist/styles.css';
 import axios from "../../../../../axios";
-import Swal from "sweetalert2";
-import {yupResolver} from "@hookform/resolvers/yup";
-import DropdownTable3 from "../../../../common/component/DropdownTable3";
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
 import AutoComplete from "../../../../common/modal/AutoComplete";
-import CustomSelectProvider, {SelectContext} from "../../../../Provider/CustomSelectProvider";
-import DropdownTable4 from "../../../../common/component/DropdownTable4";
+import MultipleImageUploader from "../../../../common/component/imageUpload/MultipleImageUploader";
 
 const AddProduct = () => {
+    const [photos, setPhotos] = useState([]);
     const [parentCategory, setParentCategory] = useState({});
     const [processData, setProcessData] = useState([]);
     const [type, setType] = useState("Single");
@@ -39,26 +31,7 @@ const AddProduct = () => {
     const [model, setModel] = useState(false);
     const [typeChange, setTypeChange] = useState({value: "Single", label: "Single"});
     const [selectedProductForCombo, setSelectedProductForCombo] = useState([]);
-    const [updateSelectedProduct, setUpdateSelectProduct] = useState({});
-    // const [comboProductList, setComboProductList] = useState([]);
     const [note, setNote] = useState('');
-    //
-    // const updateProductForCombo = () => {
-    //     console.log()
-    // }
-
-    console.log("selectedProductForCombo", selectedProductForCombo)
-
-    const removeItemFromProductList = (data) => {
-        let processKey = {};
-        const filterData = selectedProductForCombo?.filter(singleData => singleData?.id !== data)
-        console.log('filterData', filterData);
-        filterData?.map(singleData =>  processKey[singleData?.id] = true )
-        setUpdateSelectProduct(processKey);
-        setSelectedProductForCombo(filterData)
-    }
-
-
 
     const [isChange, setIsChange] = useState(false);
     const isDarty = () => {
@@ -175,10 +148,6 @@ const AddProduct = () => {
         }, [selectedProductForCombo])
     });
 
-    // useEffect(() => {
-    //     reset();
-    // }, [selectedProductForCombo]);
-
 
     const [allUnitType, setAllUnitType] = useState([]);
     const [isUnitTypeChange, setIsUnitTypeChange] = useState(false);
@@ -287,49 +256,43 @@ const AddProduct = () => {
     }
 
 
-    // specify upload params and url for your files
-    // const getUploadParams = ({meta}) => {
-    //     return {url: 'https://httpbin.org/post'}
-    // }
-    // // called every time a file's `status` changes
-    //
-    // const handleChangeStatus = ({meta, file}, status) => {
-    // }
-    //
-    // // receives array of files that are done uploading when submit button is clicked
-    // const handleImgSubmit = (files, allFiles) => {
-    //     allFiles.forEach(f => f.remove())
-    //     toast.success("Dropzone successfully submitted !");
-    // }
+    const [allDataForDropdown, setAllDataForDropdown] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`/inventory-management/products/list`);
+                setAllDataForDropdown(response?.data?.body?.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData()
+    }, []);
 
 
-    // const [MultiselectShowForAddProductInInventory, setMultiselectShowForAddProductInInventory] = useState(false)
-    // // console.log(MultiselectShow);
+    const [selectedDataKey, setSelectedDataKey] = useState([]);
+    const [show, setShow] = useState(false);
+    const getSelectedData = (data) => {
+        // console.log(data);
+        if(!selectedDataKey.includes(data.id)){
+            selectedDataKey.push(data.id);
+            setSelectedProductForCombo(prev => [...prev, data]);
+        }
+        // console.log('selectedDataKey', selectedDataKey)
 
-    //
-    // const modalRefForAddProductInInventory = useRef(null);
-    // const excludedDivRefForAddProductInInventory = useRef(null);
-    //
-    // useEffect(() => {
-    //     const handleOutsideClick = (event) => {
-    //         const isClickInsideExcludedDiv = excludedDivRefForAddProductInInventory.current && excludedDivRefForAddProductInInventory.current.contains(event.target);
-    //         if (modalRefForAddProductInInventory.current && modalRefForAddProductInInventory.current.contains(event.target) && !isClickInsideExcludedDiv) {
-    //             // console.log('modalRefForAddProductInInventory.current', modalRefForAddProductInInventory.current);
-    //             setMultiselectShowForAddProductInInventory(false);
-    //         }
-    //     };
-    //
-    //     if (MultiselectShowForAddProductInInventory) {
-    //         document.addEventListener("mousedown", handleOutsideClick);
-    //     }
-    //
-    //     return () => {
-    //         document.removeEventListener("mousedown", handleOutsideClick);
-    //     };
-    // }, [MultiselectShowForAddProductInInventory, modalRefForAddProductInInventory]);
+        setShow(false);
+    }
 
+    console.log('selectedData', selectedProductForCombo)
 
-
+    const removeItemFromProductList = (id) => {
+        // console.log(selectedDataKey.includes(id));
+        if (selectedDataKey.includes(id)){
+            const filterData = selectedProductForCombo?.filter(singleData => singleData?.id !== id);
+            setSelectedProductForCombo(filterData);
+            selectedDataKey.splice(selectedDataKey.indexOf(id), 1);
+        }
+    }
 
     return (
         <div>
@@ -466,6 +429,8 @@ const AddProduct = () => {
                                         <div className="col-sm-12">
                                             <div>
                                                 <div>
+                                                    <MultipleImageUploader photos={photos} setPhotos={setPhotos}></MultipleImageUploader>
+
                                                     {/*<form className="dropzone dropzone-primary" id="multiFileUpload"*/}
                                                     {/*      action="/upload.php">*/}
                                                     {/*    <ToastContainer/>*/}
@@ -792,9 +757,9 @@ const AddProduct = () => {
                                     <label htmlFor="exampleFormControlTextarea4" style={{fontSize: '11px'}}>
                                         Select Product
                                     </label>
-                                    {/*<DropdownTable4 updateSelectedProduct={updateSelectedProduct} setSelectedProductForCombo={setSelectedProductForCombo}></DropdownTable4>*/}
+                                    {/*<DropdownTable4 setSelectedProductForCombo={setSelectedProductForCombo}></DropdownTable4>*/}
                                     {/*<DropdownTable3></DropdownTable3>*/}
-                                    <SelectProductInCreateProductForm updateSelectedProduct={updateSelectedProduct} setSelectedProductForCombo={setSelectedProductForCombo}></SelectProductInCreateProductForm>
+                                    <SelectProductInCreateProductForm data={allDataForDropdown} selectedDataKey={selectedDataKey} show={show} setShow={setShow} getSelectedData={getSelectedData}></SelectProductInCreateProductForm>
                                 </div>
 
                                 {/*// ) : ( "")}*/}
