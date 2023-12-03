@@ -36,16 +36,18 @@ const MultipleImageUploader = ({photos, setPhotos}) => {
         const addPhotos = e.target.files;
 
         const newPhotos = Array.from(addPhotos).map((file, index) => {
-            const id = Math.floor((Math.random() * 50) + 1);
-            console.log(id);
+            let id;
+            const usedIds = new Set();
 
-            const isDuplicate = photos?.some(photo => photo?.id === id);
+            do {
+                id = Math.floor((Math.random() * 5000));
+                console.log(id);
+            } while (usedIds.has(id));
 
-            if (!isDuplicate) {
-                const photo = URL.createObjectURL(file);
-                return { id, image: photo, file };
-            }
+            usedIds.add(id);
 
+            const photo = URL.createObjectURL(file);
+            return { id, image: photo, file };
         });
 
         //* Update the state with the new photos

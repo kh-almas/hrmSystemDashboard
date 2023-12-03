@@ -9,7 +9,7 @@ import {
 import axios from "../../../../../../axios";
 import "./selectProductInCreateProductForm.css"
 
-const SelectProductInCreateProductForm = ({data, selectedDataKey, show, setShow, getSelectedData}) => {
+const SelectProductInCreateProductForm = ({data, selectedDataKey, show, setShow, getSelectedData, columns}) => {
     const containerRef = useRef(null);
     const [rowSelection, setRowSelection] = useState([]);
     const [selectedData, setSelectedData] = useState([]);
@@ -33,29 +33,6 @@ const SelectProductInCreateProductForm = ({data, selectedDataKey, show, setShow,
             setShow(true);
         }
     };
-
-
-
-
-
-    const columns = [
-        {
-            accessorKey: 'name',
-            header: 'Name',
-        },
-        {
-            accessorKey: 'sku',
-            header: 'SKU',
-        },
-        {
-            accessorKey: 'hsn',
-            header: 'HSN',
-        },
-        {
-            accessorKey: 'barcode_type',
-            header: 'Barcode',
-        },
-    ];
 
     const table = useMaterialReactTable({
         columns,

@@ -19,11 +19,12 @@ import axios from "../../../../../axios";
 import TextField from '@mui/material/TextField';
 import AutoComplete from "../../../../common/modal/AutoComplete";
 import MultipleImageUploader from "../../../../common/component/imageUpload/MultipleImageUploader";
+import SelectComboVariant from "./SelectComboVariant";
 
 const AddProduct = () => {
     const [photos, setPhotos] = useState([]);
     const [parentCategory, setParentCategory] = useState({});
-    const [processData, setProcessData] = useState([]);
+    const [processDataForCategory, setprocessDataForCategory] = useState([]);
     const [type, setType] = useState("Single");
     const [unit, setUnit] = useState(false);
     const [brand, setBrand] = useState(false);
@@ -32,11 +33,18 @@ const AddProduct = () => {
     const [typeChange, setTypeChange] = useState({value: "Single", label: "Single"});
     const [selectedProductForCombo, setSelectedProductForCombo] = useState([]);
     const [note, setNote] = useState('');
+    const [taxType, setTaxType] = useState({value: "percent", label: "Percent"});
+
 
     const [isChange, setIsChange] = useState(false);
     const isDarty = () => {
         setIsChange(!isChange);
     }
+    useEffect(() => {
+        console.log('photos',photos);
+    }, [photos]);
+
+
 
     const unitToggle = () => {
         setUnit(!unit);
@@ -83,7 +91,7 @@ const AddProduct = () => {
         const getData = async () => {
             const getData = await getInventoryCategory();
             const outputData = buildDirectoryTree(getData?.data?.body?.data);
-            setProcessData(outputData);
+            setprocessDataForCategory(outputData);
         };
         getData();
     }, [isChange]);
@@ -104,7 +112,7 @@ const AddProduct = () => {
         } else {
             setParentCategory({})
         }
-        setProcessData(data);
+        setprocessDataForCategory(data);
     }
 
     const handleTypeChange = (selected) => {
@@ -113,7 +121,7 @@ const AddProduct = () => {
     };
 
     const handelValueForCategory = (currentNode, selectedNodes) => {
-        selectSelectedData(processData, currentNode);
+        selectSelectedData(processDataForCategory, currentNode);
     }
 
     const [unitType, setUnitType] = useState({});
@@ -142,6 +150,7 @@ const AddProduct = () => {
         handleSubmit,
         reset,
         formState: {errors},
+        unregister,
     } = useForm({
         defaultValues: useMemo(()=> {
             return selectedProductForCombo;
@@ -270,27 +279,47 @@ const AddProduct = () => {
     }, []);
 
 
-    const [selectedDataKey, setSelectedDataKey] = useState([]);
-    const [show, setShow] = useState(false);
+
+    const columns = [
+        {
+            accessorKey: 'name',
+            header: 'Name',
+        },
+        {
+            accessorKey: 'sku',
+            header: 'SKU',
+        },
+        {
+            accessorKey: 'hsn',
+            header: 'HSN',
+        },
+        {
+            accessorKey: 'barcode_type',
+            header: 'Barcode',
+        },
+    ];
+
+
+    const [selectedDataKeyForProductList, setSelectedDataKey] = useState([]);
+    const [showProductList, setShowProductList] = useState(false);
     const getSelectedData = (data) => {
-        // console.log(data);
-        if(!selectedDataKey.includes(data.id)){
-            selectedDataKey.push(data.id);
+        if(!selectedDataKeyForProductList.includes(data.id)){
+            selectedDataKeyForProductList.push(data.id);
             setSelectedProductForCombo(prev => [...prev, data]);
         }
-        // console.log('selectedDataKey', selectedDataKey)
 
-        setShow(false);
+        setShowProductList(false);
     }
 
-    console.log('selectedData', selectedProductForCombo)
-
     const removeItemFromProductList = (id) => {
-        // console.log(selectedDataKey.includes(id));
-        if (selectedDataKey.includes(id)){
+        if (selectedDataKeyForProductList.includes(id)){
+                unregister(`product_id_${id}`)
+                unregister(`quantity_${id}`)
+                unregister(`price_${id}`)
+                unregister(`tax_${id}`)
             const filterData = selectedProductForCombo?.filter(singleData => singleData?.id !== id);
             setSelectedProductForCombo(filterData);
-            selectedDataKey.splice(selectedDataKey.indexOf(id), 1);
+            selectedDataKeyForProductList.splice(selectedDataKeyForProductList.indexOf(id), 1);
         }
     }
 
@@ -337,11 +366,12 @@ const AddProduct = () => {
                                     </div>
                                 </div>
 
+                                {type !== "Variant" && type !== "Combo" && type !== "Service" ? (
                                 <div className="card">
                                     <div>
                                         <div className="card-body">
                                             <h6 className="mb-0">Product size</h6>
-                                            {/*{type == "Single" ? (*/}
+                                            {type == "Single" ? (
                                             <div>
                                                 <Input
                                                     labelName={"Height"}
@@ -353,8 +383,8 @@ const AddProduct = () => {
                                                     }}
                                                 />
                                             </div>
-                                            {/*// ) : ( "" )}*/}
-                                            {/*{type == "Single" ? (*/}
+                                            ) : ( "" )}
+                                            {type == "Single" ? (
                                             <div>
                                                 <Input
                                                     labelName={"Width"}
@@ -366,8 +396,8 @@ const AddProduct = () => {
                                                     }}
                                                 />
                                             </div>
-                                            {/*// ) : ( "" )}*/}
-                                            {/*{type == "Single" ? (*/}
+                                            ) : ( "" )}
+                                            {type == "Single" ? (
                                             <div>
                                                 <Input
                                                     labelName={"Length"}
@@ -377,14 +407,14 @@ const AddProduct = () => {
                                                     validation={{...register("p_length")}}
                                                 />
                                             </div>
-                                            {/*// ) : ('')}*/}
+                                            ) : ('')}
                                         </div>
                                     </div>
                                     <div>
 
                                         <div className="card-body">
                                             <h6 className="mb-0">Package size</h6>
-                                            {/*{type == "Single" ? (*/}
+                                            {type == "Single" ? (
                                             <div>
                                                 <Input
                                                     labelName={"Height"}
@@ -396,8 +426,8 @@ const AddProduct = () => {
                                                     }}
                                                 />
                                             </div>
-                                            {/*// ) : ( "" )}*/}
-                                            {/*{type == "Single" ? (*/}
+                                            ) : ( "" )}
+                                            {type == "Single" ? (
                                             <div>
                                                 <Input
                                                     labelName={"Width"}
@@ -409,8 +439,8 @@ const AddProduct = () => {
                                                     }}
                                                 />
                                             </div>
-                                            {/*) : ( "" )}*/}
-                                            {/*{type == "Single" ? (*/}
+                                            ) : ( "" )}
+                                            {type == "Single" ? (
                                             <div>
                                                 <Input
                                                     labelName={"Length"}
@@ -420,10 +450,12 @@ const AddProduct = () => {
                                                     validation={{...register("package_length")}}
                                                 />
                                             </div>
-                                            {/*// ) : ('')}*/}
+                                            ) : ('')}
                                         </div>
                                     </div>
                                 </div>
+                                ) : ( "" )}
+
                                 <div className="card">
                                     <div className="card-body">
                                         <div className="col-sm-12">
@@ -450,51 +482,60 @@ const AddProduct = () => {
                                 </div>
                             </div>
                             <div className="col-lg-8">
-                                <div className="col-12">
-                                    <div className="card">
-                                        <div className="card-body">
-                                            {/*{type === "Single" ? (*/}
-                                            <div className="row row-cols-3">
-                                                <div>
-                                                    <Input
-                                                        labelName={"Product Name"}
-                                                        inputName={"product-name"}
-                                                        inputType={"text"}
-                                                        placeholder={"Product Name"}
-                                                        validation={{...register("name")}}
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <Input
-                                                        labelName={"Product Sku"}
-                                                        inputName={"product-sku"}
-                                                        placeholder={"Product-Sku"}
-                                                        inputType={"text"}
-                                                        validation={{
-                                                            ...register("sku"),
-                                                        }}
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <Input
-                                                        name={"hsn"}
-                                                        labelName={"HSN"}
-                                                        inputType={"text"}
-                                                        placeholder={"HSN"}
-                                                        validation={{...register("hsn")}}
-                                                    />
-                                                </div>
+                                {type !== "Variant" ? (
+                                    <div className="col-12">
+                                        <div className="card">
+                                            <div className="card-body">
+
+                                                    <div className="row row-cols-3">
+                                                        {type === "Single" ? (
+                                                        <div>
+                                                            <Input
+                                                                labelName={"Product Name"}
+                                                                inputName={"product-name"}
+                                                                inputType={"text"}
+                                                                placeholder={"Product Name"}
+                                                                validation={{...register("name")}}
+                                                            />
+                                                        </div>
+                                                        ) : ( "" )}
+                                                        {type !== "Variant" ? (
+                                                        <div>
+                                                            <Input
+                                                                labelName={"Product Sku"}
+                                                                inputName={"product-sku"}
+                                                                placeholder={"Product-Sku"}
+                                                                inputType={"text"}
+                                                                validation={{
+                                                                    ...register("sku"),
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        ) : ( "" )}
+                                                        {type === "Single" ? (
+                                                        <div>
+                                                            <Input
+                                                                name={"hsn"}
+                                                                labelName={"HSN"}
+                                                                inputType={"text"}
+                                                                placeholder={"HSN"}
+                                                                validation={{...register("hsn")}}
+                                                            />
+                                                        </div>
+                                                        ) : ( "" )}
+                                                    </div>
                                             </div>
-                                            {/*// ) : ( "" )}*/}
                                         </div>
                                     </div>
-                                </div>
+                                ) : ( "" )}
+
                                 <div className="col-12">
+                                    {type !== "Service" ? (
                                     <div className="card">
                                         <div className="card-body">
                                             <div>
                                                 <div className="row row-cols-1 row-cols-md-2">
-                                                    {/*{type === "Single" || type === "Variant" ? (*/}
+                                                    {type === "Single" || type === "Variant" ? (
                                                     <div style={{position: "relative"}}>
                                                         <p onClick={unitToggle}
                                                            style={{position: "absolute", right: "14px", cursor: "pointer",}}
@@ -515,11 +556,11 @@ const AddProduct = () => {
                                                             />
                                                         </div>
                                                     </div>
-                                                    {/*) : ( "" )}*/}
+                                                    ) : ( "" )}
 
 
 
-                                                    {/*{type == "Single" || type === "Variant" ? (*/}
+                                                    {type == "Single" || type === "Variant" ? (
                                                     <div style={{position: "relative"}}>
                                                         <p
                                                             onClick={brandToggle}
@@ -547,9 +588,9 @@ const AddProduct = () => {
                                                             />
                                                         </div>
                                                     </div>
-                                                    {/*) : ( "" )}*/}
+                                                    ) : ( "" )}
 
-                                                    {/*{type == "Single" || type === "Variant" ? (*/}
+                                                    {type == "Single" || type === "Variant" ? (
                                                     <div style={{position: "relative"}}>
                                                         <p
                                                             onClick={modelToggle}
@@ -577,8 +618,8 @@ const AddProduct = () => {
                                                             />
                                                         </div>
                                                     </div>
-                                                    {/*) : ( "" )}*/}
-                                                    {/*{type === "Single" || type === "Variant" || type === "Combo" ? (*/}
+                                                    ) : ( "" )}
+                                                    {type === "Single" || type === "Variant" || type === "Combo" ? (
                                                     <div>
                                                         <Select
                                                             name={"barcode-type"}
@@ -593,11 +634,11 @@ const AddProduct = () => {
                                                             cngFn={handleChangeForUpdateBarcodeType}
                                                         />
                                                     </div>
-                                                    {/*) : ( "")}*/}
+                                                    ) : ( "")}
                                                 </div>
 
 
-                                                {/*{type == "Single" || type === "Varient" ? (*/}
+                                                {type == "Single" || type === "Variant" ? (
                                                 <div>
                                                     <div className="d-flex justify-content-between">
                                                         <label htmlFor="exampleFormControlTextarea4"
@@ -609,31 +650,33 @@ const AddProduct = () => {
                                                            className="text-primary">
                                                             New Category
                                                             <span>
-                                  <i className="icofont icofont-plus-circle"></i>
-                                </span>
+                                                              <i className="icofont icofont-plus-circle"></i>
+                                                            </span>
                                                         </p>
                                                     </div>
 
                                                     <div>
                                                         <DropdownTreeSelect
                                                             mode='radioSelect'
-                                                            data={processData}
+                                                            data={processDataForCategory}
                                                             onChange={handelValueForCategory}
                                                         />
                                                     </div>
                                                 </div>
-                                                {/*// ) : ( "" )}*/}
+                                                ) : ( "" )}
 
                                             </div>
                                         </div>
                                     </div>
+                                    ) : ( "" )}
+                                    {type !== "Service" ? (
                                     <div className="col-12">
                                         <div className="card">
                                             <div className="card-body">
                                                 <div>
                                                     <div className="row row-cols-3">
 
-                                                        {/*{type == "Single" ? (*/}
+                                                        {type == "Single" ? (
                                                         <div>
                                                             <Input
                                                                 labelName={"Alert Quantity"}
@@ -644,9 +687,9 @@ const AddProduct = () => {
                                                                 }}
                                                             />
                                                         </div>
-                                                        {/*// ) : ( "" )}*/}
+                                                        ) : ( "" )}
 
-                                                        {/*{type === "Single" || type === "Combo" || type !== "Service" ? (*/}
+                                                        {type === "Single" || type === "Combo" || type !== "Service" ? (
                                                         <div>
                                                             <Input
                                                                 labelName={"Purchase Price"}
@@ -658,9 +701,9 @@ const AddProduct = () => {
                                                                 }}
                                                             />
                                                         </div>
-                                                        {/*// ) : ( "" )}*/}
+                                                        ) : ( "" )}
 
-                                                        {/*{type == "Single" || type === "Combo" || type !== "Service" ? (*/}
+                                                        {type == "Single" || type === "Combo" || type !== "Service" ? (
                                                         <div>
                                                             <Input
                                                                 labelName={"Selling Price*"}
@@ -672,9 +715,9 @@ const AddProduct = () => {
                                                                 }}
                                                             />
                                                         </div>
-                                                        {/*// ) : ( "" )}*/}
+                                                        ) : ( "" )}
 
-                                                        {/*{type === "Combo" ? (*/}
+                                                        {type === "Combo" ? (
                                                         <div>
                                                             <Input
                                                                 labelName={"Other currency price"}
@@ -686,9 +729,9 @@ const AddProduct = () => {
                                                                 }}
                                                             />
                                                         </div>
-                                                        {/*) : ( "" )}*/}
+                                                        ) : ( "" )}
 
-                                                        {/*{type == "Single" ? (*/}
+                                                        {type == "Single" ? (
                                                         <>
                                                             <div>
                                                                 <Input
@@ -702,9 +745,9 @@ const AddProduct = () => {
                                                                 />
                                                             </div>
                                                         </>
-                                                        {/*// ) : ( "" )}*/}
+                                                        ) : ( "" )}
 
-                                                        {/*{type == "Single" || type === "Variant" ? (*/}
+                                                        {type == "Single" || type === "Variant" ? (
                                                         <div className="d-flex ">
                                                             <Input
                                                                 labelName={"Tax"}
@@ -716,27 +759,26 @@ const AddProduct = () => {
                                                                 }}
                                                             />
                                                         </div>
+                                                        ) : ( "" )}
 
+                                                        {type == "Single" || type === "Variant" ? (
                                                         <div>
                                                             <Select
                                                                 labelName={"Tax Type"}
                                                                 placeholder={''}
-                                                                defaultValue={{value: "percent", label: "Percent"}}
+                                                                previous={taxType}
                                                                 options={[{value: "percent", label: "Percent"}, {value: "value", label: "Value"}]}
-                                                                // setValue={setStatus}
+                                                                setValue={setTaxType}
                                                                 // cngFn={handleChangeForUpdateStatus}
                                                             />
                                                         </div>
-
-                                                        <div>
-                                                            <AutoComplete />
-                                                        </div>
-                                                        {/*) : ( "" )}*/}
+                                                        ) : ( "" )}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    ) : ( "" )}
                                     <div className="col-12">
                                         <div className="card">
                                             <div className="card-body">
@@ -747,22 +789,20 @@ const AddProduct = () => {
                                 </div>
                             </div>
                         </div>
+                        {type == "Combo" ? (
                         <div className="">
                             <div className="card">
                                 <div className="card-header">
-                                    <h4 className="card-title mb-0">Product List</h4>
-                                </div>
-                                {/*{type == "Combo" ? (*/}
-                                <div className="px-3">
-                                    <label htmlFor="exampleFormControlTextarea4" style={{fontSize: '11px'}}>
-                                        Select Product
-                                    </label>
-                                    {/*<DropdownTable4 setSelectedProductForCombo={setSelectedProductForCombo}></DropdownTable4>*/}
-                                    {/*<DropdownTable3></DropdownTable3>*/}
-                                    <SelectProductInCreateProductForm data={allDataForDropdown} selectedDataKey={selectedDataKey} show={show} setShow={setShow} getSelectedData={getSelectedData}></SelectProductInCreateProductForm>
+                                    <h4 className="card-title mb-0">Choose Product</h4>
                                 </div>
 
-                                {/*// ) : ( "")}*/}
+                                <div className="px-3">
+                                    {/*<DropdownTable4 setSelectedProductForCombo={setSelectedProductForCombo}></DropdownTable4>*/}
+                                    {/*<DropdownTable3></DropdownTable3>*/}
+                                    <SelectProductInCreateProductForm data={allDataForDropdown} selectedDataKey={selectedDataKeyForProductList} show={showProductList} setShow={setShowProductList} getSelectedData={getSelectedData} columns={columns}></SelectProductInCreateProductForm>
+                                </div>
+
+
                                 <div className="table-responsive mt-4">
                                     {selectedProductForCombo?.length > 0 ?
                                         <table className="table card-table text-nowrap">
@@ -786,9 +826,7 @@ const AddProduct = () => {
                                                                     id="outlined-size-small"
                                                                     value={singleData?.name}
                                                                     size="small"
-                                                                    validation={{
-                                                                        ...register(`product_id_${index}`,{ value: singleData?.id }),
-                                                                    }}
+                                                                    validation={{...register(`product_id_${index}`,{ value: singleData?.id })}}
                                                                     sx={{
                                                                         width: '100%',
                                                                         marginTop: '16px'
@@ -849,6 +887,11 @@ const AddProduct = () => {
                                 </div>
                             </div>
                         </div>
+                        ) : ( "")}
+
+                        { type === "Variant" ? (
+                            <SelectComboVariant register={register} unregister={unregister}></SelectComboVariant>
+                        ) : ( "")}
                     </div>
                     <Submitbtn name={"Add Product"}/>
                 </form>
