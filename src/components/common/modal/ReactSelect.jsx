@@ -47,9 +47,8 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
                 styles={customStyles}
                 isSearchable={true}
                 placeholder={placeholder}
-                {...validation}
             />
-            {/*{console.log(previous)}*/}
+            {/*{console.log('validation', validation)}*/}
           </div>
         </div>
       </div>

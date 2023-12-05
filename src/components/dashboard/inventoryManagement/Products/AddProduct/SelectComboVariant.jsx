@@ -5,7 +5,7 @@ import SelectProductInCreateProductForm
 import Input from "../../../../common/modal/Input";
 import Select from "../../../../common/modal/Select";
 
-const SelectComboVariant = ({register, unregister}) => {
+const SelectComboVariant = ({register, unregister, returnedValueFromVariantValueSelect, setReturnedValueFromVariantValueSelect}) => {
     const [valueForSelect, setValueForSelect] = useState({value: "Single", label: "Single"});
 
 
@@ -15,10 +15,10 @@ const SelectComboVariant = ({register, unregister}) => {
     const [selectedVariantForVariant, setSelectedVariantForVariant] = useState([]);
     // console.log(selectedVariantForVariant);
     const [variantValueItem, setVariantValueItem] = useState([])
-    const [returnedValueFromSelect, setReturnedValueFromSelect] = useState({})
+
     const [addRowInVariant, setAddRowInVariant] = useState([0])
 
-    // console.log('returnedValueFromSelect', returnedValueFromSelect);
+
 
     console.log(addRowInVariant)
     const addNewRow = () => {
@@ -27,13 +27,19 @@ const SelectComboVariant = ({register, unregister}) => {
         }
     }
 
-    const handleSelectChange = (selected, variantId, rowIndex) => {
-        console.log('rowIndex', rowIndex)
-        returnedValueFromSelect[rowIndex] = '';
-        returnedValueFromSelect[rowIndex] = selected;
-        // console.log("check",selected, variantId);
-        // console.log("data",allDataForVariantValueDropdown);
-        setValueForSelect(selected);
+    const handleSelectChange = (selected, rowIndex, variantId) => {
+        console.log('rowIndex', addRowInVariant[0], rowIndex)
+        // returnedValueFromVariantValueSelect.rowIndex.variantId = select
+        // returnedValueFromVariantValueSelect[rowIndex] = '';
+        if (!returnedValueFromVariantValueSelect[rowIndex]){
+            returnedValueFromVariantValueSelect[rowIndex] = {};
+        }
+
+        returnedValueFromVariantValueSelect[rowIndex][variantId] = selected || {};
+        console.log('returnedValueFromVariantValueSelect', returnedValueFromVariantValueSelect);
+        // // console.log("check",selected, variantId);
+        // // console.log("data",allDataForVariantValueDropdown);
+        // setValueForSelect(selected);
     };
 
     useEffect(() => {
@@ -116,8 +122,8 @@ const SelectComboVariant = ({register, unregister}) => {
             const remainingID =  addRowInVariant.splice(addRowInVariant.indexOf(id), 1);
             console.log('addRowInVariant.indexOf(id)',addRowInVariant.indexOf(id));
             // setAddRowInVariant(remainingID)
-            delete returnedValueFromSelect[id];
-            setReturnedValueFromSelect(returnedValueFromSelect);
+            delete returnedValueFromVariantValueSelect[id];
+            setReturnedValueFromVariantValueSelect(returnedValueFromVariantValueSelect);
             unregister(`variant_sku_${id}`);
             unregister(`variant_alert_quantity_${id}`);
             unregister(`variant_purchase_price_${id}`);
@@ -146,9 +152,9 @@ const SelectComboVariant = ({register, unregister}) => {
                             <div className="card">
                                 <div className="d-flex justify-content-between">
                                     {
-                                        selectedVariantForVariant?.map((singleData, index) =>
+                                        selectedVariantForVariant?.map((singleVariantData, index) =>
                                             <div key={index} className="w-100 text-center">
-                                                <h6 className="m-2">{singleData?.name_s}</h6>
+                                                <h6 className="m-2">{singleVariantData?.name_s}</h6>
                                             </div>
                                         )
                                     }
@@ -163,19 +169,22 @@ const SelectComboVariant = ({register, unregister}) => {
                                     addRowInVariant?.map((singleRowData, rowIndex) =>
                                         <div className="d-flex justify-content-between" key={rowIndex}>
                                             {
-                                                selectedVariantForVariant?.map((singleData,index) =>
+                                                selectedVariantForVariant?.map((singleVariantData,index) =>
                                                     <div key={index} className="w-100 m-2">
                                                         {/*{console?.log('selectedVariantForVariant', singleData?.id)}*/}
                                                             <Select
+                                                                // register={register}
                                                                 // labelName={singleData?.name_s}
                                                                 placeholder={"Select an option"}
-                                                                options={formatAllDataForVariantValueDropdown[singleData?.id]}
-                                                                cngFn={(selected) => handleSelectChange(selected, singleData?.id, singleRowData)}
-                                                                previous={returnedValueFromSelect?.[rowIndex]?.[singleData?.variant_id]}
-                                                                validation={{
-                                                                    ...register(`fdhbfgxbhfgxngfbhxdgv`),
-                                                                }}
+                                                                options={formatAllDataForVariantValueDropdown[singleVariantData?.id]}
+                                                                cngFn={(selected) => handleSelectChange(selected, singleRowData, singleVariantData?.id)}
+                                                                // previous={returnedValueFromVariantValueSelect?.[rowIndex]?.[singleData?.variant_id]}
+                                                                // previous={{value: "value", label: 'label'}}
+                                                                // validation={{
+                                                                //     ...register(`${singleVariantData?.name_s}_${singleRowData}`),
+                                                                // }}
                                                             />
+                                                        {/*{console.log('formatAllDataForVariantValueDropdown', returnedValueFromVariantValueSelect)}*/}
                                                     </div>
                                                 )
                                             }
@@ -222,7 +231,7 @@ const SelectComboVariant = ({register, unregister}) => {
                                             </div>
                                             <div className="text-end w-25 m-2" style={{display: "flex", justifyContent: "center", alignItems: 'center'}}>
                                                 <div onClick={() => removeItemFromVariantList(singleRowData)} style={{border: 'none', backgroundColor: 'white', marginTop: '25px', marginBottom: '6px', cursor: "pointer" }}>
-                                                    <i className="fa fa-times" style={{fontSize: '20px'}}></i>{singleRowData}
+                                                    <i className="fa fa-times" style={{fontSize: '20px'}}></i>
                                                 </div>
                                             </div>
                                         </div>
