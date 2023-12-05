@@ -46,6 +46,7 @@ const AddProduct = () => {
 
 
 
+
     const unitToggle = () => {
         setUnit(!unit);
     };
@@ -229,7 +230,7 @@ const AddProduct = () => {
         data.model_id = singleModel?.value;
         data.note = note;
         data.howManyProduct = selectedProductForCombo?.length;
-        console.log(data)
+        console.log('data', data)
 
         // axios.post('/inventory-management/products/add', data)
         //     .then(info => {

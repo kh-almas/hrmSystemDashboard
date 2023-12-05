@@ -11,12 +11,28 @@ const SelectComboVariant = ({register, unregister}) => {
 
     const [allDataForVariantDropdown, setAllDataForVariantDropdown] = useState([]);
     const [allDataForVariantValueDropdown, setAllDataForVariantValueDropdown] = useState([]);
+    const [formatAllDataForVariantValueDropdown, setFormatAllDataForVariantValueDropdown] = useState({});
     const [selectedVariantForVariant, setSelectedVariantForVariant] = useState([]);
-    console.log(selectedVariantForVariant);
+    // console.log(selectedVariantForVariant);
+    const [variantValueItem, setVariantValueItem] = useState([])
+    const [returnedValueFromSelect, setReturnedValueFromSelect] = useState({})
+    const [addRowInVariant, setAddRowInVariant] = useState([0])
 
-    const handleSelectChange = (selected, variantId) => {
-        console.log("check",selected, variantId);
-        console.log("data",allDataForVariantValueDropdown);
+    // console.log('returnedValueFromSelect', returnedValueFromSelect);
+
+    console.log(addRowInVariant)
+    const addNewRow = () => {
+        if (selectedVariantForVariant?.length > 0){
+            setAddRowInVariant(prev => [...prev, addRowInVariant.length])
+        }
+    }
+
+    const handleSelectChange = (selected, variantId, rowIndex) => {
+        console.log('rowIndex', rowIndex)
+        returnedValueFromSelect[rowIndex] = '';
+        returnedValueFromSelect[rowIndex] = selected;
+        // console.log("check",selected, variantId);
+        // console.log("data",allDataForVariantValueDropdown);
         setValueForSelect(selected);
     };
 
@@ -48,6 +64,8 @@ const SelectComboVariant = ({register, unregister}) => {
                     setAllDataForVariantValueDropdown(prev => [...prev, set_data]);
                 })
 
+
+
                 // setAllDataForVariantValueDropdown(response?.data?.body?.data);
                 // console.log(response?.data?.body?.data);
             } catch (error) {
@@ -56,6 +74,16 @@ const SelectComboVariant = ({register, unregister}) => {
         };
         fetchData()
     }, []);
+
+    useEffect(() => {
+        allDataForVariantDropdown?.map(singleData => {
+            const filterData = allDataForVariantValueDropdown?.filter(value => parseInt(singleData?.id) === parseInt(value?.variant_id));
+            // console.log('filterData', filterData)
+            formatAllDataForVariantValueDropdown[singleData?.id] = filterData;
+        })
+    }, [allDataForVariantDropdown, allDataForVariantValueDropdown]);
+
+    // console.log(formatAllDataForVariantValueDropdown)
 
 
     const columns = [
@@ -77,15 +105,23 @@ const SelectComboVariant = ({register, unregister}) => {
         setShowProductList(false);
     }
 
-    const removeItemFromProductList = (id) => {
-        if (selectedDataKeyForProductList.includes(id)){
-            unregister(`product_id_${id}`);
-            unregister(`quantity_${id}`);
-            unregister(`price_${id}`);
-            unregister(`tax_${id}`);
-            const filterData = selectedVariantForVariant?.filter(singleData => singleData?.id !== id);
-            setSelectedVariantForVariant(filterData);
-            selectedDataKeyForProductList.splice(selectedDataKeyForProductList.indexOf(id), 1);
+
+
+    const removeItemFromVariantList = (id) => {
+        // console.log('addRowInVariant', addRowInVariant)
+        //
+        // console.log('addRowInVariant.indexOf(id)',addRowInVariant.indexOf(parseInt(id)));
+        if(addRowInVariant?.includes(id)){
+            // addRowInVariant?.
+            const remainingID =  addRowInVariant.splice(addRowInVariant.indexOf(id), 1);
+            console.log('addRowInVariant.indexOf(id)',addRowInVariant.indexOf(id));
+            // setAddRowInVariant(remainingID)
+            delete returnedValueFromSelect[id];
+            setReturnedValueFromSelect(returnedValueFromSelect);
+            unregister(`variant_sku_${id}`);
+            unregister(`variant_alert_quantity_${id}`);
+            unregister(`variant_purchase_price_${id}`);
+            unregister(`variant_selling_price_${id}`);
         }
     }
 
@@ -104,124 +140,99 @@ const SelectComboVariant = ({register, unregister}) => {
                     </div>
 
 
-                    <div className="table-responsive mt-4">
+                    <div className="mt-4">
                         {
-                            // selectedVariantForVariant?.length > 0 ?
-                            <table className="table card-table text-nowrap">
-                                <thead className="table-border">
-                                <tr>
+                            selectedVariantForVariant?.length > 0 ?
+                            <div className="card">
+                                <div className="d-flex justify-content-between">
                                     {
-                                        selectedVariantForVariant?.map(singleData =>
-                                            <>
-                                                <th>{singleData?.name_s}</th>
-                                            </>
+                                        selectedVariantForVariant?.map((singleData, index) =>
+                                            <div key={index} className="w-100 text-center">
+                                                <h6 className="m-2">{singleData?.name_s}</h6>
+                                            </div>
                                         )
                                     }
-                                    <th>SKU</th>
-                                    <th>Alert Quantity</th>
-                                    <th>Purchase Price</th>
-                                    <th>Selling Price</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                                    <h6 className="w-100 text-center m-2">SKU</h6>
+                                    <h6 className="w-100 text-center m-2">Alert Quantity</h6>
+                                    <h6 className="w-100 text-center m-2">Purchase Price</h6>
+                                    <h6 className="w-100 text-center m-2">Selling Price</h6>
+                                    <h6 className="w-25 text-center m-2">Action</h6>
+                                </div>
+                                <div>
                                 {
-                                    // selectedVariantForVariant?.map((singleData, index) =>
-                                        <tr>
-                                            {/*<td>*/}
-                                            {/*    <div>*/}
-                                            {/*        <TextField*/}
-                                            {/*            disabled*/}
-                                            {/*            id="outlined-size-small"*/}
-                                            {/*            value={singleData?.name_s}*/}
-                                            {/*            size="small"*/}
-                                            {/*            validation={{*/}
-                                            {/*                ...register(`product_id_${index}`,{ value: singleData?.id }),*/}
-                                            {/*            }}*/}
-                                            {/*            sx={{*/}
-                                            {/*                width: '100%',*/}
-                                            {/*                marginTop: '16px'*/}
-                                            {/*            }}*/}
-                                            {/*        />*/}
-                                            {/*    </div>*/}
-                                            {/*</td>*/}
+                                    addRowInVariant?.map((singleRowData, rowIndex) =>
+                                        <div className="d-flex justify-content-between" key={rowIndex}>
                                             {
                                                 selectedVariantForVariant?.map((singleData,index) =>
-
-                                                        <td key={index}>
-                                                            {console?.log('selectedVariantForVariant', singleData?.id)}
-                                                                <Select
-                                                                    labelName={singleData?.name_s}
-                                                                    placeholder={"Select an option"}
-                                                                    options={allDataForVariantValueDropdown}
-                                                                    cngFn={(selected) => handleSelectChange(selected, singleData?.id)}
-                                                                    previous={valueForSelect}
-                                                                />
-                                                        </td>
-
+                                                    <div key={index} className="w-100 m-2">
+                                                        {/*{console?.log('selectedVariantForVariant', singleData?.id)}*/}
+                                                            <Select
+                                                                // labelName={singleData?.name_s}
+                                                                placeholder={"Select an option"}
+                                                                options={formatAllDataForVariantValueDropdown[singleData?.id]}
+                                                                cngFn={(selected) => handleSelectChange(selected, singleData?.id, singleRowData)}
+                                                                previous={returnedValueFromSelect?.[rowIndex]?.[singleData?.variant_id]}
+                                                                validation={{
+                                                                    ...register(`fdhbfgxbhfgxngfbhxdgv`),
+                                                                }}
+                                                            />
+                                                    </div>
                                                 )
                                             }
 
-                                            <td>
-                                                <div>
-                                                    <Input
-                                                        inputName={"sku"}
-                                                        inputType={"text"}
-                                                        placeholder={"sku_01"}
-                                                        validation={{
-                                                            ...register(`variant_sku_`),
-                                                        }}
-                                                    />
+                                            <div className="w-100 m-2" style={{paddingTop: '5px'}}>
+                                                <Input
+                                                    inputName={"sku"}
+                                                    inputType={"text"}
+                                                    placeholder={"sku_01"}
+                                                    validation={{
+                                                        ...register(`variant_sku_${singleRowData}`),
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="w-100 m-2" style={{paddingTop: '5px'}}>
+                                                <Input
+                                                    inputName={"alert_quantity"}
+                                                    inputType={"number"}
+                                                    placeholder={"0"}
+                                                    validation={{
+                                                        ...register(`variant_alert_quantity_${singleRowData}`),
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="w-100 m-2" style={{paddingTop: '5px'}}>
+                                                <Input
+                                                    inputName={"purchase_price"}
+                                                    inputType={"number"}
+                                                    placeholder={"0"}
+                                                    validation={{
+                                                        ...register(`variant_purchase_price_${singleRowData}`),
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="w-100 m-2" style={{paddingTop: '5px'}}>
+                                                <Input
+                                                    inputName={"selling_price"}
+                                                    inputType={"number"}
+                                                    placeholder={"0"}
+                                                    validation={{
+                                                        ...register(`variant_selling_price_${singleRowData}`),
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="text-end w-25 m-2" style={{display: "flex", justifyContent: "center", alignItems: 'center'}}>
+                                                <div onClick={() => removeItemFromVariantList(singleRowData)} style={{border: 'none', backgroundColor: 'white', marginTop: '25px', marginBottom: '6px', cursor: "pointer" }}>
+                                                    <i className="fa fa-times" style={{fontSize: '20px'}}></i>{singleRowData}
                                                 </div>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <Input
-                                                        inputName={"alert_quantity"}
-                                                        inputType={"number"}
-                                                        placeholder={"0"}
-                                                        validation={{
-                                                            ...register(`variant_alert_quantity_`),
-                                                        }}
-                                                    />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <Input
-                                                        inputName={"purchase_price"}
-                                                        inputType={"number"}
-                                                        placeholder={"0"}
-                                                        validation={{
-                                                            ...register(`variant_purchase_price_`),
-                                                        }}
-                                                    />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div>
-                                                    <Input
-                                                        inputName={"selling_price"}
-                                                        inputType={"number"}
-                                                        placeholder={"0"}
-                                                        validation={{
-                                                            ...register(`variant_selling_price_`),
-                                                        }}
-                                                    />
-                                                </div>
-                                            </td>
-                                            <td className="text-end" style={{display: "flex", justifyContent: "center", alignItems: 'center'}}>
-                                                <div style={{border: 'none', backgroundColor: 'white', marginTop: '22px', marginBottom: '6px', cursor: "pointer" }}>
-                                                    <i className="fa fa-times" style={{fontSize: '20px'}}></i>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    // )
+                                            </div>
+                                        </div>
+                                    )
                                 }
-                                </tbody>
-                            </table>
-                            // : ''
+                                </div>
+                            </div>
+                            : ''
                         }
+                        <button onClick={() => addNewRow()} className="btn btn-outline-primary btn-xs" type="button">Add new item</button>
 
                     </div>
                 </div>
