@@ -32,7 +32,6 @@ const Input = ({labelName, inputName, inputType, placeholder, defaultValue, vali
             {/*    </div>*/}
             {/*</div>*/}
             <TextField
-                required
                 variant='outlined'
                 fullWidth
                 autoComplete="off"

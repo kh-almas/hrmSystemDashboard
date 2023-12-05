@@ -1,133 +1,21 @@
-import React, {useEffect, useState, useRef, useContext} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import {
+    flexRender,
     MRT_GlobalFilterTextField,
     MRT_TableBodyCellValue,
-    MRT_TablePagination,
-    MRT_ToolbarAlertBanner,
-    flexRender,
-    useMaterialReactTable,
-} from 'material-react-table';
-import {
-    Box,
-    Stack,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography,
-} from '@mui/material';
-import Popover from '@mui/material/Popover';
+    useMaterialReactTable
+} from "material-react-table";
 import axios from "../../../../../../axios";
-import CustomSelectProvider, {SelectContext} from "../../../../../Provider/CustomSelectProvider";
+import "./selectProductInCreateProductForm.css"
 
-const SelectProductInCreateProductForm = ({ setSelectedProductForCombo, updateSelectedProduct}) => {
-    const {
-        MultiselectShowForAddProductInInventory,
-        hideMultiselectModalForAddProductInInventoryFn,
-        setMultiselectShowForAddProductInInventory,
-        showMultiselectModalForAddProductInInventoryFn,
-        excludedDivRefForAddProductInInventory
-    } = useContext(SelectContext);
-    const [data, setData] = useState([]);
-    const [rowSelection, setRowSelection] = useState([]);
-    const [showSelectDataAllInfo, setShowSelectDataAllInfo] = useState([]);
-
-
-    useEffect(() => {
-        setRowSelection(updateSelectedProduct);
-    }, [updateSelectedProduct])
-
-    useEffect(() => {
-        const keysArray = Object.keys(rowSelection);
-        const filteredData = data?.filter(singleData => keysArray.includes(singleData?.id?.toString()));
-        setShowSelectDataAllInfo(filteredData);
-        setSelectedProductForCombo([]);
-        setSelectedProductForCombo(filteredData);
-    }, [rowSelection]);
-
-
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                axios.get(`/inventory-management/products/list`)
-                    .then(getData => {
-                        setData(getData?.data?.body?.data);
-                    })
-            } catch (error) {
-                console.error(error);
-                return;
-            }
-        };
-        fetchData()
-    }, []);
-
-
-    const columns = [
-        {
-            accessorKey: 'name',
-            header: 'Name',
-        },
-        {
-            accessorKey: 'sku',
-            header: 'SKU',
-        },
-        {
-            accessorKey: 'hsn',
-            header: 'HSN',
-        },
-        {
-            accessorKey: 'barcode_type',
-            header: 'Barcode',
-        },
-    ];
-
-
-    const table = useMaterialReactTable({
-        columns,
-        data,
-        enableRowSelection: true,
-        enableBottomToolbar: false,
-        // enableStickyHeader: true,
-        // enableStickyFooter: true,
-        // muiTableContainerProps: { sx: { height: '200px' } },
-        // muiTableBodyCellProps: {
-        //     sx: (theme) => ({
-        //         backgroundColor:
-        //             theme.palette.mode === 'dark'
-        //                 ? theme.palette.grey[900]
-        //                 : theme.palette.grey[50],
-        //     }),
-        // },
-        initialState: {
-            pagination: { pageSize: 5, pageIndex: 0 },
-            showGlobalFilter: true,
-        },
-        iconActive: {
-            display: 'none',
-        },
-        getRowId: (row) => row.id,
-        onRowSelectionChange: setRowSelection,
-        enablePagination: false,
-        state: {
-            rowSelection
-        },
-    });
-
-    const checkfn = (e) => {
-        console.log(e.target.tagName)
-    }
-
-    const [show, setShow] = useState(false);
+const SelectProductInCreateProductForm = ({data, selectedDataKey, show, setShow, getSelectedData, columns}) => {
     const containerRef = useRef(null);
+    const [rowSelection, setRowSelection] = useState([]);
+    const [selectedData, setSelectedData] = useState([]);
 
     const handleClickOutside = (event) => {
-        if (
-            containerRef.current &&
-            !containerRef.current.contains(event.target)
-        ) {
+        if (containerRef.current && !containerRef.current.contains(event.target)) {
             setShow(false);
         }
     };
@@ -140,68 +28,89 @@ const SelectProductInCreateProductForm = ({ setSelectedProductForCombo, updateSe
         };
     }, []);
 
+    const handleInputClick = () => {
+        if (!show) {
+            setShow(true);
+        }
+    };
+
+    const table = useMaterialReactTable({
+        columns,
+        data,
+        getRowId: (row) => row.id,
+        muiTableBodyRowProps: ({ row }) => ({
+            onClick: () => setRowSelection((prev) => ({ ...prev, [row.id]: !prev[row.id] })),
+            selected: rowSelection[row.id],
+            sx: {
+                cursor: 'pointer',
+            },
+        }),
+        enableBottomToolbar: false,
+        initialState: {
+            showGlobalFilter: true,
+        },
+        onRowSelectionChange: setRowSelection,
+        enablePagination: false,
+        state: {
+            rowSelection
+        },
+    });
 
     return (
-        <div style={{width: '100vw', backgroundColor: 'transparent', position: 'relative'}}>
-                <Box
-                    // onClick={showMultiselectModal}
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center', width: "fit-content"
+        <div ref={containerRef} style={{ width: '250px' }}>
+            <div>
+                <MRT_GlobalFilterTextField
+                    onClick={handleInputClick}
+                    style={{ width: '250px' }}
+                    table={table}
+                    onFocus={() => setShow(true)}
+                />
+            </div>
+            {show && (
+                <div
+                    style={{
+                        width: '400px',
+                        backgroundColor: 'white',
+                        position: 'absolute',
+                        zIndex: 10,
+                        boxShadow: '4px 5px 25px 1px #737373',
+                        borderRadius: '7px'
                     }}
                 >
-                    <MRT_GlobalFilterTextField
-                        table={table}
-                        onFocus={(e) => showMultiselectModalForAddProductInInventoryFn()}
-                        onBlur={(e) => hideMultiselectModalForAddProductInInventoryFn()}
-                    />
-                </Box>
-            {
-                MultiselectShowForAddProductInInventory ?
-                    <div>
-                        <div style={{width: '100vw', height: '100vh', backgroundColor: 'transparent', position: "absolute", zIndex: "100", }}>
-                            <div id="table" onClick={checkfn} ref={excludedDivRefForAddProductInInventory} style={{ backgroundColor: 'white', height: '400px', width: '500px', overflow: "hidden"}}>
-                                <TableContainer style={{height: '400px'}} onClick={(e) => showMultiselectModalForAddProductInInventoryFn()}>
-                                    <Table>
-                                        {/* Use your own markup, customize however you want using the power of TanStack Table */}
-                                        <TableHead style={{position: 'sticky', top: 0, zIndex:100, backgroundColor: 'white'}}>
-                                            {table.getHeaderGroups().map((headerGroup) => (
-                                                <TableRow key={headerGroup.id}>
-                                                    {headerGroup.headers.map((header) => (
-                                                        <TableCell align="center" variant="head" key={header.id}>
-                                                            {header.isPlaceholder
-                                                                ? null
-                                                                : flexRender(
-                                                                    header.column.columnDef.Header ??
-                                                                    header.column.columnDef.header,
-                                                                    header.getContext(),
-                                                                )}
-                                                        </TableCell>
-                                                    ))}
-                                                </TableRow>
-                                            ))}
-                                        </TableHead>
-                                        <TableBody>
-                                            {table.getRowModel().rows.map((row) => (
-                                                <TableRow key={row.id} selected={row.getIsSelected()}>
-                                                    {row.getVisibleCells().map((cell) => (
-                                                        <TableCell align="center" variant="body" key={cell.id}>
-                                                            {/* Use MRT's cell renderer that provides better logic than flexRender */}
-                                                            <MRT_TableBodyCellValue cell={cell} table={table} />
-                                                        </TableCell>
-                                                    ))}
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </div>
-                        </div>
-                    </div> : ''
-            }
-
-
+                    <TableContainer className="hideSidebar" style={{ height: '400px', borderRadius: '7px' }}>
+                        <Table>
+                            <TableHead style={{ position: 'sticky', top: 0, zIndex: 100, backgroundColor: 'white' }}>
+                                {table.getHeaderGroups().map((headerGroup) => (
+                                    <TableRow key={headerGroup.id}>
+                                        {headerGroup.headers.map((header) => (
+                                            <TableCell align="center" variant="head" key={header.id}>
+                                                {header.isPlaceholder
+                                                    ? null
+                                                    : flexRender(
+                                                        header.column.columnDef.Header ??
+                                                        header.column.columnDef.header,
+                                                        header.getContext(),
+                                                    )}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+                            </TableHead>
+                            <TableBody>
+                                {table.getRowModel().rows.map((row) => (
+                                    <TableRow style={{ cursor: 'pointer', backgroundColor: selectedDataKey.includes(row?.id) ? '#eaebf3' : 'white' }} key={row.id} selected={row.getIsSelected()} onClick={() => getSelectedData(row?.original)}>
+                                        {row.getVisibleCells().map((cell) => (
+                                            <TableCell align="center" variant="body" key={cell.id}>
+                                                <MRT_TableBodyCellValue cell={cell} table={table} />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+            )}
         </div>
     );
 };

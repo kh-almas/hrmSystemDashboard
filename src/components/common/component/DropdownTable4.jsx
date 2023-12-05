@@ -1,14 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const DropdownTable4 = () => {
+const SelectProductInCreateProductForm = () => {
     const [show, setShow] = useState(false);
     const containerRef = useRef(null);
 
     const handleClickOutside = (event) => {
-        if (
-            containerRef.current &&
-            !containerRef.current.contains(event.target)
-        ) {
+        if (containerRef.current && !containerRef.current.contains(event.target)) {
             setShow(false);
         }
     };
@@ -21,27 +18,40 @@ const DropdownTable4 = () => {
         };
     }, []);
 
+    const handleButtonClick = (item) => {
+        console.log(`Button clicked with item: ${item}`);
+        setShow(false);
+    };
+
+    const handleInputClick = () => {
+        if (!show) {
+            setShow(true);
+        }
+    };
+
     return (
         <div ref={containerRef}>
             <input
-                onMouseDown={() => setShow(true)}
+                onClick={handleInputClick}
                 type="text"
+                placeholder="Click me"
             />
             {show && (
                 <div
                     style={{
-                        width: '400px',
-                        height: '700px',
+                        width: '200px',
+                        height: '200px',
                         backgroundColor: 'red',
                         position: 'absolute',
                     }}
-                    onClick={() => setShow(true)}
                 >
-                    {/* Your content goes here */}
+                    <button onClick={() => handleButtonClick('Button 1')}>Button 1</button>
+                    <button onClick={() => handleButtonClick('Button 2')}>Button 2</button>
+                    <button onClick={() => handleButtonClick('Button 3')}>Button 3</button>
                 </div>
             )}
         </div>
     );
 };
 
-export default DropdownTable4;
+export default SelectProductInCreateProductForm;

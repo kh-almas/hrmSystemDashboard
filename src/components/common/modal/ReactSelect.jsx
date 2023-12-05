@@ -7,14 +7,13 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
       ...provided,
       background: "#fff",
       borderColor: "#9e9e9e",
-      minHeight: "30px",
-      height: "30px",
+      minHeight: "33px",
       boxShadow: state.isFocused ? null : null,
     }),
 
     valueContainer: (provided, state) => ({
       ...provided,
-      height: "30px",
+      height: "33px",
       padding: "0 6px",
     }),
 
@@ -27,7 +26,7 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
     }),
     indicatorsContainer: (provided, state) => ({
       ...provided,
-      height: "30px",
+      height: "33px",
     }),
   };
 
@@ -48,6 +47,7 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
                 styles={customStyles}
                 isSearchable={true}
                 placeholder={placeholder}
+                {...validation}
             />
             {/*{console.log(previous)}*/}
           </div>

@@ -162,8 +162,8 @@ import TreeViewExample from "../components/common/component/TreeViewExample";
 import TreeViewExample2 from "../components/common/component/TreeViewExample2";
 import Input from "../components/common/modal/Input";
 import InputTest from "../components/common/component/InputTest";
-import ImageUploader from "../components/common/component/imageUpload/ImageUploader";
 import DropdownTable3 from "../components/common/component/DropdownTable3";
+import MultipleImageUploader from "../components/common/component/imageUpload/MultipleImageUploader";
 
 export const routes = [
   {
@@ -454,7 +454,7 @@ export const routes = [
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/image/uploader`,
-    Component: <ImageUploader />,
+    Component: <MultipleImageUploader />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/admin/trip`,
