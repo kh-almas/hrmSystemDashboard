@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
 import Breadcrumb from "../../../../common/breadcrumb";
-import {useForm} from "react-hook-form";
+import {useForm, useWatch} from "react-hook-form";
 import Select from "../../../../common/modal/Select";
 import Input from "../../../../common/modal/Input";
 import CkEditorComponent from "../../../../common/modal/CkEditorComponent";
@@ -20,8 +20,15 @@ import TextField from '@mui/material/TextField';
 import AutoComplete from "../../../../common/modal/AutoComplete";
 import MultipleImageUploader from "../../../../common/component/imageUpload/MultipleImageUploader";
 import SelectComboVariant from "./SelectComboVariant";
+import Swal from "sweetalert2";
+import AddProductOptionModal from "../../../../common/component/form/inventory/productOption/AddProductOptionModal";
 
 const AddProduct = () => {
+    const [allStoredValue, setAllStoredValue] = useState({})
+    useEffect(() => {
+        console.log(allStoredValue);
+    }, [allStoredValue])
+
     const [photos, setPhotos] = useState([]);
     const [parentCategory, setParentCategory] = useState({});
     const [processDataForCategory, setprocessDataForCategory] = useState([]);
@@ -35,6 +42,11 @@ const AddProduct = () => {
     const [note, setNote] = useState('');
     const [taxType, setTaxType] = useState({value: "percent", label: "Percent"});
 
+    const handleChangeTaxType = (selected) => {
+        setTaxType(selected);
+    }
+    const [returnedValueFromVariantValueSelect, setReturnedValueFromVariantValueSelect] = useState({})
+
 
     const [isChange, setIsChange] = useState(false);
     const isDarty = () => {
@@ -43,9 +55,6 @@ const AddProduct = () => {
     useEffect(() => {
         console.log('photos',photos);
     }, [photos]);
-
-
-
 
     const unitToggle = () => {
         setUnit(!unit);
@@ -117,6 +126,7 @@ const AddProduct = () => {
     }
 
     const handleTypeChange = (selected) => {
+        reset();
         setTypeChange(selected);
         setType(selected?.value);
     };
@@ -135,6 +145,11 @@ const AddProduct = () => {
         setBarcodeType(selected);
     };
 
+    const [measurementUnit, setMeasurementUnit] = useState({});
+    const handleChangeForUpdateMeasurementUnit = (selected) => {
+        setMeasurementUnit(selected);
+    };
+
 
     const [singleModel, setSingleModel] = useState({});
     const handleChangeForUpdateSingleModel = (selected) => {
@@ -150,6 +165,8 @@ const AddProduct = () => {
         register,
         handleSubmit,
         reset,
+        setValue,
+        watch,
         formState: {errors},
         unregister,
     } = useForm({
@@ -229,40 +246,74 @@ const AddProduct = () => {
         data.category_id = parentCategory?.id;
         data.model_id = singleModel?.value;
         data.note = note;
+        data.tax_type = taxType?.value;
+        data.measurement_unit = measurementUnit?.value;
         data.howManyProduct = selectedProductForCombo?.length;
+
+        if (data.product_type === 'Variant'){
+            let skuInfo = []
+            for (let key in returnedValueFromVariantValueSelect){
+                console.log('returnedValueFromVariantValueSelect', returnedValueFromVariantValueSelect[key])
+                let newObj = returnedValueFromVariantValueSelect[key]
+                const sku = `variant_sku_${key}`
+                const openingStockQuantity = `opening_stock_quantity_${key}`
+                const alertQuantity = `alert_quantity_${key}`
+                const purchasePrice = `variant_purchase_price_${key}`
+                const sellingPrice = `variant_selling_price_${key}`
+                const skuArr = {
+                    sku: data[sku],
+                    opening_stock_quantity: data[openingStockQuantity],
+                    alert_quantity: data[alertQuantity],
+                    purchase_price: data[purchasePrice],
+                    selling_price: data[sellingPrice],
+                    variant: newObj
+                }
+                skuInfo.push(skuArr);
+                delete data[sku];
+                delete data[openingStockQuantity];
+                delete data[alertQuantity];
+                delete data[purchasePrice]
+                delete data[sellingPrice]
+            }
+            data.sku = skuInfo;
+            // console.log(variantInfo);
+        }
+        // console.log('allStoredValue', allStoredValue);
         console.log('data', data)
 
-        // axios.post('/inventory-management/products/add', data)
-        //     .then(info => {
-        //         if(info?.status == 200)
-        //         {
-        //             Swal.fire({
-        //                 position: 'top-end',
-        //                 icon: 'success',
-        //                 title: 'Your work has been saved',
-        //                 showConfirmButton: false,
-        //                 timer: 1500
-        //             })
-        //             // toggle();
-        //         }
-        //         // reFetch();
-        //     })
-        //     .catch(e => {
-        //         console.log(e)
-        //         if(e?.response?.data?.body?.message?.errno == 1062){
-        //             Swal.fire({
-        //                 icon: 'error',
-        //                 title: 'Oops...',
-        //                 text: `Can not duplicate branch name`
-        //             })
-        //         }else {
-        //             Swal.fire({
-        //                 icon: 'error',
-        //                 title: 'Oops...',
-        //                 text: `${e?.response?.data?.body?.message?.details[0].message}`
-        //             })
-        //         }
-        //     })
+        axios.post('/inventory-management/products/add', data)
+            .then(info => {
+                console.log(info)
+                // if(info?.status == 200)
+                // {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    // reset();
+                    // toggle();
+                // }
+                // reFetch();
+            })
+            .catch(e => {
+                console.log(e)
+                if(e?.response?.data?.body?.message?.errno == 1062){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `Can not duplicate product name`
+                    })
+                }else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `${e?.response?.data?.body?.message?.details[0].message}`
+                    })
+                }
+            })
     }
 
 
@@ -291,12 +342,16 @@ const AddProduct = () => {
             header: 'SKU',
         },
         {
-            accessorKey: 'hsn',
-            header: 'HSN',
+            accessorKey: 'category_name',
+            header: 'Category',
         },
         {
-            accessorKey: 'barcode_type',
-            header: 'Barcode',
+            accessorKey: 'brand_name',
+            header: 'Brand',
+        },
+        {
+            accessorKey: 'model_name',
+            header: 'Model',
         },
     ];
 
@@ -324,6 +379,61 @@ const AddProduct = () => {
         }
     }
 
+    // product options functionality added
+    const [selectedProductOptions, setSelectedProductOptions] = useState([]);
+    const [productOptions, setProductOptions] = useState([]);
+    const [makeProductOptions, setMakeProductOptions] = useState([]);
+    const [productOptionsModal, setProductOptionsModal] = useState(false);
+
+    console.log('makeProductOptions', makeProductOptions)
+
+    const globalOptions = () => {
+        if(makeProductOptions?.length !== 0){
+            makeProductOptions?.map(singleOption => {
+                console.log('singleOption?.value', singleOption?.value)
+                console.log('selectedProductOptions?.value', selectedProductOptions?.value)
+                if(singleOption.value !== selectedProductOptions.value){
+                    setMakeProductOptions(prev => [...prev, selectedProductOptions])
+                }
+            })
+        }else{
+            setMakeProductOptions([selectedProductOptions])
+        }
+        console.log('makeProductOptions', makeProductOptions);
+    }
+
+    const handleChangeForProductType = (selected) => {
+        setSelectedProductOptions(selected);
+    };
+
+    const toggle = () => {
+        setProductOptionsModal(!productOptionsModal);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setProductOptions([])
+                const response = await axios.get(`/inventory-management/products/options/list`);
+                console.log('response', response);
+                response?.data?.body?.data?.map(item => {
+                    const set_data = {
+                        value: item.id,
+                        label: item.name
+                    }
+                    setProductOptions(prev => [...prev, set_data]);
+                })
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData()
+    }, []);
+
+
+
+
+
     return (
         <div>
             <Breadcrumb parent="Inventory management" title="Add New Product"/>
@@ -335,15 +445,15 @@ const AddProduct = () => {
                                 <div className="card">
                                     <div className="card-body">
                                         <div className="">
-                                            <div class="pb-2 d-flex align-items-center justify-content-center">
-                                                <div class="form-check form-check-inline align-items-center">
-                                                    <input {...register("isRawMaterial")} className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1"/>
+                                            <div className="pb-2 d-flex align-items-center justify-content-center">
+                                                <div className="form-check form-check-inline align-items-center">
+                                                    <input {...register("is_raw_material")} className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1"/>
                                                     <label className="form-check-label" htmlFor="inlineRadio1">
                                                         Raw Material
                                                     </label>
                                                 </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input {...register("isRawMaterial")} className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="0" checked={true}/>
+                                                <div className="form-check form-check-inline">
+                                                    <input {...register("is_raw_material")} className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="0" checked={true}/>
                                                     <label className="form-check-label" htmlFor="inlineRadio2">
                                                         Finish Product
                                                     </label>
@@ -367,168 +477,195 @@ const AddProduct = () => {
                                     </div>
                                 </div>
 
-                                {type !== "Variant" && type !== "Combo" && type !== "Service" ? (
+                                {type !== "Service" ? (
                                 <div className="card">
-                                    <div>
-                                        <div className="card-body">
+                                    <div className="card-body">
+                                        {type === "Single" || type === "Variant" || type === "Combo" ? (
+                                            <div className="pb-3">
+                                                <Select
+                                                    name={"measurement_unit"}
+                                                    labelName={"Size unit"}
+                                                    placeholder={"Select size unit"}
+                                                    options={[
+                                                        {value: "Inch", label: "Inch"},
+                                                        {value: "Cm", label: "Cm"}]}
+                                                    setValue={setMeasurementUnit}
+                                                    cngFn={handleChangeForUpdateMeasurementUnit}
+                                                />
+                                            </div>
+                                        ) : ( "")}
+                                        <div>
                                             <h6 className="mb-0">Product size</h6>
-                                            {type == "Single" ? (
-                                            <div>
-                                                <Input
-                                                    labelName={"Height"}
-                                                    inputName={"height"}
-                                                    inputType={"number"}
-                                                    placeholder={"height"}
-                                                    validation={{
-                                                        ...register("p_height"),
-                                                    }}
-                                                />
+                                            <div className='row row-cols-1 row-cols-md-2'>
+                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                    <div>
+                                                        <Input
+                                                            labelName={"Height"}
+                                                            inputName={"height"}
+                                                            inputType={"number"}
+                                                            placeholder={"height"}
+                                                            validation={{
+                                                                ...register("p_height"),
+                                                            }}
+                                                        />
+                                                    </div>
+                                                ) : ( "" )}
+                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                    <div>
+                                                        <Input
+                                                            labelName={"Width"}
+                                                            inputName={"width"}
+                                                            inputType={"number"}
+                                                            placeholder={"width"}
+                                                            validation={{
+                                                                ...register("p_width"),
+                                                            }}
+                                                        />
+                                                    </div>
+                                                ) : ( "" )}
+                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                    <div>
+                                                        <Input
+                                                            labelName={"Length"}
+                                                            inputName={"length"}
+                                                            inputType={"number"}
+                                                            placeholder={"Length"}
+                                                            validation={{...register("p_length")}}
+                                                        />
+                                                    </div>
+                                                ) : ('')}
+                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                    <div>
+                                                        <Input
+                                                            labelName={"Weight"}
+                                                            inputName={"weight"}
+                                                            inputType={"number"}
+                                                            placeholder={"weight"}
+                                                            validation={{...register("p_weight")}}
+                                                        />
+                                                    </div>
+                                                ) : ('')}
                                             </div>
-                                            ) : ( "" )}
-                                            {type == "Single" ? (
-                                            <div>
-                                                <Input
-                                                    labelName={"Width"}
-                                                    inputName={"width"}
-                                                    inputType={"number"}
-                                                    placeholder={"width"}
-                                                    validation={{
-                                                        ...register("p_width"),
-                                                    }}
-                                                />
-                                            </div>
-                                            ) : ( "" )}
-                                            {type == "Single" ? (
-                                            <div>
-                                                <Input
-                                                    labelName={"Length"}
-                                                    inputName={"length"}
-                                                    inputType={"number"}
-                                                    placeholder={"Length"}
-                                                    validation={{...register("p_length")}}
-                                                />
-                                            </div>
-                                            ) : ('')}
                                         </div>
-                                    </div>
-                                    <div>
-
-                                        <div className="card-body">
+                                        <div className="mt-3">
                                             <h6 className="mb-0">Package size</h6>
-                                            {type == "Single" ? (
-                                            <div>
-                                                <Input
-                                                    labelName={"Height"}
-                                                    inputName={"height"}
-                                                    inputType={"number"}
-                                                    placeholder={"height"}
-                                                    validation={{
-                                                        ...register("package_height"),
-                                                    }}
-                                                />
+                                            <div className="row row-cols-1 row-cols-md-2">
+                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                    <div>
+                                                        <Input
+                                                            labelName={"Height"}
+                                                            inputName={"height"}
+                                                            inputType={"number"}
+                                                            placeholder={"height"}
+                                                            validation={{
+                                                                ...register("package_height"),
+                                                            }}
+                                                        />
+                                                    </div>
+                                                ) : ( "" )}
+                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                    <div>
+                                                        <Input
+                                                            labelName={"Width"}
+                                                            inputName={"width"}
+                                                            inputType={"number"}
+                                                            placeholder={"width"}
+                                                            validation={{
+                                                                ...register("package_width"),
+                                                            }}
+                                                        />
+                                                    </div>
+                                                ) : ( "" )}
+                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                    <div>
+                                                        <Input
+                                                            labelName={"Length"}
+                                                            inputName={"length"}
+                                                            inputType={"number"}
+                                                            placeholder={"Length"}
+                                                            validation={{...register("package_length")}}
+                                                        />
+                                                    </div>
+                                                ) : ('')}
+                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                    <div>
+                                                        <Input
+                                                            labelName={"Weight"}
+                                                            inputName={"weight"}
+                                                            inputType={"number"}
+                                                            placeholder={"weight"}
+                                                            validation={{...register("package_weight")}}
+                                                        />
+                                                    </div>
+                                                ) : ('')}
                                             </div>
-                                            ) : ( "" )}
-                                            {type == "Single" ? (
-                                            <div>
-                                                <Input
-                                                    labelName={"Width"}
-                                                    inputName={"width"}
-                                                    inputType={"number"}
-                                                    placeholder={"width"}
-                                                    validation={{
-                                                        ...register("package_width"),
-                                                    }}
-                                                />
-                                            </div>
-                                            ) : ( "" )}
-                                            {type == "Single" ? (
-                                            <div>
-                                                <Input
-                                                    labelName={"Length"}
-                                                    inputName={"length"}
-                                                    inputType={"number"}
-                                                    placeholder={"Length"}
-                                                    validation={{...register("package_length")}}
-                                                />
-                                            </div>
-                                            ) : ('')}
                                         </div>
                                     </div>
                                 </div>
                                 ) : ( "" )}
 
-                                <div className="card">
-                                    <div className="card-body">
-                                        <div className="col-sm-12">
-                                            <div>
-                                                <div>
-                                                    <MultipleImageUploader photos={photos} setPhotos={setPhotos}></MultipleImageUploader>
+                                <div>
+                                    <MultipleImageUploader photos={photos} setPhotos={setPhotos}></MultipleImageUploader>
 
-                                                    {/*<form className="dropzone dropzone-primary" id="multiFileUpload"*/}
-                                                    {/*      action="/upload.php">*/}
-                                                    {/*    <ToastContainer/>*/}
-                                                    {/*    <div className="dz-message needsclick">*/}
-                                                    {/*        <Dropzone*/}
-                                                    {/*            getUploadParams={getUploadParams}*/}
-                                                    {/*            onChangeStatus={handleChangeStatus}*/}
-                                                    {/*            onSubmit={handleImgSubmit}*/}
-                                                    {/*            accept="image/*"*/}
-                                                    {/*        />*/}
-                                                    {/*    </div>*/}
-                                                    {/*</form>*/}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {/*<form className="dropzone dropzone-primary" id="multiFileUpload"*/}
+                                    {/*      action="/upload.php">*/}
+                                    {/*    <ToastContainer/>*/}
+                                    {/*    <div className="dz-message needsclick">*/}
+                                    {/*        <Dropzone*/}
+                                    {/*            getUploadParams={getUploadParams}*/}
+                                    {/*            onChangeStatus={handleChangeStatus}*/}
+                                    {/*            onSubmit={handleImgSubmit}*/}
+                                    {/*            accept="image/*"*/}
+                                    {/*        />*/}
+                                    {/*    </div>*/}
+                                    {/*</form>*/}
                                 </div>
                             </div>
                             <div className="col-lg-8">
-                                {type !== "Variant" ? (
-                                    <div className="col-12">
-                                        <div className="card">
-                                            <div className="card-body">
+                                <div className="col-12">
+                                    <div className="card">
+                                        <div className="card-body">
 
-                                                    <div className="row row-cols-3">
-                                                        {type === "Single" ? (
-                                                        <div>
-                                                            <Input
-                                                                labelName={"Product Name"}
-                                                                inputName={"product-name"}
-                                                                inputType={"text"}
-                                                                placeholder={"Product Name"}
-                                                                validation={{...register("name")}}
-                                                            />
-                                                        </div>
-                                                        ) : ( "" )}
-                                                        {type !== "Variant" ? (
-                                                        <div>
-                                                            <Input
-                                                                labelName={"Product Sku"}
-                                                                inputName={"product-sku"}
-                                                                placeholder={"Product-Sku"}
-                                                                inputType={"text"}
-                                                                validation={{
-                                                                    ...register("sku"),
-                                                                }}
-                                                            />
-                                                        </div>
-                                                        ) : ( "" )}
-                                                        {type === "Single" ? (
-                                                        <div>
-                                                            <Input
-                                                                name={"hsn"}
-                                                                labelName={"HSN"}
-                                                                inputType={"text"}
-                                                                placeholder={"HSN"}
-                                                                validation={{...register("hsn")}}
-                                                            />
-                                                        </div>
-                                                        ) : ( "" )}
+                                                <div className="row row-cols-3">
+                                                    {type == "Single" || type == "Combo" || type === "Variant"? (
+                                                    <div>
+                                                        <Input
+                                                            labelName={"Product Name"}
+                                                            inputName={"product-name"}
+                                                            inputType={"text"}
+                                                            placeholder={"Product Name"}
+                                                            validation={{...register("name")}}
+                                                        />
                                                     </div>
-                                            </div>
+                                                    ) : ( "" )}
+                                                    {type !== "Variant" ? (
+                                                    <div>
+                                                        <Input
+                                                            labelName={"Product Sku"}
+                                                            inputName={"product-sku"}
+                                                            placeholder={"Product-Sku"}
+                                                            inputType={"text"}
+                                                            validation={{
+                                                                ...register("sku"),
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    ) : ( "" )}
+                                                    {type === "Single" ? (
+                                                    <div>
+                                                        <Input
+                                                            name={"hsn"}
+                                                            labelName={"HSN"}
+                                                            inputType={"text"}
+                                                            placeholder={"HSN"}
+                                                            validation={{...register("hsn")}}
+                                                        />
+                                                    </div>
+                                                    ) : ( "" )}
+                                                </div>
                                         </div>
                                     </div>
-                                ) : ( "" )}
+                                </div>
 
                                 <div className="col-12">
                                     {type !== "Service" ? (
@@ -536,7 +673,7 @@ const AddProduct = () => {
                                         <div className="card-body">
                                             <div>
                                                 <div className="row row-cols-1 row-cols-md-2">
-                                                    {type === "Single" || type === "Variant" ? (
+                                                    {type == "Single" || type == "Combo" || type === "Variant" ? (
                                                     <div style={{position: "relative"}}>
                                                         <p onClick={unitToggle}
                                                            style={{position: "absolute", right: "14px", cursor: "pointer",}}
@@ -549,7 +686,7 @@ const AddProduct = () => {
                                                         <div>
                                                             <Select
                                                                 name={"select-unit"}
-                                                                labelName={"select-unit"}
+                                                                // labelName={"select-unit"}
                                                                 placeholder={"Select Unit"}
                                                                 options={allUnitType}
                                                                 setValue={setUnitType}
@@ -561,7 +698,7 @@ const AddProduct = () => {
 
 
 
-                                                    {type == "Single" || type === "Variant" ? (
+                                                    {type == "Single" || type == "Combo" || type === "Variant" ? (
                                                     <div style={{position: "relative"}}>
                                                         <p
                                                             onClick={brandToggle}
@@ -581,7 +718,7 @@ const AddProduct = () => {
                                                         <div>
                                                             <Select
                                                                 name={"select-brand"}
-                                                                labelName={"Select Brand"}
+                                                                // labelName={"Select Brand"}
                                                                 placeholder={"Select Brand"}
                                                                 options={allBrand}
                                                                 setValue={setBrandValue}
@@ -591,7 +728,7 @@ const AddProduct = () => {
                                                     </div>
                                                     ) : ( "" )}
 
-                                                    {type == "Single" || type === "Variant" ? (
+                                                    {type == "Single" || type == "Combo" || type === "Variant" ? (
                                                     <div style={{position: "relative"}}>
                                                         <p
                                                             onClick={modelToggle}
@@ -611,7 +748,7 @@ const AddProduct = () => {
                                                         <div>
                                                             <Select
                                                                 name={"select-Model"}
-                                                                labelName={"Select Model"}
+                                                                // labelName={"Select Model"}
                                                                 placeholder={"Select Model"}
                                                                 options={allModel}
                                                                 setValue={setSingleModel}
@@ -620,12 +757,13 @@ const AddProduct = () => {
                                                         </div>
                                                     </div>
                                                     ) : ( "" )}
+
                                                     {type === "Single" || type === "Variant" || type === "Combo" ? (
                                                     <div>
                                                         <Select
                                                             name={"barcode-type"}
-                                                            labelName={"Barcode Type"}
-                                                            placeholder={"Select Barcode"}
+                                                            // labelName={"Barcode Type"}
+                                                            placeholder={"Select Barcode Type"}
                                                             options={[
                                                                 {value: "Single", label: "Single"},
                                                                 {value: "Variant", label: "Variant"},
@@ -639,8 +777,8 @@ const AddProduct = () => {
                                                 </div>
 
 
-                                                {type == "Single" || type === "Variant" ? (
-                                                <div>
+                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                <div className="mt-2">
                                                     <div className="d-flex justify-content-between">
                                                         <label htmlFor="exampleFormControlTextarea4"
                                                                style={{fontSize: '11px'}}>
@@ -676,101 +814,355 @@ const AddProduct = () => {
                                             <div className="card-body">
                                                 <div>
                                                     <div className="row row-cols-3">
+                                                        {type == "Single" || type == "Combo" || type == "Variant" ? (
+                                                        <div className={"mt-3"}>
+                                                            {/*<Input*/}
+                                                            {/*    labelName={"Alert Quantity"}*/}
+                                                            {/*    inputName={"alert-quantity"}*/}
+                                                            {/*    inputType={"number"}*/}
+                                                            {/*    validation={{*/}
+                                                            {/*        ...register("alert_quantity"),*/}
+                                                            {/*    }}*/}
+                                                            {/*/>*/}
 
-                                                        {type == "Single" ? (
-                                                        <div>
-                                                            <Input
-                                                                labelName={"Alert Quantity"}
-                                                                inputName={"alert-quantity"}
-                                                                inputType={"text"}
-                                                                validation={{
-                                                                    ...register("alert_quantity"),
+                                                            <TextField
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                autoComplete="off"
+                                                                size='small'
+                                                                type={'number'}
+                                                                label={'Alert Quantity'}
+                                                                // placeholder={'placeholder'}
+                                                                {...register("alert_quantity")}
+                                                                onChange={e => {
+                                                                    allStoredValue.alert_quantity= e.target.value
+                                                                    setAllStoredValue(allStoredValue)
                                                                 }}
-                                                            />
+
+                                                                sx={{
+                                                                    '& .MuiFormLabel-root': {
+                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                        fontWeight: 400,
+                                                                    },
+                                                                    '& label': {
+                                                                        fontSize: 12
+                                                                    },
+                                                                    '& label.Mui-focused': {
+                                                                        color: '#1c2437',
+                                                                        fontSize: 16
+                                                                    },
+                                                                    '& .MuiOutlinedInput-root': {
+                                                                        // fontSize: { xs: 12, md: 14 },
+                                                                        height: 35,
+                                                                        backgroundColor: 'white',
+                                                                        '&.Mui-focused fieldset': {
+                                                                            borderColor: '#979797',
+                                                                            borderWidth: '1px'
+                                                                        },
+                                                                        // '& fieldset span': {
+                                                                        //     paddingRight: '6px',
+                                                                        // },
+                                                                        // '&.Mui-focused fieldset span': {
+                                                                        //     // paddingRight: '6px',
+                                                                        // },
+                                                                    },
+                                                                }} />
                                                         </div>
                                                         ) : ( "" )}
 
-                                                        {type === "Single" || type === "Combo" || type !== "Service" ? (
-                                                        <div>
-                                                            <Input
-                                                                labelName={"Purchase Price"}
-                                                                inputName={"purchase-price"}
-                                                                inputType={"number"}
-                                                                placeholder={"0"}
-                                                                validation={{
-                                                                    ...register("purchase_price"),
+                                                        {type == "Single" || type == "Combo" || type == "Variant" ? (
+                                                        <div className={"mt-3"}>
+                                                            {/*<Input*/}
+                                                            {/*    labelName={"Opening stock quantity"}*/}
+                                                            {/*    inputName={"opening_stock_quantity"}*/}
+                                                            {/*    inputType={"number"}*/}
+                                                            {/*    validation={{*/}
+                                                            {/*        ...register("opening_stock_quantity"),*/}
+                                                            {/*    }}*/}
+                                                            {/*/>*/}
+
+                                                            <TextField
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                autoComplete="off"
+                                                                size='small'
+                                                                type={'number'}
+                                                                label={'Opening stock quantity'}
+                                                                // placeholder={'placeholder'}
+                                                                {...register("opening_stock_quantity")}
+                                                                onChange={e => {
+                                                                    allStoredValue.opening_stock_quantity= e.target.value
+                                                                    setAllStoredValue(allStoredValue)
                                                                 }}
-                                                            />
+
+                                                                sx={{
+                                                                    '& .MuiFormLabel-root': {
+                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                        fontWeight: 400,
+                                                                    },
+                                                                    '& label': {
+                                                                        fontSize: 12
+                                                                    },
+                                                                    '& label.Mui-focused': {
+                                                                        color: '#1c2437',
+                                                                        fontSize: 16
+                                                                    },
+                                                                    '& .MuiOutlinedInput-root': {
+                                                                        // fontSize: { xs: 12, md: 14 },
+                                                                        height: 35,
+                                                                        backgroundColor: 'white',
+                                                                        '&.Mui-focused fieldset': {
+                                                                            borderColor: '#979797',
+                                                                            borderWidth: '1px'
+                                                                        },
+                                                                        // '& fieldset span': {
+                                                                        //     paddingRight: '6px',
+                                                                        // },
+                                                                        // '&.Mui-focused fieldset span': {
+                                                                        //     // paddingRight: '6px',
+                                                                        // },
+                                                                    },
+                                                                }} />
                                                         </div>
                                                         ) : ( "" )}
 
-                                                        {type == "Single" || type === "Combo" || type !== "Service" ? (
-                                                        <div>
-                                                            <Input
-                                                                labelName={"Selling Price*"}
-                                                                inputName={"selling-price"}
-                                                                inputType={"number"}
-                                                                placeholder={"0"}
-                                                                validation={{
-                                                                    ...register("selling_price"),
+                                                        {type === "Single" || type === "Combo" || type === "Variant" ? (
+                                                        <div className={"mt-3"}>
+                                                            {/*<Input*/}
+                                                            {/*    labelName={"Purchase Price"}*/}
+                                                            {/*    inputName={"purchase-price"}*/}
+                                                            {/*    inputType={"number"}*/}
+                                                            {/*    placeholder={"0"}*/}
+                                                            {/*    validation={{*/}
+                                                            {/*        ...register("purchase_price"),*/}
+                                                            {/*    }}*/}
+                                                            {/*/>*/}
+
+                                                            <TextField
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                autoComplete="off"
+                                                                size='small'
+                                                                type={'number'}
+                                                                label={'Purchase Price'}
+                                                                // placeholder={'placeholder'}
+                                                                {...register("purchase_price")}
+                                                                onChange={e => {
+                                                                    allStoredValue.purchase_price= e.target.value
+                                                                    setAllStoredValue(allStoredValue)
                                                                 }}
-                                                            />
+
+                                                                sx={{
+                                                                    '& .MuiFormLabel-root': {
+                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                        fontWeight: 400,
+                                                                    },
+                                                                    '& label': {
+                                                                        fontSize: 12
+                                                                    },
+                                                                    '& label.Mui-focused': {
+                                                                        color: '#1c2437',
+                                                                        fontSize: 16
+                                                                    },
+                                                                    '& .MuiOutlinedInput-root': {
+                                                                        // fontSize: { xs: 12, md: 14 },
+                                                                        height: 35,
+                                                                        backgroundColor: 'white',
+                                                                        '&.Mui-focused fieldset': {
+                                                                            borderColor: '#979797',
+                                                                            borderWidth: '1px'
+                                                                        },
+                                                                        // '& fieldset span': {
+                                                                        //     paddingRight: '6px',
+                                                                        // },
+                                                                        // '&.Mui-focused fieldset span': {
+                                                                        //     // paddingRight: '6px',
+                                                                        // },
+                                                                    },
+                                                                }} />
                                                         </div>
                                                         ) : ( "" )}
 
-                                                        {type === "Combo" ? (
-                                                        <div>
-                                                            <Input
-                                                                labelName={"Other currency price"}
-                                                                inputName={"other_currency_price"}
-                                                                inputType={"number"}
-                                                                placeholder={"0"}
-                                                                validation={{
-                                                                    ...register("other_currency_price"),
+                                                        { type == "Single" || type === "Combo" || type === "Variant" ? (
+                                                        <div className={"mt-3"}>
+                                                            {/*<Input*/}
+                                                            {/*    labelName={"Selling Price*"}*/}
+                                                            {/*    inputName={"selling-price"}*/}
+                                                            {/*    inputType={"number"}*/}
+                                                            {/*    placeholder={"0"}*/}
+                                                            {/*    validation={{*/}
+                                                            {/*        ...register("selling_price"),*/}
+                                                            {/*    }}*/}
+                                                            {/*/>*/}
+
+                                                            <TextField
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                autoComplete="off"
+                                                                size='small'
+                                                                type={'number'}
+                                                                label={'Selling Price'}
+                                                                // placeholder={'placeholder'}
+                                                                {...register("selling_price")}
+                                                                onChange={e => {
+                                                                    allStoredValue.selling_price= e.target.value
+                                                                    setAllStoredValue(allStoredValue)
                                                                 }}
-                                                            />
+
+                                                                sx={{
+                                                                    '& .MuiFormLabel-root': {
+                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                        fontWeight: 400,
+                                                                    },
+                                                                    '& label': {
+                                                                        fontSize: 12
+                                                                    },
+                                                                    '& label.Mui-focused': {
+                                                                        color: '#1c2437',
+                                                                        fontSize: 16
+                                                                    },
+                                                                    '& .MuiOutlinedInput-root': {
+                                                                        // fontSize: { xs: 12, md: 14 },
+                                                                        height: 35,
+                                                                        backgroundColor: 'white',
+                                                                        '&.Mui-focused fieldset': {
+                                                                            borderColor: '#979797',
+                                                                            borderWidth: '1px'
+                                                                        },
+                                                                        // '& fieldset span': {
+                                                                        //     paddingRight: '6px',
+                                                                        // },
+                                                                        // '&.Mui-focused fieldset span': {
+                                                                        //     // paddingRight: '6px',
+                                                                        // },
+                                                                    },
+                                                                }} />
                                                         </div>
                                                         ) : ( "" )}
 
-                                                        {type == "Single" ? (
+                                                        {type == "Single" || type == "Combo" || type == "Variant" ? (
                                                         <>
-                                                            <div>
-                                                                <Input
-                                                                    labelName={"Other Charges"}
-                                                                    inputName={"other_charges"}
-                                                                    inputType={"text"}
-                                                                    placeholder={"Other Charges"}
-                                                                    validation={{
-                                                                        ...register("other_charges"),
+                                                            <div className={"mt-3"}>
+                                                                {/*<Input*/}
+                                                                {/*    labelName={"min_selling_price"}*/}
+                                                                {/*    inputName={"min_selling_price"}*/}
+                                                                {/*    inputType={"number"}*/}
+                                                                {/*    placeholder={"Min Selling Price"}*/}
+                                                                {/*    validation={{*/}
+                                                                {/*        ...register("min_selling_price"),*/}
+                                                                {/*    }}*/}
+                                                                {/*/>*/}
+
+                                                                <TextField
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    autoComplete="off"
+                                                                    size='small'
+                                                                    type={'number'}
+                                                                    label={'Min Selling Price'}
+                                                                    // placeholder={'placeholder'}
+                                                                    {...register("min_selling_price")}
+                                                                    onChange={e => {
+                                                                        allStoredValue.min_selling_price= e.target.value
+                                                                        setAllStoredValue(allStoredValue)
                                                                     }}
-                                                                />
+
+                                                                    sx={{
+                                                                        '& .MuiFormLabel-root': {
+                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                            fontWeight: 400,
+                                                                        },
+                                                                        '& label': {
+                                                                            fontSize: 12
+                                                                        },
+                                                                        '& label.Mui-focused': {
+                                                                            color: '#1c2437',
+                                                                            fontSize: 16
+                                                                        },
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                            height: 35,
+                                                                            backgroundColor: 'white',
+                                                                            '&.Mui-focused fieldset': {
+                                                                                borderColor: '#979797',
+                                                                                borderWidth: '1px'
+                                                                            },
+                                                                            // '& fieldset span': {
+                                                                            //     paddingRight: '6px',
+                                                                            // },
+                                                                            // '&.Mui-focused fieldset span': {
+                                                                            //     // paddingRight: '6px',
+                                                                            // },
+                                                                        },
+                                                                    }} />
                                                             </div>
                                                         </>
                                                         ) : ( "" )}
 
-                                                        {type == "Single" || type === "Variant" ? (
-                                                        <div className="d-flex ">
-                                                            <Input
-                                                                labelName={"Tax"}
-                                                                inputName={"tax"}
-                                                                inputType={"number"}
-                                                                placeholder={"0"}
-                                                                validation={{
-                                                                    ...register("tax"),
+                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                        <div className="mt-3">
+                                                            {/*<Input*/}
+                                                            {/*    labelName={"Tax"}*/}
+                                                            {/*    inputName={"tax"}*/}
+                                                            {/*    inputType={"number"}*/}
+                                                            {/*    placeholder={"0"}*/}
+                                                            {/*    validation={{*/}
+                                                            {/*        ...register("tax"),*/}
+                                                            {/*    }}*/}
+                                                            {/*/>*/}
+                                                            <TextField
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                autoComplete="off"
+                                                                size='small'
+                                                                type={'number'}
+                                                                label={'Tax'}
+                                                                // placeholder={'placeholder'}
+                                                                {...register("tax")}
+                                                                onChange={e => {
+                                                                    allStoredValue.tax= e.target.value
+                                                                    setAllStoredValue(allStoredValue)
                                                                 }}
-                                                            />
+
+                                                                sx={{
+                                                                    '& .MuiFormLabel-root': {
+                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                        fontWeight: 400,
+                                                                    },
+                                                                    '& label': {
+                                                                        fontSize: 12
+                                                                    },
+                                                                    '& label.Mui-focused': {
+                                                                        color: '#1c2437',
+                                                                        fontSize: 16
+                                                                    },
+                                                                    '& .MuiOutlinedInput-root': {
+                                                                        // fontSize: { xs: 12, md: 14 },
+                                                                        height: 35,
+                                                                        backgroundColor: 'white',
+                                                                        '&.Mui-focused fieldset': {
+                                                                            borderColor: '#979797',
+                                                                            borderWidth: '1px'
+                                                                        },
+                                                                        // '& fieldset span': {
+                                                                        //     paddingRight: '6px',
+                                                                        // },
+                                                                        // '&.Mui-focused fieldset span': {
+                                                                        //     // paddingRight: '6px',
+                                                                        // },
+                                                                    },
+                                                                }} />
                                                         </div>
                                                         ) : ( "" )}
 
-                                                        {type == "Single" || type === "Variant" ? (
+                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
                                                         <div>
                                                             <Select
-                                                                labelName={"Tax Type"}
-                                                                placeholder={''}
-                                                                previous={taxType}
+                                                                placeholder={"Tax Type"}
+                                                                // previous={taxType}
                                                                 options={[{value: "percent", label: "Percent"}, {value: "value", label: "Value"}]}
                                                                 setValue={setTaxType}
-                                                                // cngFn={handleChangeForUpdateStatus}
+                                                                cngFn={handleChangeTaxType}
                                                             />
                                                         </div>
                                                         ) : ( "" )}
@@ -854,6 +1246,7 @@ const AddProduct = () => {
                                                                     inputName={"price"}
                                                                     inputType={"number"}
                                                                     placeholder={"0"}
+                                                                    // defaultValue={singleData?.selling_price * }
                                                                     validation={{
                                                                         ...register(`price_${index}`),
                                                                     }}
@@ -891,14 +1284,75 @@ const AddProduct = () => {
                         ) : ( "")}
 
                         { type === "Variant" ? (
-                            <SelectComboVariant register={register} unregister={unregister}></SelectComboVariant>
+                            <SelectComboVariant allStoredValue={allStoredValue} returnedValueFromVariantValueSelect={returnedValueFromVariantValueSelect} setReturnedValueFromVariantValueSelect={setReturnedValueFromVariantValueSelect} register={register} unregister={unregister}></SelectComboVariant>
                         ) : ( "")}
+                    </div>
+                    <div className="card">
+                        <div className="card-header">
+                            <h4 className="card-title mb-0">Products Options</h4>
+                        </div>
+                        <div className="card-body">
+
+                            <div className="row row-cols-3">
+                                <div>
+                                    <Input
+                                        labelName={"Length"}
+                                        inputName={"length"}
+                                        inputType={"number"}
+                                        placeholder={"Length"}
+                                        validation={{...register("p_length")}}
+                                    />
+                                </div>
+                                <div>
+                                    <Input
+                                        labelName={"Length"}
+                                        inputName={"length"}
+                                        inputType={"number"}
+                                        placeholder={"Length"}
+                                        validation={{...register("p_length")}}
+                                    />
+                                </div>
+                                <div>
+                                    <Input
+                                        labelName={"Length"}
+                                        inputName={"length"}
+                                        inputType={"number"}
+                                        placeholder={"Length"}
+                                        validation={{...register("p_length")}}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="my-3">
+                            <div class="d-flex justify-content-between">
+                                <div class="mr-auto p-2">
+                                    <button onClick={() => toggle()} className="btn btn-secondary btn-sm" type="button">Add new option</button>
+                                </div>
+                                <div className="d-flex">
+                                    <div style={{marginTop: '-28px', maxWidth: '200px'}}>
+                                        <Select
+                                            name={"barcode-type"}
+                                            // labelName={"Barcode Type"}
+                                            placeholder={"Select Barcode Type"}
+                                            options={productOptions}
+                                            setValue={setSelectedProductOptions}
+                                            cngFn={handleChangeForProductType}
+                                        />
+                                    </div>
+                                    <div class="p-2">
+                                        <button onClick={() => globalOptions()} className="btn btn-secondary btn-sm" type="button">Add global options</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <Submitbtn name={"Add Product"}/>
                 </form>
             </div>
 
 
+            <AddProductOptionModal modal={productOptionsModal} toggle={toggle} reFetch={isDarty}></AddProductOptionModal>
 
             <AddUnitTypeModal modal={unit} toggle={unitToggle} reFetch={isUnitTypeDirty}></AddUnitTypeModal>
             <AddCategoryModal isChange={isChange} modal={category} toggle={categoryToggle} reFetch={isDarty}></AddCategoryModal>

@@ -3,7 +3,7 @@ import {useForm} from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import {yupResolver} from "@hookform/resolvers/yup";
 
-const Input = ({labelName, inputName, inputType, placeholder, defaultValue, validation, error}) => {
+const Input = ({performOnValue, labelName, inputName, inputType, placeholder, defaultValue, validation, error}) => {
 
     const {
         register
@@ -41,6 +41,7 @@ const Input = ({labelName, inputName, inputType, placeholder, defaultValue, vali
                 placeholder={placeholder}
                 defaultValue={defaultValue}
                 {...validation}
+                onChange={performOnValue}
 
                 sx={{
                     '& .MuiFormLabel-root': {

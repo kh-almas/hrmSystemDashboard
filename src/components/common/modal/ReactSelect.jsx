@@ -32,7 +32,7 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
 
   return (
       <div className="theme-form">
-        <div className="mb-3 form-group">
+        <div className="mt-3 form-group">
           <label style={{ fontSize: "11px" }} htmlFor={labelName}>
             {labelName? `${labelName}:` : ''}{" "}
             {error && <span className="text-danger">(Required)</span>}
@@ -47,9 +47,8 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
                 styles={customStyles}
                 isSearchable={true}
                 placeholder={placeholder}
-                {...validation}
             />
-            {/*{console.log(previous)}*/}
+            {/*{console.log('validation', validation)}*/}
           </div>
         </div>
       </div>
