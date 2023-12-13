@@ -22,13 +22,24 @@ import MultipleImageUploader from "../../../../common/component/imageUpload/Mult
 import SelectComboVariant from "./SelectComboVariant";
 import Swal from "sweetalert2";
 import AddProductOptionModal from "../../../../common/component/form/inventory/productOption/AddProductOptionModal";
+import {
+    Container,
+    Row,
+    Col,
+    Card,
+    CardHeader,
+    CardBody,
+    Collapse,
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody, ModalFooter
+} from 'reactstrap'
+import { Accordion } from 'react-bootstrap';
+
 
 const AddProduct = () => {
     const [allStoredValue, setAllStoredValue] = useState({})
-    useEffect(() => {
-        console.log(allStoredValue);
-    }, [allStoredValue])
-
     const [photos, setPhotos] = useState([]);
     const [parentCategory, setParentCategory] = useState({});
     const [processDataForCategory, setprocessDataForCategory] = useState([]);
@@ -53,7 +64,7 @@ const AddProduct = () => {
         setIsChange(!isChange);
     }
     useEffect(() => {
-        console.log('photos',photos);
+        // console.log('photos',photos);
     }, [photos]);
 
     const unitToggle = () => {
@@ -238,84 +249,6 @@ const AddProduct = () => {
         getDataFn();
     }, [isModelChange])
 
-    const submitAddProductForm = (data) => {
-        data.product_type = type;
-        data.unit_id = unitType?.value;
-        data.barcode_type = barcodeType?.value;
-        data.brand_id = brandValue?.value;
-        data.category_id = parentCategory?.id;
-        data.model_id = singleModel?.value;
-        data.note = note;
-        data.tax_type = taxType?.value;
-        data.measurement_unit = measurementUnit?.value;
-        data.howManyProduct = selectedProductForCombo?.length;
-
-        if (data.product_type === 'Variant'){
-            let skuInfo = []
-            for (let key in returnedValueFromVariantValueSelect){
-                console.log('returnedValueFromVariantValueSelect', returnedValueFromVariantValueSelect[key])
-                let newObj = returnedValueFromVariantValueSelect[key]
-                const sku = `variant_sku_${key}`
-                const openingStockQuantity = `opening_stock_quantity_${key}`
-                const alertQuantity = `alert_quantity_${key}`
-                const purchasePrice = `variant_purchase_price_${key}`
-                const sellingPrice = `variant_selling_price_${key}`
-                const skuArr = {
-                    sku: data[sku],
-                    opening_stock_quantity: data[openingStockQuantity],
-                    alert_quantity: data[alertQuantity],
-                    purchase_price: data[purchasePrice],
-                    selling_price: data[sellingPrice],
-                    variant: newObj
-                }
-                skuInfo.push(skuArr);
-                delete data[sku];
-                delete data[openingStockQuantity];
-                delete data[alertQuantity];
-                delete data[purchasePrice]
-                delete data[sellingPrice]
-            }
-            data.sku = skuInfo;
-            // console.log(variantInfo);
-        }
-        // console.log('allStoredValue', allStoredValue);
-        console.log('data', data)
-
-        axios.post('/inventory-management/products/add', data)
-            .then(info => {
-                console.log(info)
-                // if(info?.status == 200)
-                // {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    // reset();
-                    // toggle();
-                // }
-                // reFetch();
-            })
-            .catch(e => {
-                console.log(e)
-                if(e?.response?.data?.body?.message?.errno == 1062){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: `Can not duplicate product name`
-                    })
-                }else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: `${e?.response?.data?.body?.message?.details[0].message}`
-                    })
-                }
-            })
-    }
-
 
     const [allDataForDropdown, setAllDataForDropdown] = useState([]);
     useEffect(() => {
@@ -380,26 +313,39 @@ const AddProduct = () => {
     }
 
     // product options functionality added
-    const [selectedProductOptions, setSelectedProductOptions] = useState([]);
+    const [selectedProductOptions, setSelectedProductOptions] = useState({});
     const [productOptions, setProductOptions] = useState([]);
     const [makeProductOptions, setMakeProductOptions] = useState([]);
     const [productOptionsModal, setProductOptionsModal] = useState(false);
 
-    console.log('makeProductOptions', makeProductOptions)
+
+    //set value here
+    const [addRowInOptionValue, setAddRowInOptionValue] = useState({})
+    const [addRowInOptionSelectValue, setAddRowInOptionSelectValue] = useState({})
+    //dynamic input here
+    const [addRowInOption, setAddRowInOption] = useState({})
+    const [componentRender, setComponentRender] = useState(false)
+
+
+    const [isOpen, setIsOpen] = useState('');
+    const accordionToggle = (id) => (isOpen === id ? setIsOpen(null) : setIsOpen(id));
+
 
     const globalOptions = () => {
-        if(makeProductOptions?.length !== 0){
-            makeProductOptions?.map(singleOption => {
-                console.log('singleOption?.value', singleOption?.value)
-                console.log('selectedProductOptions?.value', selectedProductOptions?.value)
-                if(singleOption.value !== selectedProductOptions.value){
-                    setMakeProductOptions(prev => [...prev, selectedProductOptions])
+        setIsOpen(selectedProductOptions?.value);
+        if (makeProductOptions.length === 0) {
+            setMakeProductOptions([selectedProductOptions]);
+            if(!addRowInOption.hasOwnProperty(selectedProductOptions?.value)){
+                addRowInOption[selectedProductOptions?.value] = [0];
+            }
+        } else {
+            if (!makeProductOptions.some(data => data.value === selectedProductOptions.value)) {
+                setMakeProductOptions(prev => [...prev, selectedProductOptions]);
+                if(!addRowInOption.hasOwnProperty(selectedProductOptions?.value)){
+                    addRowInOption[selectedProductOptions?.value] = [0];
                 }
-            })
-        }else{
-            setMakeProductOptions([selectedProductOptions])
+            }
         }
-        console.log('makeProductOptions', makeProductOptions);
     }
 
     const handleChangeForProductType = (selected) => {
@@ -415,7 +361,6 @@ const AddProduct = () => {
             try {
                 setProductOptions([])
                 const response = await axios.get(`/inventory-management/products/options/list`);
-                console.log('response', response);
                 response?.data?.body?.data?.map(item => {
                     const set_data = {
                         value: item.id,
@@ -428,17 +373,196 @@ const AddProduct = () => {
             }
         };
         fetchData()
-    }, []);
+    }, [isChange]);
+
+    const removeOptions = (id) => {
+        const filterData = makeProductOptions?.filter(singleData => parseInt(singleData.value) !== parseInt(id))
+        setMakeProductOptions(filterData)
+    }
+
+    // const [addRowInOptionValue, setAddRowInOptionValue] = useState({})
+
+    const handelOptionData = (field, value, singleOptions, singleRowData) => {
+        if (!addRowInOptionValue.hasOwnProperty(singleOptions)) {
+            addRowInOptionValue[singleOptions] = {};
+        }
+        if (!addRowInOptionValue[singleOptions].hasOwnProperty(singleRowData)) {
+            addRowInOptionValue[singleOptions][singleRowData] = {
+                "option_id": singleOptions,
+            };
+        }
+        addRowInOptionValue[singleOptions][singleRowData][field] = value;
+    };
+
+
+    // const [addRowInOptionSelectValue, setAddRowInOptionSelectValue] = useState({})
+
+
+    const handelOptionsSelectData = (field, selectedValue, singleOptions, singleRowData) => {
+        if (!addRowInOptionSelectValue.hasOwnProperty(singleOptions)) {
+            addRowInOptionSelectValue[singleOptions] = {};
+        }
+        if (!addRowInOptionSelectValue[singleOptions].hasOwnProperty(singleRowData)) {
+            addRowInOptionSelectValue[singleOptions][singleRowData] = {};
+        }
+        addRowInOptionSelectValue[singleOptions][singleRowData][field] = selectedValue;
+
+        handelOptionData(field, selectedValue.value, singleOptions, singleRowData)
+    };
+
+
+    const addNewRowForOptionValues = (id) => {
+        if(!addRowInOption.hasOwnProperty(id)){
+            addRowInOption[id] = ['0'];
+        }
+        let makeField = addRowInOption[id];
+        makeField.push(makeField?.length);
+
+        addRowInOption[id] = makeField;
+        setComponentRender(!componentRender);
+    }
+
+    const removeItemFromVariantList = (singleOptions, singleRowData) => {
+        const removeItemFrom = addRowInOption[singleOptions];
+
+        if (removeItemFrom?.includes(singleRowData)) {
+            // Use filter to create a new array without the removed item
+            const remainingItems = removeItemFrom.filter(item => item !== singleRowData);
+
+            addRowInOption[singleOptions] = remainingItems;
+            setComponentRender(!componentRender);
+        }
+    }
+
+    const [selectedFiles, setSelectedFiles] = useState([]);
+
+    const handleFileChange = (e) => {
+        // Extract files from the event
+        const files = e.target.files;
+
+        // Convert the files object to an array
+        const filesArray = Array.from(files);
+
+        // Update the selectedFiles state
+        setSelectedFiles([...selectedFiles, ...filesArray]);
+
+        // Log the array of files
+        console.log(filesArray);
+    };
 
 
 
+    const submitAddProductForm = (data) => {
+        const formData = new FormData();
+
+        // selectedFiles.forEach((file, index) => {
+        //     formData.append(`images[${index}]`, file);
+        // });
+        // for(let key in selectedFiles){
+        //     formData.append(`images`, selectedFiles);
+            // console.log(selectedFiles[key][0])
+        // }
+
+        for (let i = 0; i < selectedFiles.length; i++) {
+            formData.append('images', selectedFiles[i]);
+        }
+
+
+        console.log('imagggggggggg',formData.get('images'));
+
+        formData.append(`HowManyImages`, 34);
+
+
+
+        data.product_type = type;
+        data.unit_id = unitType?.value;
+        data.barcode_type = barcodeType?.value;
+        data.brand_id = brandValue?.value;
+        data.category_id = parentCategory?.id;
+        data.model_id = singleModel?.value;
+        data.note = note;
+        data.tax_type = taxType?.value;
+        data.measurement_unit = measurementUnit?.value;
+        data.howManyProduct = selectedProductForCombo?.length;
+        data.options = addRowInOptionValue;
+        data.alert_quantity = allStoredValue.alert_quantity;
+        data.opening_stock_quantity = allStoredValue.opening_stock_quantity;
+        data.purchase_price = allStoredValue.purchase_price;
+        data.selling_price = allStoredValue.selling_price;
+        data.min_selling_price = allStoredValue.min_selling_price;
+        data.tax = allStoredValue.tax;
+
+        if (data.product_type === 'Variant'){
+            let skuInfo = []
+            for (let key in returnedValueFromVariantValueSelect){
+                let newObj = returnedValueFromVariantValueSelect[key]
+                const sku = `variant_sku_${key}`
+                const openingStockQuantity = `opening_stock_quantity_${key}`
+                const alertQuantity = `alert_quantity_${key}`
+                const purchasePrice = `variant_purchase_price_${key}`
+                const sellingPrice = `variant_selling_price_${key}`
+                const tax = `tax_${key}`
+                const skuArr = {
+                    sku: data[sku],
+                    opening_stock_quantity: data[openingStockQuantity],
+                    alert_quantity: data[alertQuantity],
+                    purchase_price: data[purchasePrice],
+                    selling_price: data[sellingPrice],
+                    tax: data[tax],
+                    variant: newObj
+                }
+                skuInfo.push(skuArr);
+                delete data[sku];
+                delete data[openingStockQuantity];
+                delete data[alertQuantity];
+                delete data[purchasePrice]
+                delete data[sellingPrice]
+                delete data[tax]
+            }
+            data.variant_sku = skuInfo;
+        }
+        console.log('data', data)
+
+        axios.post('/inventory-management/products/add', formData)
+            .then(info => {
+                console.log(info);
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                // reset();
+                // toggle();
+                // }
+                // reFetch();
+            })
+            .catch(e => {
+                console.log(e)
+                if(e?.response?.data?.body?.message?.errno == 1062){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `Can not duplicate product name`
+                    })
+                }
+                // else {
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Oops...',
+                //         text: `${e?.response?.data?.body?.message?.details[0].message}`
+                //     })
+                // }
+            })
+    }
 
 
     return (
         <div>
             <Breadcrumb parent="Inventory management" title="Add New Product"/>
             <div className="container-fluid">
-                <form onSubmit={handleSubmit(submitAddProductForm)}>
+                <form onSubmit={handleSubmit(submitAddProductForm)} encType="multipart/form-data">
                     <div className="edit-profile">
                         <div className="row">
                             <div className="col-lg-4">
@@ -472,6 +596,9 @@ const AddProduct = () => {
                                                     cngFn={handleTypeChange}
                                                     previous={typeChange}
                                                 />
+                                            </div>
+                                            <div>
+                                                <input type="file" onChange={handleFileChange} multiple/>
                                             </div>
                                         </div>
                                     </div>
@@ -606,19 +733,6 @@ const AddProduct = () => {
 
                                 <div>
                                     <MultipleImageUploader photos={photos} setPhotos={setPhotos}></MultipleImageUploader>
-
-                                    {/*<form className="dropzone dropzone-primary" id="multiFileUpload"*/}
-                                    {/*      action="/upload.php">*/}
-                                    {/*    <ToastContainer/>*/}
-                                    {/*    <div className="dz-message needsclick">*/}
-                                    {/*        <Dropzone*/}
-                                    {/*            getUploadParams={getUploadParams}*/}
-                                    {/*            onChangeStatus={handleChangeStatus}*/}
-                                    {/*            onSubmit={handleImgSubmit}*/}
-                                    {/*            accept="image/*"*/}
-                                    {/*        />*/}
-                                    {/*    </div>*/}
-                                    {/*</form>*/}
                                 </div>
                             </div>
                             <div className="col-lg-8">
@@ -627,7 +741,7 @@ const AddProduct = () => {
                                         <div className="card-body">
 
                                                 <div className="row row-cols-3">
-                                                    {type == "Single" || type == "Combo" || type === "Variant"? (
+                                                    {type == "Single" || type == "Combo" || type === "Variant" || type === "Service"? (
                                                     <div>
                                                         <Input
                                                             labelName={"Product Name"}
@@ -808,23 +922,13 @@ const AddProduct = () => {
                                         </div>
                                     </div>
                                     ) : ( "" )}
-                                    {type !== "Service" ? (
                                     <div className="col-12">
                                         <div className="card">
                                             <div className="card-body">
                                                 <div>
                                                     <div className="row row-cols-3">
-                                                        {type == "Single" || type == "Combo" || type == "Variant" ? (
+                                                        {type === "Single" || type === "Combo" || type === "Variant" ? (
                                                         <div className={"mt-3"}>
-                                                            {/*<Input*/}
-                                                            {/*    labelName={"Alert Quantity"}*/}
-                                                            {/*    inputName={"alert-quantity"}*/}
-                                                            {/*    inputType={"number"}*/}
-                                                            {/*    validation={{*/}
-                                                            {/*        ...register("alert_quantity"),*/}
-                                                            {/*    }}*/}
-                                                            {/*/>*/}
-
                                                             <TextField
                                                                 variant='outlined'
                                                                 fullWidth
@@ -832,8 +936,6 @@ const AddProduct = () => {
                                                                 size='small'
                                                                 type={'number'}
                                                                 label={'Alert Quantity'}
-                                                                // placeholder={'placeholder'}
-                                                                {...register("alert_quantity")}
                                                                 onChange={e => {
                                                                     allStoredValue.alert_quantity= e.target.value
                                                                     setAllStoredValue(allStoredValue)
@@ -841,7 +943,6 @@ const AddProduct = () => {
 
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
-                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
                                                                         fontWeight: 400,
                                                                     },
                                                                     '& label': {
@@ -852,19 +953,12 @@ const AddProduct = () => {
                                                                         fontSize: 16
                                                                     },
                                                                     '& .MuiOutlinedInput-root': {
-                                                                        // fontSize: { xs: 12, md: 14 },
                                                                         height: 35,
                                                                         backgroundColor: 'white',
                                                                         '&.Mui-focused fieldset': {
                                                                             borderColor: '#979797',
                                                                             borderWidth: '1px'
                                                                         },
-                                                                        // '& fieldset span': {
-                                                                        //     paddingRight: '6px',
-                                                                        // },
-                                                                        // '&.Mui-focused fieldset span': {
-                                                                        //     // paddingRight: '6px',
-                                                                        // },
                                                                     },
                                                                 }} />
                                                         </div>
@@ -872,15 +966,6 @@ const AddProduct = () => {
 
                                                         {type == "Single" || type == "Combo" || type == "Variant" ? (
                                                         <div className={"mt-3"}>
-                                                            {/*<Input*/}
-                                                            {/*    labelName={"Opening stock quantity"}*/}
-                                                            {/*    inputName={"opening_stock_quantity"}*/}
-                                                            {/*    inputType={"number"}*/}
-                                                            {/*    validation={{*/}
-                                                            {/*        ...register("opening_stock_quantity"),*/}
-                                                            {/*    }}*/}
-                                                            {/*/>*/}
-
                                                             <TextField
                                                                 variant='outlined'
                                                                 fullWidth
@@ -888,7 +973,6 @@ const AddProduct = () => {
                                                                 size='small'
                                                                 type={'number'}
                                                                 label={'Opening stock quantity'}
-                                                                // placeholder={'placeholder'}
                                                                 {...register("opening_stock_quantity")}
                                                                 onChange={e => {
                                                                     allStoredValue.opening_stock_quantity= e.target.value
@@ -897,7 +981,6 @@ const AddProduct = () => {
 
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
-                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
                                                                         fontWeight: 400,
                                                                     },
                                                                     '& label': {
@@ -908,36 +991,19 @@ const AddProduct = () => {
                                                                         fontSize: 16
                                                                     },
                                                                     '& .MuiOutlinedInput-root': {
-                                                                        // fontSize: { xs: 12, md: 14 },
                                                                         height: 35,
                                                                         backgroundColor: 'white',
                                                                         '&.Mui-focused fieldset': {
                                                                             borderColor: '#979797',
                                                                             borderWidth: '1px'
                                                                         },
-                                                                        // '& fieldset span': {
-                                                                        //     paddingRight: '6px',
-                                                                        // },
-                                                                        // '&.Mui-focused fieldset span': {
-                                                                        //     // paddingRight: '6px',
-                                                                        // },
                                                                     },
                                                                 }} />
                                                         </div>
                                                         ) : ( "" )}
 
-                                                        {type === "Single" || type === "Combo" || type === "Variant" ? (
+                                                        {type === "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (
                                                         <div className={"mt-3"}>
-                                                            {/*<Input*/}
-                                                            {/*    labelName={"Purchase Price"}*/}
-                                                            {/*    inputName={"purchase-price"}*/}
-                                                            {/*    inputType={"number"}*/}
-                                                            {/*    placeholder={"0"}*/}
-                                                            {/*    validation={{*/}
-                                                            {/*        ...register("purchase_price"),*/}
-                                                            {/*    }}*/}
-                                                            {/*/>*/}
-
                                                             <TextField
                                                                 variant='outlined'
                                                                 fullWidth
@@ -945,7 +1011,6 @@ const AddProduct = () => {
                                                                 size='small'
                                                                 type={'number'}
                                                                 label={'Purchase Price'}
-                                                                // placeholder={'placeholder'}
                                                                 {...register("purchase_price")}
                                                                 onChange={e => {
                                                                     allStoredValue.purchase_price= e.target.value
@@ -954,7 +1019,6 @@ const AddProduct = () => {
 
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
-                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
                                                                         fontWeight: 400,
                                                                     },
                                                                     '& label': {
@@ -972,28 +1036,13 @@ const AddProduct = () => {
                                                                             borderColor: '#979797',
                                                                             borderWidth: '1px'
                                                                         },
-                                                                        // '& fieldset span': {
-                                                                        //     paddingRight: '6px',
-                                                                        // },
-                                                                        // '&.Mui-focused fieldset span': {
-                                                                        //     // paddingRight: '6px',
-                                                                        // },
                                                                     },
                                                                 }} />
                                                         </div>
                                                         ) : ( "" )}
 
-                                                        { type == "Single" || type === "Combo" || type === "Variant" ? (
+                                                        { type == "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (
                                                         <div className={"mt-3"}>
-                                                            {/*<Input*/}
-                                                            {/*    labelName={"Selling Price*"}*/}
-                                                            {/*    inputName={"selling-price"}*/}
-                                                            {/*    inputType={"number"}*/}
-                                                            {/*    placeholder={"0"}*/}
-                                                            {/*    validation={{*/}
-                                                            {/*        ...register("selling_price"),*/}
-                                                            {/*    }}*/}
-                                                            {/*/>*/}
 
                                                             <TextField
                                                                 variant='outlined'
@@ -1029,12 +1078,6 @@ const AddProduct = () => {
                                                                             borderColor: '#979797',
                                                                             borderWidth: '1px'
                                                                         },
-                                                                        // '& fieldset span': {
-                                                                        //     paddingRight: '6px',
-                                                                        // },
-                                                                        // '&.Mui-focused fieldset span': {
-                                                                        //     // paddingRight: '6px',
-                                                                        // },
                                                                     },
                                                                 }} />
                                                         </div>
@@ -1043,15 +1086,6 @@ const AddProduct = () => {
                                                         {type == "Single" || type == "Combo" || type == "Variant" ? (
                                                         <>
                                                             <div className={"mt-3"}>
-                                                                {/*<Input*/}
-                                                                {/*    labelName={"min_selling_price"}*/}
-                                                                {/*    inputName={"min_selling_price"}*/}
-                                                                {/*    inputType={"number"}*/}
-                                                                {/*    placeholder={"Min Selling Price"}*/}
-                                                                {/*    validation={{*/}
-                                                                {/*        ...register("min_selling_price"),*/}
-                                                                {/*    }}*/}
-                                                                {/*/>*/}
 
                                                                 <TextField
                                                                     variant='outlined'
@@ -1087,29 +1121,14 @@ const AddProduct = () => {
                                                                                 borderColor: '#979797',
                                                                                 borderWidth: '1px'
                                                                             },
-                                                                            // '& fieldset span': {
-                                                                            //     paddingRight: '6px',
-                                                                            // },
-                                                                            // '&.Mui-focused fieldset span': {
-                                                                            //     // paddingRight: '6px',
-                                                                            // },
                                                                         },
                                                                     }} />
                                                             </div>
                                                         </>
                                                         ) : ( "" )}
 
-                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
                                                         <div className="mt-3">
-                                                            {/*<Input*/}
-                                                            {/*    labelName={"Tax"}*/}
-                                                            {/*    inputName={"tax"}*/}
-                                                            {/*    inputType={"number"}*/}
-                                                            {/*    placeholder={"0"}*/}
-                                                            {/*    validation={{*/}
-                                                            {/*        ...register("tax"),*/}
-                                                            {/*    }}*/}
-                                                            {/*/>*/}
                                                             <TextField
                                                                 variant='outlined'
                                                                 fullWidth
@@ -1155,7 +1174,7 @@ const AddProduct = () => {
                                                         </div>
                                                         ) : ( "" )}
 
-                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
                                                         <div>
                                                             <Select
                                                                 placeholder={"Tax Type"}
@@ -1171,7 +1190,6 @@ const AddProduct = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    ) : ( "" )}
                                     <div className="col-12">
                                         <div className="card">
                                             <div className="card-body">
@@ -1190,8 +1208,6 @@ const AddProduct = () => {
                                 </div>
 
                                 <div className="px-3">
-                                    {/*<DropdownTable4 setSelectedProductForCombo={setSelectedProductForCombo}></DropdownTable4>*/}
-                                    {/*<DropdownTable3></DropdownTable3>*/}
                                     <SelectProductInCreateProductForm data={allDataForDropdown} selectedDataKey={selectedDataKeyForProductList} show={showProductList} setShow={setShowProductList} getSelectedData={getSelectedData} columns={columns}></SelectProductInCreateProductForm>
                                 </div>
 
@@ -1292,36 +1308,154 @@ const AddProduct = () => {
                             <h4 className="card-title mb-0">Products Options</h4>
                         </div>
                         <div className="card-body">
+                            <Container fluid={true}>
+                                <Row>
+                                    <Col sm="12" xl="12">
+                                        <Accordion defaultActiveKey="0">
+                                            <div className="default-according" id="accordion">
+                                                {
+                                                    makeProductOptions?.map(singleOptions =>
+                                                        <>
+                                                            <Card>
+                                                                <CardHeader>
+                                                                    <h5 className="mb-0">
+                                                                        <div className="d-flex justify-content-between">
+                                                                            <Button as={Card.Header} className='btn btn-link' color='default' onClick={() => accordionToggle(singleOptions?.value)}  >
+                                                                                {singleOptions?.label}
+                                                                            </Button>
+                                                                            <div style={{border: 'none', backgroundColor: 'white', marginTop: '22px', marginBottom: '6px', cursor: "pointer" }} onClick={() => removeOptions(singleOptions?.value)}>
+                                                                                <i className="fa fa-times" style={{fontSize: '20px'}}></i>
+                                                                            </div>
+                                                                        </div>
 
-                            <div className="row row-cols-3">
-                                <div>
-                                    <Input
-                                        labelName={"Length"}
-                                        inputName={"length"}
-                                        inputType={"number"}
-                                        placeholder={"Length"}
-                                        validation={{...register("p_length")}}
-                                    />
-                                </div>
-                                <div>
-                                    <Input
-                                        labelName={"Length"}
-                                        inputName={"length"}
-                                        inputType={"number"}
-                                        placeholder={"Length"}
-                                        validation={{...register("p_length")}}
-                                    />
-                                </div>
-                                <div>
-                                    <Input
-                                        labelName={"Length"}
-                                        inputName={"length"}
-                                        inputType={"number"}
-                                        placeholder={"Length"}
-                                        validation={{...register("p_length")}}
-                                    />
-                                </div>
-                            </div>
+                                                                    </h5>
+                                                                </CardHeader>
+                                                                <Collapse isOpen={parseInt(isOpen) === parseInt(singleOptions?.value)}>
+                                                                    <CardBody>
+
+                                                                        <div>
+
+
+                                                                            {
+                                                                                addRowInOption[singleOptions?.value]?.length > 0 ?
+                                                                                    <div>
+                                                                                        <div className="d-flex justify-content-between" style={{marginBottom: '-25px'}}>
+                                                                                            <p className="w-100 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Label</p>
+                                                                                            <p className="w-100 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Price</p>
+                                                                                            <p className="w-100 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Price Type</p>
+                                                                                            <p className="w-25 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Action</p>
+                                                                                        </div>
+                                                                                        <div>
+                                                                                            {
+                                                                                                addRowInOption[singleOptions?.value]?.map((singleRowData, rowIndex) =>
+                                                                                                    <div className="d-flex justify-content-between" key={rowIndex}>
+                                                                                                        <div className="w-100 mx-2" style={{marginTop: '37px'}}>
+                                                                                                            <TextField
+                                                                                                                variant='outlined'
+                                                                                                                fullWidth
+                                                                                                                autoComplete="off"
+                                                                                                                size='small'
+                                                                                                                type="text"
+                                                                                                                placeholder={singleRowData}
+                                                                                                                value={addRowInOptionValue?.[singleOptions?.value]?.[singleRowData]?.['option_value_name']}
+                                                                                                                onChange={e => handelOptionData('option_value_name', e.target.value, singleOptions?.value, singleRowData)}
+                                                                                                                sx={{
+                                                                                                                    '& .MuiFormLabel-root': {
+                                                                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                                                                        fontWeight: 400,
+                                                                                                                    },
+                                                                                                                    '& label': {
+                                                                                                                        fontSize: 12
+                                                                                                                    },
+                                                                                                                    '& label.Mui-focused': {
+                                                                                                                        color: '#1c2437',
+                                                                                                                        fontSize: 16
+                                                                                                                    },
+                                                                                                                    '& .MuiOutlinedInput-root': {
+                                                                                                                        // fontSize: { xs: 12, md: 14 },
+                                                                                                                        height: 35,
+                                                                                                                        backgroundColor: 'white',
+                                                                                                                        '&.Mui-focused fieldset': {
+                                                                                                                            borderColor: '#979797',
+                                                                                                                            borderWidth: '1px'
+                                                                                                                        },
+                                                                                                                    },
+                                                                                                                }} />
+                                                                                                        </div>
+                                                                                                        <div className="w-100 mx-2" style={{marginTop: '37px'}}>
+                                                                                                            <TextField
+                                                                                                                variant='outlined'
+                                                                                                                fullWidth
+                                                                                                                autoComplete="off"
+                                                                                                                size='small'
+                                                                                                                type="number"
+                                                                                                                placeholder="0"
+                                                                                                                value={addRowInOptionValue?.[singleOptions?.value]?.[singleRowData]?.['added_price_value']}
+                                                                                                                onChange={e => handelOptionData('added_price_value', e.target.value, singleOptions?.value, singleRowData)}
+                                                                                                                sx={{
+                                                                                                                    '& .MuiFormLabel-root': {
+                                                                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                                                                        fontWeight: 400,
+                                                                                                                    },
+                                                                                                                    '& label': {
+                                                                                                                        fontSize: 12
+                                                                                                                    },
+                                                                                                                    '& label.Mui-focused': {
+                                                                                                                        color: '#1c2437',
+                                                                                                                        fontSize: 16
+                                                                                                                    },
+                                                                                                                    '& .MuiOutlinedInput-root': {
+                                                                                                                        // fontSize: { xs: 12, md: 14 },
+                                                                                                                        height: 35,
+                                                                                                                        backgroundColor: 'white',
+                                                                                                                        '&.Mui-focused fieldset': {
+                                                                                                                            borderColor: '#979797',
+                                                                                                                            borderWidth: '1px'
+                                                                                                                        },
+                                                                                                                    },
+                                                                                                                }} />
+                                                                                                        </div>
+                                                                                                        <div className="w-100 mx-2">
+                                                                                                            <Select
+                                                                                                                placeholder={"Price Type"}
+                                                                                                                options={[{value: "fixed", label: "Fixed"}, {value: "percent", label: "Percent"}]}
+                                                                                                                setValue={setTaxType}
+                                                                                                                cngFn={(selected) => handelOptionsSelectData('added_price_type', selected, singleOptions?.value, singleRowData)}
+                                                                                                            />
+                                                                                                        </div>
+                                                                                                        <div className="text-end w-25 mx-2" style={{marginTop: '16px', display: "flex", justifyContent: "center", alignItems: 'center'}}>
+                                                                                                            <div onClick={() => removeItemFromVariantList(singleOptions?.value, singleRowData)} style={{border: 'none', backgroundColor: 'white', marginTop: '25px', marginBottom: '6px', cursor: "pointer" }}>
+                                                                                                                <i className="fa fa-times" style={{fontSize: '20px'}}></i>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                )
+                                                                                            }
+
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    : ''
+                                                                            }
+                                                                            <div className="d-flex justify-content-end">
+                                                                                <button onClick={() => addNewRowForOptionValues(singleOptions?.value)} className="btn btn-outline-primary btn-xs mx-3 mt-1" type="button">Add new item</button>
+                                                                            </div>
+                                                                        </div>
+
+
+
+
+                                                                    </CardBody>
+                                                                </Collapse>
+                                                            </Card>
+                                                        </>
+                                                    )
+                                                }
+                                            </div>
+                                        </Accordion>
+                                    </Col>
+                                </Row>
+                            </Container>
                         </div>
 
                         <div className="my-3">
@@ -1330,9 +1464,9 @@ const AddProduct = () => {
                                     <button onClick={() => toggle()} className="btn btn-secondary btn-sm" type="button">Add new option</button>
                                 </div>
                                 <div className="d-flex">
-                                    <div style={{marginTop: '-28px', maxWidth: '200px'}}>
+                                    <div style={{marginTop: '-28px', width: '200px'}}>
                                         <Select
-                                            name={"barcode-type"}
+                                            name={"option"}
                                             // labelName={"Barcode Type"}
                                             placeholder={"Select Barcode Type"}
                                             options={productOptions}
