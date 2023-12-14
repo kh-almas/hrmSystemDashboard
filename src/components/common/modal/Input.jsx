@@ -3,7 +3,7 @@ import {useForm} from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import {yupResolver} from "@hookform/resolvers/yup";
 
-const Input = ({performOnValue, labelName, inputName, inputType, placeholder, defaultValue, validation, error}) => {
+const Input = ({rules, performOnValue, labelName, inputName, inputType, placeholder, defaultValue, validation, error}) => {
 
     const {
         register
@@ -37,12 +37,14 @@ const Input = ({performOnValue, labelName, inputName, inputType, placeholder, de
                 autoComplete="off"
                 size='small'
                 type={inputType}
+                rules={{...rules}}
                 label={labelName}
                 placeholder={placeholder}
                 defaultValue={defaultValue}
                 {...validation}
                 onChange={performOnValue}
-
+                error={!!error}
+                helperText={error ? error?.message : ''}
                 sx={{
                     '& .MuiFormLabel-root': {
                         // fontSize: { xs: '.7rem', md: '.8rem' },

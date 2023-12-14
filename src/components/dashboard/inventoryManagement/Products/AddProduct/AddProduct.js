@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
+import React, { useEffect, useMemo, useState} from "react";
 import Breadcrumb from "../../../../common/breadcrumb";
 import {useForm, useWatch} from "react-hook-form";
 import Select from "../../../../common/modal/Select";
@@ -17,26 +17,12 @@ import getInventoryModel from "../../../../common/Query/inventory/getInventoryMo
 import SelectProductInCreateProductForm from "../../../../common/component/form/inventory/product/selectProductInCreateProductForm";
 import axios from "../../../../../axios";
 import TextField from '@mui/material/TextField';
-import AutoComplete from "../../../../common/modal/AutoComplete";
 import MultipleImageUploader from "../../../../common/component/imageUpload/MultipleImageUploader";
 import SelectComboVariant from "./SelectComboVariant";
 import Swal from "sweetalert2";
 import AddProductOptionModal from "../../../../common/component/form/inventory/productOption/AddProductOptionModal";
-import {
-    Container,
-    Row,
-    Col,
-    Card,
-    CardHeader,
-    CardBody,
-    Collapse,
-    Button,
-    Modal,
-    ModalHeader,
-    ModalBody, ModalFooter
-} from 'reactstrap'
+import {Container, Row, Col, Card, CardHeader, CardBody, Collapse, Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import { Accordion } from 'react-bootstrap';
-
 
 const AddProduct = () => {
     const [allStoredValue, setAllStoredValue] = useState({})
@@ -161,7 +147,6 @@ const AddProduct = () => {
         setMeasurementUnit(selected);
     };
 
-
     const [singleModel, setSingleModel] = useState({});
     const handleChangeForUpdateSingleModel = (selected) => {
         setSingleModel(selected);
@@ -180,18 +165,20 @@ const AddProduct = () => {
         watch,
         formState: {errors},
         unregister,
+        clearErrors
     } = useForm({
+        // mode:'onChange',
         defaultValues: useMemo(()=> {
             return selectedProductForCombo;
         }, [selectedProductForCombo])
     });
-
 
     const [allUnitType, setAllUnitType] = useState([]);
     const [isUnitTypeChange, setIsUnitTypeChange] = useState(false);
     const isUnitTypeDirty = () => {
         setIsUnitTypeChange(!isUnitTypeChange);
     }
+
     useEffect(() => {
         const getDataFn = async () => {
             setAllUnitType([])
@@ -207,12 +194,12 @@ const AddProduct = () => {
         getDataFn();
     }, [isUnitTypeChange])
 
-
     const [allBrand, setAllBrand] = useState([]);
     const [isBranchChange, setIsBranchChange] = useState(false);
     const isBranchDirty = () => {
         setIsBranchChange(!isBranchChange);
     }
+
     useEffect(() => {
         const getDataFn = async () => {
             setAllBrand([])
@@ -228,12 +215,12 @@ const AddProduct = () => {
         getDataFn();
     }, [isBranchChange])
 
-
     const [allModel, setAllModel] = useState([]);
     const [isModelChange, setIsModelChange] = useState(false);
     const isModelDirty = () => {
         setIsModelChange(!isModelChange);
     }
+
     useEffect(() => {
         const getDataFn = async () => {
             setAllModel([])
@@ -249,7 +236,6 @@ const AddProduct = () => {
         getDataFn();
     }, [isModelChange])
 
-
     const [allDataForDropdown, setAllDataForDropdown] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -262,8 +248,6 @@ const AddProduct = () => {
         };
         fetchData()
     }, []);
-
-
 
     const columns = [
         {
@@ -288,7 +272,6 @@ const AddProduct = () => {
         },
     ];
 
-
     const [selectedDataKeyForProductList, setSelectedDataKey] = useState([]);
     const [showProductList, setShowProductList] = useState(false);
     const getSelectedData = (data) => {
@@ -296,7 +279,6 @@ const AddProduct = () => {
             selectedDataKeyForProductList.push(data.id);
             setSelectedProductForCombo(prev => [...prev, data]);
         }
-
         setShowProductList(false);
     }
 
@@ -312,20 +294,14 @@ const AddProduct = () => {
         }
     }
 
-    // product options functionality added
     const [selectedProductOptions, setSelectedProductOptions] = useState({});
     const [productOptions, setProductOptions] = useState([]);
     const [makeProductOptions, setMakeProductOptions] = useState([]);
     const [productOptionsModal, setProductOptionsModal] = useState(false);
-
-
-    //set value here
     const [addRowInOptionValue, setAddRowInOptionValue] = useState({})
     const [addRowInOptionSelectValue, setAddRowInOptionSelectValue] = useState({})
-    //dynamic input here
     const [addRowInOption, setAddRowInOption] = useState({})
     const [componentRender, setComponentRender] = useState(false)
-
 
     const [isOpen, setIsOpen] = useState('');
     const accordionToggle = (id) => (isOpen === id ? setIsOpen(null) : setIsOpen(id));
@@ -380,8 +356,6 @@ const AddProduct = () => {
         setMakeProductOptions(filterData)
     }
 
-    // const [addRowInOptionValue, setAddRowInOptionValue] = useState({})
-
     const handelOptionData = (field, value, singleOptions, singleRowData) => {
         if (!addRowInOptionValue.hasOwnProperty(singleOptions)) {
             addRowInOptionValue[singleOptions] = {};
@@ -394,10 +368,6 @@ const AddProduct = () => {
         addRowInOptionValue[singleOptions][singleRowData][field] = value;
     };
 
-
-    // const [addRowInOptionSelectValue, setAddRowInOptionSelectValue] = useState({})
-
-
     const handelOptionsSelectData = (field, selectedValue, singleOptions, singleRowData) => {
         if (!addRowInOptionSelectValue.hasOwnProperty(singleOptions)) {
             addRowInOptionSelectValue[singleOptions] = {};
@@ -406,10 +376,8 @@ const AddProduct = () => {
             addRowInOptionSelectValue[singleOptions][singleRowData] = {};
         }
         addRowInOptionSelectValue[singleOptions][singleRowData][field] = selectedValue;
-
         handelOptionData(field, selectedValue.value, singleOptions, singleRowData)
     };
-
 
     const addNewRowForOptionValues = (id) => {
         if(!addRowInOption.hasOwnProperty(id)){
@@ -417,18 +385,14 @@ const AddProduct = () => {
         }
         let makeField = addRowInOption[id];
         makeField.push(makeField?.length);
-
         addRowInOption[id] = makeField;
         setComponentRender(!componentRender);
     }
 
     const removeItemFromVariantList = (singleOptions, singleRowData) => {
         const removeItemFrom = addRowInOption[singleOptions];
-
         if (removeItemFrom?.includes(singleRowData)) {
-            // Use filter to create a new array without the removed item
             const remainingItems = removeItemFrom.filter(item => item !== singleRowData);
-
             addRowInOption[singleOptions] = remainingItems;
             setComponentRender(!componentRender);
         }
@@ -437,17 +401,9 @@ const AddProduct = () => {
     const [selectedFiles, setSelectedFiles] = useState([]);
 
     const handleFileChange = (e) => {
-        // Extract files from the event
         const files = e.target.files;
-
-        // Convert the files object to an array
         const filesArray = Array.from(files);
-
-        // Update the selectedFiles state
         setSelectedFiles([...selectedFiles, ...filesArray]);
-
-        // Log the array of files
-        console.log(filesArray);
     };
 
 
@@ -463,8 +419,8 @@ const AddProduct = () => {
             // console.log(selectedFiles[key][0])
         // }
 
-        for (let i = 0; i < selectedFiles.length; i++) {
-            formData.append('images', selectedFiles[i]);
+        for (let i = 0; i < photos.length; i++) {
+            formData.append('images', photos[i]);
         }
 
 
@@ -742,15 +698,26 @@ const AddProduct = () => {
 
                                                 <div className="row row-cols-3">
                                                     {type == "Single" || type == "Combo" || type === "Variant" || type === "Service"? (
-                                                    <div>
-                                                        <Input
-                                                            labelName={"Product Name"}
-                                                            inputName={"product-name"}
-                                                            inputType={"text"}
-                                                            placeholder={"Product Name"}
-                                                            validation={{...register("name")}}
-                                                        />
-                                                    </div>
+                                                        <div>
+                                                            <Input
+                                                                clearErrors={clearErrors}
+                                                                labelName={"Product Name"}
+                                                                inputName={"product-name"}
+                                                                inputType={"text"}
+                                                                placeholder={"Product Name"}
+                                                                validation={{...register('name', {
+                                                                        required: 'This field is required',
+                                                                        pattern: {
+                                                                            value: /^[A-Za-z]+$/,
+                                                                            message: 'Use only alphabet',
+                                                                        },
+                                                                    })}}
+                                                                performOnValue={(e) => clearErrors(["name"])}
+                                                                error={errors.name}
+
+                                                            />
+                                                            {errors.name && <span>{errors.name.message}</span>}
+                                                        </div>
                                                     ) : ( "" )}
                                                     {type !== "Variant" ? (
                                                     <div>
@@ -759,10 +726,17 @@ const AddProduct = () => {
                                                             inputName={"product-sku"}
                                                             placeholder={"Product-Sku"}
                                                             inputType={"text"}
-                                                            validation={{
-                                                                ...register("sku"),
-                                                            }}
+                                                            rules={{...register('sku', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[A-Za-z0-9]+$/,
+                                                                        message: 'Use only alphabet and number',
+                                                                    },
+                                                                })}}
+                                                            performOnValue={(e) => clearErrors(["sku"])}
+                                                            error={errors.sku}
                                                         />
+                                                        {/*{errors.sku && <span>{errors.sku.message}</span>}*/}
                                                     </div>
                                                     ) : ( "" )}
                                                     {type === "Single" ? (
@@ -917,7 +891,6 @@ const AddProduct = () => {
                                                     </div>
                                                 </div>
                                                 ) : ( "" )}
-
                                             </div>
                                         </div>
                                     </div>
@@ -940,7 +913,6 @@ const AddProduct = () => {
                                                                     allStoredValue.alert_quantity= e.target.value
                                                                     setAllStoredValue(allStoredValue)
                                                                 }}
-
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
                                                                         fontWeight: 400,
@@ -1016,7 +988,6 @@ const AddProduct = () => {
                                                                     allStoredValue.purchase_price= e.target.value
                                                                     setAllStoredValue(allStoredValue)
                                                                 }}
-
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
                                                                         fontWeight: 400,
@@ -1043,7 +1014,6 @@ const AddProduct = () => {
 
                                                         { type == "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (
                                                         <div className={"mt-3"}>
-
                                                             <TextField
                                                                 variant='outlined'
                                                                 fullWidth
@@ -1057,7 +1027,6 @@ const AddProduct = () => {
                                                                     allStoredValue.selling_price= e.target.value
                                                                     setAllStoredValue(allStoredValue)
                                                                 }}
-
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
                                                                         // fontSize: { xs: '.7rem', md: '.8rem' },
@@ -1086,7 +1055,6 @@ const AddProduct = () => {
                                                         {type == "Single" || type == "Combo" || type == "Variant" ? (
                                                         <>
                                                             <div className={"mt-3"}>
-
                                                                 <TextField
                                                                     variant='outlined'
                                                                     fullWidth
@@ -1163,12 +1131,6 @@ const AddProduct = () => {
                                                                             borderColor: '#979797',
                                                                             borderWidth: '1px'
                                                                         },
-                                                                        // '& fieldset span': {
-                                                                        //     paddingRight: '6px',
-                                                                        // },
-                                                                        // '&.Mui-focused fieldset span': {
-                                                                        //     // paddingRight: '6px',
-                                                                        // },
                                                                     },
                                                                 }} />
                                                         </div>
@@ -1262,7 +1224,6 @@ const AddProduct = () => {
                                                                     inputName={"price"}
                                                                     inputType={"number"}
                                                                     placeholder={"0"}
-                                                                    // defaultValue={singleData?.selling_price * }
                                                                     validation={{
                                                                         ...register(`price_${index}`),
                                                                     }}
@@ -1431,8 +1392,6 @@ const AddProduct = () => {
                                                                                                     </div>
                                                                                                 )
                                                                                             }
-
-
                                                                                         </div>
                                                                                     </div>
                                                                                     : ''
@@ -1485,9 +1444,7 @@ const AddProduct = () => {
                 </form>
             </div>
 
-
             <AddProductOptionModal modal={productOptionsModal} toggle={toggle} reFetch={isDarty}></AddProductOptionModal>
-
             <AddUnitTypeModal modal={unit} toggle={unitToggle} reFetch={isUnitTypeDirty}></AddUnitTypeModal>
             <AddCategoryModal isChange={isChange} modal={category} toggle={categoryToggle} reFetch={isDarty}></AddCategoryModal>
             <AddBrandModal modal={brand} toggle={brandToggle} reFetch={isBranchDirty}></AddBrandModal>
