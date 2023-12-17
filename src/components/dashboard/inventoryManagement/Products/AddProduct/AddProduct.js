@@ -25,6 +25,7 @@ import {Container, Row, Col, Card, CardHeader, CardBody, Collapse, Button, Modal
 import { Accordion } from 'react-bootstrap';
 
 const AddProduct = () => {
+    const [componentRender, setComponentRender] = useState(false)
     const [allStoredValue, setAllStoredValue] = useState({})
     const [photos, setPhotos] = useState([]);
     const [parentCategory, setParentCategory] = useState({});
@@ -50,7 +51,6 @@ const AddProduct = () => {
         setIsChange(!isChange);
     }
     useEffect(() => {
-        // console.log('photos',photos);
     }, [photos]);
 
     const unitToggle = () => {
@@ -137,12 +137,12 @@ const AddProduct = () => {
         setUnitType(selected);
     };
 
-    const [barcodeType, setBarcodeType] = useState({});
+    const [barcodeType, setBarcodeType] = useState({value: "Single", label: "Single"});
     const handleChangeForUpdateBarcodeType = (selected) => {
         setBarcodeType(selected);
     };
 
-    const [measurementUnit, setMeasurementUnit] = useState({});
+    const [measurementUnit, setMeasurementUnit] = useState({value: "Inch", label: "Inch"});
     const handleChangeForUpdateMeasurementUnit = (selected) => {
         setMeasurementUnit(selected);
     };
@@ -194,6 +194,10 @@ const AddProduct = () => {
         getDataFn();
     }, [isUnitTypeChange])
 
+    useEffect(() => {
+        setUnitType(allUnitType?.[0]);
+    }, [allUnitType]);
+
     const [allBrand, setAllBrand] = useState([]);
     const [isBranchChange, setIsBranchChange] = useState(false);
     const isBranchDirty = () => {
@@ -215,6 +219,11 @@ const AddProduct = () => {
         getDataFn();
     }, [isBranchChange])
 
+    useEffect(() => {
+        setBrandValue(allBrand?.[0]);
+    }, [allBrand]);
+
+
     const [allModel, setAllModel] = useState([]);
     const [isModelChange, setIsModelChange] = useState(false);
     const isModelDirty = () => {
@@ -235,6 +244,10 @@ const AddProduct = () => {
         }
         getDataFn();
     }, [isModelChange])
+
+    useEffect(() => {
+        setSingleModel(allModel?.[0]);
+    }, [allModel]);
 
     const [allDataForDropdown, setAllDataForDropdown] = useState([]);
     useEffect(() => {
@@ -301,7 +314,6 @@ const AddProduct = () => {
     const [addRowInOptionValue, setAddRowInOptionValue] = useState({})
     const [addRowInOptionSelectValue, setAddRowInOptionSelectValue] = useState({})
     const [addRowInOption, setAddRowInOption] = useState({})
-    const [componentRender, setComponentRender] = useState(false)
 
     const [isOpen, setIsOpen] = useState('');
     const accordionToggle = (id) => (isOpen === id ? setIsOpen(null) : setIsOpen(id));
@@ -404,12 +416,26 @@ const AddProduct = () => {
         const files = e.target.files;
         const filesArray = Array.from(files);
         setSelectedFiles([...selectedFiles, ...filesArray]);
+        console.log('selectedFiles', files)
     };
 
 
 
     const submitAddProductForm = (data) => {
-        const formData = new FormData();
+
+
+        let files = [];
+
+        photos?.map(singlePhotos => {
+            files.push(singlePhotos?.file)
+
+        })
+
+        console.log(files);
+
+
+
+
 
         // selectedFiles.forEach((file, index) => {
         //     formData.append(`images[${index}]`, file);
@@ -419,14 +445,8 @@ const AddProduct = () => {
             // console.log(selectedFiles[key][0])
         // }
 
-        for (let i = 0; i < photos.length; i++) {
-            formData.append('images', photos[i]);
-        }
 
 
-        console.log('imagggggggggg',formData.get('images'));
-
-        formData.append(`HowManyImages`, 34);
 
 
 
@@ -447,6 +467,7 @@ const AddProduct = () => {
         data.selling_price = allStoredValue.selling_price;
         data.min_selling_price = allStoredValue.min_selling_price;
         data.tax = allStoredValue.tax;
+        data.photos = files;
 
         if (data.product_type === 'Variant'){
             let skuInfo = []
@@ -477,11 +498,34 @@ const AddProduct = () => {
             }
             data.variant_sku = skuInfo;
         }
-        console.log('data', data)
+
+
+
+        function createFormData(data) {
+            console.log('data',data)
+            const formData = new FormData();
+
+            for (const key in data) {
+                console.log("key",key)
+                if(key === 'photos'){
+                    for (let i = 0; i < photos.length; i++) {
+                        formData.append('images', files[i]);
+                    }
+                } else if(key === 'options') {
+                    formData.append('options', JSON.stringify(data[key]));
+                }else{
+                    if (data.hasOwnProperty(key) && data[key] !== undefined && data[key] !== null) {
+                        formData.append(key, data[key]);
+                    }
+                }
+            }
+
+            return formData;
+        }
+        const formData = createFormData(data);
 
         axios.post('/inventory-management/products/add', formData)
             .then(info => {
-                console.log(info);
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -495,7 +539,6 @@ const AddProduct = () => {
                 // reFetch();
             })
             .catch(e => {
-                console.log(e)
                 if(e?.response?.data?.body?.message?.errno == 1062){
                     Swal.fire({
                         icon: 'error',
@@ -512,6 +555,8 @@ const AddProduct = () => {
                 // }
             })
     }
+
+    console.log(errors)
 
 
     return (
@@ -542,7 +587,7 @@ const AddProduct = () => {
                                             <div>
                                                 <Select
                                                     labelName={"Product Type"}
-                                                    placeholder={"Select an option"}
+                                                    // placeholder={"Select an option"}
                                                     options={[
                                                         {value: "Single", label: "Single"},
                                                         {value: "Variant", label: "Variant"},
@@ -568,7 +613,8 @@ const AddProduct = () => {
                                                 <Select
                                                     name={"measurement_unit"}
                                                     labelName={"Size unit"}
-                                                    placeholder={"Select size unit"}
+                                                    // placeholder={"Select size unit"}
+                                                    previous={measurementUnit}
                                                     options={[
                                                         {value: "Inch", label: "Inch"},
                                                         {value: "Cm", label: "Cm"}]}
@@ -587,10 +633,17 @@ const AddProduct = () => {
                                                             inputName={"height"}
                                                             inputType={"number"}
                                                             placeholder={"height"}
-                                                            validation={{
-                                                                ...register("p_height"),
-                                                            }}
+                                                            validation={{...register('p_height', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}}
+                                                            performOnValue={(e) => clearErrors(["p_height"])}
+                                                            error={errors.p_height}
                                                         />
+                                                        {errors.p_height && <span style={{fontSize: '10px'}}>{errors.p_height.message}</span>}
                                                     </div>
                                                 ) : ( "" )}
                                                 {type == "Single" || type == "Combo" || type === "Variant" ? (
@@ -600,10 +653,17 @@ const AddProduct = () => {
                                                             inputName={"width"}
                                                             inputType={"number"}
                                                             placeholder={"width"}
-                                                            validation={{
-                                                                ...register("p_width"),
-                                                            }}
+                                                            validation={{...register('p_width', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}}
+                                                            performOnValue={(e) => clearErrors(["p_width"])}
+                                                            error={errors.p_width}
                                                         />
+                                                        {errors.p_width && <span style={{fontSize: '10px'}}>{errors.p_width.message}</span>}
                                                     </div>
                                                 ) : ( "" )}
                                                 {type == "Single" || type == "Combo" || type === "Variant" ? (
@@ -613,8 +673,17 @@ const AddProduct = () => {
                                                             inputName={"length"}
                                                             inputType={"number"}
                                                             placeholder={"Length"}
-                                                            validation={{...register("p_length")}}
+                                                            validation={{...register('p_length', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}}
+                                                            performOnValue={(e) => clearErrors(["p_length"])}
+                                                            error={errors.p_length}
                                                         />
+                                                        {errors.p_length && <span style={{fontSize: '10px'}}>{errors.p_length.message}</span>}
                                                     </div>
                                                 ) : ('')}
                                                 {type == "Single" || type == "Combo" || type === "Variant" ? (
@@ -624,8 +693,17 @@ const AddProduct = () => {
                                                             inputName={"weight"}
                                                             inputType={"number"}
                                                             placeholder={"weight"}
-                                                            validation={{...register("p_weight")}}
+                                                            validation={{...register('p_weight', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}}
+                                                            performOnValue={(e) => clearErrors(["p_weight"])}
+                                                            error={errors.p_weight}
                                                         />
+                                                        {errors.p_weight && <span style={{fontSize: '10px'}}>{errors.p_weight.message}</span>}
                                                     </div>
                                                 ) : ('')}
                                             </div>
@@ -640,10 +718,17 @@ const AddProduct = () => {
                                                             inputName={"height"}
                                                             inputType={"number"}
                                                             placeholder={"height"}
-                                                            validation={{
-                                                                ...register("package_height"),
-                                                            }}
+                                                            validation={{...register('package_height', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}}
+                                                            performOnValue={(e) => clearErrors(["package_height"])}
+                                                            error={errors.package_height}
                                                         />
+                                                        {errors.package_height && <span style={{fontSize: '10px'}}>{errors.package_height.message}</span>}
                                                     </div>
                                                 ) : ( "" )}
                                                 {type == "Single" || type == "Combo" || type === "Variant" ? (
@@ -653,10 +738,17 @@ const AddProduct = () => {
                                                             inputName={"width"}
                                                             inputType={"number"}
                                                             placeholder={"width"}
-                                                            validation={{
-                                                                ...register("package_width"),
-                                                            }}
+                                                            validation={{...register('package_width', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}}
+                                                            performOnValue={(e) => clearErrors(["package_width"])}
+                                                            error={errors.package_width}
                                                         />
+                                                        {errors.package_width && <span style={{fontSize: '10px'}}>{errors.package_width.message}</span>}
                                                     </div>
                                                 ) : ( "" )}
                                                 {type == "Single" || type == "Combo" || type === "Variant" ? (
@@ -666,8 +758,17 @@ const AddProduct = () => {
                                                             inputName={"length"}
                                                             inputType={"number"}
                                                             placeholder={"Length"}
-                                                            validation={{...register("package_length")}}
+                                                            validation={{...register('package_length', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}}
+                                                            performOnValue={(e) => clearErrors(["package_length"])}
+                                                            error={errors.package_length}
                                                         />
+                                                        {errors.package_length && <span style={{fontSize: '10px'}}>{errors.package_length.message}</span>}
                                                     </div>
                                                 ) : ('')}
                                                 {type == "Single" || type == "Combo" || type === "Variant" ? (
@@ -677,8 +778,17 @@ const AddProduct = () => {
                                                             inputName={"weight"}
                                                             inputType={"number"}
                                                             placeholder={"weight"}
-                                                            validation={{...register("package_weight")}}
+                                                            validation={{...register('package_weight', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}}
+                                                            performOnValue={(e) => clearErrors(["package_weight"])}
+                                                            error={errors.package_weight}
                                                         />
+                                                        {errors.package_weight && <span style={{fontSize: '10px'}}>{errors.package_weight.message}</span>}
                                                     </div>
                                                 ) : ('')}
                                             </div>
@@ -716,7 +826,7 @@ const AddProduct = () => {
                                                                 error={errors.name}
 
                                                             />
-                                                            {errors.name && <span>{errors.name.message}</span>}
+                                                            {errors.name && <span style={{fontSize: '10px'}}>{errors.name.message}</span>}
                                                         </div>
                                                     ) : ( "" )}
                                                     {type !== "Variant" ? (
@@ -726,7 +836,7 @@ const AddProduct = () => {
                                                             inputName={"product-sku"}
                                                             placeholder={"Product-Sku"}
                                                             inputType={"text"}
-                                                            rules={{...register('sku', {
+                                                            validation={{...register('sku', {
                                                                     required: 'This field is required',
                                                                     pattern: {
                                                                         value: /^[A-Za-z0-9]+$/,
@@ -734,9 +844,9 @@ const AddProduct = () => {
                                                                     },
                                                                 })}}
                                                             performOnValue={(e) => clearErrors(["sku"])}
-                                                            error={errors.sku}
+                                                            error={errors.name}
                                                         />
-                                                        {/*{errors.sku && <span>{errors.sku.message}</span>}*/}
+                                                        {errors.sku && <span style={{fontSize: '10px'}}>{errors.sku.message}</span>}
                                                     </div>
                                                     ) : ( "" )}
                                                     {type === "Single" ? (
@@ -746,8 +856,17 @@ const AddProduct = () => {
                                                             labelName={"HSN"}
                                                             inputType={"text"}
                                                             placeholder={"HSN"}
-                                                            validation={{...register("hsn")}}
+                                                            validation={{...register('hsn', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[A-Za-z0-9`!@#$%^&*]+$/,
+                                                                        message: 'Use only alphabet, number and characters',
+                                                                    },
+                                                                })}}
+                                                            performOnValue={(e) => clearErrors(["hsn"])}
+                                                            error={errors.name}
                                                         />
+                                                        {errors.hsn && <span style={{fontSize: '10px'}}>{errors.hsn.message}</span>}
                                                     </div>
                                                     ) : ( "" )}
                                                 </div>
@@ -775,6 +894,7 @@ const AddProduct = () => {
                                                             <Select
                                                                 name={"select-unit"}
                                                                 // labelName={"select-unit"}
+                                                                previous={unitType}
                                                                 placeholder={"Select Unit"}
                                                                 options={allUnitType}
                                                                 setValue={setUnitType}
@@ -807,6 +927,7 @@ const AddProduct = () => {
                                                             <Select
                                                                 name={"select-brand"}
                                                                 // labelName={"Select Brand"}
+                                                                previous={brandValue}
                                                                 placeholder={"Select Brand"}
                                                                 options={allBrand}
                                                                 setValue={setBrandValue}
@@ -838,6 +959,7 @@ const AddProduct = () => {
                                                                 name={"select-Model"}
                                                                 // labelName={"Select Model"}
                                                                 placeholder={"Select Model"}
+                                                                previous={singleModel}
                                                                 options={allModel}
                                                                 setValue={setSingleModel}
                                                                 cngFn={handleChangeForUpdateSingleModel}
@@ -852,6 +974,7 @@ const AddProduct = () => {
                                                             name={"barcode-type"}
                                                             // labelName={"Barcode Type"}
                                                             placeholder={"Select Barcode Type"}
+                                                            previous={barcodeType}
                                                             options={[
                                                                 {value: "Single", label: "Single"},
                                                                 {value: "Variant", label: "Variant"},
@@ -909,9 +1032,17 @@ const AddProduct = () => {
                                                                 size='small'
                                                                 type={'number'}
                                                                 label={'Alert Quantity'}
+                                                                {...register('alert_quantity', {
+                                                                        required: 'This field is required',
+                                                                        pattern: {
+                                                                            value: /^[0-9]+$/,
+                                                                            message: 'Use only number',
+                                                                        },
+                                                                    })}
                                                                 onChange={e => {
                                                                     allStoredValue.alert_quantity= e.target.value
                                                                     setAllStoredValue(allStoredValue)
+                                                                    clearErrors(["alert_quantity"])
                                                                 }}
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
@@ -933,6 +1064,7 @@ const AddProduct = () => {
                                                                         },
                                                                     },
                                                                 }} />
+                                                            {errors.alert_quantity && <span style={{fontSize: '10px'}}>{errors.alert_quantity.message}</span>}
                                                         </div>
                                                         ) : ( "" )}
 
@@ -944,11 +1076,18 @@ const AddProduct = () => {
                                                                 autoComplete="off"
                                                                 size='small'
                                                                 type={'number'}
+                                                                {...register('opening_stock_quantity', {
+                                                                        required: 'This field is required',
+                                                                        pattern: {
+                                                                            value: /^[0-9]+$/,
+                                                                            message: 'Use only number',
+                                                                        },
+                                                                    })}
                                                                 label={'Opening stock quantity'}
-                                                                {...register("opening_stock_quantity")}
                                                                 onChange={e => {
                                                                     allStoredValue.opening_stock_quantity= e.target.value
                                                                     setAllStoredValue(allStoredValue)
+                                                                    clearErrors(["opening_stock_quantity"])
                                                                 }}
 
                                                                 sx={{
@@ -971,6 +1110,7 @@ const AddProduct = () => {
                                                                         },
                                                                     },
                                                                 }} />
+                                                            {errors.opening_stock_quantity && <span style={{fontSize: '10px'}}>{errors.opening_stock_quantity.message}</span>}
                                                         </div>
                                                         ) : ( "" )}
 
@@ -983,10 +1123,17 @@ const AddProduct = () => {
                                                                 size='small'
                                                                 type={'number'}
                                                                 label={'Purchase Price'}
-                                                                {...register("purchase_price")}
+                                                                {...register('purchase_price', {
+                                                                        required: 'This field is required',
+                                                                        pattern: {
+                                                                            value: /^[0-9]+$/,
+                                                                            message: 'Use only number',
+                                                                        },
+                                                                    })}
                                                                 onChange={e => {
                                                                     allStoredValue.purchase_price= e.target.value
                                                                     setAllStoredValue(allStoredValue)
+                                                                    clearErrors(["purchase_price"])
                                                                 }}
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
@@ -1009,6 +1156,7 @@ const AddProduct = () => {
                                                                         },
                                                                     },
                                                                 }} />
+                                                            {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
                                                         </div>
                                                         ) : ( "" )}
 
@@ -1022,10 +1170,17 @@ const AddProduct = () => {
                                                                 type={'number'}
                                                                 label={'Selling Price'}
                                                                 // placeholder={'placeholder'}
-                                                                {...register("selling_price")}
+                                                                {...register('selling_price', {
+                                                                        required: 'This field is required',
+                                                                        pattern: {
+                                                                            value: /^[0-9]+$/,
+                                                                            message: 'Use only number',
+                                                                        },
+                                                                    })}
                                                                 onChange={e => {
                                                                     allStoredValue.selling_price= e.target.value
                                                                     setAllStoredValue(allStoredValue)
+                                                                    clearErrors(["selling_price"])
                                                                 }}
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
@@ -1049,6 +1204,7 @@ const AddProduct = () => {
                                                                         },
                                                                     },
                                                                 }} />
+                                                            {errors.selling_price && <span style={{fontSize: '10px'}}>{errors.selling_price.message}</span>}
                                                         </div>
                                                         ) : ( "" )}
 
@@ -1063,10 +1219,17 @@ const AddProduct = () => {
                                                                     type={'number'}
                                                                     label={'Min Selling Price'}
                                                                     // placeholder={'placeholder'}
-                                                                    {...register("min_selling_price")}
+                                                                    {...register('min_selling_price', {
+                                                                            required: 'This field is required',
+                                                                            pattern: {
+                                                                                value: /^[0-9]+$/,
+                                                                                message: 'Use only number',
+                                                                            },
+                                                                        })}
                                                                     onChange={e => {
                                                                         allStoredValue.min_selling_price= e.target.value
                                                                         setAllStoredValue(allStoredValue)
+                                                                        clearErrors(["min_selling_price"])
                                                                     }}
 
                                                                     sx={{
@@ -1091,6 +1254,7 @@ const AddProduct = () => {
                                                                             },
                                                                         },
                                                                     }} />
+                                                                {errors.min_selling_price && <span style={{fontSize: '10px'}}>{errors.min_selling_price.message}</span>}
                                                             </div>
                                                         </>
                                                         ) : ( "" )}
@@ -1104,11 +1268,20 @@ const AddProduct = () => {
                                                                 size='small'
                                                                 type={'number'}
                                                                 label={'Tax'}
+                                                                value={allStoredValue.tax}
                                                                 // placeholder={'placeholder'}
-                                                                {...register("tax")}
+                                                                {...register('tax', {
+                                                                        required: 'This field is required',
+                                                                        pattern: {
+                                                                            value: /^[0-9]+$/,
+                                                                            message: 'Use only number',
+                                                                        },
+                                                                    })}
                                                                 onChange={e => {
                                                                     allStoredValue.tax= e.target.value
                                                                     setAllStoredValue(allStoredValue)
+                                                                    clearErrors(["tax"])
+                                                                    // setComponentRender(componentRender)
                                                                 }}
 
                                                                 sx={{
@@ -1133,6 +1306,7 @@ const AddProduct = () => {
                                                                         },
                                                                     },
                                                                 }} />
+                                                            {errors.tax && <span style={{fontSize: '10px'}}>{errors.tax.message}</span>}
                                                         </div>
                                                         ) : ( "" )}
 
@@ -1140,7 +1314,7 @@ const AddProduct = () => {
                                                         <div>
                                                             <Select
                                                                 placeholder={"Tax Type"}
-                                                                // previous={taxType}
+                                                                previous={taxType}
                                                                 options={[{value: "percent", label: "Percent"}, {value: "value", label: "Value"}]}
                                                                 setValue={setTaxType}
                                                                 cngFn={handleChangeTaxType}
@@ -1212,10 +1386,17 @@ const AddProduct = () => {
                                                                     inputName={"quantity"}
                                                                     inputType={"number"}
                                                                     placeholder={"0"}
-                                                                    validation={{
-                                                                        ...register(`quantity_${index}`),
-                                                                    }}
+                                                                    validation={{...register(`quantity_${index}`, {
+                                                                            required: 'This field is required',
+                                                                            pattern: {
+                                                                                value: /^[A-Za-z0-9`!@#$%^&*]+$/,
+                                                                                message: 'Use only alphabet, number and characters',
+                                                                            },
+                                                                        })}}
+                                                                    performOnValue={(e) => clearErrors([`quantity_${index}`])}
+                                                                    error={errors?.[`quantity_${index}`]}
                                                                 />
+                                                                {errors?.[`quantity_${index}`] && <span style={{fontSize: '10px'}}>{errors?.[`quantity_${index}`]?.message}</span>}
                                                             </div>
                                                         </td>
                                                         <td>
@@ -1224,10 +1405,17 @@ const AddProduct = () => {
                                                                     inputName={"price"}
                                                                     inputType={"number"}
                                                                     placeholder={"0"}
-                                                                    validation={{
-                                                                        ...register(`price_${index}`),
-                                                                    }}
+                                                                    validation={{...register(`price_${index}`, {
+                                                                            required: 'This field is required',
+                                                                            pattern: {
+                                                                                value: /^[A-Za-z0-9`!@#$%^&*]+$/,
+                                                                                message: 'Use only alphabet, number and characters',
+                                                                            },
+                                                                        })}}
+                                                                    performOnValue={(e) => clearErrors([`price_${index}`])}
+                                                                    error={errors?.[`price_${index}`]}
                                                                 />
+                                                                {errors?.[`price_${index}`] && <span style={{fontSize: '10px'}}>{errors?.[`price_${index}`]?.message}</span>}
                                                             </div>
                                                         </td>
                                                         <td>
@@ -1236,10 +1424,17 @@ const AddProduct = () => {
                                                                     inputName={"tax"}
                                                                     inputType={"number"}
                                                                     placeholder={"0"}
-                                                                    validation={{
-                                                                        ...register(`tax_${index}`),
-                                                                    }}
+                                                                    validation={{...register(`tax_${index}`, {
+                                                                            required: 'This field is required',
+                                                                            pattern: {
+                                                                                value: /^[A-Za-z0-9`!@#$%^&*]+$/,
+                                                                                message: 'Use only alphabet, number and characters',
+                                                                            },
+                                                                        })}}
+                                                                    performOnValue={(e) => clearErrors([`tax_${index}`])}
+                                                                    error={errors?.[`tax_${index}`]}
                                                                 />
+                                                                {errors?.[`tax_${index}`] && <span style={{fontSize: '10px'}}>{errors?.[`tax_${index}`]?.message}</span>}
                                                             </div>
                                                         </td>
                                                         <td className="text-end" style={{display: "flex", justifyContent: "center", alignItems: 'center'}}>

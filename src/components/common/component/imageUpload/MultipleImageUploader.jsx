@@ -2,6 +2,9 @@ import { useState } from "react";
 
 const MultipleImageUploader = ({photos, setPhotos}) => {
     const [selectedPhotos, setSelectedPhotos] = useState([]);
+    console.log('selectedPhotos', selectedPhotos);
+    console.log('selectedPhotos', selectedPhotos);
+
 
     const handleSelectedPhotos = (id) => {
         const isPhotoExist = selectedPhotos?.find((photo) => photo == id);
