@@ -3,7 +3,7 @@ import {useForm} from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import {yupResolver} from "@hookform/resolvers/yup";
 
-const Input = ({performOnValue, labelName, inputName, inputType, placeholder, defaultValue, validation, error}) => {
+const Input = ({rules, performOnValue, labelName, inputName, inputType, placeholder, defaultValue, validation, error}) => {
 
     const {
         register
@@ -55,12 +55,16 @@ const Input = ({performOnValue, labelName, inputName, inputType, placeholder, de
                         color: '#1c2437',
                         fontSize: 16
                     },
-                    '& .MuiOutlinedInput-root': {
+                    '& .MuiInputBase-root': {
                         // fontSize: { xs: 12, md: 14 },
                         height: 35,
                         backgroundColor: 'white',
+                        '& fieldset': {
+                            borderColor: `${error ?  'red' : '#979797' }`,
+                            borderWidth: '1px'
+                        },
                         '&.Mui-focused fieldset': {
-                            borderColor: '#979797',
+                            borderColor: `${error ?  'red' : '#979797' }`,
                             borderWidth: '1px'
                         },
                         // '& fieldset span': {

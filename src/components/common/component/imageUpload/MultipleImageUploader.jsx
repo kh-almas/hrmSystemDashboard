@@ -2,35 +2,28 @@ import { useState } from "react";
 
 const MultipleImageUploader = ({photos, setPhotos}) => {
     const [selectedPhotos, setSelectedPhotos] = useState([]);
+    console.log('selectedPhotos', selectedPhotos);
+    console.log('selectedPhotos', selectedPhotos);
 
 
-    //!  handle selected and unselected photo/photos
     const handleSelectedPhotos = (id) => {
-        //* check the selected photo is already selected or not
         const isPhotoExist = selectedPhotos?.find((photo) => photo == id);
         if (!isPhotoExist) {
-            //* set selected photos
             setSelectedPhotos((prev) => [...prev, id]);
         } else {
-            //* check & set the unselected photos
             const remainingPhotos = selectedPhotos?.filter((photo) => photo != id);
             setSelectedPhotos(remainingPhotos);
         }
     };
 
-    //!  handle delete selected photo/photos
     const handleDeletedPhotos = () => {
-        //  * filtering for selected photo/photos to delete
         const remainingPhotos = photos?.filter(
             (photo) => !selectedPhotos.includes(photo?.id)
         );
-        //  * set the remaining photos
         setPhotos(remainingPhotos);
-        //  * set the selected photos empty
         setSelectedPhotos([]);
     };
 
-    //! added multiple photos
       const handleAddPhoto = (e) => {
         e.preventDefault();
         const addPhotos = e.target.files;
@@ -50,10 +43,8 @@ const MultipleImageUploader = ({photos, setPhotos}) => {
             return { id, image: photo, file };
         });
 
-        //* Update the state with the new photos
         setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos]);
       };
-    //   console.log(photos);
 
     return (
         <div className="card" style={{ height: "100%" }}>
