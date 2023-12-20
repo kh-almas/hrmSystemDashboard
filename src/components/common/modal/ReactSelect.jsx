@@ -32,12 +32,12 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
 
   return (
       <div className="theme-form">
-        <div className="mt-3 form-group">
+        <div className="form-group">
           <label style={{ fontSize: "11px" }} htmlFor={labelName}>
             {labelName? `${labelName}:` : ''}{" "}
             {error && <span className="text-danger">(Required)</span>}
           </label>
-          <div>
+          <div style={{zIndex: '5000'}}>
             <Select
                 className={`customeStyle ${error && "is-invalid"}`}
                 id={labelName}

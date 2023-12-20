@@ -23,6 +23,7 @@ import Swal from "sweetalert2";
 import AddProductOptionModal from "../../../../common/component/form/inventory/productOption/AddProductOptionModal";
 import {Container, Row, Col, Card, CardHeader, CardBody, Collapse, Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import { Accordion } from 'react-bootstrap';
+import ProductImage from "./ProductImage";
 
 const AddProduct = () => {
     const [componentRender, setComponentRender] = useState(false)
@@ -39,11 +40,11 @@ const AddProduct = () => {
     const [selectedProductForCombo, setSelectedProductForCombo] = useState([]);
     const [note, setNote] = useState('');
     const [taxType, setTaxType] = useState({value: "percent", label: "Percent"});
+    const [variantFormValue, setVariantFormValue] = useState({});
 
     const handleChangeTaxType = (selected) => {
         setTaxType(selected);
     }
-    const [returnedValueFromVariantValueSelect, setReturnedValueFromVariantValueSelect] = useState({})
 
 
     const [isChange, setIsChange] = useState(false);
@@ -287,9 +288,12 @@ const AddProduct = () => {
 
     const [selectedDataKeyForProductList, setSelectedDataKey] = useState([]);
     const [showProductList, setShowProductList] = useState(false);
+    const [totalComboPrice, setTotalComboPrice] = useState(0)
     const getSelectedData = (data) => {
+
         if(!selectedDataKeyForProductList.includes(data.id)){
             selectedDataKeyForProductList.push(data.id);
+            setTotalComboPrice(prev => prev + data?.price)
             setSelectedProductForCombo(prev => [...prev, data]);
         }
         setShowProductList(false);
@@ -410,45 +414,13 @@ const AddProduct = () => {
         }
     }
 
-    const [selectedFiles, setSelectedFiles] = useState([]);
-
-    const handleFileChange = (e) => {
-        const files = e.target.files;
-        const filesArray = Array.from(files);
-        setSelectedFiles([...selectedFiles, ...filesArray]);
-        console.log('selectedFiles', files)
-    };
-
-
-
     const submitAddProductForm = (data) => {
-
-
         let files = [];
 
         photos?.map(singlePhotos => {
             files.push(singlePhotos?.file)
 
         })
-
-        console.log(files);
-
-
-
-
-
-        // selectedFiles.forEach((file, index) => {
-        //     formData.append(`images[${index}]`, file);
-        // });
-        // for(let key in selectedFiles){
-        //     formData.append(`images`, selectedFiles);
-            // console.log(selectedFiles[key][0])
-        // }
-
-
-
-
-
 
         data.product_type = type;
         data.unit_id = unitType?.value;
@@ -467,46 +439,17 @@ const AddProduct = () => {
         data.selling_price = allStoredValue.selling_price;
         data.min_selling_price = allStoredValue.min_selling_price;
         data.tax = allStoredValue.tax;
-        data.photos = files;
+        data.photos = JSON.stringify(photos);
+
 
         if (data.product_type === 'Variant'){
-            let skuInfo = []
-            for (let key in returnedValueFromVariantValueSelect){
-                let newObj = returnedValueFromVariantValueSelect[key]
-                const sku = `variant_sku_${key}`
-                const openingStockQuantity = `opening_stock_quantity_${key}`
-                const alertQuantity = `alert_quantity_${key}`
-                const purchasePrice = `variant_purchase_price_${key}`
-                const sellingPrice = `variant_selling_price_${key}`
-                const tax = `tax_${key}`
-                const skuArr = {
-                    sku: data[sku],
-                    opening_stock_quantity: data[openingStockQuantity],
-                    alert_quantity: data[alertQuantity],
-                    purchase_price: data[purchasePrice],
-                    selling_price: data[sellingPrice],
-                    tax: data[tax],
-                    variant: newObj
-                }
-                skuInfo.push(skuArr);
-                delete data[sku];
-                delete data[openingStockQuantity];
-                delete data[alertQuantity];
-                delete data[purchasePrice]
-                delete data[sellingPrice]
-                delete data[tax]
-            }
-            data.variant_sku = skuInfo;
+            data.variant_sku = JSON.stringify(variantFormValue);
         }
 
-
-
         function createFormData(data) {
-            console.log('data',data)
             const formData = new FormData();
 
             for (const key in data) {
-                console.log("key",key)
                 if(key === 'photos'){
                     for (let i = 0; i < photos.length; i++) {
                         formData.append('images', files[i]);
@@ -543,7 +486,7 @@ const AddProduct = () => {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: `Can not duplicate product name`
+                        text: `Can not duplicate product sku`
                     })
                 }
                 // else {
@@ -555,9 +498,6 @@ const AddProduct = () => {
                 // }
             })
     }
-
-    console.log(errors)
-
 
     return (
         <div>
@@ -598,9 +538,6 @@ const AddProduct = () => {
                                                     previous={typeChange}
                                                 />
                                             </div>
-                                            <div>
-                                                <input type="file" onChange={handleFileChange} multiple/>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -633,6 +570,7 @@ const AddProduct = () => {
                                                             inputName={"height"}
                                                             inputType={"number"}
                                                             placeholder={"height"}
+                                                            defaultValue={0}
                                                             validation={{...register('p_height', {
                                                                     required: 'This field is required',
                                                                     pattern: {
@@ -652,6 +590,7 @@ const AddProduct = () => {
                                                             labelName={"Width"}
                                                             inputName={"width"}
                                                             inputType={"number"}
+                                                            defaultValue={0}
                                                             placeholder={"width"}
                                                             validation={{...register('p_width', {
                                                                     required: 'This field is required',
@@ -671,6 +610,7 @@ const AddProduct = () => {
                                                         <Input
                                                             labelName={"Length"}
                                                             inputName={"length"}
+                                                            defaultValue={0}
                                                             inputType={"number"}
                                                             placeholder={"Length"}
                                                             validation={{...register('p_length', {
@@ -692,6 +632,7 @@ const AddProduct = () => {
                                                             labelName={"Weight"}
                                                             inputName={"weight"}
                                                             inputType={"number"}
+                                                            defaultValue={0}
                                                             placeholder={"weight"}
                                                             validation={{...register('p_weight', {
                                                                     required: 'This field is required',
@@ -717,6 +658,7 @@ const AddProduct = () => {
                                                             labelName={"Height"}
                                                             inputName={"height"}
                                                             inputType={"number"}
+                                                            defaultValue={0}
                                                             placeholder={"height"}
                                                             validation={{...register('package_height', {
                                                                     required: 'This field is required',
@@ -737,6 +679,7 @@ const AddProduct = () => {
                                                             labelName={"Width"}
                                                             inputName={"width"}
                                                             inputType={"number"}
+                                                            defaultValue={0}
                                                             placeholder={"width"}
                                                             validation={{...register('package_width', {
                                                                     required: 'This field is required',
@@ -757,6 +700,7 @@ const AddProduct = () => {
                                                             labelName={"Length"}
                                                             inputName={"length"}
                                                             inputType={"number"}
+                                                            defaultValue={0}
                                                             placeholder={"Length"}
                                                             validation={{...register('package_length', {
                                                                     required: 'This field is required',
@@ -777,6 +721,7 @@ const AddProduct = () => {
                                                             labelName={"Weight"}
                                                             inputName={"weight"}
                                                             inputType={"number"}
+                                                            defaultValue={0}
                                                             placeholder={"weight"}
                                                             validation={{...register('package_weight', {
                                                                     required: 'This field is required',
@@ -798,7 +743,7 @@ const AddProduct = () => {
                                 ) : ( "" )}
 
                                 <div>
-                                    <MultipleImageUploader photos={photos} setPhotos={setPhotos}></MultipleImageUploader>
+                                    <ProductImage photos={photos} setPhotos={setPhotos}></ProductImage>
                                 </div>
                             </div>
                             <div className="col-lg-8">
@@ -893,8 +838,8 @@ const AddProduct = () => {
                                                         <div>
                                                             <Select
                                                                 name={"select-unit"}
-                                                                // labelName={"select-unit"}
-                                                                previous={unitType}
+                                                                labelName={"select-unit"}
+                                                                // previous={unitType}
                                                                 placeholder={"Select Unit"}
                                                                 options={allUnitType}
                                                                 setValue={setUnitType}
@@ -926,8 +871,8 @@ const AddProduct = () => {
                                                         <div>
                                                             <Select
                                                                 name={"select-brand"}
-                                                                // labelName={"Select Brand"}
-                                                                previous={brandValue}
+                                                                labelName={"Select Brand"}
+                                                                // previous={brandValue}
                                                                 placeholder={"Select Brand"}
                                                                 options={allBrand}
                                                                 setValue={setBrandValue}
@@ -957,9 +902,9 @@ const AddProduct = () => {
                                                         <div>
                                                             <Select
                                                                 name={"select-Model"}
-                                                                // labelName={"Select Model"}
+                                                                labelName={"Select Model"}
                                                                 placeholder={"Select Model"}
-                                                                previous={singleModel}
+                                                                // previous={singleModel}
                                                                 options={allModel}
                                                                 setValue={setSingleModel}
                                                                 cngFn={handleChangeForUpdateSingleModel}
@@ -972,9 +917,9 @@ const AddProduct = () => {
                                                     <div>
                                                         <Select
                                                             name={"barcode-type"}
-                                                            // labelName={"Barcode Type"}
+                                                            labelName={"Barcode Type"}
                                                             placeholder={"Select Barcode Type"}
-                                                            previous={barcodeType}
+                                                            // previous={barcodeType}
                                                             options={[
                                                                 {value: "Single", label: "Single"},
                                                                 {value: "Variant", label: "Variant"},
@@ -1031,6 +976,7 @@ const AddProduct = () => {
                                                                 autoComplete="off"
                                                                 size='small'
                                                                 type={'number'}
+                                                                defaultValue={0}
                                                                 label={'Alert Quantity'}
                                                                 {...register('alert_quantity', {
                                                                         required: 'This field is required',
@@ -1046,7 +992,9 @@ const AddProduct = () => {
                                                                 }}
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
+                                                                        fontSize: { xs: '.7rem', md: '.8rem' },
                                                                         fontWeight: 400,
+                                                                        // fontSize: ({ defaultValue }) => (defaultValue ? 12 : 12),
                                                                     },
                                                                     '& label': {
                                                                         fontSize: 12
@@ -1056,6 +1004,7 @@ const AddProduct = () => {
                                                                         fontSize: 16
                                                                     },
                                                                     '& .MuiOutlinedInput-root': {
+                                                                        // fontSize: { xs: 12, md: 14 },
                                                                         height: 35,
                                                                         backgroundColor: 'white',
                                                                         '&.Mui-focused fieldset': {
@@ -1076,6 +1025,7 @@ const AddProduct = () => {
                                                                 autoComplete="off"
                                                                 size='small'
                                                                 type={'number'}
+                                                                defaultValue={0}
                                                                 {...register('opening_stock_quantity', {
                                                                         required: 'This field is required',
                                                                         pattern: {
@@ -1092,7 +1042,9 @@ const AddProduct = () => {
 
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
+                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
                                                                         fontWeight: 400,
+                                                                        fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
                                                                     },
                                                                     '& label': {
                                                                         fontSize: 12
@@ -1102,6 +1054,7 @@ const AddProduct = () => {
                                                                         fontSize: 16
                                                                     },
                                                                     '& .MuiOutlinedInput-root': {
+                                                                        // fontSize: { xs: 12, md: 14 },
                                                                         height: 35,
                                                                         backgroundColor: 'white',
                                                                         '&.Mui-focused fieldset': {
@@ -1114,7 +1067,7 @@ const AddProduct = () => {
                                                         </div>
                                                         ) : ( "" )}
 
-                                                        {type === "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (
+                                                        {type === "Single" || type === "Variant" || type === "Service" ? (
                                                         <div className={"mt-3"}>
                                                             <TextField
                                                                 variant='outlined'
@@ -1123,6 +1076,7 @@ const AddProduct = () => {
                                                                 size='small'
                                                                 type={'number'}
                                                                 label={'Purchase Price'}
+                                                                defaultValue={0}
                                                                 {...register('purchase_price', {
                                                                         required: 'This field is required',
                                                                         pattern: {
@@ -1137,7 +1091,9 @@ const AddProduct = () => {
                                                                 }}
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
+                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
                                                                         fontWeight: 400,
+                                                                        fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
                                                                     },
                                                                     '& label': {
                                                                         fontSize: 12
@@ -1160,56 +1116,58 @@ const AddProduct = () => {
                                                         </div>
                                                         ) : ( "" )}
 
-                                                        { type == "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (
-                                                        <div className={"mt-3"}>
-                                                            <TextField
-                                                                variant='outlined'
-                                                                fullWidth
-                                                                autoComplete="off"
-                                                                size='small'
-                                                                type={'number'}
-                                                                label={'Selling Price'}
-                                                                // placeholder={'placeholder'}
-                                                                {...register('selling_price', {
+                                                        {type === 'Combo' ? (
+                                                            <div className={"mt-3"}>
+                                                                <TextField
+                                                                    readonly={true}
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    autoComplete="off"
+                                                                    size='small'
+                                                                    type={'number'}
+                                                                    label={'Purchase Price'}
+                                                                    value={totalComboPrice}
+                                                                    {...register('purchase_price', {
                                                                         required: 'This field is required',
                                                                         pattern: {
                                                                             value: /^[0-9]+$/,
                                                                             message: 'Use only number',
                                                                         },
                                                                     })}
-                                                                onChange={e => {
-                                                                    allStoredValue.selling_price= e.target.value
-                                                                    setAllStoredValue(allStoredValue)
-                                                                    clearErrors(["selling_price"])
-                                                                }}
-                                                                sx={{
-                                                                    '& .MuiFormLabel-root': {
-                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                        fontWeight: 400,
-                                                                    },
-                                                                    '& label': {
-                                                                        fontSize: 12
-                                                                    },
-                                                                    '& label.Mui-focused': {
-                                                                        color: '#1c2437',
-                                                                        fontSize: 16
-                                                                    },
-                                                                    '& .MuiOutlinedInput-root': {
-                                                                        // fontSize: { xs: 12, md: 14 },
-                                                                        height: 35,
-                                                                        backgroundColor: 'white',
-                                                                        '&.Mui-focused fieldset': {
-                                                                            borderColor: '#979797',
-                                                                            borderWidth: '1px'
+                                                                    onChange={e => {
+                                                                        allStoredValue.purchase_price= e.target.value
+                                                                        setAllStoredValue(allStoredValue)
+                                                                        clearErrors(["purchase_price"])
+                                                                    }}
+                                                                    sx={{
+                                                                        '& .MuiFormLabel-root': {
+                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                            fontWeight: 400,
+                                                                            fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
                                                                         },
-                                                                    },
-                                                                }} />
-                                                            {errors.selling_price && <span style={{fontSize: '10px'}}>{errors.selling_price.message}</span>}
-                                                        </div>
+                                                                        '& label': {
+                                                                            fontSize: 12
+                                                                        },
+                                                                        '& label.Mui-focused': {
+                                                                            color: '#1c2437',
+                                                                            fontSize: 16
+                                                                        },
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                            height: 35,
+                                                                            backgroundColor: 'white',
+                                                                            '&.Mui-focused fieldset': {
+                                                                                borderColor: '#979797',
+                                                                                borderWidth: '1px'
+                                                                            },
+                                                                        },
+                                                                    }} />
+                                                                {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
+                                                            </div>
                                                         ) : ( "" )}
-
-                                                        {type == "Single" || type == "Combo" || type == "Variant" ? (
-                                                        <>
+                                                    </div>
+                                                    <div className="row row-cols-2">
+                                                        { type == "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (
                                                             <div className={"mt-3"}>
                                                                 <TextField
                                                                     variant='outlined'
@@ -1217,25 +1175,124 @@ const AddProduct = () => {
                                                                     autoComplete="off"
                                                                     size='small'
                                                                     type={'number'}
-                                                                    label={'Min Selling Price'}
+                                                                    label={'Margin on selling Price'}
+                                                                    defaultValue={0}
                                                                     // placeholder={'placeholder'}
-                                                                    {...register('min_selling_price', {
-                                                                            required: 'This field is required',
-                                                                            pattern: {
-                                                                                value: /^[0-9]+$/,
-                                                                                message: 'Use only number',
-                                                                            },
-                                                                        })}
+                                                                    {...register('margin_on_selling_price', {
+                                                                        required: 'This field is required',
+                                                                        pattern: {
+                                                                            value: /^[0-9]+$/,
+                                                                            message: 'Use only number',
+                                                                        },
+                                                                    })}
                                                                     onChange={e => {
-                                                                        allStoredValue.min_selling_price= e.target.value
+                                                                        clearErrors(["margin_on_selling_price"])
+                                                                    }}
+                                                                    sx={{
+                                                                        '& .MuiFormLabel-root': {
+                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                            fontWeight: 400,
+                                                                            fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
+                                                                        },
+                                                                        '& label': {
+                                                                            fontSize: 12
+                                                                        },
+                                                                        '& label.Mui-focused': {
+                                                                            color: '#1c2437',
+                                                                            fontSize: 16
+                                                                        },
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                            height: 35,
+                                                                            backgroundColor: 'white',
+                                                                            '&.Mui-focused fieldset': {
+                                                                                borderColor: '#979797',
+                                                                                borderWidth: '1px'
+                                                                            },
+                                                                        },
+                                                                    }} />
+                                                                {errors.selling_price && <span style={{fontSize: '10px'}}>{errors.selling_price.message}</span>}
+                                                            </div>
+                                                        ) : ( "" )}
+
+                                                        { type == "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (
+                                                            <div className={"mt-3"}>
+                                                                <TextField
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    autoComplete="off"
+                                                                    size='small'
+                                                                    type={'number'}
+                                                                    label={'Selling Price'}
+                                                                    defaultValue={0}
+                                                                    // placeholder={'placeholder'}
+                                                                    {...register('selling_price', {
+                                                                        required: 'This field is required',
+                                                                        pattern: {
+                                                                            value: /^[0-9]+$/,
+                                                                            message: 'Use only number',
+                                                                        },
+                                                                    })}
+                                                                    onChange={e => {
+                                                                        allStoredValue.selling_price= e.target.value
                                                                         setAllStoredValue(allStoredValue)
-                                                                        clearErrors(["min_selling_price"])
+                                                                        clearErrors(["selling_price"])
+                                                                    }}
+                                                                    sx={{
+                                                                        '& .MuiFormLabel-root': {
+                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                            fontWeight: 400,
+                                                                            fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
+                                                                        },
+                                                                        '& label': {
+                                                                            fontSize: 12
+                                                                        },
+                                                                        '& label.Mui-focused': {
+                                                                            color: '#1c2437',
+                                                                            fontSize: 16
+                                                                        },
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                            height: 35,
+                                                                            backgroundColor: 'white',
+                                                                            '&.Mui-focused fieldset': {
+                                                                                borderColor: '#979797',
+                                                                                borderWidth: '1px'
+                                                                            },
+                                                                        },
+                                                                    }} />
+                                                                {errors.selling_price && <span style={{fontSize: '10px'}}>{errors.selling_price.message}</span>}
+                                                            </div>
+                                                        ) : ( "" )}
+                                                    </div>
+                                                    <div className="row row-cols-2">
+                                                        {type == "Single" || type == "Combo" || type == "Variant" ? (
+                                                            <div className={"mt-3"}>
+                                                                <TextField
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    autoComplete="off"
+                                                                    size='small'
+                                                                    type={'number'}
+                                                                    label={'Margin on min Selling Price'}
+                                                                    defaultValue={0}
+                                                                    // placeholder={'placeholder'}
+                                                                    {...register('margin_on_min_selling_price', {
+                                                                        required: 'This field is required',
+                                                                        pattern: {
+                                                                            value: /^[0-9]+$/,
+                                                                            message: 'Use only number',
+                                                                        },
+                                                                    })}
+                                                                    onChange={e => {
+                                                                        clearErrors(["margin_on_min_selling_price"])
                                                                     }}
 
                                                                     sx={{
                                                                         '& .MuiFormLabel-root': {
                                                                             // fontSize: { xs: '.7rem', md: '.8rem' },
                                                                             fontWeight: 400,
+                                                                            fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
                                                                         },
                                                                         '& label': {
                                                                             fontSize: 12
@@ -1256,9 +1313,60 @@ const AddProduct = () => {
                                                                     }} />
                                                                 {errors.min_selling_price && <span style={{fontSize: '10px'}}>{errors.min_selling_price.message}</span>}
                                                             </div>
-                                                        </>
                                                         ) : ( "" )}
 
+                                                        {type == "Single" || type == "Combo" || type == "Variant" ? (
+                                                            <div className={"mt-3"}>
+                                                                <TextField
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    autoComplete="off"
+                                                                    size='small'
+                                                                    type={'number'}
+                                                                    label={'Min Selling Price'}
+                                                                    defaultValue={0}
+                                                                    // placeholder={'placeholder'}
+                                                                    {...register('min_selling_price', {
+                                                                        required: 'This field is required',
+                                                                        pattern: {
+                                                                            value: /^[0-9]+$/,
+                                                                            message: 'Use only number',
+                                                                        },
+                                                                    })}
+                                                                    onChange={e => {
+                                                                        allStoredValue.min_selling_price= e.target.value
+                                                                        setAllStoredValue(allStoredValue)
+                                                                        clearErrors(["min_selling_price"])
+                                                                    }}
+
+                                                                    sx={{
+                                                                        '& .MuiFormLabel-root': {
+                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                            fontWeight: 400,
+                                                                            fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
+                                                                        },
+                                                                        '& label': {
+                                                                            fontSize: 12
+                                                                        },
+                                                                        '& label.Mui-focused': {
+                                                                            color: '#1c2437',
+                                                                            fontSize: 16
+                                                                        },
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                            height: 35,
+                                                                            backgroundColor: 'white',
+                                                                            '&.Mui-focused fieldset': {
+                                                                                borderColor: '#979797',
+                                                                                borderWidth: '1px'
+                                                                            },
+                                                                        },
+                                                                    }} />
+                                                                {errors.min_selling_price && <span style={{fontSize: '10px'}}>{errors.min_selling_price.message}</span>}
+                                                            </div>
+                                                        ) : ( "" )}
+                                                    </div>
+                                                    <div className="row row-cols-2">
                                                         {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
                                                         <div className="mt-3">
                                                             <TextField
@@ -1269,6 +1377,7 @@ const AddProduct = () => {
                                                                 type={'number'}
                                                                 label={'Tax'}
                                                                 value={allStoredValue.tax}
+                                                                defaultValue={0}
                                                                 // placeholder={'placeholder'}
                                                                 {...register('tax', {
                                                                         required: 'This field is required',
@@ -1288,6 +1397,7 @@ const AddProduct = () => {
                                                                     '& .MuiFormLabel-root': {
                                                                         // fontSize: { xs: '.7rem', md: '.8rem' },
                                                                         fontWeight: 400,
+                                                                        fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
                                                                     },
                                                                     '& label': {
                                                                         fontSize: 12
@@ -1311,10 +1421,10 @@ const AddProduct = () => {
                                                         ) : ( "" )}
 
                                                         {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                        <div>
+                                                        <div style={{marginTop: '-5px'}}>
                                                             <Select
                                                                 placeholder={"Tax Type"}
-                                                                previous={taxType}
+                                                                // previous={taxType}
                                                                 options={[{value: "percent", label: "Percent"}, {value: "value", label: "Value"}]}
                                                                 setValue={setTaxType}
                                                                 cngFn={handleChangeTaxType}
@@ -1343,7 +1453,7 @@ const AddProduct = () => {
                                     <h4 className="card-title mb-0">Choose Product</h4>
                                 </div>
 
-                                <div className="px-3">
+                                <div className="px-3 w-100">
                                     <SelectProductInCreateProductForm data={allDataForDropdown} selectedDataKey={selectedDataKeyForProductList} show={showProductList} setShow={setShowProductList} getSelectedData={getSelectedData} columns={columns}></SelectProductInCreateProductForm>
                                 </div>
 
@@ -1456,7 +1566,7 @@ const AddProduct = () => {
                         ) : ( "")}
 
                         { type === "Variant" ? (
-                            <SelectComboVariant allStoredValue={allStoredValue} returnedValueFromVariantValueSelect={returnedValueFromVariantValueSelect} setReturnedValueFromVariantValueSelect={setReturnedValueFromVariantValueSelect} register={register} unregister={unregister}></SelectComboVariant>
+                            <SelectComboVariant variantFormValue={variantFormValue} setVariantFormValue={setVariantFormValue} allStoredValue={allStoredValue} register={register} unregister={unregister}></SelectComboVariant>
                         ) : ( "")}
                     </div>
                     <div className="card">

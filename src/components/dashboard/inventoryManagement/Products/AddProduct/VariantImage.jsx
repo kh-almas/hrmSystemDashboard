@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, {useState} from 'react';
 
-const MultipleImageUploader = ({photos, setPhotos}) => {
+const VariantImage = ({handelUploadData, photos, setPhotos, rowIndex, rowImage, setRowImage}) => {
     const [selectedPhotos, setSelectedPhotos] = useState([]);
-    console.log('selectedPhotos', selectedPhotos);
-    console.log('selectedPhotos', selectedPhotos);
+    // const [checkedChange, setCheckedChange] = useState(false);
+    // console.log('selectedPhotos', selectedPhotos);
 
 
     const handleSelectedPhotos = (id) => {
@@ -17,34 +17,39 @@ const MultipleImageUploader = ({photos, setPhotos}) => {
     };
 
     const handleDeletedPhotos = () => {
-        const remainingPhotos = photos?.filter(
+        const remainingPhotos = rowImage?.[rowIndex]?.filter(
             (photo) => !selectedPhotos.includes(photo?.id)
         );
         setPhotos(remainingPhotos);
+        rowImage[rowIndex] = remainingPhotos
         setSelectedPhotos([]);
     };
 
-      const handleAddPhoto = (e) => {
+    const handleAddPhoto = (e, rowIndex) => {
         e.preventDefault();
         const addPhotos = e.target.files;
 
+        const usedIds = new Set();
+
         const newPhotos = Array.from(addPhotos).map((file, index) => {
             let id;
-            const usedIds = new Set();
-
             do {
                 id = Math.floor((Math.random() * 5000));
-                console.log(id);
             } while (usedIds.has(id));
 
             usedIds.add(id);
-
             const photo = URL.createObjectURL(file);
             return { id, image: photo, file };
         });
 
-        setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos]);
-      };
+        // console.log('newPhotos', newPhotos)
+        setPhotos((prevPhotos) => [...newPhotos]);
+        rowImage[rowIndex] = [...newPhotos];
+    };
+
+
+    console.log('checked', rowImage);
+    console.log('row', rowIndex);
 
     return (
         <div className="card" style={{ height: "100%" }}>
@@ -139,20 +144,20 @@ const MultipleImageUploader = ({photos, setPhotos}) => {
                             width: "100%",
                         }}
                     >
-                        {photos?.map((photo, index) => (
+                        {rowImage?.[rowIndex]?.map((photo, index) => (
                             <div key={index}
                                  style={{
-                                    display: "flex",
-                                    flex: "0 0 70px",
+                                     display: "flex",
+                                     flex: "0 0 70px",
 
-                                    flexDirection: "column",
-                                    ":hover": "row",
-                                    border: "2px solid #c9cbcf",
-                                    borderRadius: "8px",
-                                    overflow: "hidden",
-                                    width: "70px",
-                                    height: "70px",
-                                }}
+                                     flexDirection: "column",
+                                     ":hover": "row",
+                                     border: "2px solid #c9cbcf",
+                                     borderRadius: "8px",
+                                     overflow: "hidden",
+                                     width: "70px",
+                                     height: "70px",
+                                 }}
                             >
                                 <label htmlFor={photo?.id} style={{position: "relative",}}>
                                     <div
@@ -164,13 +169,13 @@ const MultipleImageUploader = ({photos, setPhotos}) => {
                                         }`}
                                     >
                                         <div style={{
-                                                width: "70px",
-                                                height: "70px",
-                                                aspectRatio: "1/1",
-                                                backgroundSize: "100% 100%",
-                                                backgroundImage: `url("${photo?.image}")`,
-                                                backgroundRepeat: "no-repeat",
-                                            }}
+                                            width: "70px",
+                                            height: "70px",
+                                            aspectRatio: "1/1",
+                                            backgroundSize: "100% 100%",
+                                            backgroundImage: `url("${photo?.image}")`,
+                                            backgroundRepeat: "no-repeat",
+                                        }}
                                         ></div>
                                     </div>
                                     <input
@@ -190,76 +195,77 @@ const MultipleImageUploader = ({photos, setPhotos}) => {
                         ))}
                         {/* add image button */}
                         <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginBottom: "10px",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                borderRadius: "8px",
-                borderWidth: "2px",
-                borderStyle: "dashed",
-                backgroundColor: "#f9f9f9",
-                borderColor: "#c9cbcf",
-                width: "70px",
-                height: "70px",
-              }}
-            >
-              <label
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "5px",
-                  width: "70px",
-                  height: "70px",
-                }}
-              >
-                <svg
-                  stroke="currentColor"
-                  fill="currentColor"
-                  strokeWidth="0"
-                  viewBox="0 0 16 16"
-                  height="1em"
-                  width="1em"
-                  xmlns="http:www.w3.org/2000/svg"
-                >
-                  <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path>
-                  <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"></path>
-                </svg>
-                <p
-                  style={{
-                    fontWeight: "600",
-                    fontSize: "11px",
-                      marginBottom: 0,
-                    "@media (min-width: 768px)": {
-                      fontSize: "11px",
-                    },
-                  }}
-                >
-                  Add
-                </p>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  style={{
-                    position: "absolute",
-                    top: "0",
-                    left: "0",
-                    height: "70px",
-                    width: " 70px",
-                    opacity: "0",
-                    cursor: "pointer",
-                  }}
-                  onChange={(e) => {
-                      handleAddPhoto(e);
-                  }}
-                />
-              </label>
-            </div>
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginBottom: "10px",
+                                cursor: "pointer",
+                                transition: "all 0.3s ease",
+                                borderRadius: "8px",
+                                borderWidth: "2px",
+                                borderStyle: "dashed",
+                                backgroundColor: "#f9f9f9",
+                                borderColor: "#c9cbcf",
+                                width: "70px",
+                                height: "70px",
+                            }}
+                        >
+                            <label
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    gap: "5px",
+                                    width: "70px",
+                                    height: "70px",
+                                }}
+                            >
+                                <svg
+                                    stroke="currentColor"
+                                    fill="currentColor"
+                                    strokeWidth="0"
+                                    viewBox="0 0 16 16"
+                                    height="1em"
+                                    width="1em"
+                                    xmlns="http:www.w3.org/2000/svg"
+                                >
+                                    <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path>
+                                    <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"></path>
+                                </svg>
+                                <p
+                                    style={{
+                                        fontWeight: "600",
+                                        fontSize: "11px",
+                                        marginBottom: 0,
+                                        "@media (min-width: 768px)": {
+                                            fontSize: "11px",
+                                        },
+                                    }}
+                                >
+                                    Add
+                                </p>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    style={{
+                                        position: "absolute",
+                                        top: "0",
+                                        left: "0",
+                                        height: "70px",
+                                        width: " 70px",
+                                        opacity: "0",
+                                        cursor: "pointer",
+                                    }}
+                                    onChange={(e) => {
+                                        handleAddPhoto(e , rowIndex);
+                                        handelUploadData(e);
+                                    }}
+                                />
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -267,4 +273,4 @@ const MultipleImageUploader = ({photos, setPhotos}) => {
     );
 };
 
-export default MultipleImageUploader;
+export default VariantImage;
