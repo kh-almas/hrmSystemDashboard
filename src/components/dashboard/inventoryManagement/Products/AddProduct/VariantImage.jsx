@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const VariantImage = ({handelUploadData, photos, setPhotos, rowIndex, rowImage, setRowImage}) => {
+const VariantImage = ({handelUploadData, photos, setPhotos, singleRowData, rowImage, setRowImage}) => {
     const [selectedPhotos, setSelectedPhotos] = useState([]);
     // const [checkedChange, setCheckedChange] = useState(false);
     // console.log('selectedPhotos', selectedPhotos);
@@ -17,15 +17,15 @@ const VariantImage = ({handelUploadData, photos, setPhotos, rowIndex, rowImage, 
     };
 
     const handleDeletedPhotos = () => {
-        const remainingPhotos = rowImage?.[rowIndex]?.filter(
+        const remainingPhotos = rowImage?.[singleRowData]?.filter(
             (photo) => !selectedPhotos.includes(photo?.id)
         );
         setPhotos(remainingPhotos);
-        rowImage[rowIndex] = remainingPhotos
+        rowImage[singleRowData] = remainingPhotos
         setSelectedPhotos([]);
     };
 
-    const handleAddPhoto = (e, rowIndex) => {
+    const handleAddPhoto = (e, singleRowData) => {
         e.preventDefault();
         const addPhotos = e.target.files;
 
@@ -44,12 +44,12 @@ const VariantImage = ({handelUploadData, photos, setPhotos, rowIndex, rowImage, 
 
         // console.log('newPhotos', newPhotos)
         setPhotos((prevPhotos) => [...newPhotos]);
-        rowImage[rowIndex] = [...newPhotos];
+        rowImage[singleRowData] = [...newPhotos];
     };
 
 
     console.log('checked', rowImage);
-    console.log('row', rowIndex);
+    console.log('row', singleRowData);
 
     return (
         <div className="card" style={{ height: "100%" }}>
@@ -144,7 +144,7 @@ const VariantImage = ({handelUploadData, photos, setPhotos, rowIndex, rowImage, 
                             width: "100%",
                         }}
                     >
-                        {rowImage?.[rowIndex]?.map((photo, index) => (
+                        {rowImage?.[singleRowData]?.map((photo, index) => (
                             <div key={index}
                                  style={{
                                      display: "flex",
@@ -260,7 +260,7 @@ const VariantImage = ({handelUploadData, photos, setPhotos, rowIndex, rowImage, 
                                         cursor: "pointer",
                                     }}
                                     onChange={(e) => {
-                                        handleAddPhoto(e , rowIndex);
+                                        handleAddPhoto(e , singleRowData);
                                         handelUploadData(e);
                                     }}
                                 />

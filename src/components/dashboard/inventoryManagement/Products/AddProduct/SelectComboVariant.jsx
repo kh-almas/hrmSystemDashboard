@@ -236,16 +236,25 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
 
 
     const removeItemFromVariantList = (id) => {
+        console.log('id', id)
+        console.log('addRowInVariant', addRowInVariant)
         if(addRowInVariant?.includes(id)){
-            const remainingID =  addRowInVariant.splice(addRowInVariant.indexOf(id), 1);
-            delete variantFormValue[id];
-            setVariantFormValue(variantFormValue);
+            // const remainingID =  addRowInVariant.splice(addRowInVariant.indexOf(id), 1);
+            const updatedRows = addRowInVariant.filter(itemId => itemId !== id);
+            console.log('updatedRows', updatedRows)
+            setAddRowInVariant(updatedRows);
+
+
+            // delete variantFormValue[id];
+            setComponentRender(!componentRender);
             // unregister(`variant_sku_${id}`);
             // unregister(`variant_alert_quantity_${id}`);
             // unregister(`variant_purchase_price_${id}`);
             // unregister(`variant_selling_price_${id}`);
         }
     }
+
+    console.log('addRowInVariant2', addRowInVariant)
 
     const [modal, setModal] = useState({});
     const toggleOn = (id) => {
@@ -300,13 +309,15 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                         <div>
                                             {
                                                 addRowInVariant?.map((singleRowData, rowIndex) =>
-                                                    <div className="d-flex justify-content-between" key={rowIndex}>
+                                                    <div className="d-flex justify-content-between align-items-end" key={rowIndex}>
+                                                        {console.log('singleRowData', singleRowData)}
                                                         {
                                                             selectedVariantForVariant?.map((singleVariantData,index) =>
                                                                 <div key={index} className="w-100 mx-2">
                                                                     <Select
+                                                                        labelName={' '}
                                                                         placeholder={"Select an option"}
-                                                                        previous={variantFormValue?.[rowIndex]?.['variant']?.[singleVariantData?.value]}
+                                                                        previous={variantFormValue?.[singleRowData]?.['variant']?.[singleVariantData?.value]}
                                                                         options={formatAllDataForVariantValueDropdown[singleVariantData?.value]}
                                                                         cngFn={(selected) => handleSelectChange(selected, singleRowData, singleVariantData?.value)}
                                                                     />
@@ -314,7 +325,7 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                             )
                                                         }
 
-                                                        <div className="w-100 mx-2" style={{marginTop: '37px'}}>
+                                                        <div className="w-100 mx-2">
                                                             <TextField
                                                                 variant='outlined'
                                                                 fullWidth
@@ -322,8 +333,8 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                 size='small'
                                                                 type="text"
                                                                 placeholder="sku_01"
-                                                                value={variantValueItem?.[rowIndex]?.[`variant_sku`]}
-                                                                onChange={(e) => handleInputChange(e.target.value, rowIndex, `sku`)}
+                                                                value={variantValueItem?.[singleRowData]?.[`sku`]}
+                                                                onChange={(e) => handleInputChange(e.target.value, singleRowData, `sku`)}
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
                                                                         fontWeight: 400,
@@ -346,7 +357,7 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                     },
                                                                 }} />
                                                         </div>
-                                                        <div className="w-100 mx-2" style={{marginTop: '37px'}}>
+                                                        <div className="w-100 mx-2">
                                                             <TextField
                                                                 variant='outlined'
                                                                 fullWidth
@@ -354,41 +365,8 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                 size='small'
                                                                 type="number"
                                                                 placeholder="0"
-                                                                value={variantFormValue?.[rowIndex]?.[`opening_stock_quantity`] || ''}
-                                                                onChange={(e) => handleInputChange(e.target.value, rowIndex, `opening_stock_quantity`)}
-                                                                sx={{
-                                                                    '& .MuiFormLabel-root': {
-                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                        fontWeight: 400,
-                                                                    },
-                                                                    '& label': {
-                                                                        fontSize: 12
-                                                                    },
-                                                                    '& label.Mui-focused': {
-                                                                        color: '#1c2437',
-                                                                        fontSize: 16
-                                                                    },
-                                                                    '& .MuiOutlinedInput-root': {
-                                                                        // fontSize: { xs: 12, md: 14 },
-                                                                        height: 35,
-                                                                        backgroundColor: 'white',
-                                                                        '&.Mui-focused fieldset': {
-                                                                            borderColor: '#979797',
-                                                                            borderWidth: '1px'
-                                                                        },
-                                                                    },
-                                                                }} />
-                                                        </div>
-                                                        <div className="w-100 mx-2" style={{marginTop: '37px'}}>
-                                                            <TextField
-                                                                variant='outlined'
-                                                                fullWidth
-                                                                autoComplete="off"
-                                                                size='small'
-                                                                type="number"
-                                                                placeholder="0"
-                                                                value={variantFormValue?.[rowIndex]?.[`purchase_price`]}
-                                                                onChange={(e) => handleInputChange(e.target.value, rowIndex, `purchase_price`)}
+                                                                value={variantFormValue?.[singleRowData]?.[`opening_stock_quantity`] || ''}
+                                                                onChange={(e) => handleInputChange(e.target.value, singleRowData, `opening_stock_quantity`)}
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
                                                                         // fontSize: { xs: '.7rem', md: '.8rem' },
@@ -412,7 +390,7 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                     },
                                                                 }} />
                                                         </div>
-                                                        <div className="w-100 mx-2" style={{marginTop: '37px'}}>
+                                                        <div className="w-100 mx-2">
                                                             <TextField
                                                                 variant='outlined'
                                                                 fullWidth
@@ -420,8 +398,8 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                 size='small'
                                                                 type="number"
                                                                 placeholder="0"
-                                                                value={variantFormValue?.[rowIndex]?.[`variant_selling_price`]}
-                                                                onChange={(e) => handleInputChange(e.target.value, rowIndex, `selling_price`)}
+                                                                value={variantFormValue?.[singleRowData]?.[`purchase_price`]}
+                                                                onChange={(e) => handleInputChange(e.target.value, singleRowData, `purchase_price`)}
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
                                                                         // fontSize: { xs: '.7rem', md: '.8rem' },
@@ -445,7 +423,7 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                     },
                                                                 }} />
                                                         </div>
-                                                        <div className="w-100 mx-2" style={{marginTop: '37px'}}>
+                                                        <div className="w-100 mx-2">
                                                             <TextField
                                                                 variant='outlined'
                                                                 fullWidth
@@ -453,8 +431,41 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                 size='small'
                                                                 type="number"
                                                                 placeholder="0"
-                                                                value={variantFormValue?.[rowIndex]?.[`tax`]}
-                                                                onChange={(e) => handleInputChange(e.target.value, rowIndex, `tax`)}
+                                                                value={variantFormValue?.[singleRowData]?.[`selling_price`]}
+                                                                onChange={(e) => handleInputChange(e.target.value, singleRowData, `selling_price`)}
+                                                                sx={{
+                                                                    '& .MuiFormLabel-root': {
+                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                        fontWeight: 400,
+                                                                    },
+                                                                    '& label': {
+                                                                        fontSize: 12
+                                                                    },
+                                                                    '& label.Mui-focused': {
+                                                                        color: '#1c2437',
+                                                                        fontSize: 16
+                                                                    },
+                                                                    '& .MuiOutlinedInput-root': {
+                                                                        // fontSize: { xs: 12, md: 14 },
+                                                                        height: 35,
+                                                                        backgroundColor: 'white',
+                                                                        '&.Mui-focused fieldset': {
+                                                                            borderColor: '#979797',
+                                                                            borderWidth: '1px'
+                                                                        },
+                                                                    },
+                                                                }} />
+                                                        </div>
+                                                        <div className="w-100 mx-2">
+                                                            <TextField
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                autoComplete="off"
+                                                                size='small'
+                                                                type="number"
+                                                                placeholder="0"
+                                                                value={variantFormValue?.[singleRowData]?.[`tax`]}
+                                                                onChange={(e) => handleInputChange(e.target.value, singleRowData, `tax`)}
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
                                                                         // fontSize: { xs: '.7rem', md: '.8rem' },
@@ -493,7 +504,7 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                                 <Select
                                                                                     placeholder={singleVariantData.label}
                                                                                     labelName={singleVariantData.label}
-                                                                                    previous={variantFormValue?.[rowIndex]?.['variant']?.[singleVariantData?.id]}
+                                                                                    previous={variantFormValue?.[singleRowData]?.['variant']?.[singleVariantData?.id]}
                                                                                     options={formatAllDataForVariantValueDropdown[singleVariantData?.id]}
                                                                                     cngFn={(selected) => handleSelectChange(selected, singleRowData, singleVariantData?.id)}
                                                                                 />
@@ -510,8 +521,8 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                             type="text"
                                                                             label="SKU"
                                                                             placeholder="sku_01"
-                                                                            value={variantFormValue?.[rowIndex]?.[`variant_sku`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, rowIndex, `variant_sku`)}
+                                                                            value={variantFormValue?.[singleRowData]?.[`sku`]}
+                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `sku`)}
                                                                             sx={{
                                                                                 '& .MuiFormLabel-root': {
                                                                                     fontWeight: 400,
@@ -543,8 +554,8 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                             type="number"
                                                                             label="Opening stock quantity"
                                                                             placeholder="0"
-                                                                            value={variantFormValue?.[rowIndex]?.[`opening_stock_quantity`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, rowIndex, `opening_stock_quantity`)}
+                                                                            value={variantFormValue?.[singleRowData]?.[`opening_stock_quantity`]}
+                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `opening_stock_quantity`)}
                                                                             sx={{
                                                                                 '& .MuiFormLabel-root': {
                                                                                     // fontSize: { xs: '.7rem', md: '.8rem' },
@@ -577,8 +588,8 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                             type="number"
                                                                             label="Alert quantity"
                                                                             placeholder="0"
-                                                                            value={variantFormValue?.[rowIndex]?.[`alert_quantity`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, rowIndex, `alert_quantity`)}
+                                                                            value={variantFormValue?.[singleRowData]?.[`alert_quantity`]}
+                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `alert_quantity`)}
                                                                             sx={{
                                                                                 '& .MuiFormLabel-root': {
                                                                                     // fontSize: { xs: '.7rem', md: '.8rem' },
@@ -611,8 +622,8 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                             type="number"
                                                                             label="Variant purchase price"
                                                                             placeholder="0"
-                                                                            value={variantFormValue?.[rowIndex]?.[`variant_purchase_price`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, rowIndex, `variant_purchase_price`)}
+                                                                            value={variantFormValue?.[singleRowData]?.[`purchase_price`]}
+                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `purchase_price`)}
                                                                             sx={{
                                                                                 '& .MuiFormLabel-root': {
                                                                                     // fontSize: { xs: '.7rem', md: '.8rem' },
@@ -645,8 +656,8 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                             type="number"
                                                                             label="Variant selling price"
                                                                             placeholder="0"
-                                                                            value={variantFormValue?.[rowIndex]?.[`variant_selling_price`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, rowIndex, `variant_selling_price`)}
+                                                                            value={variantFormValue?.[singleRowData]?.[`selling_price`]}
+                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `selling_price`)}
                                                                             sx={{
                                                                                 '& .MuiFormLabel-root': {
                                                                                     // fontSize: { xs: '.7rem', md: '.8rem' },
@@ -679,8 +690,8 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                             type="number"
                                                                             label="Tax"
                                                                             placeholder="0"
-                                                                            value={variantFormValue?.[rowIndex]?.[`tax`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, rowIndex, `tax`)}
+                                                                            value={variantFormValue?.[singleRowData]?.[`tax`]}
+                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `tax`)}
                                                                             sx={{
                                                                                 '& .MuiFormLabel-root': {
                                                                                     // fontSize: { xs: '.7rem', md: '.8rem' },
@@ -706,7 +717,7 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
 
                                                                     </div>
                                                                     <div>
-                                                                        <VariantImage rowImage={rowImage} setRowImage={setRowImage} handelUploadData={(e) =>  handleImageChangeFN(e, rowIndex, `sku_images`)} rowIndex={rowIndex} photos={photos} setPhotos={setPhotos}></VariantImage>
+                                                                        <VariantImage rowImage={rowImage} setRowImage={setRowImage} handelUploadData={(e) =>  handleImageChangeFN(e, singleRowData, `sku_images`)} singleRowData={singleRowData} photos={photos} setPhotos={setPhotos}></VariantImage>
                                                                     </div>
                                                                 </ModalBody>
                                                                 <ModalFooter>
