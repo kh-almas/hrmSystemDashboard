@@ -57,19 +57,18 @@ const SelectProductInCreateProductForm = ({data, selectedDataKey, show, setShow,
     });
 
     return (
-        <div ref={containerRef} style={{ width: '250px' }}>
-            <div>
+        <div ref={containerRef}>
                 <MRT_GlobalFilterTextField
+                    fullWidth={true}
                     onClick={handleInputClick}
-                    style={{ width: '250px' }}
+                    style={{ width: '77vw' }}
                     table={table}
                     onFocus={() => setShow(true)}
                 />
-            </div>
             {show && (
                 <div
                     style={{
-                        width: '400px',
+                        width: '77vw',
                         backgroundColor: 'white',
                         position: 'absolute',
                         zIndex: 10,

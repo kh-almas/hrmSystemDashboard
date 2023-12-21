@@ -18,8 +18,8 @@ const Input = ({rules, performOnValue, labelName, inputName, inputType, placehol
             {/*    <div className="mb-2 form-group">*/}
             {/*        <label style={{fontSize: "11px",}} htmlFor={inputName}>{`${labelName ? `${labelName} :` : ''}`} {error?.type === 'required' ?*/}
             {/*            <span className="text-danger">(Required)</span> : ''}</label>*/}
-            {/*        <TextF*/}
-            {/*            style={inputStyle}*/}
+            {/*        <input*/}
+            {/*            // style={inputStyle}*/}
             {/*            className={`form-control ${error?.type === 'required' ? "is-invalid" : ''}`}*/}
             {/*            id={inputName}*/}
             {/*            type={inputType}*/}
@@ -45,8 +45,8 @@ const Input = ({rules, performOnValue, labelName, inputName, inputType, placehol
 
                 sx={{
                     '& .MuiFormLabel-root': {
-                        // fontSize: { xs: '.7rem', md: '.8rem' },
                         fontWeight: 400,
+                        fontSize: ({ defaultValue }) => (defaultValue ? { xs: '.7rem', md: '12px' } : { xs: '.7rem', md: '16px' }),
                     },
                     '& label': {
                         fontSize: 12
@@ -55,24 +55,14 @@ const Input = ({rules, performOnValue, labelName, inputName, inputType, placehol
                         color: '#1c2437',
                         fontSize: 16
                     },
-                    '& .MuiInputBase-root': {
+                    '& .MuiOutlinedInput-root': {
                         // fontSize: { xs: 12, md: 14 },
                         height: 35,
                         backgroundColor: 'white',
-                        '& fieldset': {
-                            borderColor: `${error ?  'red' : '#979797' }`,
-                            borderWidth: '1px'
-                        },
                         '&.Mui-focused fieldset': {
-                            borderColor: `${error ?  'red' : '#979797' }`,
+                            borderColor: '#979797',
                             borderWidth: '1px'
                         },
-                        // '& fieldset span': {
-                        //     paddingRight: '6px',
-                        // },
-                        // '&.Mui-focused fieldset span': {
-                        //     // paddingRight: '6px',
-                        // },
                     },
                 }} />
         </div>
