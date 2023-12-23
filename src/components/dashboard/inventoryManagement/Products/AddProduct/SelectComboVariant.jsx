@@ -8,6 +8,16 @@ import VariantImage from "./VariantImage";
 import CreatableSelect from "react-select/creatable";
 import Swal from "sweetalert2";
 
+const createOption = (label) => ({
+    label,
+    value: label.toLowerCase().replace(/\W/g, ''),
+});
+
+const defaultOptions = [
+    createOption('One'),
+    createOption('Two'),
+    createOption('Three'),
+];
 
 const SelectComboVariant = ({allStoredValue, register, unregister, variantFormValue, setVariantFormValue}) => {
     const [isValueOfVariantUpdate, setIsValueOfVariantUpdate]= useState(false);
