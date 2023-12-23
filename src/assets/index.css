@@ -91,3 +91,9 @@ input,
 input::-webkit-input-placeholder {
     font-size: 11px !important;
 }
+
+/*.react-select__menu,*/
+/*.react-select__menu-list,*/
+/*.react-select__option{*/
+/*    border: 1px solid red !important;*/
+/*}*/

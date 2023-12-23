@@ -150,6 +150,11 @@ const AddProduct = () => {
         setMeasurementUnit(selected);
     };
 
+    const [weightUnit, setWeightUnit] = useState({value: "Gram (g)", label: "Gram (g)"});
+    const handleChangeForUpdateWeightUnit = (selected) => {
+        setWeightUnit(selected);
+    };
+
     const [singleModel, setSingleModel] = useState({});
     const handleChangeForUpdateSingleModel = (selected) => {
         setSingleModel(selected);
@@ -455,6 +460,7 @@ const AddProduct = () => {
         data.note = note;
         data.tax_type = taxType?.value;
         data.measurement_unit = measurementUnit?.value;
+        data.weight_unit = weightUnit?.value;
         data.howManyProduct = selectedProductForCombo?.length;
         data.options = addRowInOptionValue;
         data.alert_quantity = allStoredValue.alert_quantity;
@@ -569,21 +575,40 @@ const AddProduct = () => {
                                 {type !== "Service" ? (
                                 <div className="card">
                                     <div className="card-body">
-                                        {type === "Single" || type === "Variant" || type === "Combo" ? (
-                                            <div className="pb-3">
-                                                <Select
-                                                    name={"measurement_unit"}
-                                                    labelName={"Size unit"}
-                                                    // placeholder={"Select size unit"}
-                                                    previous={measurementUnit}
-                                                    options={[
-                                                        {value: "Inch", label: "Inch"},
-                                                        {value: "Cm", label: "Cm"}]}
+                                        <div className="row row-cols-md-2">
+                                            {type === "Single" || type === "Variant" || type === "Combo" ? (
+                                                <div className="pb-3">
+                                                    <Select
+                                                        name={"measurement_unit"}
+                                                        labelName={"Size unit"}
+                                                        // placeholder={"Select size unit"}
+                                                        previous={measurementUnit}
+                                                        options={[
+                                                            {value: "Inch", label: "Inch"},
+                                                            {value: "Cm", label: "Cm"},
+                                                        {value: "mm", label: "mm"}]}
                                                     setValue={setMeasurementUnit}
                                                     cngFn={handleChangeForUpdateMeasurementUnit}
-                                                />
-                                            </div>
-                                        ) : ( "")}
+                                                    />
+                                                </div>
+                                            ) : ( "")}
+
+                                            {type === "Single" || type === "Variant" || type === "Combo" ? (
+                                                <div className="pb-3">
+                                                    <Select
+                                                        name={"weight_unit"}
+                                                        labelName={"Weight unit"}
+                                                        // placeholder={"Select size unit"}
+                                                        previous={weightUnit}
+                                                        options={[
+                                                            {value: "Gram (g)", label: "Gram (g)"},
+                                                            {value: "Kilogram (kg)", label: "Kilogram (kg)"}]}
+                                                    setValue={setWeightUnit}
+                                                    cngFn={handleChangeForUpdateWeightUnit}
+                                                    />
+                                                </div>
+                                            ) : ( "")}
+                                        </div>
                                         <div>
                                             <h6 className="mb-0">Product size</h6>
                                             <div className='row row-cols-1 row-cols-md-2'>
