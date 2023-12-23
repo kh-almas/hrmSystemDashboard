@@ -25,6 +25,18 @@ import {Container, Row, Col, Card, CardHeader, CardBody, Collapse, Button, Modal
 import { Accordion } from 'react-bootstrap';
 import ProductImage from "./ProductImage";
 import {Trash2} from "react-feather";
+import CreatableSelect from "react-select/creatable";
+
+const createOption = (label) => ({
+    label,
+    value: label.toLowerCase().replace(/\W/g, ''),
+});
+
+const defaultOptions = [
+    createOption('One'),
+    createOption('Two'),
+    createOption('Three'),
+];
 
 const AddProduct = () => {
     const [componentRender, setComponentRender] = useState(false)
@@ -469,6 +481,7 @@ const AddProduct = () => {
         data.selling_price = allStoredValue.selling_price;
         data.min_selling_price = allStoredValue.min_selling_price;
         data.tax = allStoredValue.tax;
+        data.has_serial_key = data?.has_serial_key === true ? 1 : 0;
         data.photos = JSON.stringify(photos);
 
 
@@ -528,6 +541,20 @@ const AddProduct = () => {
                 // }
             })
     }
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [options, setOptions] = useState(defaultOptions);
+    const [valueNew, setValueNew] = useState();
+
+    const handleCreate = (inputValue) => {
+        setIsLoading(true);
+        setTimeout(() => {
+            const newOption = createOption(inputValue);
+            setIsLoading(false);
+            setOptions((prev) => [...prev, newOption]);
+            setValueNew(newOption);
+        }, 1000);
+    };
 
     return (
         <div>
@@ -1470,7 +1497,7 @@ const AddProduct = () => {
                                                         ) : ( "" )}
 
                                                         {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                        <div style={{marginTop: '-5px'}}>
+                                                        <div>
                                                             <Select
                                                                 placeholder={"Tax Type"}
                                                                 // previous={taxType}
@@ -1481,7 +1508,25 @@ const AddProduct = () => {
                                                             />
                                                         </div>
                                                         ) : ( "" )}
+
+                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
+                                                            <div class="checkbox checkbox-dark ms-2">
+                                                                <input id="inline-1" type="checkbox" {...register("has_serial_key")}/>
+                                                                <label for="inline-1" style={{color: "gray"}}>Has Serial Key</label>
+                                                            </div>
+                                                        ) : ( "" )}
                                                     </div>
+
+                                                    <CreatableSelect
+                                                        isClearable
+                                                        isDisabled={isLoading}
+                                                        isLoading={isLoading}
+                                                        onChange={(newValue) => setValueNew(newValue)}
+                                                        onCreateOption={handleCreate}
+                                                        options={options}
+                                                        value={valueNew}
+                                                    />
+
                                                 </div>
                                             </div>
                                         </div>
