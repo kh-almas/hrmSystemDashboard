@@ -246,12 +246,9 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
 
 
     const removeItemFromVariantList = (id) => {
-        console.log('id', id)
-        console.log('addRowInVariant', addRowInVariant)
         if(addRowInVariant?.includes(id)){
             // const remainingID =  addRowInVariant.splice(addRowInVariant.indexOf(id), 1);
             const updatedRows = addRowInVariant.filter(itemId => itemId !== id);
-            console.log('updatedRows', updatedRows)
             setAddRowInVariant(updatedRows);
 
 
@@ -263,8 +260,6 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
             // unregister(`variant_selling_price_${id}`);
         }
     }
-
-    console.log('addRowInVariant2', addRowInVariant)
 
     const [modal, setModal] = useState({});
     const toggleOn = (id) => {
@@ -287,21 +282,36 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
     }
 
     const [isLoading, setIsLoading] = useState(false);
-    const [options, setOptions] = useState(defaultOptions);
-    const [valueNew, setValueNew] = useState();
-
-    const handleCreate = (inputValue, singleVariantData) => {
+    const handleCreate = (inputValue, singleRowData, singleVariantData) => {
         setIsLoading(true);
         const data = {
             variant_id: singleVariantData?.value,
             variant_value: inputValue
         }
-        console.log('datadata', data)
         axios.post('/inventory-management/products/add/variant-value', data)
             .then(info => {
-                console.log(info)
                 if(info?.status == 200)
                 {
+                    // setIsValueOfVariantUpdate(!isValueOfVariantUpdate)
+                    const addNewData = {
+                        value:info.data.body.data.insertId,
+                        label: inputValue,
+                        variant_id: singleVariantData?.value,
+                        variant_name: singleVariantData?.label,
+                    }
+                    let oldData = formatAllDataForVariantValueDropdown[singleVariantData?.value]
+                    formatAllDataForVariantValueDropdown[singleVariantData?.value] = [...oldData, addNewData];
+
+                    const updatedVariantFormValue = { ...variantFormValue };
+                    if (!updatedVariantFormValue[singleRowData]) {
+                        updatedVariantFormValue[singleRowData] = {};
+                    }
+                    if (!updatedVariantFormValue[singleRowData]['variant']) {
+                        updatedVariantFormValue[singleRowData]['variant'] = {};
+                    }
+                    updatedVariantFormValue[singleRowData]['variant'][singleVariantData?.value] = addNewData || {};
+                    setVariantFormValue(updatedVariantFormValue);
+                    setComponentRender(!componentRender)
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
@@ -309,7 +319,7 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    setIsValueOfVariantUpdate(!isValueOfVariantUpdate)
+
                 }
             })
             .catch(e => {
@@ -362,7 +372,7 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                         {
                                                             selectedVariantForVariant?.map((singleVariantData,index) =>
                                                                 <div key={index} className="w-100 mx-2">
-                                                                    {console.log('formatAllDataForVariantValueDropdown', formatAllDataForVariantValueDropdown)}
+
                                                                     {/*<Select*/}
                                                                     {/*    labelName={' '}*/}
                                                                     {/*    placeholder={"Select an option"}*/}
@@ -377,7 +387,7 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                         onChange={(selected) => {
                                                                             handleSelectChange(selected, singleRowData, singleVariantData?.value)
                                                                         }}
-                                                                        onCreateOption={(inputValue)=>handleCreate(inputValue, singleVariantData)}
+                                                                        onCreateOption={(inputValue)=>handleCreate(inputValue, singleRowData, singleVariantData)}
                                                                         options={formatAllDataForVariantValueDropdown[singleVariantData?.value]}
                                                                         value={variantFormValue?.[singleRowData]?.['variant']?.[singleVariantData?.value]}
                                                                     />

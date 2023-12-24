@@ -426,7 +426,6 @@ const AddProduct = () => {
 
     // console.log('addRowInOptionValue', addRowInOptionValue)
     const removeItemFromVariantList = (singleOptions, singleRowData) => {
-        console.log('singleOption', singleOptions, 'singleRowData', singleRowData);
 
         const removeItemFrom = addRowInOption[singleOptions];
 
@@ -443,12 +442,9 @@ const AddProduct = () => {
                 if (key !== singleRowData) {
                     remainingItem[key] = removedFrom[key];
                 }
-                console.log('checkedkey', key);
             }
 
             addRowInOptionValue[singleOptions][singleRowData] = remainingItem;
-            console.log('removedFrom', removedFrom);
-            console.log('addRowInOptionValue 418', addRowInOptionValue);
             setComponentRender(prevState => !prevState);
         }
     };
