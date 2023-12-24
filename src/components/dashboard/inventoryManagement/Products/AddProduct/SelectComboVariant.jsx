@@ -8,18 +8,7 @@ import VariantImage from "./VariantImage";
 import CreatableSelect from "react-select/creatable";
 import Swal from "sweetalert2";
 
-const createOption = (label) => ({
-    label,
-    value: label.toLowerCase().replace(/\W/g, ''),
-});
-
-const defaultOptions = [
-    createOption('One'),
-    createOption('Two'),
-    createOption('Three'),
-];
-
-const SelectComboVariant = ({allStoredValue, register, unregister, variantFormValue, setVariantFormValue}) => {
+const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, register, unregister, variantFormValue, setVariantFormValue}) => {
     const [isValueOfVariantUpdate, setIsValueOfVariantUpdate]= useState(false);
     const [componentRender, setComponentRender] = useState(false)
     const [rowImage, setRowImage] = useState({});
@@ -31,6 +20,30 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
     const [selectedVariantForVariant, setSelectedVariantForVariant] = useState([]);
     const [variantValueItem, setVariantValueItem] = useState([])
     const [addRowInVariant, setAddRowInVariant] = useState([0])
+    const [variantSKu, setVariantSku] = useState({})
+
+    console.log('variantFormValue', variantFormValue);
+    const generateSku = () => {
+        const prefix = 'sku1_';
+        let randomSku;
+
+        do {
+            randomSku = `${prefix}${Math.random().toString(36).substr(2, 12)}`;
+        } while (previousSKU.includes(randomSku));
+
+        setPreviousSKU(prev => [...prev, randomSku])
+        return randomSku;
+    }
+
+    useEffect(() => {
+        const firstvariantSKU = generateSku();
+        setVariantSku({0: firstvariantSKU})
+        if (!variantFormValue['0']) {
+            variantFormValue['0'] = {};
+        }
+        variantFormValue['0']['sku'] = firstvariantSKU;
+        setComponentRender(!componentRender)
+    }, []);
 
     const handleImageChange = (value) => {
         const files = value?.target?.files;
@@ -117,7 +130,16 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
 
     const addNewRow = () => {
         if (selectedVariantForVariant?.length > 0){
-            setAddRowInVariant(prev => [...prev, addRowInVariant.length])
+            const preLength = addRowInVariant.length;
+            setAddRowInVariant(prev => [...prev, preLength])
+            const variantsSKU = generateSku();
+            // setVariantSku(prev => {...prev, {[preLength]: variantSKU}})
+            variantSKu[preLength] = variantsSKU;
+            if (!variantFormValue[preLength]) {
+                variantFormValue[preLength] = {};
+            }
+            variantFormValue[preLength]['sku'] = variantsSKU;
+            setComponentRender(!componentRender)
         }
     }
 
@@ -397,13 +419,14 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
 
                                                         <div className="w-100 mx-2">
                                                             <TextField
+                                                                disabled={true}
                                                                 variant='outlined'
                                                                 fullWidth
                                                                 autoComplete="off"
                                                                 size='small'
                                                                 type="text"
                                                                 placeholder="sku_01"
-                                                                value={variantValueItem?.[singleRowData]?.[`sku`]}
+                                                                value={variantSKu?.[singleRowData]}
                                                                 onChange={(e) => handleInputChange(e.target.value, singleRowData, `sku`)}
                                                                 sx={{
                                                                     '& .MuiFormLabel-root': {
@@ -585,15 +608,15 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
 
                                                                     <div className="w-100 mx-2" style={{marginTop: '28px'}}>
                                                                         <TextField
+                                                                            disabled={true}
                                                                             variant='outlined'
                                                                             fullWidth
                                                                             autoComplete="off"
                                                                             size='small'
                                                                             type="text"
-                                                                            label="SKU"
                                                                             placeholder="sku_01"
-                                                                            value={variantFormValue?.[singleRowData]?.[`sku`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `sku`)}
+                                                                            value={variantSKu?.[singleRowData]}
+                                                                            // onChange={(e) => handleInputChange(e.target.value, singleRowData, `sku`)}
                                                                             sx={{
                                                                                 '& .MuiFormLabel-root': {
                                                                                     fontWeight: 400,
@@ -792,8 +815,7 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                                                     </div>
                                                                 </ModalBody>
                                                                 <ModalFooter>
-                                                                    <Button color="primary">SaveChanges</Button>
-                                                                    <Button color="secondary"  onClick={() => toggleOff(rowIndex)}>Cancel</Button>
+                                                                    <Button color="secondary"  onClick={() => toggleOff(rowIndex)}>Close</Button>
                                                                 </ModalFooter>
                                                             </Modal>
                                                             <div onClick={() => removeItemFromVariantList(singleRowData)} style={{border: 'none', backgroundColor: 'white', marginTop: '25px', marginBottom: '6px', cursor: "pointer" }}>

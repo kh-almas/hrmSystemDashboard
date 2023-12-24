@@ -3,7 +3,7 @@ import {useForm} from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import {yupResolver} from "@hookform/resolvers/yup";
 
-const Input = ({rules, performOnValue, labelName, inputName, inputType, placeholder, defaultValue, validation, error}) => {
+const Input = ({rules, performOnValue, labelName, inputName, inputType, placeholder, defaultValue, validation, error, disabled}) => {
 
     const {
         register
@@ -12,6 +12,7 @@ const Input = ({rules, performOnValue, labelName, inputName, inputType, placehol
             return defaultValue;
         }, [defaultValue])
     });
+
     return (
         <div className={"mt-3"}>
             {/*<div className="theme-form">*/}
@@ -32,6 +33,7 @@ const Input = ({rules, performOnValue, labelName, inputName, inputType, placehol
             {/*    </div>*/}
             {/*</div>*/}
             <TextField
+                disabled={disabled === 'disabled' ? true : false}
                 variant='outlined'
                 fullWidth
                 autoComplete="off"
