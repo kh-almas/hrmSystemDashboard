@@ -2,33 +2,7 @@ import React, {useEffect, useState} from "react";
 import Select from "react-select";
 
 const ReactSelect = ({labelName, options, defaultValue, validation, placeholder, error, previous, setValue, cngFn}) => {
-    const customStyles = {
-        control: (provided, state) => ({
-            ...provided,
-            background: "#fff",
-            borderColor: "#9e9e9e",
-            minHeight: "30px",
-            boxShadow: state.isFocused ? null : null,
-        }),
 
-        valueContainer: (provided, state) => ({
-            ...provided,
-            height: "30px",
-            padding: "0 6px",
-        }),
-
-        input: (provided, state) => ({
-            ...provided,
-            margin: "0px",
-        }),
-        indicatorSeparator: (state) => ({
-            display: "none",
-        }),
-        indicatorsContainer: (provided, state) => ({
-            ...provided,
-            height: "30px",
-        }),
-    };
 
     return (
         <div className="theme-form">
@@ -40,12 +14,32 @@ const ReactSelect = ({labelName, options, defaultValue, validation, placeholder,
                 <Select
                     className={`customeStyle ${error && "is-invalid"}`}
                     id={labelName}
-                    value={previous} // Set the value to the selected option
-                    onChange={cngFn} // Update the selected option when it changes
+                    value={previous}
+                    onChange={cngFn}
                     options={options}
-                    styles={customStyles}
+                    styles={{
+                        option: (base) => ({
+                            ...base,
+                            height: "100%",
+                            fontSize: '11px'
+                        }),
+                        menu: (provided, state) => ({
+                            ...provided,
+                            zIndex: "10",
+                        }),
+                    }}
                     isSearchable={true}
                     placeholder={placeholder}
+                    // theme={(theme) => ({
+                    //     ...theme,
+                    //     borderRadius: 0,
+                    //     colors: {
+                    //         ...theme.colors,
+                    //         text: 'orangered',
+                    //         primary25: 'hotpink',
+                    //         primary: 'black',
+                    //     },
+                    // })}
                 />
                 {/*{console.log('validation', validation)}*/}
             </div>

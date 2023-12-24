@@ -25,6 +25,18 @@ import {Container, Row, Col, Card, CardHeader, CardBody, Collapse, Button, Modal
 import { Accordion } from 'react-bootstrap';
 import ProductImage from "./ProductImage";
 import {Trash2} from "react-feather";
+import CreatableSelect from "react-select/creatable";
+
+const createOption = (label) => ({
+    label,
+    value: label.toLowerCase().replace(/\W/g, ''),
+});
+
+const defaultOptions = [
+    createOption('One'),
+    createOption('Two'),
+    createOption('Three'),
+];
 
 const AddProduct = () => {
     const [componentRender, setComponentRender] = useState(false)
@@ -148,6 +160,11 @@ const AddProduct = () => {
     const [measurementUnit, setMeasurementUnit] = useState({value: "Inch", label: "Inch"});
     const handleChangeForUpdateMeasurementUnit = (selected) => {
         setMeasurementUnit(selected);
+    };
+
+    const [weightUnit, setWeightUnit] = useState({value: "Gram (g)", label: "Gram (g)"});
+    const handleChangeForUpdateWeightUnit = (selected) => {
+        setWeightUnit(selected);
     };
 
     const [singleModel, setSingleModel] = useState({});
@@ -455,6 +472,7 @@ const AddProduct = () => {
         data.note = note;
         data.tax_type = taxType?.value;
         data.measurement_unit = measurementUnit?.value;
+        data.weight_unit = weightUnit?.value;
         data.howManyProduct = selectedProductForCombo?.length;
         data.options = addRowInOptionValue;
         data.alert_quantity = allStoredValue.alert_quantity;
@@ -463,6 +481,7 @@ const AddProduct = () => {
         data.selling_price = allStoredValue.selling_price;
         data.min_selling_price = allStoredValue.min_selling_price;
         data.tax = allStoredValue.tax;
+        data.has_serial_key = data?.has_serial_key === true ? 1 : 0;
         data.photos = JSON.stringify(photos);
 
 
@@ -523,6 +542,20 @@ const AddProduct = () => {
             })
     }
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [options, setOptions] = useState(defaultOptions);
+    const [valueNew, setValueNew] = useState();
+
+    const handleCreate = (inputValue) => {
+        setIsLoading(true);
+        setTimeout(() => {
+            const newOption = createOption(inputValue);
+            setIsLoading(false);
+            setOptions((prev) => [...prev, newOption]);
+            setValueNew(newOption);
+        }, 1000);
+    };
+
     return (
         <div>
             <Breadcrumb parent="Inventory management" title="Add New Product"/>
@@ -569,21 +602,40 @@ const AddProduct = () => {
                                 {type !== "Service" ? (
                                 <div className="card">
                                     <div className="card-body">
-                                        {type === "Single" || type === "Variant" || type === "Combo" ? (
-                                            <div className="pb-3">
-                                                <Select
-                                                    name={"measurement_unit"}
-                                                    labelName={"Size unit"}
-                                                    // placeholder={"Select size unit"}
-                                                    previous={measurementUnit}
-                                                    options={[
-                                                        {value: "Inch", label: "Inch"},
-                                                        {value: "Cm", label: "Cm"}]}
+                                        <div className="row row-cols-md-2">
+                                            {type === "Single" || type === "Variant" || type === "Combo" ? (
+                                                <div className="pb-3">
+                                                    <Select
+                                                        name={"measurement_unit"}
+                                                        labelName={"Size unit"}
+                                                        // placeholder={"Select size unit"}
+                                                        previous={measurementUnit}
+                                                        options={[
+                                                            {value: "Inch", label: "Inch"},
+                                                            {value: "Cm", label: "Cm"},
+                                                        {value: "mm", label: "mm"}]}
                                                     setValue={setMeasurementUnit}
                                                     cngFn={handleChangeForUpdateMeasurementUnit}
-                                                />
-                                            </div>
-                                        ) : ( "")}
+                                                    />
+                                                </div>
+                                            ) : ( "")}
+
+                                            {type === "Single" || type === "Variant" || type === "Combo" ? (
+                                                <div className="pb-3">
+                                                    <Select
+                                                        name={"weight_unit"}
+                                                        labelName={"Weight unit"}
+                                                        // placeholder={"Select size unit"}
+                                                        previous={weightUnit}
+                                                        options={[
+                                                            {value: "Gram (g)", label: "Gram (g)"},
+                                                            {value: "Kilogram (kg)", label: "Kilogram (kg)"}]}
+                                                    setValue={setWeightUnit}
+                                                    cngFn={handleChangeForUpdateWeightUnit}
+                                                    />
+                                                </div>
+                                            ) : ( "")}
+                                        </div>
                                         <div>
                                             <h6 className="mb-0">Product size</h6>
                                             <div className='row row-cols-1 row-cols-md-2'>
@@ -1445,7 +1497,7 @@ const AddProduct = () => {
                                                         ) : ( "" )}
 
                                                         {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                        <div style={{marginTop: '-5px'}}>
+                                                        <div>
                                                             <Select
                                                                 placeholder={"Tax Type"}
                                                                 // previous={taxType}
@@ -1456,7 +1508,25 @@ const AddProduct = () => {
                                                             />
                                                         </div>
                                                         ) : ( "" )}
+
+                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
+                                                            <div class="checkbox checkbox-dark ms-2">
+                                                                <input id="inline-1" type="checkbox" {...register("has_serial_key")}/>
+                                                                <label for="inline-1" style={{color: "gray"}}>Has Serial Key</label>
+                                                            </div>
+                                                        ) : ( "" )}
                                                     </div>
+
+                                                    <CreatableSelect
+                                                        isClearable
+                                                        isDisabled={isLoading}
+                                                        isLoading={isLoading}
+                                                        onChange={(newValue) => setValueNew(newValue)}
+                                                        onCreateOption={handleCreate}
+                                                        options={options}
+                                                        value={valueNew}
+                                                    />
+
                                                 </div>
                                             </div>
                                         </div>

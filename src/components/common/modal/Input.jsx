@@ -46,10 +46,10 @@ const Input = ({rules, performOnValue, labelName, inputName, inputType, placehol
                 sx={{
                     '& .MuiFormLabel-root': {
                         fontWeight: 400,
-                        fontSize: ({ defaultValue }) => (defaultValue ? { xs: '.7rem', md: '12px' } : { xs: '.7rem', md: '16px' }),
+                        fontSize: { xs: '.7rem', md: '12px' },
                     },
                     '& label': {
-                        fontSize: 12
+                        fontSize: 12,
                     },
                     '& label.Mui-focused': {
                         color: '#1c2437',
