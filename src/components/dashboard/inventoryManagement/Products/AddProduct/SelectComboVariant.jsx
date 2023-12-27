@@ -8,6 +8,7 @@ import VariantImage from "./VariantImage";
 import CreatableSelect from "react-select/creatable";
 import Swal from "sweetalert2";
 import {Accordion} from "react-bootstrap";
+import { HiPlus, HiOutlineMinusSm } from "react-icons/hi";
 
 const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, register, unregister, variantFormValue, setVariantFormValue}) => {
     const [isValueOfVariantUpdate, setIsValueOfVariantUpdate]= useState(false);
@@ -22,6 +23,7 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
     const [variantValueItem, setVariantValueItem] = useState([])
     const [addRowInVariant, setAddRowInVariant] = useState([0])
     const [variantSKu, setVariantSku] = useState({})
+    const [isOpen, setIsOpen] = useState(0);
 
     console.log('variantFormValue', variantFormValue);
     const generateSku = () => {
@@ -133,6 +135,7 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
         if (selectedVariantForVariant?.length > 0){
             const preLength = addRowInVariant.length;
             setAddRowInVariant(prev => [...prev, preLength])
+            setIsOpen(preLength);
             const variantsSKU = generateSku();
             // setVariantSku(prev => {...prev, {[preLength]: variantSKU}})
             variantSKu[preLength] = variantsSKU;
@@ -356,8 +359,6 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
             })
         setIsLoading(false);
     };
-
-    const [isOpen, setIsOpen] = useState(1);
     const toggle = (id) => (isOpen === id ? setIsOpen(null) : setIsOpen(id));
 
     return (
@@ -395,7 +396,7 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
                                             {
                                                 addRowInVariant?.map((singleRowData, rowIndex) =>
                                                     <Accordion defaultActiveKey="0">
-                                                        <CardHeader className="d-flex justify-content-between align-items-end" key={rowIndex}>
+                                                        <div className="d-flex justify-content-between align-items-end" key={rowIndex}>
                                                             {
                                                                 selectedVariantForVariant?.map((singleVariantData,index) =>
                                                                     <div key={index} className="w-100 mx-2">
@@ -590,54 +591,57 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
                                                             </div>
                                                             <div className="text-end w-25 mx-2" style={{marginTop: '16px', display: "flex", justifyContent: "center", alignItems: 'center'}}>
                                                                 <div onClick={() => toggle(singleRowData)} style={{marginRight: '5px', border: 'none', backgroundColor: 'white', marginTop: '25px', marginBottom: '6px', cursor: "pointer" }}>
-                                                                    <i className="fa fa-pencil-square-o" style={{fontSize: '15px'}}></i>
+                                                                    {
+                                                                        isOpen !== singleRowData ?
+                                                                            <HiPlus style={{fontSize: '19px'}}></HiPlus>
+                                                                            : <HiOutlineMinusSm style={{fontSize: '19px'}}></HiOutlineMinusSm>
+                                                                    }
+
                                                                 </div>
 
-                                                                <div onClick={() => removeItemFromVariantList(singleRowData)} style={{border: 'none', backgroundColor: 'white', marginTop: '25px', marginBottom: '6px', cursor: "pointer" }}>
+                                                                <div onClick={() => removeItemFromVariantList(singleRowData)} style={{border: 'none', backgroundColor: 'white', marginTop: '21px', marginBottom: '6px', cursor: "pointer" }}>
                                                                     <i className="fa fa-times" style={{fontSize: '20px'}}></i>
                                                                 </div>
                                                             </div>
-                                                        </CardHeader>
-                                                        <Collapse isOpen={isOpen === singleRowData}>
-                                                            <CardBody>
-                                                                <div className="w-100 mx-2" style={{marginTop: '15px'}}>
-                                                                    <TextField
-                                                                        variant='outlined'
-                                                                        fullWidth
-                                                                        autoComplete="off"
-                                                                        size='small'
-                                                                        type="number"
-                                                                        label="Alert quantity"
-                                                                        placeholder="0"
-                                                                        value={variantFormValue?.[singleRowData]?.[`alert_quantity`]}
-                                                                        onChange={(e) => handleInputChange(e.target.value, singleRowData, `alert_quantity`)}
-                                                                        sx={{
-                                                                            '& .MuiFormLabel-root': {
-                                                                                // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                fontWeight: 400,
+                                                        </div>
+                                                        <Collapse isOpen={isOpen === singleRowData} style={{border: '1px solid #F1F1F1', padding: "4px", paddingBottom: 0, margin: "7px", backgroundColor: '#F1F1F1', borderRadius: "4px"}}>
+                                                            <div className="mx-2 mb-2" style={{marginTop: '15px'}}>
+                                                                <TextField
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    autoComplete="off"
+                                                                    size='small'
+                                                                    type="number"
+                                                                    label="Alert quantity"
+                                                                    placeholder="0"
+                                                                    value={variantFormValue?.[singleRowData]?.[`alert_quantity`]}
+                                                                    onChange={(e) => handleInputChange(e.target.value, singleRowData, `alert_quantity`)}
+                                                                    sx={{
+                                                                        '& .MuiFormLabel-root': {
+                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                            fontWeight: 400,
+                                                                        },
+                                                                        '& label': {
+                                                                            fontSize: 12
+                                                                        },
+                                                                        '& label.Mui-focused': {
+                                                                            color: '#1c2437',
+                                                                            fontSize: 16
+                                                                        },
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                            height: 35,
+                                                                            backgroundColor: 'white',
+                                                                            '&.Mui-focused fieldset': {
+                                                                                borderColor: '#979797',
+                                                                                borderWidth: '1px'
                                                                             },
-                                                                            '& label': {
-                                                                                fontSize: 12
-                                                                            },
-                                                                            '& label.Mui-focused': {
-                                                                                color: '#1c2437',
-                                                                                fontSize: 16
-                                                                            },
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                // fontSize: { xs: 12, md: 14 },
-                                                                                height: 35,
-                                                                                backgroundColor: 'white',
-                                                                                '&.Mui-focused fieldset': {
-                                                                                    borderColor: '#979797',
-                                                                                    borderWidth: '1px'
-                                                                                },
-                                                                            },
-                                                                        }} />
-                                                                </div>
-                                                                <div>
-                                                                    <VariantImage rowImage={rowImage} setRowImage={setRowImage} handelUploadData={(e) =>  handleImageChangeFN(e, singleRowData, `sku_images`)} singleRowData={singleRowData} photos={photos} setPhotos={setPhotos}></VariantImage>
-                                                                </div>
-                                                            </CardBody>
+                                                                        },
+                                                                    }} />
+                                                            </div>
+                                                            <div style={{margin: "0 7px 13px 7px"}}>
+                                                                <VariantImage rowImage={rowImage} setRowImage={setRowImage} handelUploadData={(e) =>  handleImageChangeFN(e, singleRowData, `sku_images`)} singleRowData={singleRowData} photos={photos} setPhotos={setPhotos}></VariantImage>
+                                                            </div>
                                                         </Collapse>
                                                     </Accordion>
                                                 )

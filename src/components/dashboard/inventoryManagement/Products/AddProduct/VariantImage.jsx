@@ -47,12 +47,8 @@ const VariantImage = ({handelUploadData, photos, setPhotos, singleRowData, rowIm
         rowImage[singleRowData] = [...newPhotos];
     };
 
-
-    console.log('checked', rowImage);
-    console.log('row', singleRowData);
-
     return (
-        <div className="card" style={{ height: "100%" }}>
+        <div className="card" style={{ height: "100%", marginBottom: 0 }}>
             <div style={{ padding: "10px" }}>
                 <div>
                     {/* Header components */}
@@ -84,9 +80,7 @@ const VariantImage = ({handelUploadData, photos, setPhotos, singleRowData, rowIm
                                     readOnly
                                     type="checkbox"
                                     checked={selectedPhotos?.length ? true : false}
-                                    style={{
-                                        width: "14px",
-                                        height: " 14px",
+                                    style={{width: "14px", height: " 14px",
                                         "@media (min-width: 1024px)": {
                                             width: "18px",
                                             height: "18px",
@@ -95,13 +89,7 @@ const VariantImage = ({handelUploadData, photos, setPhotos, singleRowData, rowIm
                                     onChange={() => setSelectedPhotos([])}
                                 />
                             )}
-                            <p
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: "0.875rem",
-                                    marginTop: '18px'
-                                }}
-                            >
+                            <p style={{fontWeight: "bold", fontSize: "0.875rem"}}>
                                 {/* toggle the Gallery / File / Files */}
                                 {selectedPhotos?.length > 0 && selectedPhotos?.length}{" "}
                                 {selectedPhotos?.length === 0

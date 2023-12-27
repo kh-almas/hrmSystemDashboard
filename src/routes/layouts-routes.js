@@ -66,7 +66,6 @@ import SupportTicket from "../components/support-ticket/supportTicket";
 import Customer from "../components/dashboard/inventoryManagement/Contacts/Customer";
 import Settings from "../components/dashboard/inventoryManagement/Contacts/Settings";
 import AddProduct from "../components/dashboard/inventoryManagement/Products/AddProduct/AddProduct";
-import ComboProduct from "../components/dashboard/inventoryManagement/Products/ProductList/ComboProduct";
 import Products from "../components/dashboard/inventoryManagement/Products/ProductList/Products";
 import Service from "../components/dashboard/inventoryManagement/Products/Service/Service";
 
@@ -187,7 +186,6 @@ export const routes = [
     Component: <Project />,
   },
   // hrm system
-  ,
 
   //update sidebar from here
   {
@@ -654,10 +652,6 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products`,
     Component: <Products />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products`,
-    Component: <ComboProduct />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/services`,
