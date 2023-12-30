@@ -27,17 +27,6 @@ import ProductImage from "./ProductImage";
 import {Trash2} from "react-feather";
 import CreatableSelect from "react-select/creatable";
 
-const createOption = (label) => ({
-    label,
-    value: label.toLowerCase().replace(/\W/g, ''),
-});
-
-const defaultOptions = [
-    createOption('One'),
-    createOption('Two'),
-    createOption('Three'),
-];
-
 const AddProduct = () => {
     const [componentRender, setComponentRender] = useState(false)
     const [allStoredValue, setAllStoredValue] = useState({})
@@ -55,6 +44,49 @@ const AddProduct = () => {
     const [taxType, setTaxType] = useState({value: "percent", label: "Percent"});
     const [priceType, setPriceType] = useState({value: "percent", label: "Percent"});
     const [variantFormValue, setVariantFormValue] = useState({});
+    const [previousSKU, setPreviousSKU] = useState([]);
+    const [baseProductSKU, setBaseProductSKU] = useState('');
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        setValue,
+        watch,
+        formState: {errors},
+        unregister,
+        clearErrors
+    } = useForm({
+        // mode:'onChange',
+        defaultValues: useMemo(()=> {
+            return selectedProductForCombo;
+        }, [selectedProductForCombo])
+    });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setProductOptions([])
+                const response = await axios.get(`/inventory-management/products/get-all-sku`);
+                const allSKUData = response?.data?.body?.data?.map(item => item.sku)
+                setPreviousSKU(allSKUData)
+                
+                const prefix = 'sku_';
+                let randomSku;
+
+                do {
+                    randomSku = `${prefix}${Math.random().toString(36).substr(2, 12)}`;
+                } while (allSKUData.includes(randomSku));
+
+                setBaseProductSKU(randomSku);
+                setPreviousSKU(prev => [...prev, randomSku])
+                reset();
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData()
+    }, []);
 
     const handleChangeTaxType = (selected) => {
         setTaxType(selected);
@@ -177,21 +209,7 @@ const AddProduct = () => {
         setBrandValue(selected);
     };
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        setValue,
-        watch,
-        formState: {errors},
-        unregister,
-        clearErrors
-    } = useForm({
-        // mode:'onChange',
-        defaultValues: useMemo(()=> {
-            return selectedProductForCombo;
-        }, [selectedProductForCombo])
-    });
+
 
     const [allUnitType, setAllUnitType] = useState([]);
     const [isUnitTypeChange, setIsUnitTypeChange] = useState(false);
@@ -273,7 +291,7 @@ const AddProduct = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/inventory-management/products/list`);
+                const response = await axios.get(`/inventory-management/products/list/combo/select`);
                 setAllDataForDropdown(response?.data?.body?.data);
             } catch (error) {
                 console.error(error);
@@ -479,6 +497,7 @@ const AddProduct = () => {
         data.tax = allStoredValue.tax;
         data.has_serial_key = data?.has_serial_key === true ? 1 : 0;
         data.photos = JSON.stringify(photos);
+        data.sku = baseProductSKU;
 
 
         if (data.product_type === 'Variant'){
@@ -537,20 +556,6 @@ const AddProduct = () => {
                 // }
             })
     }
-
-    const [isLoading, setIsLoading] = useState(false);
-    const [options, setOptions] = useState(defaultOptions);
-    const [valueNew, setValueNew] = useState();
-
-    const handleCreate = (inputValue) => {
-        setIsLoading(true);
-        setTimeout(() => {
-            const newOption = createOption(inputValue);
-            setIsLoading(false);
-            setOptions((prev) => [...prev, newOption]);
-            setValueNew(newOption);
-        }, 1000);
-    };
 
     return (
         <div>
@@ -835,7 +840,7 @@ const AddProduct = () => {
                                                                 validation={{...register('name', {
                                                                         required: 'This field is required',
                                                                         pattern: {
-                                                                            value: /^[A-Za-z]+$/,
+                                                                            value: /^[A-Za-z\s]+$/,
                                                                             message: 'Use only alphabet',
                                                                         },
                                                                     })}}
@@ -847,22 +852,58 @@ const AddProduct = () => {
                                                         </div>
                                                     ) : ( "" )}
                                                     {type !== "Variant" ? (
-                                                    <div>
-                                                        <Input
-                                                            labelName={"Product Sku"}
-                                                            inputName={"product-sku"}
-                                                            placeholder={"Product-Sku"}
-                                                            inputType={"text"}
-                                                            validation={{...register('sku', {
-                                                                    required: 'This field is required',
-                                                                    pattern: {
-                                                                        value: /^[A-Za-z0-9]+$/,
-                                                                        message: 'Use only alphabet and number',
+                                                    <div className={"mt-3"}>
+                                                        {/*<Input*/}
+                                                        {/*    disabled={'disabled'}*/}
+                                                        {/*    labelName={"Product Sku"}*/}
+                                                        {/*    inputName={"product-sku"}*/}
+                                                        {/*    placeholder={"Product-Sku"}*/}
+                                                        {/*    defaultValue={baseProductSKU}*/}
+                                                        {/*    inputType={"text"}*/}
+                                                        {/*    validation={{...register('sku', {*/}
+                                                        {/*            required: 'This field is required',*/}
+                                                        {/*            pattern: {*/}
+                                                        {/*                value: /^[A-Za-z0-9_-]+$/,*/}
+                                                        {/*                message: 'Use only alphabet and number',*/}
+                                                        {/*            },*/}
+                                                        {/*        })}}*/}
+                                                        {/*    performOnValue={(e) => clearErrors(["sku"])}*/}
+                                                        {/*    error={errors.name}*/}
+                                                        {/*/>*/}
+
+                                                        <TextField
+                                                            disabled={true}
+                                                            variant='outlined'
+                                                            fullWidth
+                                                            autoComplete="off"
+                                                            size='small'
+                                                            type={'text'}
+                                                            value={`${baseProductSKU}`}
+                                                            label={'SKU'}
+
+                                                            sx={{
+                                                                '& .MuiFormLabel-root': {
+                                                                    // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                    fontWeight: 400,
+                                                                    fontSize: 12,
+                                                                },
+                                                                '& label': {
+                                                                    fontSize: 12
+                                                                },
+                                                                '& label.Mui-focused': {
+                                                                    color: '#1c2437',
+                                                                    fontSize: 16
+                                                                },
+                                                                '& .MuiOutlinedInput-root': {
+                                                                    // fontSize: { xs: 12, md: 14 },
+                                                                    height: 35,
+                                                                    backgroundColor: 'white',
+                                                                    '&.Mui-focused fieldset': {
+                                                                        borderColor: '#979797',
+                                                                        borderWidth: '1px'
                                                                     },
-                                                                })}}
-                                                            performOnValue={(e) => clearErrors(["sku"])}
-                                                            error={errors.name}
-                                                        />
+                                                                },
+                                                            }} />
                                                         {errors.sku && <span style={{fontSize: '10px'}}>{errors.sku.message}</span>}
                                                     </div>
                                                     ) : ( "" )}
@@ -911,7 +952,7 @@ const AddProduct = () => {
                                                             <Select
                                                                 name={"select-unit"}
                                                                 labelName={"select-unit"}
-                                                                // previous={unitType}
+                                                                previous={unitType}
                                                                 placeholder={"Select Unit"}
                                                                 options={allUnitType}
                                                                 setValue={setUnitType}
@@ -944,7 +985,7 @@ const AddProduct = () => {
                                                             <Select
                                                                 name={"select-brand"}
                                                                 labelName={"Select Brand"}
-                                                                // previous={brandValue}
+                                                                previous={brandValue}
                                                                 placeholder={"Select Brand"}
                                                                 options={allBrand}
                                                                 setValue={setBrandValue}
@@ -976,7 +1017,7 @@ const AddProduct = () => {
                                                                 name={"select-Model"}
                                                                 labelName={"Select Model"}
                                                                 placeholder={"Select Model"}
-                                                                // previous={singleModel}
+                                                                previous={singleModel}
                                                                 options={allModel}
                                                                 setValue={setSingleModel}
                                                                 cngFn={handleChangeForUpdateSingleModel}
@@ -991,7 +1032,7 @@ const AddProduct = () => {
                                                             name={"barcode-type"}
                                                             labelName={"Barcode Type"}
                                                             placeholder={"Select Barcode Type"}
-                                                            // previous={barcodeType}
+                                                            previous={barcodeType}
                                                             options={[
                                                                 {value: "Single", label: "Single"},
                                                                 {value: "Variant", label: "Variant"},
@@ -1512,17 +1553,6 @@ const AddProduct = () => {
                                                             </div>
                                                         ) : ( "" )}
                                                     </div>
-
-                                                    <CreatableSelect
-                                                        isClearable
-                                                        isDisabled={isLoading}
-                                                        isLoading={isLoading}
-                                                        onChange={(newValue) => setValueNew(newValue)}
-                                                        onCreateOption={handleCreate}
-                                                        options={options}
-                                                        value={valueNew}
-                                                    />
-
                                                 </div>
                                             </div>
                                         </div>
@@ -1657,7 +1687,7 @@ const AddProduct = () => {
                         ) : ( "")}
 
                         { type === "Variant" ? (
-                            <SelectComboVariant variantFormValue={variantFormValue} setVariantFormValue={setVariantFormValue} allStoredValue={allStoredValue} register={register} unregister={unregister}></SelectComboVariant>
+                            <SelectComboVariant previousSKU={previousSKU} setPreviousSKU={setPreviousSKU} variantFormValue={variantFormValue} setVariantFormValue={setVariantFormValue} allStoredValue={allStoredValue} register={register} unregister={unregister}></SelectComboVariant>
                         ) : ( "")}
                     </div>
                     <div className="card">

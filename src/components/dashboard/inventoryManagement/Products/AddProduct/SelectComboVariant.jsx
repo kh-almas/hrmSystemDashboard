@@ -1,25 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import axios from "../../../../../axios";
 import Select from "../../../../common/modal/Select";
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, Collapse, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import TextField from "@mui/material/TextField";
 import MultipleSelectWithReactSelect from "../../../../common/modal/MultipleSelectWithReactSelect";
 import VariantImage from "./VariantImage";
 import CreatableSelect from "react-select/creatable";
 import Swal from "sweetalert2";
+import {Accordion} from "react-bootstrap";
+import { HiPlus, HiOutlineMinusSm } from "react-icons/hi";
 
-const createOption = (label) => ({
-    label,
-    value: label.toLowerCase().replace(/\W/g, ''),
-});
-
-const defaultOptions = [
-    createOption('One'),
-    createOption('Two'),
-    createOption('Three'),
-];
-
-const SelectComboVariant = ({allStoredValue, register, unregister, variantFormValue, setVariantFormValue}) => {
+const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, register, unregister, variantFormValue, setVariantFormValue}) => {
     const [isValueOfVariantUpdate, setIsValueOfVariantUpdate]= useState(false);
     const [componentRender, setComponentRender] = useState(false)
     const [rowImage, setRowImage] = useState({});
@@ -31,6 +22,31 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
     const [selectedVariantForVariant, setSelectedVariantForVariant] = useState([]);
     const [variantValueItem, setVariantValueItem] = useState([])
     const [addRowInVariant, setAddRowInVariant] = useState([0])
+    const [variantSKu, setVariantSku] = useState({})
+    const [isOpen, setIsOpen] = useState(0);
+
+    console.log('variantFormValue', variantFormValue);
+    const generateSku = () => {
+        const prefix = 'sku1_';
+        let randomSku;
+
+        do {
+            randomSku = `${prefix}${Math.random().toString(36).substr(2, 12)}`;
+        } while (previousSKU.includes(randomSku));
+
+        setPreviousSKU(prev => [...prev, randomSku])
+        return randomSku;
+    }
+
+    useEffect(() => {
+        const firstvariantSKU = generateSku();
+        setVariantSku({0: firstvariantSKU})
+        if (!variantFormValue['0']) {
+            variantFormValue['0'] = {};
+        }
+        variantFormValue['0']['sku'] = firstvariantSKU;
+        setComponentRender(!componentRender)
+    }, []);
 
     const handleImageChange = (value) => {
         const files = value?.target?.files;
@@ -117,7 +133,17 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
 
     const addNewRow = () => {
         if (selectedVariantForVariant?.length > 0){
-            setAddRowInVariant(prev => [...prev, addRowInVariant.length])
+            const preLength = addRowInVariant.length;
+            setAddRowInVariant(prev => [...prev, preLength])
+            setIsOpen(preLength);
+            const variantsSKU = generateSku();
+            // setVariantSku(prev => {...prev, {[preLength]: variantSKU}})
+            variantSKu[preLength] = variantsSKU;
+            if (!variantFormValue[preLength]) {
+                variantFormValue[preLength] = {};
+            }
+            variantFormValue[preLength]['sku'] = variantsSKU;
+            setComponentRender(!componentRender)
         }
     }
 
@@ -333,6 +359,7 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
             })
         setIsLoading(false);
     };
+    const toggle = (id) => (isOpen === id ? setIsOpen(null) : setIsOpen(id));
 
     return (
         <>
@@ -368,439 +395,255 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
                                         <div>
                                             {
                                                 addRowInVariant?.map((singleRowData, rowIndex) =>
-                                                    <div className="d-flex justify-content-between align-items-end" key={rowIndex}>
-                                                        {
-                                                            selectedVariantForVariant?.map((singleVariantData,index) =>
-                                                                <div key={index} className="w-100 mx-2">
+                                                    <Accordion defaultActiveKey="0">
+                                                        <div className="d-flex justify-content-between align-items-end" key={rowIndex}>
+                                                            {
+                                                                selectedVariantForVariant?.map((singleVariantData,index) =>
+                                                                    <div key={index} className="w-100 mx-2">
 
-                                                                    {/*<Select*/}
-                                                                    {/*    labelName={' '}*/}
-                                                                    {/*    placeholder={"Select an option"}*/}
-                                                                    {/*    previous={variantFormValue?.[singleRowData]?.['variant']?.[singleVariantData?.value]}*/}
-                                                                    {/*    options={formatAllDataForVariantValueDropdown[singleVariantData?.value]}*/}
-                                                                    {/*    cngFn={(selected) => handleSelectChange(selected, singleRowData, singleVariantData?.value)}*/}
-                                                                    {/*/>*/}
-                                                                    <CreatableSelect
-                                                                        isClearable
-                                                                        isDisabled={isLoading}
-                                                                        isLoading={isLoading}
-                                                                        onChange={(selected) => {
-                                                                            handleSelectChange(selected, singleRowData, singleVariantData?.value)
-                                                                        }}
-                                                                        onCreateOption={(inputValue)=>handleCreate(inputValue, singleRowData, singleVariantData)}
-                                                                        options={formatAllDataForVariantValueDropdown[singleVariantData?.value]}
-                                                                        value={variantFormValue?.[singleRowData]?.['variant']?.[singleVariantData?.value]}
-                                                                    />
-                                                                </div>
-                                                            )
-                                                        }
+                                                                        {/*<Select*/}
+                                                                        {/*    labelName={' '}*/}
+                                                                        {/*    placeholder={"Select an option"}*/}
+                                                                        {/*    previous={variantFormValue?.[singleRowData]?.['variant']?.[singleVariantData?.value]}*/}
+                                                                        {/*    options={formatAllDataForVariantValueDropdown[singleVariantData?.value]}*/}
+                                                                        {/*    cngFn={(selected) => handleSelectChange(selected, singleRowData, singleVariantData?.value)}*/}
+                                                                        {/*/>*/}
+                                                                        <CreatableSelect
+                                                                            isClearable
+                                                                            isDisabled={isLoading}
+                                                                            isLoading={isLoading}
+                                                                            onChange={(selected) => {
+                                                                                handleSelectChange(selected, singleRowData, singleVariantData?.value)
+                                                                            }}
+                                                                            onCreateOption={(inputValue)=>handleCreate(inputValue, singleRowData, singleVariantData)}
+                                                                            options={formatAllDataForVariantValueDropdown[singleVariantData?.value]}
+                                                                            value={variantFormValue?.[singleRowData]?.['variant']?.[singleVariantData?.value]}
+                                                                        />
+                                                                    </div>
+                                                                )
+                                                            }
 
-                                                        <div className="w-100 mx-2">
-                                                            <TextField
-                                                                variant='outlined'
-                                                                fullWidth
-                                                                autoComplete="off"
-                                                                size='small'
-                                                                type="text"
-                                                                placeholder="sku_01"
-                                                                value={variantValueItem?.[singleRowData]?.[`sku`]}
-                                                                onChange={(e) => handleInputChange(e.target.value, singleRowData, `sku`)}
-                                                                sx={{
-                                                                    '& .MuiFormLabel-root': {
-                                                                        fontWeight: 400,
-                                                                    },
-                                                                    '& label': {
-                                                                        fontSize: 12
-                                                                    },
-                                                                    '& label.Mui-focused': {
-                                                                        color: '#1c2437',
-                                                                        fontSize: 16
-                                                                    },
-                                                                    '& .MuiOutlinedInput-root': {
-                                                                        // fontSize: { xs: 12, md: 14 },
-                                                                        height: 35,
-                                                                        backgroundColor: 'white',
-                                                                        '&.Mui-focused fieldset': {
-                                                                            borderColor: '#979797',
-                                                                            borderWidth: '1px'
+                                                            <div className="w-100 mx-2">
+                                                                <TextField
+                                                                    disabled={true}
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    autoComplete="off"
+                                                                    size='small'
+                                                                    type="text"
+                                                                    placeholder="sku_01"
+                                                                    value={variantSKu?.[singleRowData]}
+                                                                    onChange={(e) => handleInputChange(e.target.value, singleRowData, `sku`)}
+                                                                    sx={{
+                                                                        '& .MuiFormLabel-root': {
+                                                                            fontWeight: 400,
                                                                         },
-                                                                    },
-                                                                }} />
-                                                        </div>
-                                                        <div className="w-100 mx-2">
-                                                            <TextField
-                                                                variant='outlined'
-                                                                fullWidth
-                                                                autoComplete="off"
-                                                                size='small'
-                                                                type="number"
-                                                                placeholder="0"
-                                                                value={variantFormValue?.[singleRowData]?.[`opening_stock_quantity`] || ''}
-                                                                onChange={(e) => handleInputChange(e.target.value, singleRowData, `opening_stock_quantity`)}
-                                                                sx={{
-                                                                    '& .MuiFormLabel-root': {
-                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                        fontWeight: 400,
-                                                                    },
-                                                                    '& label': {
-                                                                        fontSize: 12
-                                                                    },
-                                                                    '& label.Mui-focused': {
-                                                                        color: '#1c2437',
-                                                                        fontSize: 16
-                                                                    },
-                                                                    '& .MuiOutlinedInput-root': {
-                                                                        // fontSize: { xs: 12, md: 14 },
-                                                                        height: 35,
-                                                                        backgroundColor: 'white',
-                                                                        '&.Mui-focused fieldset': {
-                                                                            borderColor: '#979797',
-                                                                            borderWidth: '1px'
+                                                                        '& label': {
+                                                                            fontSize: 12
                                                                         },
-                                                                    },
-                                                                }} />
-                                                        </div>
-                                                        <div className="w-100 mx-2">
-                                                            <TextField
-                                                                variant='outlined'
-                                                                fullWidth
-                                                                autoComplete="off"
-                                                                size='small'
-                                                                type="number"
-                                                                placeholder="0"
-                                                                value={variantFormValue?.[singleRowData]?.[`purchase_price`]}
-                                                                onChange={(e) => handleInputChange(e.target.value, singleRowData, `purchase_price`)}
-                                                                sx={{
-                                                                    '& .MuiFormLabel-root': {
-                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                        fontWeight: 400,
-                                                                    },
-                                                                    '& label': {
-                                                                        fontSize: 12
-                                                                    },
-                                                                    '& label.Mui-focused': {
-                                                                        color: '#1c2437',
-                                                                        fontSize: 16
-                                                                    },
-                                                                    '& .MuiOutlinedInput-root': {
-                                                                        // fontSize: { xs: 12, md: 14 },
-                                                                        height: 35,
-                                                                        backgroundColor: 'white',
-                                                                        '&.Mui-focused fieldset': {
-                                                                            borderColor: '#979797',
-                                                                            borderWidth: '1px'
+                                                                        '& label.Mui-focused': {
+                                                                            color: '#1c2437',
+                                                                            fontSize: 16
                                                                         },
-                                                                    },
-                                                                }} />
-                                                        </div>
-                                                        <div className="w-100 mx-2">
-                                                            <TextField
-                                                                variant='outlined'
-                                                                fullWidth
-                                                                autoComplete="off"
-                                                                size='small'
-                                                                type="number"
-                                                                placeholder="0"
-                                                                value={variantFormValue?.[singleRowData]?.[`selling_price`]}
-                                                                onChange={(e) => handleInputChange(e.target.value, singleRowData, `selling_price`)}
-                                                                sx={{
-                                                                    '& .MuiFormLabel-root': {
-                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                        fontWeight: 400,
-                                                                    },
-                                                                    '& label': {
-                                                                        fontSize: 12
-                                                                    },
-                                                                    '& label.Mui-focused': {
-                                                                        color: '#1c2437',
-                                                                        fontSize: 16
-                                                                    },
-                                                                    '& .MuiOutlinedInput-root': {
-                                                                        // fontSize: { xs: 12, md: 14 },
-                                                                        height: 35,
-                                                                        backgroundColor: 'white',
-                                                                        '&.Mui-focused fieldset': {
-                                                                            borderColor: '#979797',
-                                                                            borderWidth: '1px'
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                            height: 35,
+                                                                            backgroundColor: 'white',
+                                                                            '&.Mui-focused fieldset': {
+                                                                                borderColor: '#979797',
+                                                                                borderWidth: '1px'
+                                                                            },
                                                                         },
-                                                                    },
-                                                                }} />
-                                                        </div>
-                                                        <div className="w-100 mx-2">
-                                                            <TextField
-                                                                variant='outlined'
-                                                                fullWidth
-                                                                autoComplete="off"
-                                                                size='small'
-                                                                type="number"
-                                                                placeholder="0"
-                                                                value={variantFormValue?.[singleRowData]?.[`tax`]}
-                                                                onChange={(e) => handleInputChange(e.target.value, singleRowData, `tax`)}
-                                                                sx={{
-                                                                    '& .MuiFormLabel-root': {
-                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                        fontWeight: 400,
-                                                                    },
-                                                                    '& label': {
-                                                                        fontSize: 12
-                                                                    },
-                                                                    '& label.Mui-focused': {
-                                                                        color: '#1c2437',
-                                                                        fontSize: 16
-                                                                    },
-                                                                    '& .MuiOutlinedInput-root': {
-                                                                        // fontSize: { xs: 12, md: 14 },
-                                                                        height: 35,
-                                                                        backgroundColor: 'white',
-                                                                        '&.Mui-focused fieldset': {
-                                                                            borderColor: '#979797',
-                                                                            borderWidth: '1px'
-                                                                        },
-                                                                    },
-                                                                }} />
-
-                                                        </div>
-                                                        <div className="text-end w-25 mx-2" style={{marginTop: '16px', display: "flex", justifyContent: "center", alignItems: 'center'}}>
-                                                            <div onClick={() => toggleOn(rowIndex)} style={{marginRight: '5px', border: 'none', backgroundColor: 'white', marginTop: '25px', marginBottom: '6px', cursor: "pointer" }}>
-                                                                <i className="fa fa-pencil-square-o" style={{fontSize: '15px'}}></i>
+                                                                    }} />
                                                             </div>
-                                                            <Modal isOpen={modal[rowIndex]} toggle={toggleOn[rowIndex]} className="modal-body" centered={true}>
-                                                                <ModalHeader toggle={toggleOn[rowIndex]}>`ModalTitle_${rowIndex}`</ModalHeader>
-                                                                <ModalBody>
+                                                            <div className="w-100 mx-2">
+                                                                <TextField
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    autoComplete="off"
+                                                                    size='small'
+                                                                    type="number"
+                                                                    placeholder="0"
+                                                                    value={variantFormValue?.[singleRowData]?.[`opening_stock_quantity`] || ''}
+                                                                    onChange={(e) => handleInputChange(e.target.value, singleRowData, `opening_stock_quantity`)}
+                                                                    sx={{
+                                                                        '& .MuiFormLabel-root': {
+                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                            fontWeight: 400,
+                                                                        },
+                                                                        '& label': {
+                                                                            fontSize: 12
+                                                                        },
+                                                                        '& label.Mui-focused': {
+                                                                            color: '#1c2437',
+                                                                            fontSize: 16
+                                                                        },
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                            height: 35,
+                                                                            backgroundColor: 'white',
+                                                                            '&.Mui-focused fieldset': {
+                                                                                borderColor: '#979797',
+                                                                                borderWidth: '1px'
+                                                                            },
+                                                                        },
+                                                                    }} />
+                                                            </div>
+                                                            <div className="w-100 mx-2">
+                                                                <TextField
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    autoComplete="off"
+                                                                    size='small'
+                                                                    type="number"
+                                                                    placeholder="0"
+                                                                    value={variantFormValue?.[singleRowData]?.[`purchase_price`]}
+                                                                    onChange={(e) => handleInputChange(e.target.value, singleRowData, `purchase_price`)}
+                                                                    sx={{
+                                                                        '& .MuiFormLabel-root': {
+                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                            fontWeight: 400,
+                                                                        },
+                                                                        '& label': {
+                                                                            fontSize: 12
+                                                                        },
+                                                                        '& label.Mui-focused': {
+                                                                            color: '#1c2437',
+                                                                            fontSize: 16
+                                                                        },
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                            height: 35,
+                                                                            backgroundColor: 'white',
+                                                                            '&.Mui-focused fieldset': {
+                                                                                borderColor: '#979797',
+                                                                                borderWidth: '1px'
+                                                                            },
+                                                                        },
+                                                                    }} />
+                                                            </div>
+                                                            <div className="w-100 mx-2">
+                                                                <TextField
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    autoComplete="off"
+                                                                    size='small'
+                                                                    type="number"
+                                                                    placeholder="0"
+                                                                    value={variantFormValue?.[singleRowData]?.[`selling_price`]}
+                                                                    onChange={(e) => handleInputChange(e.target.value, singleRowData, `selling_price`)}
+                                                                    sx={{
+                                                                        '& .MuiFormLabel-root': {
+                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                            fontWeight: 400,
+                                                                        },
+                                                                        '& label': {
+                                                                            fontSize: 12
+                                                                        },
+                                                                        '& label.Mui-focused': {
+                                                                            color: '#1c2437',
+                                                                            fontSize: 16
+                                                                        },
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                            height: 35,
+                                                                            backgroundColor: 'white',
+                                                                            '&.Mui-focused fieldset': {
+                                                                                borderColor: '#979797',
+                                                                                borderWidth: '1px'
+                                                                            },
+                                                                        },
+                                                                    }} />
+                                                            </div>
+                                                            <div className="w-100 mx-2">
+                                                                <TextField
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    autoComplete="off"
+                                                                    size='small'
+                                                                    type="number"
+                                                                    placeholder="0"
+                                                                    value={variantFormValue?.[singleRowData]?.[`tax`]}
+                                                                    onChange={(e) => handleInputChange(e.target.value, singleRowData, `tax`)}
+                                                                    sx={{
+                                                                        '& .MuiFormLabel-root': {
+                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                            fontWeight: 400,
+                                                                        },
+                                                                        '& label': {
+                                                                            fontSize: 12
+                                                                        },
+                                                                        '& label.Mui-focused': {
+                                                                            color: '#1c2437',
+                                                                            fontSize: 16
+                                                                        },
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                            height: 35,
+                                                                            backgroundColor: 'white',
+                                                                            '&.Mui-focused fieldset': {
+                                                                                borderColor: '#979797',
+                                                                                borderWidth: '1px'
+                                                                            },
+                                                                        },
+                                                                    }} />
+
+                                                            </div>
+                                                            <div className="text-end w-25 mx-2" style={{marginTop: '16px', display: "flex", justifyContent: "center", alignItems: 'center'}}>
+                                                                <div onClick={() => toggle(singleRowData)} style={{marginRight: '5px', border: 'none', backgroundColor: 'white', marginTop: '25px', marginBottom: '6px', cursor: "pointer" }}>
                                                                     {
-                                                                        selectedVariantForVariant?.map((singleVariantData,index) =>
-
-                                                                            <div key={index} className="w-100 mx-2">
-                                                                                <Select
-                                                                                    placeholder={singleVariantData.label}
-                                                                                    labelName={singleVariantData.label}
-                                                                                    previous={variantFormValue?.[singleRowData]?.['variant']?.[singleVariantData?.id]}
-                                                                                    options={formatAllDataForVariantValueDropdown[singleVariantData?.id]}
-                                                                                    cngFn={(selected) => handleSelectChange(selected, singleRowData, singleVariantData?.id)}
-                                                                                />
-
-                                                                            </div>
-                                                                        )
+                                                                        isOpen !== singleRowData ?
+                                                                            <HiPlus style={{fontSize: '19px'}}></HiPlus>
+                                                                            : <HiOutlineMinusSm style={{fontSize: '19px'}}></HiOutlineMinusSm>
                                                                     }
 
-                                                                    <div className="w-100 mx-2" style={{marginTop: '28px'}}>
-                                                                        <TextField
-                                                                            variant='outlined'
-                                                                            fullWidth
-                                                                            autoComplete="off"
-                                                                            size='small'
-                                                                            type="text"
-                                                                            label="SKU"
-                                                                            placeholder="sku_01"
-                                                                            value={variantFormValue?.[singleRowData]?.[`sku`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `sku`)}
-                                                                            sx={{
-                                                                                '& .MuiFormLabel-root': {
-                                                                                    fontWeight: 400,
-                                                                                },
-                                                                                '& label': {
-                                                                                    fontSize: 12
-                                                                                },
-                                                                                '& label.Mui-focused': {
-                                                                                    color: '#1c2437',
-                                                                                    fontSize: 16
-                                                                                },
-                                                                                '& .MuiOutlinedInput-root': {
-                                                                                    // fontSize: { xs: 12, md: 14 },
-                                                                                    height: 35,
-                                                                                    backgroundColor: 'white',
-                                                                                    '&.Mui-focused fieldset': {
-                                                                                        borderColor: '#979797',
-                                                                                        borderWidth: '1px'
-                                                                                    },
-                                                                                },
-                                                                            }} />
-                                                                    </div>
-                                                                    <div className="w-100 mx-2" style={{marginTop: '15px'}}>
-                                                                        <TextField
-                                                                            variant='outlined'
-                                                                            fullWidth
-                                                                            autoComplete="off"
-                                                                            size='small'
-                                                                            type="number"
-                                                                            label="Opening stock quantity"
-                                                                            placeholder="0"
-                                                                            value={variantFormValue?.[singleRowData]?.[`opening_stock_quantity`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `opening_stock_quantity`)}
-                                                                            sx={{
-                                                                                '& .MuiFormLabel-root': {
-                                                                                    // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                    fontWeight: 400,
-                                                                                },
-                                                                                '& label': {
-                                                                                    fontSize: 12
-                                                                                },
-                                                                                '& label.Mui-focused': {
-                                                                                    color: '#1c2437',
-                                                                                    fontSize: 16
-                                                                                },
-                                                                                '& .MuiOutlinedInput-root': {
-                                                                                    // fontSize: { xs: 12, md: 14 },
-                                                                                    height: 35,
-                                                                                    backgroundColor: 'white',
-                                                                                    '&.Mui-focused fieldset': {
-                                                                                        borderColor: '#979797',
-                                                                                        borderWidth: '1px'
-                                                                                    },
-                                                                                },
-                                                                            }} />
-                                                                    </div>
-                                                                    <div className="w-100 mx-2" style={{marginTop: '15px'}}>
-                                                                        <TextField
-                                                                            variant='outlined'
-                                                                            fullWidth
-                                                                            autoComplete="off"
-                                                                            size='small'
-                                                                            type="number"
-                                                                            label="Alert quantity"
-                                                                            placeholder="0"
-                                                                            value={variantFormValue?.[singleRowData]?.[`alert_quantity`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `alert_quantity`)}
-                                                                            sx={{
-                                                                                '& .MuiFormLabel-root': {
-                                                                                    // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                    fontWeight: 400,
-                                                                                },
-                                                                                '& label': {
-                                                                                    fontSize: 12
-                                                                                },
-                                                                                '& label.Mui-focused': {
-                                                                                    color: '#1c2437',
-                                                                                    fontSize: 16
-                                                                                },
-                                                                                '& .MuiOutlinedInput-root': {
-                                                                                    // fontSize: { xs: 12, md: 14 },
-                                                                                    height: 35,
-                                                                                    backgroundColor: 'white',
-                                                                                    '&.Mui-focused fieldset': {
-                                                                                        borderColor: '#979797',
-                                                                                        borderWidth: '1px'
-                                                                                    },
-                                                                                },
-                                                                            }} />
-                                                                    </div>
-                                                                    <div className="w-100 mx-2" style={{marginTop: '15px'}}>
-                                                                        <TextField
-                                                                            variant='outlined'
-                                                                            fullWidth
-                                                                            autoComplete="off"
-                                                                            size='small'
-                                                                            type="number"
-                                                                            label="Variant purchase price"
-                                                                            placeholder="0"
-                                                                            value={variantFormValue?.[singleRowData]?.[`purchase_price`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `purchase_price`)}
-                                                                            sx={{
-                                                                                '& .MuiFormLabel-root': {
-                                                                                    // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                    fontWeight: 400,
-                                                                                },
-                                                                                '& label': {
-                                                                                    fontSize: 12
-                                                                                },
-                                                                                '& label.Mui-focused': {
-                                                                                    color: '#1c2437',
-                                                                                    fontSize: 16
-                                                                                },
-                                                                                '& .MuiOutlinedInput-root': {
-                                                                                    // fontSize: { xs: 12, md: 14 },
-                                                                                    height: 35,
-                                                                                    backgroundColor: 'white',
-                                                                                    '&.Mui-focused fieldset': {
-                                                                                        borderColor: '#979797',
-                                                                                        borderWidth: '1px'
-                                                                                    },
-                                                                                },
-                                                                            }} />
-                                                                    </div>
-                                                                    <div className="w-100 mx-2" style={{marginTop: '15px'}}>
-                                                                        <TextField
-                                                                            variant='outlined'
-                                                                            fullWidth
-                                                                            autoComplete="off"
-                                                                            size='small'
-                                                                            type="number"
-                                                                            label="Variant selling price"
-                                                                            placeholder="0"
-                                                                            value={variantFormValue?.[singleRowData]?.[`selling_price`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `selling_price`)}
-                                                                            sx={{
-                                                                                '& .MuiFormLabel-root': {
-                                                                                    // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                    fontWeight: 400,
-                                                                                },
-                                                                                '& label': {
-                                                                                    fontSize: 12
-                                                                                },
-                                                                                '& label.Mui-focused': {
-                                                                                    color: '#1c2437',
-                                                                                    fontSize: 16
-                                                                                },
-                                                                                '& .MuiOutlinedInput-root': {
-                                                                                    // fontSize: { xs: 12, md: 14 },
-                                                                                    height: 35,
-                                                                                    backgroundColor: 'white',
-                                                                                    '&.Mui-focused fieldset': {
-                                                                                        borderColor: '#979797',
-                                                                                        borderWidth: '1px'
-                                                                                    },
-                                                                                },
-                                                                            }} />
-                                                                    </div>
-                                                                    <div className="w-100 mx-2" style={{marginTop: '15px'}}>
-                                                                        <TextField
-                                                                            variant='outlined'
-                                                                            fullWidth
-                                                                            autoComplete="off"
-                                                                            size='small'
-                                                                            type="number"
-                                                                            label="Tax"
-                                                                            placeholder="0"
-                                                                            value={variantFormValue?.[singleRowData]?.[`tax`]}
-                                                                            onChange={(e) => handleInputChange(e.target.value, singleRowData, `tax`)}
-                                                                            sx={{
-                                                                                '& .MuiFormLabel-root': {
-                                                                                    // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                    fontWeight: 400,
-                                                                                },
-                                                                                '& label': {
-                                                                                    fontSize: 12
-                                                                                },
-                                                                                '& label.Mui-focused': {
-                                                                                    color: '#1c2437',
-                                                                                    fontSize: 16
-                                                                                },
-                                                                                '& .MuiOutlinedInput-root': {
-                                                                                    // fontSize: { xs: 12, md: 14 },
-                                                                                    height: 35,
-                                                                                    backgroundColor: 'white',
-                                                                                    '&.Mui-focused fieldset': {
-                                                                                        borderColor: '#979797',
-                                                                                        borderWidth: '1px'
-                                                                                    },
-                                                                                },
-                                                                            }} />
+                                                                </div>
 
-                                                                    </div>
-                                                                    <div>
-                                                                        <VariantImage rowImage={rowImage} setRowImage={setRowImage} handelUploadData={(e) =>  handleImageChangeFN(e, singleRowData, `sku_images`)} singleRowData={singleRowData} photos={photos} setPhotos={setPhotos}></VariantImage>
-                                                                    </div>
-                                                                </ModalBody>
-                                                                <ModalFooter>
-                                                                    <Button color="primary">SaveChanges</Button>
-                                                                    <Button color="secondary"  onClick={() => toggleOff(rowIndex)}>Cancel</Button>
-                                                                </ModalFooter>
-                                                            </Modal>
-                                                            <div onClick={() => removeItemFromVariantList(singleRowData)} style={{border: 'none', backgroundColor: 'white', marginTop: '25px', marginBottom: '6px', cursor: "pointer" }}>
-                                                                <i className="fa fa-times" style={{fontSize: '20px'}}></i>
+                                                                <div onClick={() => removeItemFromVariantList(singleRowData)} style={{border: 'none', backgroundColor: 'white', marginTop: '21px', marginBottom: '6px', cursor: "pointer" }}>
+                                                                    <i className="fa fa-times" style={{fontSize: '20px'}}></i>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                        <Collapse isOpen={isOpen === singleRowData} style={{border: '1px solid #F1F1F1', padding: "4px", paddingBottom: 0, margin: "7px", backgroundColor: '#F1F1F1', borderRadius: "4px"}}>
+                                                            <div className="mx-2 mb-2" style={{marginTop: '15px'}}>
+                                                                <TextField
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    autoComplete="off"
+                                                                    size='small'
+                                                                    type="number"
+                                                                    label="Alert quantity"
+                                                                    placeholder="0"
+                                                                    value={variantFormValue?.[singleRowData]?.[`alert_quantity`]}
+                                                                    onChange={(e) => handleInputChange(e.target.value, singleRowData, `alert_quantity`)}
+                                                                    sx={{
+                                                                        '& .MuiFormLabel-root': {
+                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                            fontWeight: 400,
+                                                                        },
+                                                                        '& label': {
+                                                                            fontSize: 12
+                                                                        },
+                                                                        '& label.Mui-focused': {
+                                                                            color: '#1c2437',
+                                                                            fontSize: 16
+                                                                        },
+                                                                        '& .MuiOutlinedInput-root': {
+                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                            height: 35,
+                                                                            backgroundColor: 'white',
+                                                                            '&.Mui-focused fieldset': {
+                                                                                borderColor: '#979797',
+                                                                                borderWidth: '1px'
+                                                                            },
+                                                                        },
+                                                                    }} />
+                                                            </div>
+                                                            <div style={{margin: "0 7px 13px 7px"}}>
+                                                                <VariantImage rowImage={rowImage} setRowImage={setRowImage} handelUploadData={(e) =>  handleImageChangeFN(e, singleRowData, `sku_images`)} singleRowData={singleRowData} photos={photos} setPhotos={setPhotos}></VariantImage>
+                                                            </div>
+                                                        </Collapse>
+                                                    </Accordion>
                                                 )
                                             }
                                         </div>
@@ -819,3 +662,18 @@ const SelectComboVariant = ({allStoredValue, register, unregister, variantFormVa
 };
 
 export default SelectComboVariant;
+
+
+
+
+//
+//
+// <Modal isOpen={modal[rowIndex]} toggle={toggleOn[rowIndex]} className="modal-body" centered={true}>
+//     <ModalHeader toggle={toggleOn[rowIndex]}>`ModalTitle_${rowIndex}`</ModalHeader>
+//     <ModalBody>
+//
+//     </ModalBody>
+//     <ModalFooter>
+//         <Button color="secondary"  onClick={() => toggleOff(rowIndex)}>Close</Button>
+//     </ModalFooter>
+// </Modal>
