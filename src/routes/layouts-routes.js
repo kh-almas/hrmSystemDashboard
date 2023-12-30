@@ -163,6 +163,7 @@ import Input from "../components/common/modal/Input";
 import InputTest from "../components/common/component/InputTest";
 import DropdownTable3 from "../components/common/component/DropdownTable3";
 import MultipleImageUploader from "../components/common/component/imageUpload/MultipleImageUploader";
+import EditProduct from "../components/dashboard/inventoryManagement/Products/EditProduct/EditProduct";
 
 export const routes = [
   {
@@ -660,6 +661,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/add-product`,
     Component: <AddProduct />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/edit-product/:id`,
+    Component: <EditProduct />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/category`,

@@ -185,11 +185,9 @@ const Products = () => {
                             enableRowActions
                             renderRowActions={({ row, table }) => (
                                 <Box sx={{ display: 'flex', flexWrap: 'nowrap', justifyContent: "center", alignItems: "center" }}>
-                                    <IconButton color="secondary" onClick={() => {
-                                        console.log(row);
-                                    }}>
+                                    <Link to={'/dashboard/inventory-management/products/edit-product/1'} color="secondary">
                                         <EditIcon />
-                                    </IconButton>
+                                    </Link>
 
 
                                     <IconButton
