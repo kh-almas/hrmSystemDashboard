@@ -185,17 +185,16 @@ const Products = () => {
                             enableRowActions
                             renderRowActions={({ row, table }) => (
                                 <Box sx={{ display: 'flex', flexWrap: 'nowrap', justifyContent: "center", alignItems: "center" }}>
-                                    <Link to={'/dashboard/inventory-management/products/edit-product/1'} color="secondary">
+                                    <Link to={`/dashboard/inventory-management/products/edit-product/${row?.original?.id}`} color="secondary">
                                         <EditIcon />
                                     </Link>
-
 
                                     <IconButton
                                         color="error"
                                         onClick={() => {
                                             // data.splice(row.index, 1); //assuming simple data table
                                             // setData([...data]);
-                                            console.log(row)
+                                            console.log(row?.original?.id)
                                         }}
                                     >
                                         <DeleteIcon />

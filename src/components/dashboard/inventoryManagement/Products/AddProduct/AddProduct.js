@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState} from "react";
 import Breadcrumb from "../../../../common/breadcrumb";
-import {useForm, useWatch} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import Select from "../../../../common/modal/Select";
 import Input from "../../../../common/modal/Input";
 import CkEditorComponent from "../../../../common/modal/CkEditorComponent";
@@ -17,15 +17,13 @@ import getInventoryModel from "../../../../common/Query/inventory/getInventoryMo
 import SelectProductInCreateProductForm from "../../../../common/component/form/inventory/product/selectProductInCreateProductForm";
 import axios from "../../../../../axios";
 import TextField from '@mui/material/TextField';
-import MultipleImageUploader from "../../../../common/component/imageUpload/MultipleImageUploader";
 import SelectComboVariant from "./SelectComboVariant";
 import Swal from "sweetalert2";
 import AddProductOptionModal from "../../../../common/component/form/inventory/productOption/AddProductOptionModal";
-import {Container, Row, Col, Card, CardHeader, CardBody, Collapse, Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
+import {Container, Card, CardHeader, CardBody, Collapse} from 'reactstrap'
 import { Accordion } from 'react-bootstrap';
 import ProductImage from "./ProductImage";
 import {Trash2} from "react-feather";
-import CreatableSelect from "react-select/creatable";
 
 const AddProduct = () => {
     const [componentRender, setComponentRender] = useState(false)

@@ -1,17 +1,15 @@
-import React, {useMemo} from "react";
-import {useForm} from "react-hook-form";
+import React from "react";
 import TextField from "@mui/material/TextField";
-import {yupResolver} from "@hookform/resolvers/yup";
 
 const Input = ({rules, performOnValue, labelName, inputName, inputType, placeholder, defaultValue, validation, error, disabled}) => {
 
-    const {
-        register
-    } = useForm({
-        defaultValues: useMemo(()=> {
-            return defaultValue;
-        }, [defaultValue])
-    });
+    // const {
+    //     register
+    // } = useForm({
+    //     defaultValues: useMemo(()=> {
+    //         return defaultValue;
+    //     }, [defaultValue])
+    // });
 
     return (
         <div className={"mt-3"}>
