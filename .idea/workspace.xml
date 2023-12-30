@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d2166f86-5678-472f-a491-aa8a8e4f9ddd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/static/css/main.509fdbed.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/static/css/main.509fdbed.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/common/Query/inventory/getInventoryProduct.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dashboard-hrm-system.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/hrmSystemDashboard.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/asset-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/static/css/main.ea363938.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/static/css/main.ea363938.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/static/js/main.3b5491fc.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/static/js/main.d02b6f0c.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/static/js/main.3b5491fc.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/static/js/main.d02b6f0c.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/static/js/main.3b5491fc.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/build/static/js/main.d02b6f0c.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/component/DataTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/DataTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/AddProduct.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/AddProduct.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/SelectComboVariant.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/SelectComboVariant.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/VariantImage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/VariantImage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductList/ComboProduct.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductList/Products.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductList/Products.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/Service/Service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/Service/Service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/layouts-routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/layouts-routes.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2aFW7kh9LhBRDPUXsbfhmTKfVyC" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "alu",
+    "last_opened_file_path": "D:/hrmSystemFinal/hrmSystemDashboard/src/components/common/Query/inventory",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2023.3.2\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\Query\inventory" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d2166f86-5678-472f-a491-aa8a8e4f9ddd" name="Changes" comment="" />
+      <created>1703914642240</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1703914642240</updated>
+      <workItem from="1703914643394" duration="841000" />
+      <workItem from="1703917502633" duration="1957000" />
+      <workItem from="1703920179236" duration="5253000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

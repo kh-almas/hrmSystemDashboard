@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/dashboard-hrm-system.iml" filepath="$PROJECT_DIR$/.idea/dashboard-hrm-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/hrmSystemDashboard.iml" filepath="$PROJECT_DIR$/.idea/hrmSystemDashboard.iml" />
     </modules>
   </component>
 </project>

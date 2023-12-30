@@ -291,7 +291,7 @@ const AddProduct = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/inventory-management/products/list`);
+                const response = await axios.get(`/inventory-management/products/list/combo/select`);
                 setAllDataForDropdown(response?.data?.body?.data);
             } catch (error) {
                 console.error(error);
