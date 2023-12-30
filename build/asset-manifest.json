@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.509fdbed.css",
-    "main.js": "/static/js/main.d02b6f0c.js",
+    "main.css": "/static/css/main.3c5c96f5.css",
+    "main.js": "/static/js/main.e469e299.js",
     "static/media/icofont.svg?v=1.0.0-beta": "/static/media/icofont.4f7f7bf78dfd2979cbba.svg",
     "static/media/icofont.eot?v=1.0.0-beta": "/static/media/icofont.556fa8050e7e3b9a829d.eot",
     "static/media/icofont.ttf?v=1.0.0-beta": "/static/media/icofont.dae25655dd28a58eb576.ttf",
@@ -294,11 +294,11 @@
     "static/media/bd.svg": "/static/media/bd.7a30395b2f93bfd130e1.svg",
     "static/media/hour.svg": "/static/media/hour.6548bc0623d611d7572e.svg",
     "static/media/min.svg": "/static/media/min.adcdc23489f6d03ca8b6.svg",
-    "main.509fdbed.css.map": "/static/css/main.509fdbed.css.map",
-    "main.d02b6f0c.js.map": "/static/js/main.d02b6f0c.js.map"
+    "main.3c5c96f5.css.map": "/static/css/main.3c5c96f5.css.map",
+    "main.e469e299.js.map": "/static/js/main.e469e299.js.map"
   },
   "entrypoints": [
-    "static/css/main.509fdbed.css",
-    "static/js/main.d02b6f0c.js"
+    "static/css/main.3c5c96f5.css",
+    "static/js/main.e469e299.js"
   ]
 }

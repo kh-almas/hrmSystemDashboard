@@ -142,7 +142,7 @@ const Service = () => {
 
   return (
       <div>
-          <Breadcrumb parent="Inventory management" title="Product List"/>
+          <Breadcrumb parent="Inventory management" title="Service List"/>
           <div style={{padding: "0px 18px"}} className="d-flex justify-content-between align-items-center pb-3">
               <div style={{display: "flex", alignItems: "center", justifyContent: "", marginBottom: "20px",}}>
                   <div className="d-flex flex-column flex-md-row  text-center">
