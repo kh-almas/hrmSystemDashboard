@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useMemo} from "react";
 import TextField from "@mui/material/TextField";
+import {useForm} from "react-hook-form";
 
 const Input = ({rules, performOnValue, labelName, inputName, inputType, placeholder, defaultValue, validation, error, disabled}) => {
 
@@ -10,6 +11,10 @@ const Input = ({rules, performOnValue, labelName, inputName, inputType, placehol
     //         return defaultValue;
     //     }, [defaultValue])
     // });
+
+    useMemo(()=> {
+        return defaultValue;
+    }, [defaultValue])
 
     return (
         <div className={"mt-3"}>
@@ -31,7 +36,7 @@ const Input = ({rules, performOnValue, labelName, inputName, inputType, placehol
             {/*    </div>*/}
             {/*</div>*/}
             <TextField
-                disabled={disabled === 'disabled' ? true : false}
+                focused={defaultValue ? true : false}
                 variant='outlined'
                 fullWidth
                 autoComplete="off"
