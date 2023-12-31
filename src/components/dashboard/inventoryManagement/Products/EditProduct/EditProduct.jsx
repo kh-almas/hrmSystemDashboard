@@ -40,7 +40,6 @@ const EditProduct = () => {
     const [category, setCategory] = useState(false);
     const [model, setModel] = useState(false);
     const [selectedProductForCombo, setSelectedProductForCombo] = useState([]);
-    const [note, setNote] = useState('');
     const [priceType, setPriceType] = useState({value: "percent", label: "Percent"});
     const [variantFormValue, setVariantFormValue] = useState({});
     const [previousSKU, setPreviousSKU] = useState([]);
@@ -65,6 +64,18 @@ const EditProduct = () => {
     const [isModelChange, setIsModelChange] = useState(false);
     const [barcodeType, setBarcodeType] = useState({});
     const [taxType, setTaxType] = useState({});
+    const [note, setNote] = useState('');
+
+    // options state
+    const [selectedProductOptions, setSelectedProductOptions] = useState({});
+    const [productOptions, setProductOptions] = useState([]);
+    const [makeProductOptions, setMakeProductOptions] = useState([]);
+    const [productOptionsModal, setProductOptionsModal] = useState(false);
+    const [addRowInOptionSelectValue, setAddRowInOptionSelectValue] = useState({})
+    const [addRowInOption, setAddRowInOption] = useState({})
+    const [addRowInOptionValue, setAddRowInOptionValue] = useState({})
+
+    const [isOpen, setIsOpen] = useState('');
 
     const {
         register,
@@ -100,10 +111,8 @@ const EditProduct = () => {
                 reset();
                 const response = await axios.get(`/inventory-management/products/single/${params?.id}`);
                 const data = response?.data?.body?.data?.[0]
+                console.log('data', data)
                 setSingleProductData(data);
-
-
-                console.log('singleProductData', data);
 
             } catch (error) {
                 console.error(error);
@@ -153,6 +162,8 @@ const EditProduct = () => {
             setTaxType(filteredTaxType);
         }
 
+        setNote(singleProductData?.note);
+
         setValue('p_height', singleProductData?.productHeight);
         setValue('p_width', singleProductData?.productWidth);
         setValue('p_length', singleProductData?.productLength);
@@ -172,26 +183,48 @@ const EditProduct = () => {
         setValue('min_selling_price', singleProductData?.minSellingPrice);
         setValue('tax', singleProductData?.tax);
 
+        //product options
+
+        const allProductOptions = singleProductData?.productOptions;
+        if (allProductOptions){
+            // Extract unique option_id values
+            const uniqueOptionIds = [...new Set(allProductOptions?.map(item => item.option_id))];
+            // makeProductOptions  setMakeProductOptions
+            uniqueOptionIds?.map(singleItem => {
+                const findOption = productOptions?.find(singleProductOption => singleItem == singleProductOption?.value);
+                setMakeProductOptions(prev => [...prev, findOption]);
+
+                if(!addRowInOption[singleItem]){
+                    addRowInOption[singleItem] = {};
+                }
+
+                const filterOptions =  allProductOptions?.filter(singleOPItem => singleOPItem?.option_id == singleItem );
+                filterOptions?.map(singleFilterOption => {
+                    const newObj = {
+                        option_id: singleFilterOption?.option_id,
+                        option_value_name: singleFilterOption?.option_value_name,
+                        added_price_value: singleFilterOption?.added_price_value,
+                        added_price_type: singleFilterOption?.added_price_type,
+                    }
+                    const rowID = Object.keys(addRowInOption[singleItem])?.length;
+                    addRowInOption[singleItem][rowID] = newObj;
+                    console.log('rowID',rowID);
+                })
+
+
+                // console.log('makeProductOptions', makeProductOptions)
+            })
+
+            // console.log('addRowInOption', addRowInOption)
+
+        }
+
+
         setIsLoading(false);
     }, [setValue, singleProductData, allUnitType, allBrand, allModel, barcodeTypeData, taxTypeData]);
 
     // end editing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    console.log('addRowInOptionValue', addRowInOptionValue)
 
 
     useEffect(() => {
@@ -464,17 +497,8 @@ const EditProduct = () => {
         }
     }
 
-    const [selectedProductOptions, setSelectedProductOptions] = useState({});
-    const [productOptions, setProductOptions] = useState([]);
-    const [makeProductOptions, setMakeProductOptions] = useState([]);
-    const [productOptionsModal, setProductOptionsModal] = useState(false);
-    const [addRowInOptionValue, setAddRowInOptionValue] = useState({})
-    const [addRowInOptionSelectValue, setAddRowInOptionSelectValue] = useState({})
-    const [addRowInOption, setAddRowInOption] = useState({})
 
-    const [isOpen, setIsOpen] = useState('');
     const accordionToggle = (id) => (isOpen === id ? setIsOpen(null) : setIsOpen(id));
-
 
     const globalOptions = () => {
         setIsOpen(selectedProductOptions?.value);
@@ -546,6 +570,7 @@ const EditProduct = () => {
         }
         addRowInOptionSelectValue[singleOptions][singleRowData][field] = selectedValue;
         handelOptionData(field, selectedValue.value, singleOptions, singleRowData)
+        console.log('addRowInOptionValue2', addRowInOptionValue)
     };
 
     const addNewRowForOptionValues = (id) => {
@@ -557,8 +582,6 @@ const EditProduct = () => {
         addRowInOption[id] = makeField;
         setComponentRender(!componentRender);
     }
-
-    // console.log('addRowInOptionValue', addRowInOptionValue)
     const removeItemFromVariantList = (singleOptions, singleRowData) => {
 
         const removeItemFrom = addRowInOption[singleOptions];
@@ -650,10 +673,6 @@ const EditProduct = () => {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                // reset();
-                // toggle();
-                // }
-                // reFetch();
             })
             .catch(e => {
                 if(e?.response?.data?.body?.message?.errno == 1062){
@@ -663,13 +682,6 @@ const EditProduct = () => {
                         text: `Can not duplicate product sku`
                     })
                 }
-                // else {
-                //     Swal.fire({
-                //         icon: 'error',
-                //         title: 'Oops...',
-                //         text: `${e?.response?.data?.body?.message?.details[0].message}`
-                //     })
-                // }
             })
     }
 
@@ -693,7 +705,8 @@ const EditProduct = () => {
                                                             <input {...register("is_raw_material")}
                                                                    className="form-check-input" type="radio"
                                                                    name="inlineRadioOptions" id="inlineRadio1"
-                                                                   value="1"/>
+                                                                   value="1"
+                                                            checked={singleProductData?.isRawMaterial === 1 ? true : false}/>
                                                             <label className="form-check-label" htmlFor="inlineRadio1">
                                                                 Raw Material
                                                             </label>
@@ -702,7 +715,7 @@ const EditProduct = () => {
                                                             <input {...register("is_raw_material")}
                                                                    className="form-check-input" type="radio"
                                                                    name="inlineRadioOptions" id="inlineRadio2" value="0"
-                                                                   checked={true}/>
+                                                                   checked={singleProductData?.isRawMaterial === 1 ? true : false}/>
                                                             <label className="form-check-label" htmlFor="inlineRadio2">
                                                                 Finish Product
                                                             </label>
@@ -1524,8 +1537,7 @@ const EditProduct = () => {
                                                                                             },
                                                                                         },
                                                                                     }}/>
-                                                                                {errors.alert_quantity && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.alert_quantity.message}</span>}
+                                                                                {errors.alert_quantity && <span style={{fontSize: '10px'}}>{errors.alert_quantity.message}</span>}
                                                                             </div>
                                                                         ) : ("")}
 
@@ -1575,8 +1587,7 @@ const EditProduct = () => {
                                                                                             },
                                                                                         },
                                                                                     }}/>
-                                                                                {errors.opening_stock_quantity && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.opening_stock_quantity.message}</span>}
+                                                                                {errors.opening_stock_quantity && <span style={{fontSize: '10px'}}>{errors.opening_stock_quantity.message}</span>}
                                                                             </div>
                                                                         ) : ("")}
 
@@ -1625,8 +1636,7 @@ const EditProduct = () => {
                                                                                             },
                                                                                         },
                                                                                     }}/>
-                                                                                {errors.purchase_price && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
+                                                                                {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
                                                                             </div>
                                                                         ) : ("")}
 
@@ -1677,8 +1687,7 @@ const EditProduct = () => {
                                                                                             },
                                                                                         },
                                                                                     }}/>
-                                                                                {errors.purchase_price && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
+                                                                                {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
                                                                             </div>
                                                                         ) : ("")}
                                                                     </div>
@@ -2020,12 +2029,7 @@ const EditProduct = () => {
                                     </div>
 
                                     <div className="px-3 w-100">
-                                        <SelectProductInCreateProductForm data={allDataForDropdown}
-                                                                          selectedDataKey={selectedDataKeyForProductList}
-                                                                          show={showProductList}
-                                                                          setShow={setShowProductList}
-                                                                          getSelectedData={getSelectedData}
-                                                                          columns={columns}></SelectProductInCreateProductForm>
+                                        <SelectProductInCreateProductForm data={allDataForDropdown} selectedDataKey={selectedDataKeyForProductList} show={showProductList} setShow={setShowProductList} getSelectedData={getSelectedData} columns={columns}></SelectProductInCreateProductForm>
                                     </div>
 
 
@@ -2330,8 +2334,7 @@ const EditProduct = () => {
                                                                                                         backgroundColor: 'white',
                                                                                                         cursor: "pointer"
                                                                                                     }}>
-                                                                                                    <Trash2
-                                                                                                        size={17}></Trash2>
+                                                                                                    <Trash2 size={17}></Trash2>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
