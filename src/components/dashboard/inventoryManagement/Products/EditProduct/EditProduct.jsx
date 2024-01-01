@@ -39,8 +39,6 @@ const EditProduct = () => {
     const [brand, setBrand] = useState(false);
     const [category, setCategory] = useState(false);
     const [model, setModel] = useState(false);
-    const [selectedProductForCombo, setSelectedProductForCombo] = useState([]);
-    const [note, setNote] = useState('');
     const [priceType, setPriceType] = useState({value: "percent", label: "Percent"});
     const [variantFormValue, setVariantFormValue] = useState({});
     const [previousSKU, setPreviousSKU] = useState([]);
@@ -48,7 +46,7 @@ const EditProduct = () => {
 
 
     //start editing
-    const params = useParams()
+    const params = useParams();
     const [isLoading, setIsLoading] = useState(false);
     const [singleProductData, setSingleProductData] = useState('');
     const [type, setType] = useState("Single");
@@ -65,6 +63,24 @@ const EditProduct = () => {
     const [isModelChange, setIsModelChange] = useState(false);
     const [barcodeType, setBarcodeType] = useState({});
     const [taxType, setTaxType] = useState({});
+    const [note, setNote] = useState('');
+
+    // options state
+    const [selectedProductOptions, setSelectedProductOptions] = useState({});
+    const [productOptions, setProductOptions] = useState([]);
+    const [makeProductOptions, setMakeProductOptions] = useState([]);
+    const [productOptionsModal, setProductOptionsModal] = useState(false);
+    const [addRowInOptionSelectValue, setAddRowInOptionSelectValue] = useState({})
+    const [addRowInOption, setAddRowInOption] = useState({})
+    const [addRowInOptionValue, setAddRowInOptionValue] = useState({})
+    const [quantityWisePrice, setQuantityWisePrice] = useState({})
+
+    // combo state
+    const [allDataForDropdown, setAllDataForDropdown] = useState([]);
+    const [selectedDataKeyForProductList, setSelectedDataKeyForProductList] = useState([]);
+    const [selectedProductForCombo, setSelectedProductForCombo] = useState([]);
+
+    const [isOpen, setIsOpen] = useState('');
 
     const {
         register,
@@ -96,14 +112,11 @@ const EditProduct = () => {
         setIsLoading(true);
         const fetchData = async () => {
             try {
-
                 reset();
                 const response = await axios.get(`/inventory-management/products/single/${params?.id}`);
                 const data = response?.data?.body?.data?.[0]
+                console.log('data', data)
                 setSingleProductData(data);
-
-
-                console.log('singleProductData', data);
 
             } catch (error) {
                 console.error(error);
@@ -153,6 +166,8 @@ const EditProduct = () => {
             setTaxType(filteredTaxType);
         }
 
+        setNote(singleProductData?.note);
+
         setValue('p_height', singleProductData?.productHeight);
         setValue('p_width', singleProductData?.productWidth);
         setValue('p_length', singleProductData?.productLength);
@@ -172,26 +187,57 @@ const EditProduct = () => {
         setValue('min_selling_price', singleProductData?.minSellingPrice);
         setValue('tax', singleProductData?.tax);
 
+        //product options
+
+        const allProductOptions = singleProductData?.productOptions;
+        if (allProductOptions){
+            // Extract unique option_id values
+            const uniqueOptionIds = [...new Set(allProductOptions?.map(item => item.option_id))];
+            // makeProductOptions  setMakeProductOptions
+            uniqueOptionIds?.map(singleItem => {
+                const findOption = productOptions?.find(singleProductOption => singleItem == singleProductOption?.value);
+                if(findOption){
+                    setMakeProductOptions(prev => [...prev, findOption]);
+                }
+
+                if(!addRowInOption.hasOwnProperty(singleItem)){
+                    addRowInOption[singleItem] = [];
+                }
+
+
+                const filterOptions =  allProductOptions?.filter(singleOPItem => singleOPItem?.option_id == singleItem );
+                filterOptions?.map(singleFilterOption => {
+                    let makeField = addRowInOption[singleItem];
+                    makeField.push(makeField?.length);
+                    addRowInOption[singleItem] = makeField;
+
+
+                    const newObj = {
+                        option_id: singleFilterOption?.option_id,
+                        option_value_name: singleFilterOption?.option_value_name,
+                        added_price_value: singleFilterOption?.added_price_value,
+                        added_price_type: singleFilterOption?.added_price_type,
+                    }
+                    if (!addRowInOptionValue.hasOwnProperty(singleItem)) {
+                        addRowInOptionValue[singleItem] = {};
+                    }
+                    const rowID = Object.keys(addRowInOption[singleItem])?.pop();
+                    addRowInOptionValue[singleItem][rowID] = newObj;
+                })
+            })
+        }
+
+        const comboProduct = singleProductData?.comboProduct;
+        if (comboProduct) {
+            const parentSkuIds = comboProduct.map(item => item.id);
+            setSelectedDataKeyForProductList(parentSkuIds);
+            setSelectedProductForCombo(comboProduct);
+        }
         setIsLoading(false);
     }, [setValue, singleProductData, allUnitType, allBrand, allModel, barcodeTypeData, taxTypeData]);
 
+
     // end editing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     useEffect(() => {
@@ -403,7 +449,7 @@ const EditProduct = () => {
         getDataFn();
     }, [isModelChange])
 
-    const [allDataForDropdown, setAllDataForDropdown] = useState([]);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -439,7 +485,7 @@ const EditProduct = () => {
         },
     ];
 
-    const [selectedDataKeyForProductList, setSelectedDataKey] = useState([]);
+
     const [showProductList, setShowProductList] = useState(false);
     const [totalComboPrice, setTotalComboPrice] = useState(0)
     const getSelectedData = (data) => {
@@ -464,17 +510,8 @@ const EditProduct = () => {
         }
     }
 
-    const [selectedProductOptions, setSelectedProductOptions] = useState({});
-    const [productOptions, setProductOptions] = useState([]);
-    const [makeProductOptions, setMakeProductOptions] = useState([]);
-    const [productOptionsModal, setProductOptionsModal] = useState(false);
-    const [addRowInOptionValue, setAddRowInOptionValue] = useState({})
-    const [addRowInOptionSelectValue, setAddRowInOptionSelectValue] = useState({})
-    const [addRowInOption, setAddRowInOption] = useState({})
 
-    const [isOpen, setIsOpen] = useState('');
     const accordionToggle = (id) => (isOpen === id ? setIsOpen(null) : setIsOpen(id));
-
 
     const globalOptions = () => {
         setIsOpen(selectedProductOptions?.value);
@@ -550,15 +587,13 @@ const EditProduct = () => {
 
     const addNewRowForOptionValues = (id) => {
         if(!addRowInOption.hasOwnProperty(id)){
-            addRowInOption[id] = ['0'];
+            addRowInOption[id] = [0];
         }
         let makeField = addRowInOption[id];
         makeField.push(makeField?.length);
         addRowInOption[id] = makeField;
         setComponentRender(!componentRender);
     }
-
-    // console.log('addRowInOptionValue', addRowInOptionValue)
     const removeItemFromVariantList = (singleOptions, singleRowData) => {
 
         const removeItemFrom = addRowInOption[singleOptions];
@@ -650,10 +685,6 @@ const EditProduct = () => {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                // reset();
-                // toggle();
-                // }
-                // reFetch();
             })
             .catch(e => {
                 if(e?.response?.data?.body?.message?.errno == 1062){
@@ -663,13 +694,6 @@ const EditProduct = () => {
                         text: `Can not duplicate product sku`
                     })
                 }
-                // else {
-                //     Swal.fire({
-                //         icon: 'error',
-                //         title: 'Oops...',
-                //         text: `${e?.response?.data?.body?.message?.details[0].message}`
-                //     })
-                // }
             })
     }
 
@@ -693,7 +717,8 @@ const EditProduct = () => {
                                                             <input {...register("is_raw_material")}
                                                                    className="form-check-input" type="radio"
                                                                    name="inlineRadioOptions" id="inlineRadio1"
-                                                                   value="1"/>
+                                                                   value="1"
+                                                            checked={singleProductData?.isRawMaterial === 1 ? true : false}/>
                                                             <label className="form-check-label" htmlFor="inlineRadio1">
                                                                 Raw Material
                                                             </label>
@@ -702,7 +727,7 @@ const EditProduct = () => {
                                                             <input {...register("is_raw_material")}
                                                                    className="form-check-input" type="radio"
                                                                    name="inlineRadioOptions" id="inlineRadio2" value="0"
-                                                                   checked={true}/>
+                                                                   checked={singleProductData?.isRawMaterial === 1 ? true : false}/>
                                                             <label className="form-check-label" htmlFor="inlineRadio2">
                                                                 Finish Product
                                                             </label>
@@ -1524,8 +1549,7 @@ const EditProduct = () => {
                                                                                             },
                                                                                         },
                                                                                     }}/>
-                                                                                {errors.alert_quantity && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.alert_quantity.message}</span>}
+                                                                                {errors.alert_quantity && <span style={{fontSize: '10px'}}>{errors.alert_quantity.message}</span>}
                                                                             </div>
                                                                         ) : ("")}
 
@@ -1575,8 +1599,7 @@ const EditProduct = () => {
                                                                                             },
                                                                                         },
                                                                                     }}/>
-                                                                                {errors.opening_stock_quantity && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.opening_stock_quantity.message}</span>}
+                                                                                {errors.opening_stock_quantity && <span style={{fontSize: '10px'}}>{errors.opening_stock_quantity.message}</span>}
                                                                             </div>
                                                                         ) : ("")}
 
@@ -1625,8 +1648,7 @@ const EditProduct = () => {
                                                                                             },
                                                                                         },
                                                                                     }}/>
-                                                                                {errors.purchase_price && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
+                                                                                {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
                                                                             </div>
                                                                         ) : ("")}
 
@@ -1677,8 +1699,7 @@ const EditProduct = () => {
                                                                                             },
                                                                                         },
                                                                                     }}/>
-                                                                                {errors.purchase_price && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
+                                                                                {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
                                                                             </div>
                                                                         ) : ("")}
                                                                     </div>
@@ -1973,8 +1994,7 @@ const EditProduct = () => {
                                                         </div>
                                                     </div> :
                                                     <div style={{height: "100vh"}}>
-                                                        <div
-                                                            className="d-flex align-items-center justify-content-center">
+                                                        <div className="d-flex align-items-center justify-content-center">
                                                             <div className="loader-box">
                                                                 <div className="loader">
                                                                     <div className="line bg-primary"></div>
@@ -1990,8 +2010,7 @@ const EditProduct = () => {
                                             <div className="col-12">
                                                 <div className="card">
                                                     <div className="card-body">
-                                                        <CkEditorComponent label={"Note"} setContent={setNote}
-                                                                           content={note}/>
+                                                        <CkEditorComponent label={"Note"} setContent={setNote} content={note}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2020,12 +2039,7 @@ const EditProduct = () => {
                                     </div>
 
                                     <div className="px-3 w-100">
-                                        <SelectProductInCreateProductForm data={allDataForDropdown}
-                                                                          selectedDataKey={selectedDataKeyForProductList}
-                                                                          show={showProductList}
-                                                                          setShow={setShowProductList}
-                                                                          getSelectedData={getSelectedData}
-                                                                          columns={columns}></SelectProductInCreateProductForm>
+                                        <SelectProductInCreateProductForm data={allDataForDropdown} selectedDataKey={selectedDataKeyForProductList} show={showProductList} setShow={setShowProductList} getSelectedData={getSelectedData} columns={columns}></SelectProductInCreateProductForm>
                                     </div>
 
 
@@ -2067,6 +2081,7 @@ const EditProduct = () => {
                                                                         inputName={"quantity"}
                                                                         inputType={"number"}
                                                                         placeholder={"0"}
+                                                                        defaultValue={singleData?.quantity}
                                                                         validation={{
                                                                             ...register(`quantity_${index}`, {
                                                                                 required: 'This field is required',
@@ -2076,20 +2091,24 @@ const EditProduct = () => {
                                                                                 },
                                                                             })
                                                                         }}
-                                                                        performOnValue={(e) => clearErrors([`quantity_${index}`])}
+                                                                        performOnValue={(e) => {
+                                                                            clearErrors([`quantity_${index}`])
+                                                                            quantityWisePrice[index] = e.target.value;
+                                                                            setComponentRender(!componentRender);
+                                                                        }}
                                                                         error={errors?.[`quantity_${index}`]}
                                                                     />
-                                                                    {errors?.[`quantity_${index}`] && <span
-                                                                        style={{fontSize: '10px'}}>{errors?.[`quantity_${index}`]?.message}</span>}
+                                                                    {errors?.[`quantity_${index}`] && <span style={{fontSize: '10px'}}>{errors?.[`quantity_${index}`]?.message}</span>}
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <div>
-                                                                    <Input
-                                                                        inputName={"price"}
-                                                                        inputType={"number"}
-                                                                        placeholder={"0"}
-                                                                        validation={{
+                                                                    <TextField
+                                                                        disabled
+                                                                        id="outlined-size-small"
+                                                                        value={quantityWisePrice[index] ? quantityWisePrice[index] * singleData?.price : !singleData?.quantity ? 0 :  singleData?.quantity * singleData?.price}
+                                                                        size="small"
+                                                                        {
                                                                             ...register(`price_${index}`, {
                                                                                 required: 'This field is required',
                                                                                 pattern: {
@@ -2097,34 +2116,35 @@ const EditProduct = () => {
                                                                                     message: 'Use only alphabet, number and characters',
                                                                                 },
                                                                             })
+                                                                        }
+                                                                        sx={{
+                                                                            width: '100%',
+                                                                            marginTop: '16px'
                                                                         }}
-                                                                        performOnValue={(e) => clearErrors([`price_${index}`])}
-                                                                        error={errors?.[`price_${index}`]}
                                                                     />
-                                                                    {errors?.[`price_${index}`] && <span
-                                                                        style={{fontSize: '10px'}}>{errors?.[`price_${index}`]?.message}</span>}
                                                                 </div>
                                                             </td>
                                                             <td>
                                                                 <div>
-                                                                    <Input
-                                                                        inputName={"tax"}
-                                                                        inputType={"number"}
-                                                                        placeholder={"0"}
-                                                                        validation={{
+                                                                    <TextField
+                                                                        disabled
+                                                                        id="outlined-size-small"
+                                                                        value={quantityWisePrice[index] ? quantityWisePrice[index] * singleData?.tax : !singleData?.quantity ? 0 : singleData?.quantity * singleData?.tax}
+                                                                        size="small"
+                                                                        {
                                                                             ...register(`tax_${index}`, {
                                                                                 required: 'This field is required',
                                                                                 pattern: {
-                                                                                    value: /^[A-Za-z0-9`!@#$%^&*]+$/,
+                                                                                    value: /^[0-9]+$/,
                                                                                     message: 'Use only alphabet, number and characters',
                                                                                 },
                                                                             })
+                                                                        }
+                                                                        sx={{
+                                                                            width: '100%',
+                                                                            marginTop: '16px'
                                                                         }}
-                                                                        performOnValue={(e) => clearErrors([`tax_${index}`])}
-                                                                        error={errors?.[`tax_${index}`]}
                                                                     />
-                                                                    {errors?.[`tax_${index}`] && <span
-                                                                        style={{fontSize: '10px'}}>{errors?.[`tax_${index}`]?.message}</span>}
                                                                 </div>
                                                             </td>
                                                             <td className="text-end" style={{
@@ -2132,13 +2152,7 @@ const EditProduct = () => {
                                                                 justifyContent: "center",
                                                                 alignItems: 'center'
                                                             }}>
-                                                                <div style={{
-                                                                    border: 'none',
-                                                                    backgroundColor: 'white',
-                                                                    marginTop: '22px',
-                                                                    marginBottom: '6px',
-                                                                    cursor: "pointer"
-                                                                }}
+                                                                <div style={{border: 'none', backgroundColor: 'white', marginTop: '22px', marginBottom: '6px', cursor: "pointer"}}
                                                                      onClick={() => removeItemFromProductList(singleData?.id, index)}>
                                                                     <Trash2 size={17} style={{color: 'red'}}></Trash2>
                                                                 </div>
@@ -2330,8 +2344,7 @@ const EditProduct = () => {
                                                                                                         backgroundColor: 'white',
                                                                                                         cursor: "pointer"
                                                                                                     }}>
-                                                                                                    <Trash2
-                                                                                                        size={17}></Trash2>
+                                                                                                    <Trash2 size={17}></Trash2>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -2371,8 +2384,7 @@ const EditProduct = () => {
                                                 cngFn={handleChangeForProductType}
                                             />
                                         </div>
-                                        <button onClick={() => globalOptions()} className="btn btn-secondary btn-sm"
-                                                type="button">Add global options
+                                        <button onClick={() => globalOptions()} className="btn btn-secondary btn-sm" type="button">Add global options
                                         </button>
                                     </div>
                                 </div>
@@ -2383,11 +2395,9 @@ const EditProduct = () => {
                 </form>
             </div>
 
-            <AddProductOptionModal modal={productOptionsModal} toggle={toggle}
-                                   reFetch={isDarty}></AddProductOptionModal>
+            <AddProductOptionModal modal={productOptionsModal} toggle={toggle} reFetch={isDarty}></AddProductOptionModal>
             <AddUnitTypeModal modal={unit} toggle={unitToggle} reFetch={isUnitTypeDirty}></AddUnitTypeModal>
-            <AddCategoryModal isChange={isChange} modal={category} toggle={categoryToggle}
-                              reFetch={isDarty}></AddCategoryModal>
+            <AddCategoryModal isChange={isChange} modal={category} toggle={categoryToggle} reFetch={isDarty}></AddCategoryModal>
             <AddBrandModal modal={brand} toggle={brandToggle} reFetch={isBranchDirty}></AddBrandModal>
             <AddModelModal modal={model} toggle={modelToggle} reFetch={isModelDirty}></AddModelModal>
         </div>
