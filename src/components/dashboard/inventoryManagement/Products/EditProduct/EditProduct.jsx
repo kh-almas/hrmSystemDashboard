@@ -25,6 +25,7 @@ import { Accordion } from 'react-bootstrap';
 import ProductImage from "../AddProduct/ProductImage";
 import {Trash2} from "react-feather";
 import {useParams} from "react-router-dom";
+import SelectComboVariantForEdit from "./SelectComboVariantForEdit";
 
 // remove sku functionality
 
@@ -40,7 +41,6 @@ const EditProduct = () => {
     const [category, setCategory] = useState(false);
     const [model, setModel] = useState(false);
     const [priceType, setPriceType] = useState({value: "percent", label: "Percent"});
-    const [variantFormValue, setVariantFormValue] = useState({});
     const [previousSKU, setPreviousSKU] = useState([]);
     const [baseProductSKU, setBaseProductSKU] = useState('');
 
@@ -80,6 +80,11 @@ const EditProduct = () => {
     const [selectedDataKeyForProductList, setSelectedDataKeyForProductList] = useState([]);
     const [selectedProductForCombo, setSelectedProductForCombo] = useState([]);
 
+    //variant
+    const [selectedVariantForVariant, setSelectedVariantForVariant] = useState([]);
+    const [variantFormValue, setVariantFormValue] = useState({});
+    const [addRowInVariant, setAddRowInVariant] = useState([0])
+
     const [isOpen, setIsOpen] = useState('');
 
     const {
@@ -113,9 +118,8 @@ const EditProduct = () => {
         const fetchData = async () => {
             try {
                 reset();
-                const response = await axios.get(`/inventory-management/products/single/${params?.id}`);
+                const response = await axios.get(`/inventory-management/products/single/sku/${params?.id}`);
                 const data = response?.data?.body?.data?.[0]
-                console.log('data', data)
                 setSingleProductData(data);
 
             } catch (error) {
@@ -233,6 +237,39 @@ const EditProduct = () => {
             setSelectedDataKeyForProductList(parentSkuIds);
             setSelectedProductForCombo(comboProduct);
         }
+
+        const productVariant = singleProductData?.productVariant;
+
+        if (productVariant){
+            const forSelectVariant = [];
+            const variant = {}
+            productVariant.map(singleItem => {
+                forSelectVariant.push({value: singleItem?.variantId, label:singleItem?.variantName})
+                const singleVariant = {
+                    value: singleItem?.variantValueId,
+                    label: singleItem?.variantValue,
+                    variant_id: singleItem?.variantId,
+                    variant_name: singleItem?.variantName,
+                }
+                variant[singleItem?.variantId] = singleVariant;
+            })
+            const finalVariantData = {
+                0:{
+                    alert_quantity: singleProductData?.alertQuantity,
+                    opening_stock_quantity: singleProductData?.openingStockQuantity,
+                    purchase_price: singleProductData?.purchasePrice,
+                    selling_price: singleProductData?.sellingPrice,
+                    sku: singleProductData?.productSku,
+                    tax: singleProductData?.tax,
+                    variant: variant
+                }
+            }
+
+            setVariantFormValue(finalVariantData);
+            console.log('singleProductData?.productSku',singleProductData?.productSku)
+            setSelectedVariantForVariant(forSelectVariant)
+        }
+
         setIsLoading(false);
     }, [setValue, singleProductData, allUnitType, allBrand, allModel, barcodeTypeData, taxTypeData]);
 
@@ -2171,11 +2208,15 @@ const EditProduct = () => {
                         ) : ("")}
 
                         {type === "Variant" ? (
-                            <SelectComboVariant previousSKU={previousSKU} setPreviousSKU={setPreviousSKU}
+                            <SelectComboVariantForEdit previousSKU={previousSKU} setPreviousSKU={setPreviousSKU}
+                                                addRowInVariant={addRowInVariant}
+                                                setAddRowInVariant={setAddRowInVariant}
+                                                selectedVariantForVariant={selectedVariantForVariant}
+                                                setSelectedVariantForVariant={setSelectedVariantForVariant}
                                                 variantFormValue={variantFormValue}
                                                 setVariantFormValue={setVariantFormValue}
                                                 allStoredValue={allStoredValue} register={register}
-                                                unregister={unregister}></SelectComboVariant>
+                                                unregister={unregister}></SelectComboVariantForEdit>
                         ) : ("")}
                     </div>
                     <div className="card">
