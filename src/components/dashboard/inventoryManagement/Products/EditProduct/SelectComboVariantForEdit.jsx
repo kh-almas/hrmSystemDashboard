@@ -4,13 +4,14 @@ import Select from "../../../../common/modal/Select";
 import {Button, Card, CardBody, CardHeader, Collapse, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import TextField from "@mui/material/TextField";
 import MultipleSelectWithReactSelect from "../../../../common/modal/MultipleSelectWithReactSelect";
-import VariantImage from "./VariantImage";
+import VariantImage from "../AddProduct/VariantImage";
 import CreatableSelect from "react-select/creatable";
 import Swal from "sweetalert2";
 import {Accordion} from "react-bootstrap";
 import { HiPlus, HiOutlineMinusSm } from "react-icons/hi";
+import MultipleSelectWithReactSelectForEdit from "../../../../common/modal/MultipleSelectWithReactSelectForEdit";
 
-const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, register, unregister, variantFormValue, setVariantFormValue}) => {
+const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVariantForVariant, previousSKU, setPreviousSKU, addRowInVariant, setAddRowInVariant, variantFormValue, setVariantFormValue}) => {
     const [isValueOfVariantUpdate, setIsValueOfVariantUpdate]= useState(false);
     const [componentRender, setComponentRender] = useState(false)
     const [rowImage, setRowImage] = useState({});
@@ -19,39 +20,32 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
     const [allDataForVariantDropdown, setAllDataForVariantDropdown] = useState([]);
     const [allDataForVariantValueDropdown, setAllDataForVariantValueDropdown] = useState([]);
     const [formatAllDataForVariantValueDropdown, setFormatAllDataForVariantValueDropdown] = useState({});
-    const [selectedVariantForVariant, setSelectedVariantForVariant] = useState([]);
-    const [variantValueItem, setVariantValueItem] = useState([])
-    const [addRowInVariant, setAddRowInVariant] = useState([0])
     const [variantSKu, setVariantSku] = useState({})
     const [isOpen, setIsOpen] = useState(0);
-    const generateSku = () => {
-        const prefix = 'sku1_';
-        let randomSku;
+    // const generateSku = () => {
+    //     const prefix = 'sku1_';
+    //     let randomSku;
+    //     do {
+    //         randomSku = `${prefix}${Math.random().toString(36).substr(2, 12)}`;
+    //     } while (previousSKU.includes(randomSku));
+    //     setPreviousSKU(prev => [...prev, randomSku])
+    //     return randomSku;
+    // }
 
-        do {
-            randomSku = `${prefix}${Math.random().toString(36).substr(2, 12)}`;
-        } while (previousSKU.includes(randomSku));
-
-        setPreviousSKU(prev => [...prev, randomSku])
-        return randomSku;
-    }
-
-    useEffect(() => {
-        const firstvariantSKU = generateSku();
-        setVariantSku({0: firstvariantSKU})
-        if (!variantFormValue['0']) {
-            variantFormValue['0'] = {};
-        }
-        variantFormValue['0']['sku'] = firstvariantSKU;
-        setComponentRender(!componentRender)
-    }, []);
+    // useEffect(() => {
+    //     const firstvariantSKU = generateSku();
+    //     setVariantSku({0: firstvariantSKU})
+    //     if (!variantFormValue['0']) {
+    //         variantFormValue['0'] = {};
+    //     }
+    //     variantFormValue['0']['sku'] = firstvariantSKU;
+    //     setComponentRender(!componentRender)
+    // }, []);
 
     const handleImageChange = (value) => {
         const files = value?.target?.files;
-
         if (files?.length && files?.length > 0) {
             const imagesArray = Array.from(files);
-
             return Promise.all(imagesArray.map(fileToBase64))
                 .then((base64Array) => {
                     return base64Array;
@@ -64,83 +58,38 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
         return Promise.resolve([]);
     };
 
-
     const fileToBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-
             reader.onloadend = () => {
                 const base64String = reader.result;
                 resolve(base64String);
             };
-
             reader.onerror = reject;
-
             reader.readAsDataURL(file);
         });
     };
 
     useEffect(() => {
         let files = [];
-
         photos?.map(singlePhotos => {
             files.push(singlePhotos?.file)
-
         })
         handleImageChange(files)
     }, [componentRender]);
-
-
-
-
-    // const handleImageChange = (files) => {
-    //     // const files = e.target.files;
-    //     // console.log('files', files);
-    //
-    //     if (files.length > 0) {
-    //         const imagesArray = Array.from(files);
-    //
-    //         const base64ConversionPromises = imagesArray.map((file) => {
-    //             return new Promise((resolve, reject) => {
-    //                 const reader = new FileReader();
-    //
-    //                 reader.onloadend = () => {
-    //                     const base64String = reader.result;
-    //                     resolve(base64String);
-    //                 };
-    //
-    //                 reader.onerror = reject;
-    //
-    //                 reader.readAsDataURL(file);
-    //             });
-    //         });
-    //
-    //         Promise.all(base64ConversionPromises)
-    //             .then((base64Array) => {
-    //                 // Do something with the base64Array if needed
-    //                 return base64Array;
-    //                 console.log('Base64 images array:', base64Array);
-    //             })
-    //             .catch((error) => {
-    //                 console.error('Error converting images to base64:', error);
-    //             });
-    //     }
-    // };
-
-
 
     const addNewRow = () => {
         if (selectedVariantForVariant?.length > 0){
             const preLength = addRowInVariant.length;
             setAddRowInVariant(prev => [...prev, preLength])
             setIsOpen(preLength);
-            const variantsSKU = generateSku();
+            // const variantsSKU = generateSku();
             // setVariantSku(prev => {...prev, {[preLength]: variantSKU}})
-            variantSKu[preLength] = variantsSKU;
-            if (!variantFormValue[preLength]) {
-                variantFormValue[preLength] = {};
-            }
-            variantFormValue[preLength]['sku'] = variantsSKU;
+            // variantSKu[preLength] = variantsSKU;
+            // if (!variantFormValue[preLength]) {
+            //     variantFormValue[preLength] = {};
+            // }
+            // variantFormValue[preLength]['sku'] = variantsSKU;
             setComponentRender(!componentRender)
         }
     }
@@ -170,8 +119,6 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
         setCheckDiff(!checkDiff);
     };
 
-
-
     const handleInputChange = (value, rowIndex, inputName) => {
         const updatedVariantFormValue = { ...variantFormValue };
         if (!updatedVariantFormValue[rowIndex]) {
@@ -181,20 +128,6 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
         setVariantFormValue(updatedVariantFormValue);
         setCheckDiff(!checkDiff);
     };
-
-
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await axios.get(`/inventory-management/variant/all`);
-    //             setAllDataForVariantDropdown(response?.data?.body?.data);
-    //         } catch (error) {
-    //             console.error(error);
-    //         }
-    //     };
-    //     fetchData()
-    // }, [isValueOfVariantUpdate]);
 
     const [allDataForVariantValueDropdownForCheck, setAllDataForVariantValueDropdownForCheck] = useState()
 
@@ -246,42 +179,23 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
 
     useEffect(() => {
         allDataForVariantDropdown?.map(singleData => {
-            // console.log('singleData', singleData)
             // const filterData = allDataForVariantValueDropdown?.filter(item => parseInt(singleData?.id) === parseInt(item?.value));
             const filterData = allDataForVariantValueDropdown?.filter(item => parseInt(singleData?.id) === parseInt(item?.variant_id));
             formatAllDataForVariantValueDropdown[singleData?.id] = filterData;
-            setCheckDiff(checkDiff);
+            setCheckDiff(!checkDiff);
         })
-    }, [isValueOfVariantUpdate ,selectedVariantForVariant]);
+    }, [isValueOfVariantUpdate ,selectedVariantForVariant, allDataForVariantValueDropdown, allDataForVariantValueDropdownForCheck]);
 
     const [selectedDataKeyForProductList, setSelectedDataKeyForProductList] = useState([]);
-    // const [showProductList, setShowProductList] = useState(false);
-    // const getSelectedData = (data) => {
-    //     if(!selectedDataKeyForProductList.includes(data.id)){
-    //         selectedDataKeyForProductList.push(data.id);
-    //         setSelectedVariantForVariant(prev => [...prev, data]);
-    //     }
-    //
-    //     setShowProductList(false);
-    // }
-    // console.log('selectedDataKeyForProductList',selectedDataKeyForProductList)
-    // console.log('selectedVariantForVariant',selectedVariantForVariant)
+
 
 
 
     const removeItemFromVariantList = (id) => {
         if(addRowInVariant?.includes(id)){
-            // const remainingID =  addRowInVariant.splice(addRowInVariant.indexOf(id), 1);
             const updatedRows = addRowInVariant.filter(itemId => itemId !== id);
             setAddRowInVariant(updatedRows);
-
-
-            // delete variantFormValue[id];
             setComponentRender(!componentRender);
-            // unregister(`variant_sku_${id}`);
-            // unregister(`variant_alert_quantity_${id}`);
-            // unregister(`variant_purchase_price_${id}`);
-            // unregister(`variant_selling_price_${id}`);
         }
     }
 
@@ -369,7 +283,7 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
 
                     <div className="card-body">
                         <div className="">
-                            <MultipleSelectWithReactSelect allOptions={allDataForVariantValueDropdownForCheck} setKey={setSelectedDataKeyForProductList} setValue={setSelectedVariantForVariant}></MultipleSelectWithReactSelect>
+                            <MultipleSelectWithReactSelectForEdit selectedVariantForVariant={selectedVariantForVariant} allOptions={allDataForVariantValueDropdownForCheck} setKey={setSelectedDataKeyForProductList} setValue={setSelectedVariantForVariant}></MultipleSelectWithReactSelectForEdit>
                         </div>
                         <div className="mt-2">
                             {
@@ -430,7 +344,7 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
                                                                     size='small'
                                                                     type="text"
                                                                     placeholder="sku_01"
-                                                                    value={variantSKu?.[singleRowData]}
+                                                                    value={variantFormValue?.[singleRowData]?.[`sku`] || ''}
                                                                     onChange={(e) => handleInputChange(e.target.value, singleRowData, `sku`)}
                                                                     sx={{
                                                                         '& .MuiFormLabel-root': {
@@ -659,19 +573,4 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
     );
 };
 
-export default SelectComboVariant;
-
-
-
-
-//
-//
-// <Modal isOpen={modal[rowIndex]} toggle={toggleOn[rowIndex]} className="modal-body" centered={true}>
-//     <ModalHeader toggle={toggleOn[rowIndex]}>`ModalTitle_${rowIndex}`</ModalHeader>
-//     <ModalBody>
-//
-//     </ModalBody>
-//     <ModalFooter>
-//         <Button color="secondary"  onClick={() => toggleOff(rowIndex)}>Close</Button>
-//     </ModalFooter>
-// </Modal>
+export default SelectComboVariantForEdit;

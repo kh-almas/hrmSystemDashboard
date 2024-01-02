@@ -136,7 +136,7 @@ const Products = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/inventory-management/products/list`);
+                const response = await axios.get(`/inventory-management/products/sku/list`);
                 setData(response?.data?.body?.data);
                 // console.log(response)
             } catch (error) {
