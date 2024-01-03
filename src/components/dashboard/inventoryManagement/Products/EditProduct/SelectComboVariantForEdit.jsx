@@ -22,6 +22,42 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
     const [formatAllDataForVariantValueDropdown, setFormatAllDataForVariantValueDropdown] = useState({});
     const [variantSKu, setVariantSku] = useState({})
     const [isOpen, setIsOpen] = useState(0);
+    const usedIdsForSkuImage = new Set();
+
+
+    useEffect(() => {
+        // rowImage
+        const skuImage = variantFormValue?.[0]?.variantImg;
+        if(skuImage){
+            skuImage?.map(singleImage => {
+                let id;
+                do {
+                    id = Math.floor((Math.random() * 5000));
+                } while (usedIdsForSkuImage.has(id));
+                usedIdsForSkuImage.add(id);
+
+                const makeImageOBJ = {
+                    id,
+                    image: `http://localhost:5000/product/image/${singleImage}`,
+                }
+
+                const setImageInSku = rowImage['0'] || [];
+                rowImage['0'] = [...setImageInSku, makeImageOBJ];
+
+                // const updatedVariantFormValue = { ...variantFormValue };
+                // if (!updatedVariantFormValue['0']) {
+                //     updatedVariantFormValue['0'] = {};
+                // }
+                //
+                // updatedVariantFormValue['0']['sku_images'] = makeImageOBJ || {};
+                // setVariantFormValue(updatedVariantFormValue);
+                setCheckDiff(!checkDiff);
+
+                // setPhotos(prev => [...prev, makeImageOBJ])
+            })
+        }
+    }, [variantFormValue]);
+
     // const generateSku = () => {
     //     const prefix = 'sku1_';
     //     let randomSku;
@@ -41,6 +77,7 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
     //     variantFormValue['0']['sku'] = firstvariantSKU;
     //     setComponentRender(!componentRender)
     // }, []);
+
 
     const handleImageChange = (value) => {
         const files = value?.target?.files;
@@ -93,6 +130,10 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
             setComponentRender(!componentRender)
         }
     }
+
+    useEffect(() => {
+
+    }, []);
 
     const handleImageChangeFN = async (value, rowIndex, inputName) => {
         const allImages = await handleImageChange(value)

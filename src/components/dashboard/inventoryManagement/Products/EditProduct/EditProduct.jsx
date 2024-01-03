@@ -26,6 +26,7 @@ import ProductImage from "../AddProduct/ProductImage";
 import {Trash2} from "react-feather";
 import {useParams} from "react-router-dom";
 import SelectComboVariantForEdit from "./SelectComboVariantForEdit";
+import EditProductImage from "./EditProductImage";
 
 // remove sku functionality
 
@@ -33,7 +34,6 @@ import SelectComboVariantForEdit from "./SelectComboVariantForEdit";
 const EditProduct = () => {
     const [componentRender, setComponentRender] = useState(false)
     const [allStoredValue, setAllStoredValue] = useState({})
-    const [photos, setPhotos] = useState([]);
     const [parentCategory, setParentCategory] = useState({});
     const [processDataForCategory, setprocessDataForCategory] = useState([]);
     const [unit, setUnit] = useState(false);
@@ -87,6 +87,11 @@ const EditProduct = () => {
 
     const [isOpen, setIsOpen] = useState('');
 
+    // product image
+    const usedIdsForImage = new Set();
+    const [photos, setPhotos] = useState([]);
+    const [skuPhotos, setSkuPhotos] = useState([]);
+
     const {
         register,
         handleSubmit,
@@ -111,7 +116,6 @@ const EditProduct = () => {
     ]);
 
     const [taxTypeData, setTaxTypeData] = useState([{value: "percent", label: "Percent"}, {value: "value", label: "Value"}])
-
 
     useEffect(() => {
         setIsLoading(true);
@@ -191,8 +195,49 @@ const EditProduct = () => {
         setValue('min_selling_price', singleProductData?.minSellingPrice);
         setValue('tax', singleProductData?.tax);
 
-        //product options
+        // product image
+        const productImage = singleProductData?.productImage;
+        if(productImage){
+            productImage?.map(singleImage => {
+                let id;
+                do {
+                    id = Math.floor((Math.random() * 5000));
+                } while (usedIdsForImage.has(id));
+                usedIdsForImage.add(id);
 
+                const makeImageOBJ = {
+                    id,
+                    image: `http://localhost:5000/product/image/${singleImage?.name}`,
+                }
+
+                setPhotos(prev => [...prev, makeImageOBJ])
+            })
+        }
+
+        // product sku image
+        // const productSKUImage = singleProductData?.productSKUImage;
+        // if(productSKUImage){
+        //
+        //     productSKUImage?.map(singleImage => {
+        //         let id;
+        //         do {
+        //             id = Math.floor((Math.random() * 5000));
+        //         } while (usedIdsForImage.has(id));
+        //         usedIdsForImage.add(id);
+        //
+        //         const makeImageOBJ = {
+        //             id,
+        //             image: `http://localhost:5000/product/image/${singleImage?.name}`,
+        //         }
+        //
+        //         setPhotos(prev => [...prev, makeImageOBJ])
+        //     })
+        // }
+
+
+
+
+        //product options
         const allProductOptions = singleProductData?.productOptions;
         if (allProductOptions){
             // Extract unique option_id values
@@ -253,6 +298,8 @@ const EditProduct = () => {
                 }
                 variant[singleItem?.variantId] = singleVariant;
             })
+
+            const skuImage = singleProductData?.skuImg?.split(',')
             const finalVariantData = {
                 0:{
                     alert_quantity: singleProductData?.alertQuantity,
@@ -261,18 +308,21 @@ const EditProduct = () => {
                     selling_price: singleProductData?.sellingPrice,
                     sku: singleProductData?.productSku,
                     tax: singleProductData?.tax,
-                    variant: variant
+                    variant: variant,
+                    variantImg: skuImage,
                 }
             }
 
             setVariantFormValue(finalVariantData);
-            console.log('singleProductData?.productSku',singleProductData?.productSku)
             setSelectedVariantForVariant(forSelectVariant)
         }
 
         setIsLoading(false);
     }, [setValue, singleProductData, allUnitType, allBrand, allModel, barcodeTypeData, taxTypeData]);
 
+
+
+    // console.log('variantFormValue', variantFormValue?.[0]?.variantImg);
 
     // end editing
 
@@ -311,8 +361,6 @@ const EditProduct = () => {
     const isDarty = () => {
         setIsChange(!isChange);
     }
-    useEffect(() => {
-    }, [photos]);
 
     const unitToggle = () => {
         setUnit(!unit);
@@ -713,25 +761,27 @@ const EditProduct = () => {
         }
         const formData = createFormData(data);
 
-        axios.post('/inventory-management/products/add', formData)
-            .then(info => {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Your work has been saved',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-            })
-            .catch(e => {
-                if(e?.response?.data?.body?.message?.errno == 1062){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: `Can not duplicate product sku`
-                    })
-                }
-            })
+        console.log('data', data)
+
+        // axios.post('/inventory-management/products/add', formData)
+        //     .then(info => {
+        //         Swal.fire({
+        //             position: 'top-end',
+        //             icon: 'success',
+        //             title: 'Your work has been saved',
+        //             showConfirmButton: false,
+        //             timer: 1500
+        //         })
+        //     })
+        //     .catch(e => {
+        //         if(e?.response?.data?.body?.message?.errno == 1062){
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Oops...',
+        //                 text: `Can not duplicate product sku`
+        //             })
+        //         }
+        //     })
     }
 
     return (
@@ -1219,12 +1269,20 @@ const EditProduct = () => {
                                             </div>
                                         </div>
                                 }
-
-
-
-
                                 <div>
-                                    <ProductImage photos={photos} setPhotos={setPhotos}></ProductImage>
+                                    <EditProductImage photos={photos} setPhotos={setPhotos} usedIdsForImage={usedIdsForImage}></EditProductImage>
+                                </div>
+                                <div>
+                                    {singleProductData?.productImage &&
+                                        singleProductData.productImage.map(singleItem => (
+                                            <img
+                                                key={singleItem?.id}
+                                                src={`http://localhost:5000/product/image/${singleItem?.name}`}
+                                                alt="sd"
+                                                style={{ width: '50px', height: '50px' }}
+                                            />
+                                        ))
+                                    }
                                 </div>
                             </div>
 
