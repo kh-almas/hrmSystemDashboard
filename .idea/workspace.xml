@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d2166f86-5678-472f-a491-aa8a8e4f9ddd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/SelectComboVariant.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/SelectComboVariant.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductList/Products.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductList/Products.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +31,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "alu",
-    "last_opened_file_path": "D:/hrmSystemFinal/hrmSystemBackend",
+    "last_opened_file_path": "D:/hrmSystemFinal/hrmSystemDashboard/src/components/dashboard/inventoryManagement/Products/EditProduct",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -43,6 +43,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Products\EditProduct" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Products\ProductList" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\modal" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\Query\inventory" />
@@ -68,7 +69,8 @@
       <workItem from="1704089211851" duration="5545000" />
       <workItem from="1704098588999" duration="12306000" />
       <workItem from="1704171197737" duration="10121000" />
-      <workItem from="1704193800545" duration="6929000" />
+      <workItem from="1704193800545" duration="7545000" />
+      <workItem from="1704258246067" duration="18858000" />
     </task>
     <servers />
   </component>
@@ -100,186 +102,162 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>179</line>
+          <line>220</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>180</line>
+          <line>221</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>182</line>
+          <line>223</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>183</line>
+          <line>224</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>184</line>
+          <line>225</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>185</line>
+          <line>226</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>186</line>
+          <line>227</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>133</line>
-          <properties lambdaOrdinal="-1" />
+          <line>137</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>134</line>
-          <properties lambdaOrdinal="-1" />
+          <line>138</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>135</line>
-          <properties lambdaOrdinal="-1" />
+          <line>139</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>136</line>
-          <properties lambdaOrdinal="-1" />
+          <line>140</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>137</line>
-          <properties lambdaOrdinal="-1" />
+          <line>141</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>139</line>
-          <properties lambdaOrdinal="-1" />
+          <line>143</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>140</line>
-          <properties lambdaOrdinal="-1" />
+          <line>144</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>141</line>
-          <properties lambdaOrdinal="-1" />
+          <line>145</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>143</line>
-          <properties lambdaOrdinal="-1" />
+          <line>147</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>144</line>
-          <properties lambdaOrdinal="-1" />
+          <line>148</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>145</line>
-          <properties lambdaOrdinal="-1" />
+          <line>149</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>147</line>
-          <properties lambdaOrdinal="-1" />
+          <line>151</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>148</line>
+          <line>152</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>149</line>
-          <properties lambdaOrdinal="-1" />
+          <line>153</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>150</line>
-          <properties lambdaOrdinal="-1" />
+          <line>154</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>152</line>
-          <properties lambdaOrdinal="-1" />
+          <line>156</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>153</line>
-          <properties lambdaOrdinal="-1" />
+          <line>157</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>154</line>
-          <properties lambdaOrdinal="-1" />
+          <line>158</line>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>155</line>
-          <properties lambdaOrdinal="-1" />
+          <line>159</line>
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>157</line>
-          <properties lambdaOrdinal="-1" />
+          <line>161</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>158</line>
-          <properties lambdaOrdinal="-1" />
+          <line>162</line>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>159</line>
-          <properties lambdaOrdinal="-1" />
+          <line>163</line>
           <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>160</line>
-          <properties lambdaOrdinal="-1" />
+          <line>164</line>
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>162</line>
-          <properties lambdaOrdinal="-1" />
+          <line>166</line>
           <option name="timeStamp" value="35" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
-          <line>163</line>
-          <properties lambdaOrdinal="-1" />
+          <line>167</line>
           <option name="timeStamp" value="36" />
         </line-breakpoint>
       </breakpoints>
