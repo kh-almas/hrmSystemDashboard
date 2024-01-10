@@ -198,6 +198,7 @@ const EditProduct = () => {
         // product image
         const productImage = singleProductData?.productImage;
         if(productImage){
+        
             productImage?.map(singleImage => {
                 let id;
                 do {
@@ -320,9 +321,6 @@ const EditProduct = () => {
         setIsLoading(false);
     }, [setValue, singleProductData, allUnitType, allBrand, allModel, barcodeTypeData, taxTypeData]);
 
-
-
-    // console.log('variantFormValue', variantFormValue?.[0]?.variantImg);
 
     // end editing
 
@@ -1272,18 +1270,18 @@ const EditProduct = () => {
                                 <div>
                                     <EditProductImage photos={photos} setPhotos={setPhotos} usedIdsForImage={usedIdsForImage}></EditProductImage>
                                 </div>
-                                <div>
-                                    {singleProductData?.productImage &&
-                                        singleProductData.productImage.map(singleItem => (
-                                            <img
-                                                key={singleItem?.id}
-                                                src={`http://localhost:5000/product/image/${singleItem?.name}`}
-                                                alt="sd"
-                                                style={{ width: '50px', height: '50px' }}
-                                            />
-                                        ))
-                                    }
-                                </div>
+                                {/*<div>*/}
+                                {/*    {singleProductData?.productImage &&*/}
+                                {/*        singleProductData.productImage.map(singleItem => (*/}
+                                {/*            <img*/}
+                                {/*                key={singleItem?.id}*/}
+                                {/*                src={`http://localhost:5000/product/image/${singleItem?.name}`}*/}
+                                {/*                alt="sd"*/}
+                                {/*                style={{ width: '50px', height: '50px' }}*/}
+                                {/*            />*/}
+                                {/*        ))*/}
+                                {/*    }*/}
+                                {/*</div>*/}
                             </div>
 
 

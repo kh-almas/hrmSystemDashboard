@@ -10,11 +10,13 @@ import Swal from "sweetalert2";
 import {Accordion} from "react-bootstrap";
 import { HiPlus, HiOutlineMinusSm } from "react-icons/hi";
 import MultipleSelectWithReactSelectForEdit from "../../../../common/modal/MultipleSelectWithReactSelectForEdit";
+import EditVariantImage from "./EditVariantImage";
 
 const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVariantForVariant, previousSKU, setPreviousSKU, addRowInVariant, setAddRowInVariant, variantFormValue, setVariantFormValue}) => {
     const [isValueOfVariantUpdate, setIsValueOfVariantUpdate]= useState(false);
     const [componentRender, setComponentRender] = useState(false)
     const [rowImage, setRowImage] = useState({});
+    const [deletedImage, setDeletedImage] = useState([]);
     const [photos, setPhotos] = useState([]);
     const [checkDiff, setCheckDiff] =useState(false);
     const [allDataForVariantDropdown, setAllDataForVariantDropdown] = useState([]);
@@ -23,12 +25,14 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
     const [variantSKu, setVariantSku] = useState({})
     const [isOpen, setIsOpen] = useState(0);
     const usedIdsForSkuImage = new Set();
+    const [selectedPhotos, setSelectedPhotos] = useState([]);
 
 
     useEffect(() => {
         // rowImage
         const skuImage = variantFormValue?.[0]?.variantImg;
         if(skuImage){
+            const getImageFromDB = [];
             skuImage?.map(singleImage => {
                 let id;
                 do {
@@ -41,8 +45,10 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
                     image: `http://localhost:5000/product/image/${singleImage}`,
                 }
 
-                const setImageInSku = rowImage['0'] || [];
-                rowImage['0'] = [...setImageInSku, makeImageOBJ];
+                getImageFromDB.push(makeImageOBJ);
+
+                // const setImageInSku = rowImage['0'] || [];
+                // rowImage['0'] = [...setImageInSku, makeImageOBJ];
 
                 // const updatedVariantFormValue = { ...variantFormValue };
                 // if (!updatedVariantFormValue['0']) {
@@ -51,12 +57,14 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
                 //
                 // updatedVariantFormValue['0']['sku_images'] = makeImageOBJ || {};
                 // setVariantFormValue(updatedVariantFormValue);
-                setCheckDiff(!checkDiff);
-
+                
                 // setPhotos(prev => [...prev, makeImageOBJ])
             })
+            rowImage['0'] = getImageFromDB;
+            setPhotos(getImageFromDB);
+            setCheckDiff(!checkDiff);
         }
-    }, [variantFormValue]);
+    }, []);
 
     // const generateSku = () => {
     //     const prefix = 'sku1_';
@@ -78,12 +86,10 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
     //     setComponentRender(!componentRender)
     // }, []);
 
-
-    const handleImageChange = (value) => {
-        const files = value?.target?.files;
+    const handleImageChange = async (files) => {
         if (files?.length && files?.length > 0) {
             const imagesArray = Array.from(files);
-            return Promise.all(imagesArray.map(fileToBase64))
+            return await Promise.all(imagesArray.map(fileToBase64))
                 .then((base64Array) => {
                     return base64Array;
                 })
@@ -96,7 +102,8 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
     };
 
     const fileToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
+        if(file.size){
+            return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onloadend = () => {
                 const base64String = reader.result;
@@ -105,15 +112,74 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
             reader.onerror = reject;
             reader.readAsDataURL(file);
         });
+        }
+        
     };
 
-    useEffect(() => {
-        let files = [];
-        photos?.map(singlePhotos => {
-            files.push(singlePhotos?.file)
-        })
-        handleImageChange(files)
-    }, [componentRender]);
+    // useEffect(() => {
+    //     let files = [];
+    //     photos?.map(singlePhotos => {
+    //         files.push(singlePhotos?.file)
+    //     })
+    //     handleImageChange(files)
+    // }, [componentRender]);
+
+    const commonFNForSetImage = (allImages, rowIndex, inputName) => {
+        const updatedVariantFormValue = { ...variantFormValue };
+        if (!updatedVariantFormValue[rowIndex]) {
+            updatedVariantFormValue[rowIndex] = {};
+        }
+
+        updatedVariantFormValue[rowIndex][inputName] = {}
+
+        updatedVariantFormValue[rowIndex][inputName] = allImages || {};
+        setVariantFormValue(updatedVariantFormValue);
+        setCheckDiff(!checkDiff);
+    }
+
+    const handleImageChangeFN = async (value, rowIndex, inputName) => {
+        const files = value?.target?.files;
+        const allImages = await handleImageChange(files)
+        commonFNForSetImage(allImages, rowIndex, inputName);
+
+    };
+
+    const handleDeletedPhotos = async (singleRowData, inputName) => {
+        const remainingPhotos = rowImage?.[singleRowData]?.filter((photo) => !selectedPhotos.includes(photo?.id));
+        const processedFiles = {};
+
+        remainingPhotos?.forEach((singlePhotos, index) => {
+            if (singlePhotos.file) {
+                processedFiles[index] = singlePhotos.file;
+            }
+        });
+
+        // delete database image
+        // const [deletedImage, setDeletedImage] = useState([]);
+
+        const remainingPhotosForDelete = rowImage?.[singleRowData]?.filter((photo) => selectedPhotos.includes(photo?.id));
+        const deletedFileNameArray = [];
+        remainingPhotosForDelete?.forEach((singlePhotos, index) => {
+            if (!singlePhotos.file) {
+                const imageUrl = singlePhotos?.image;
+                const url = new URL(imageUrl);
+                const pathname = url.pathname;
+                const match = pathname.match(/\/([^\/]+)$/);
+                const filename = match[1];
+
+                // setDeletedImage(prev => [...prev, filename])
+                deletedFileNameArray.push(filename);
+            }
+        });
+
+        commonFNForSetImage(deletedFileNameArray, singleRowData, 'deletedFileNameArray');
+
+        setPhotos(processedFiles);
+
+        const remainingAllImages = await handleImageChange(Object.values(processedFiles));
+        rowImage[singleRowData] = [...remainingPhotos];
+        setSelectedPhotos([]);
+    }; 
 
     const addNewRow = () => {
         if (selectedVariantForVariant?.length > 0){
@@ -130,22 +196,12 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
             setComponentRender(!componentRender)
         }
     }
+    //
+    // useEffect(() => {
+    //
+    // }, []);
 
-    useEffect(() => {
 
-    }, []);
-
-    const handleImageChangeFN = async (value, rowIndex, inputName) => {
-        const allImages = await handleImageChange(value)
-        const updatedVariantFormValue = { ...variantFormValue };
-        if (!updatedVariantFormValue[rowIndex]) {
-            updatedVariantFormValue[rowIndex] = {};
-        }
-
-        updatedVariantFormValue[rowIndex][inputName] = allImages || {};
-        setVariantFormValue(updatedVariantFormValue);
-        setCheckDiff(!checkDiff);
-    };
 
     const handleSelectChange = (selected, rowIndex, variantId) => {
         const updatedVariantFormValue = { ...variantFormValue };
@@ -593,7 +649,17 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
                                                                     }} />
                                                             </div>
                                                             <div style={{margin: "0 7px 13px 7px"}}>
-                                                                <VariantImage rowImage={rowImage} setRowImage={setRowImage} handelUploadData={(e) =>  handleImageChangeFN(e, singleRowData, `sku_images`)} singleRowData={singleRowData} photos={photos} setPhotos={setPhotos}></VariantImage>
+                                                                <EditVariantImage
+                                                                    rowImage={rowImage}
+                                                                    setRowImage={setRowImage}
+                                                                    handelUploadData={(e) =>  handleImageChangeFN(e, singleRowData, `sku_images`)}
+                                                                    handleDeletedPhotos={(e) =>  handleDeletedPhotos(singleRowData, `sku_images`)}
+                                                                    singleRowData={singleRowData}
+                                                                    photos={photos}
+                                                                    setPhotos={setPhotos}
+                                                                    selectedPhotos={selectedPhotos}
+                                                                    setSelectedPhotos={setSelectedPhotos}
+                                                                ></EditVariantImage>
                                                             </div>
                                                         </Collapse>
                                                     </Accordion>
