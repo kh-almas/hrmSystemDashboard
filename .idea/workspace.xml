@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d2166f86-5678-472f-a491-aa8a8e4f9ddd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx" afterDir="false" />
     </list>
@@ -26,21 +25,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "alu",
-    "last_opened_file_path": "D:/hrmSystemFinal/hrmSystemDashboard/src/components/dashboard/inventoryManagement/Products/EditProduct",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2023.3.2\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;alu&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/hrmSystemFinal/hrmSystemDashboard/src/components/dashboard/inventoryManagement/Products/EditProduct&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2023.3.2\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Products\EditProduct" />
@@ -70,7 +69,8 @@
       <workItem from="1704098588999" duration="12306000" />
       <workItem from="1704171197737" duration="10121000" />
       <workItem from="1704193800545" duration="7545000" />
-      <workItem from="1704258246067" duration="18858000" />
+      <workItem from="1704258246067" duration="19135000" />
+      <workItem from="1704344644978" duration="11004000" />
     </task>
     <servers />
   </component>
@@ -102,37 +102,37 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>220</line>
+          <line>246</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>221</line>
+          <line>247</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>223</line>
+          <line>249</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>224</line>
+          <line>250</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>225</line>
+          <line>251</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>226</line>
+          <line>252</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx</url>
-          <line>227</line>
+          <line>253</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
