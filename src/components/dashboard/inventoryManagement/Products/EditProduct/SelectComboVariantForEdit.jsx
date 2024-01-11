@@ -404,7 +404,7 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
                                         <div>
                                             {
                                                 addRowInVariant?.map((singleRowData, rowIndex) =>
-                                                    <Accordion defaultActiveKey="0">
+                                                    <Accordion defaultActiveKey="0" key={rowIndex}>
                                                         <div className="d-flex justify-content-between align-items-end" key={rowIndex}>
                                                             {
                                                                 selectedVariantForVariant?.map((singleVariantData,index) =>

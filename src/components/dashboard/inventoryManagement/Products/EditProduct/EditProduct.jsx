@@ -64,6 +64,7 @@ const EditProduct = () => {
     const [barcodeType, setBarcodeType] = useState({});
     const [taxType, setTaxType] = useState({});
     const [note, setNote] = useState('');
+    const [isRowMaterialValue, setIsRowMaterialValue] = useState();
 
     // options state
     const [selectedProductOptions, setSelectedProductOptions] = useState({});
@@ -194,7 +195,8 @@ const EditProduct = () => {
         setValue('selling_price', singleProductData?.sellingPrice);
         setValue('min_selling_price', singleProductData?.minSellingPrice);
         setValue('tax', singleProductData?.tax);
-
+        setIsRowMaterialValue(singleProductData?.isRawMaterial)
+        
         // product image
         const productImage = singleProductData?.productImage;
         if(productImage){
@@ -702,6 +704,7 @@ const EditProduct = () => {
     };
 
 
+    // console.log('singleProductData', singleProductData?.productID)
 
     const submitAddProductForm = (data) => {
         let files = [];
@@ -723,15 +726,16 @@ const EditProduct = () => {
         data.weight_unit = weightUnit?.value;
         data.howManyProduct = selectedProductForCombo?.length;
         data.options = addRowInOptionValue;
-        data.alert_quantity = allStoredValue.alert_quantity;
-        data.opening_stock_quantity = allStoredValue.opening_stock_quantity;
-        data.purchase_price = allStoredValue.purchase_price;
-        data.selling_price = allStoredValue.selling_price;
-        data.min_selling_price = allStoredValue.min_selling_price;
-        data.tax = allStoredValue.tax;
+        data.alert_quantity = allStoredValue.alert_quantity ? allStoredValue.alert_quantity :  data.alert_quantity;
+        data.opening_stock_quantity = allStoredValue.opening_stock_quantity ? allStoredValue.opening_stock_quantity : data.opening_stock_quantity;
+        data.purchase_price = allStoredValue.purchase_price ? allStoredValue.purchase_price : data.purchase_price;
+        data.selling_price = allStoredValue.selling_price ? allStoredValue.selling_price : data.selling_price;
+        data.min_selling_price = allStoredValue.min_selling_price ? allStoredValue.min_selling_price : data.min_selling_price;
+        data.tax = allStoredValue.tax ? allStoredValue.tax : data.tax;
         data.has_serial_key = data?.has_serial_key === true ? 1 : 0;
         data.photos = JSON.stringify(photos);
         data.sku = baseProductSKU;
+        data.is_raw_material = isRowMaterialValue;
 
 
         if (data.product_type === 'Variant'){
@@ -756,30 +760,31 @@ const EditProduct = () => {
             }
 
             return formData;
-        }
+        } 
         const formData = createFormData(data);
+        console.log('data', data);
 
-        console.log('data', data)
+        
 
-        // axios.post('/inventory-management/products/add', formData)
-        //     .then(info => {
-        //         Swal.fire({
-        //             position: 'top-end',
-        //             icon: 'success',
-        //             title: 'Your work has been saved',
-        //             showConfirmButton: false,
-        //             timer: 1500
-        //         })
-        //     })
-        //     .catch(e => {
-        //         if(e?.response?.data?.body?.message?.errno == 1062){
-        //             Swal.fire({
-        //                 icon: 'error',
-        //                 title: 'Oops...',
-        //                 text: `Can not duplicate product sku`
-        //             })
-        //         }
-        //     })
+        axios.put(`/inventory-management/products/update/${singleProductData?.productID}/${singleProductData.id}`, formData)
+            .then(info => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            })
+            .catch(e => {
+                if(e?.response?.data?.body?.message?.errno == 1062){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `Can not duplicate product sku`
+                    })
+                }
+            })
     }
 
     return (
@@ -795,24 +800,25 @@ const EditProduct = () => {
                                         <div className="card">
                                             <div className="card-body">
                                                 <div className="">
-                                                    <div
-                                                        className="pb-2 d-flex align-items-center justify-content-center">
+                                                    <div className="pb-2 d-flex align-items-center justify-content-center">
                                                         <div
                                                             className="form-check form-check-inline align-items-center">
-                                                            <input {...register("is_raw_material")}
+                                                            <input
                                                                    className="form-check-input" type="radio"
                                                                    name="inlineRadioOptions" id="inlineRadio1"
-                                                                   value="1"
-                                                            checked={singleProductData?.isRawMaterial === 1 ? true : false}/>
+                                                                   checked={isRowMaterialValue == 1 ? true : false}
+                                                                   onClick={() => setIsRowMaterialValue(1)}
+                                                                   />
                                                             <label className="form-check-label" htmlFor="inlineRadio1">
                                                                 Raw Material
                                                             </label>
                                                         </div>
                                                         <div className="form-check form-check-inline">
-                                                            <input {...register("is_raw_material")}
-                                                                   className="form-check-input" type="radio"
-                                                                   name="inlineRadioOptions" id="inlineRadio2" value="0"
-                                                                   checked={singleProductData?.isRawMaterial === 1 ? true : false}/>
+                                                            <input className="form-check-input" type="radio"
+                                                                   name="inlineRadioOptions" id="inlineRadio2"
+                                                                   checked={isRowMaterialValue == 0 ? true : false}
+                                                                   onClick={() => setIsRowMaterialValue(0)}
+                                                                   />
                                                             <label className="form-check-label" htmlFor="inlineRadio2">
                                                                 Finish Product
                                                             </label>
@@ -2282,191 +2288,189 @@ const EditProduct = () => {
                                 <Accordion defaultActiveKey="0">
                                     <div className="default-according" id="accordion">
                                         {
-                                            makeProductOptions?.map(singleOptions =>
-                                                <>
-                                                    <Card>
-                                                        <CardHeader as={Card.Header}
-                                                                    onClick={() => accordionToggle(singleOptions?.value)}
-                                                                    style={{cursor: 'pointer'}}>
-                                                            <div
-                                                                className="d-flex justify-content-between align-items-center">
-                                                                <p style={{
-                                                                    marginBottom: 0,
-                                                                    fontSize: "14px",
-                                                                    fontWeight: "bold"
-                                                                }}>
-                                                                    {singleOptions?.label}
-                                                                </p>
-                                                                <div style={{
-                                                                    border: 'none',
-                                                                    backgroundColor: 'white',
-                                                                    marginTop: '22px',
-                                                                    marginBottom: '6px',
-                                                                    cursor: "pointer"
-                                                                }} onClick={() => removeOptions(singleOptions?.value)}>
-                                                                    <Trash2 style={{
-                                                                        fontSize: '15px',
-                                                                        color: 'red'
-                                                                    }}></Trash2>
-                                                                </div>
+                                            makeProductOptions?.map((singleOptions, index) =>
+                                                <Card key={index}>
+                                                    <CardHeader as={Card.Header}
+                                                                onClick={() => accordionToggle(singleOptions?.value)}
+                                                                style={{cursor: 'pointer'}}>
+                                                        <div
+                                                            className="d-flex justify-content-between align-items-center">
+                                                            <p style={{
+                                                                marginBottom: 0,
+                                                                fontSize: "14px",
+                                                                fontWeight: "bold"
+                                                            }}>
+                                                                {singleOptions?.label}
+                                                            </p>
+                                                            <div style={{
+                                                                border: 'none',
+                                                                backgroundColor: 'white',
+                                                                marginTop: '22px',
+                                                                marginBottom: '6px',
+                                                                cursor: "pointer"
+                                                            }} onClick={() => removeOptions(singleOptions?.value)}>
+                                                                <Trash2 style={{
+                                                                    fontSize: '15px',
+                                                                    color: 'red'
+                                                                }}></Trash2>
                                                             </div>
-                                                        </CardHeader>
-                                                        <Collapse
-                                                            isOpen={parseInt(isOpen) === parseInt(singleOptions?.value)}>
-                                                            <CardBody className="p-3">
-                                                                {
-                                                                    addRowInOption[singleOptions?.value]?.length > 0 ?
-                                                                        <>
-                                                                            <div
-                                                                                className="d-flex justify-content-between">
-                                                                                <p className="w-100 text-center m-2"
-                                                                                   style={{
-                                                                                       fontWeight: 'bold',
-                                                                                       fontSize: '13px'
-                                                                                   }}>Label</p>
-                                                                                <p className="w-100 text-center m-2"
-                                                                                   style={{
-                                                                                       fontWeight: 'bold',
-                                                                                       fontSize: '13px'
-                                                                                   }}>Price</p>
-                                                                                <p className="w-100 text-center m-2"
-                                                                                   style={{
-                                                                                       fontWeight: 'bold',
-                                                                                       fontSize: '13px'
-                                                                                   }}>Price Type</p>
-                                                                                <p className="w-25 text-center m-2"
-                                                                                   style={{
-                                                                                       fontWeight: 'bold',
-                                                                                       fontSize: '13px'
-                                                                                   }}>Action</p>
-                                                                            </div>
-                                                                            <div>
-                                                                                {
-                                                                                    addRowInOption[singleOptions?.value]?.map((singleRowData, rowIndex) =>
-                                                                                        <div
-                                                                                            className="d-flex justify-content-between"
-                                                                                            key={rowIndex}
-                                                                                            style={{marginTop: "10px"}}>
-                                                                                            <div className="w-100 mx-2">
-                                                                                                <TextField
-                                                                                                    variant='outlined'
-                                                                                                    fullWidth
-                                                                                                    autoComplete="off"
-                                                                                                    size='small'
-                                                                                                    type="text"
-                                                                                                    placeholder={'Name'}
-                                                                                                    value={addRowInOptionValue?.[singleOptions?.value]?.[singleRowData]?.['option_value_name']}
-                                                                                                    onChange={e => handelOptionData('option_value_name', e.target.value, singleOptions?.value, singleRowData)}
-                                                                                                    sx={{
-                                                                                                        '& .MuiFormLabel-root': {
-                                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                                            fontWeight: 400,
-                                                                                                        },
-                                                                                                        '& label': {
-                                                                                                            fontSize: 12
-                                                                                                        },
-                                                                                                        '& label.Mui-focused': {
-                                                                                                            color: '#1c2437',
-                                                                                                            fontSize: 16
-                                                                                                        },
-                                                                                                        '& .MuiOutlinedInput-root': {
-                                                                                                            // fontSize: { xs: 12, md: 14 },
-                                                                                                            height: 35,
-                                                                                                            backgroundColor: 'white',
-                                                                                                            '&.Mui-focused fieldset': {
-                                                                                                                borderColor: '#979797',
-                                                                                                                borderWidth: '1px'
-                                                                                                            },
-                                                                                                        },
-                                                                                                    }}/>
-                                                                                            </div>
-                                                                                            <div className="w-100 mx-2">
-                                                                                                <TextField
-                                                                                                    variant='outlined'
-                                                                                                    fullWidth
-                                                                                                    autoComplete="off"
-                                                                                                    size='small'
-                                                                                                    type="number"
-                                                                                                    placeholder="0"
-                                                                                                    value={addRowInOptionValue?.[singleOptions?.value]?.[singleRowData]?.['added_price_value']}
-                                                                                                    onChange={e => handelOptionData('added_price_value', e.target.value, singleOptions?.value, singleRowData)}
-                                                                                                    sx={{
-                                                                                                        '& .MuiFormLabel-root': {
-                                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                                            fontWeight: 400,
-                                                                                                        },
-                                                                                                        '& label': {
-                                                                                                            fontSize: 12
-                                                                                                        },
-                                                                                                        '& label.Mui-focused': {
-                                                                                                            color: '#1c2437',
-                                                                                                            fontSize: 16
-                                                                                                        },
-                                                                                                        '& .MuiOutlinedInput-root': {
-                                                                                                            // fontSize: { xs: 12, md: 14 },
-                                                                                                            height: 35,
-                                                                                                            backgroundColor: 'white',
-                                                                                                            '&.Mui-focused fieldset': {
-                                                                                                                borderColor: '#979797',
-                                                                                                                borderWidth: '1px'
-                                                                                                            },
-                                                                                                        },
-                                                                                                    }}/>
-                                                                                            </div>
-                                                                                            <div className="w-100 mx-2">
-                                                                                                <Select
-                                                                                                    placeholder={"Price Type"}
-                                                                                                    options={[{
-                                                                                                        value: "fixed",
-                                                                                                        label: "Fixed"
-                                                                                                    }, {
-                                                                                                        value: "percent",
-                                                                                                        label: "Percent"
-                                                                                                    }]}
-                                                                                                    setValue={setPriceType}
-                                                                                                    previous={priceType}
-                                                                                                    cngFn={(selected) => handelOptionsSelectData('added_price_type', selected, singleOptions?.value, singleRowData)}
-                                                                                                />
-                                                                                            </div>
-                                                                                            <div className="w-25 mx-2"
-                                                                                                 style={{
-                                                                                                     display: "flex",
-                                                                                                     justifyContent: "center",
-                                                                                                     alignItems: 'center'
-                                                                                                 }}>
-                                                                                                <div
-                                                                                                    onClick={() => removeItemFromVariantList(singleOptions?.value, singleRowData)}
-                                                                                                    style={{
-                                                                                                        border: 'none',
+                                                        </div>
+                                                    </CardHeader>
+                                                    <Collapse
+                                                        isOpen={parseInt(isOpen) === parseInt(singleOptions?.value)}>
+                                                        <CardBody className="p-3">
+                                                            {
+                                                                addRowInOption[singleOptions?.value]?.length > 0 ?
+                                                                    <>
+                                                                        <div
+                                                                            className="d-flex justify-content-between">
+                                                                            <p className="w-100 text-center m-2"
+                                                                                style={{
+                                                                                    fontWeight: 'bold',
+                                                                                    fontSize: '13px'
+                                                                                }}>Label</p>
+                                                                            <p className="w-100 text-center m-2"
+                                                                                style={{
+                                                                                    fontWeight: 'bold',
+                                                                                    fontSize: '13px'
+                                                                                }}>Price</p>
+                                                                            <p className="w-100 text-center m-2"
+                                                                                style={{
+                                                                                    fontWeight: 'bold',
+                                                                                    fontSize: '13px'
+                                                                                }}>Price Type</p>
+                                                                            <p className="w-25 text-center m-2"
+                                                                                style={{
+                                                                                    fontWeight: 'bold',
+                                                                                    fontSize: '13px'
+                                                                                }}>Action</p>
+                                                                        </div>
+                                                                        <div>
+                                                                            {
+                                                                                addRowInOption[singleOptions?.value]?.map((singleRowData, rowIndex) =>
+                                                                                    <div
+                                                                                        className="d-flex justify-content-between"
+                                                                                        key={rowIndex}
+                                                                                        style={{marginTop: "10px"}}>
+                                                                                        <div className="w-100 mx-2">
+                                                                                            <TextField
+                                                                                                variant='outlined'
+                                                                                                fullWidth
+                                                                                                autoComplete="off"
+                                                                                                size='small'
+                                                                                                type="text"
+                                                                                                placeholder={'Name'}
+                                                                                                value={addRowInOptionValue?.[singleOptions?.value]?.[singleRowData]?.['option_value_name']}
+                                                                                                onChange={e => handelOptionData('option_value_name', e.target.value, singleOptions?.value, singleRowData)}
+                                                                                                sx={{
+                                                                                                    '& .MuiFormLabel-root': {
+                                                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                                                        fontWeight: 400,
+                                                                                                    },
+                                                                                                    '& label': {
+                                                                                                        fontSize: 12
+                                                                                                    },
+                                                                                                    '& label.Mui-focused': {
+                                                                                                        color: '#1c2437',
+                                                                                                        fontSize: 16
+                                                                                                    },
+                                                                                                    '& .MuiOutlinedInput-root': {
+                                                                                                        // fontSize: { xs: 12, md: 14 },
+                                                                                                        height: 35,
                                                                                                         backgroundColor: 'white',
-                                                                                                        cursor: "pointer"
-                                                                                                    }}>
-                                                                                                    <Trash2 size={17}></Trash2>
-                                                                                                </div>
+                                                                                                        '&.Mui-focused fieldset': {
+                                                                                                            borderColor: '#979797',
+                                                                                                            borderWidth: '1px'
+                                                                                                        },
+                                                                                                    },
+                                                                                                }}/>
+                                                                                        </div>
+                                                                                        <div className="w-100 mx-2">
+                                                                                            <TextField
+                                                                                                variant='outlined'
+                                                                                                fullWidth
+                                                                                                autoComplete="off"
+                                                                                                size='small'
+                                                                                                type="number"
+                                                                                                placeholder="0"
+                                                                                                value={addRowInOptionValue?.[singleOptions?.value]?.[singleRowData]?.['added_price_value']}
+                                                                                                onChange={e => handelOptionData('added_price_value', e.target.value, singleOptions?.value, singleRowData)}
+                                                                                                sx={{
+                                                                                                    '& .MuiFormLabel-root': {
+                                                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                                                        fontWeight: 400,
+                                                                                                    },
+                                                                                                    '& label': {
+                                                                                                        fontSize: 12
+                                                                                                    },
+                                                                                                    '& label.Mui-focused': {
+                                                                                                        color: '#1c2437',
+                                                                                                        fontSize: 16
+                                                                                                    },
+                                                                                                    '& .MuiOutlinedInput-root': {
+                                                                                                        // fontSize: { xs: 12, md: 14 },
+                                                                                                        height: 35,
+                                                                                                        backgroundColor: 'white',
+                                                                                                        '&.Mui-focused fieldset': {
+                                                                                                            borderColor: '#979797',
+                                                                                                            borderWidth: '1px'
+                                                                                                        },
+                                                                                                    },
+                                                                                                }}/>
+                                                                                        </div>
+                                                                                        <div className="w-100 mx-2">
+                                                                                            <Select
+                                                                                                placeholder={"Price Type"}
+                                                                                                options={[{
+                                                                                                    value: "fixed",
+                                                                                                    label: "Fixed"
+                                                                                                }, {
+                                                                                                    value: "percent",
+                                                                                                    label: "Percent"
+                                                                                                }]}
+                                                                                                setValue={setPriceType}
+                                                                                                previous={priceType}
+                                                                                                cngFn={(selected) => handelOptionsSelectData('added_price_type', selected, singleOptions?.value, singleRowData)}
+                                                                                            />
+                                                                                        </div>
+                                                                                        <div className="w-25 mx-2"
+                                                                                                style={{
+                                                                                                    display: "flex",
+                                                                                                    justifyContent: "center",
+                                                                                                    alignItems: 'center'
+                                                                                                }}>
+                                                                                            <div
+                                                                                                onClick={() => removeItemFromVariantList(singleOptions?.value, singleRowData)}
+                                                                                                style={{
+                                                                                                    border: 'none',
+                                                                                                    backgroundColor: 'white',
+                                                                                                    cursor: "pointer"
+                                                                                                }}>
+                                                                                                <Trash2 size={17}></Trash2>
                                                                                             </div>
                                                                                         </div>
-                                                                                    )
-                                                                                }
-                                                                            </div>
-                                                                        </>
-                                                                        : ''
-                                                                }
-                                                                <div className="d-flex justify-content-end">
-                                                                    <button
-                                                                        onClick={() => addNewRowForOptionValues(singleOptions?.value)}
-                                                                        className="btn btn-outline-primary btn-xs mx-3 mt-1"
-                                                                        type="button">Add new item
-                                                                    </button>
-                                                                </div>
-                                                            </CardBody>
-                                                        </Collapse>
-                                                    </Card>
-                                                </>
+                                                                                    </div>
+                                                                                )
+                                                                            }
+                                                                        </div>
+                                                                    </>
+                                                                    : ''
+                                                            }
+                                                            <div className="d-flex justify-content-end">
+                                                                <button
+                                                                    onClick={() => addNewRowForOptionValues(singleOptions?.value)}
+                                                                    className="btn btn-outline-primary btn-xs mx-3 mt-1"
+                                                                    type="button">Add new item
+                                                                </button>
+                                                            </div>
+                                                        </CardBody>
+                                                    </Collapse>
+                                                </Card>
                                             )
                                         }
                                     </div>
                                 </Accordion>
-                                <div class="d-flex justify-content-between align-items-center mb-2 mt-3">
+                                <div className="d-flex justify-content-between align-items-center mb-2 mt-3">
                                     <button onClick={() => toggle()} className="btn btn-secondary btn-sm"
                                             type="button">Add new option
                                     </button>

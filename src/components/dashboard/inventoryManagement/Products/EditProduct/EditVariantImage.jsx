@@ -49,7 +49,7 @@ const EditVariantImage = ({handelUploadData, photos, setPhotos, singleRowData, r
                             marginRight: "1rem",
                             marginTop: "1rem",
                             marginBottom: "1rem",
-                            "@media (min-width: 768px)": {
+                            "@media (minWidth: 768px)": {
                                 marginLeft: "2.5rem",
                                 marginRight: "2.5rem",
                             },
@@ -95,7 +95,7 @@ const EditVariantImage = ({handelUploadData, photos, setPhotos, singleRowData, r
                                 fontWeight: "600",
                                 fontSize: "0.875rem",
                                 color: "#ff0000",
-                                "@media (min-width: 768px)": {
+                                "@media (minWidth: 768px)": {
                                     fontSize: "1.25rem",
                                 },
                             }}
@@ -215,7 +215,7 @@ const EditVariantImage = ({handelUploadData, photos, setPhotos, singleRowData, r
                                         fontWeight: "600",
                                         fontSize: "11px",
                                         marginBottom: 0,
-                                        "@media (min-width: 768px)": {
+                                        "@media (minWidth: 768px)": {
                                             fontSize: "11px",
                                         },
                                     }}
