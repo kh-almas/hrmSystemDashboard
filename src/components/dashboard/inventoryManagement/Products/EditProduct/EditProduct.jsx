@@ -84,7 +84,10 @@ const EditProduct = () => {
     //variant
     const [selectedVariantForVariant, setSelectedVariantForVariant] = useState([]);
     const [variantFormValue, setVariantFormValue] = useState({});
-    const [addRowInVariant, setAddRowInVariant] = useState([0])
+    const [addRowInVariant, setAddRowInVariant] = useState([0]);
+    const [selectedProductPhotos, setSelectedProductPhotos] = useState([]);
+    const [deletedProductPhotos, setDeletedProductPhotos] = useState([]);
+    
 
     const [isOpen, setIsOpen] = useState('');
 
@@ -702,9 +705,31 @@ const EditProduct = () => {
             setComponentRender(prevState => !prevState);
         }
     };
+  
+    const handleDeletedProductPhotos = () => {
+        const remainingPhotos = photos?.filter(
+            (photo) => !selectedProductPhotos.includes(photo?.id)
+        );
+        const deletedProductImg = photos?.filter(
+            (photo) => selectedProductPhotos.includes(photo?.id)
+        );
+        const deletedFileNameArray = [];
+        deletedProductImg?.forEach((singlePhotos, index) => {
+            if (!singlePhotos.file) {
+                const imageUrl = singlePhotos?.image;
+                const url = new URL(imageUrl);
+                const pathname = url.pathname;
+                const match = pathname.match(/\/([^\/]+)$/);
+                const filename = match[1];
+                deletedFileNameArray.push(filename);
+            }
+        });
+        setDeletedProductPhotos(deletedFileNameArray);
+        setPhotos(remainingPhotos);
+        setSelectedProductPhotos([]);
+    };
 
-
-    // console.log('singleProductData', singleProductData?.productID)
+    
 
     const submitAddProductForm = (data) => {
         let files = [];
@@ -736,8 +761,9 @@ const EditProduct = () => {
         data.photos = JSON.stringify(photos);
         data.sku = baseProductSKU;
         data.is_raw_material = isRowMaterialValue;
-
-
+        data.deletedProductPhotos = JSON.stringify(deletedProductPhotos);
+        // data.product_image = photos;
+        
         if (data.product_type === 'Variant'){
             data.variant_sku = JSON.stringify(variantFormValue);
         }
@@ -748,7 +774,9 @@ const EditProduct = () => {
             for (const key in data) {
                 if(key === 'photos'){
                     for (let i = 0; i < photos.length; i++) {
-                        formData.append('images', files[i]);
+                        if(files[i]){
+                            formData.append('images', files[i]);
+                        }
                     }
                 } else if(key === 'options') {
                     formData.append('options', JSON.stringify(data[key]));
@@ -762,10 +790,7 @@ const EditProduct = () => {
             return formData;
         } 
         const formData = createFormData(data);
-        console.log('data', data);
-
         
-
         axios.put(`/inventory-management/products/update/${singleProductData?.productID}/${singleProductData.id}`, formData)
             .then(info => {
                 Swal.fire({
@@ -1274,7 +1299,7 @@ const EditProduct = () => {
                                         </div>
                                 }
                                 <div>
-                                    <EditProductImage photos={photos} setPhotos={setPhotos} usedIdsForImage={usedIdsForImage}></EditProductImage>
+                                    <EditProductImage photos={photos} selectedProductPhotos={selectedProductPhotos} setSelectedProductPhotos={setSelectedProductPhotos} setPhotos={setPhotos} usedIdsForImage={usedIdsForImage} handleDeletedProductPhotos={handleDeletedProductPhotos}></EditProductImage>
                                 </div>
                                 {/*<div>*/}
                                 {/*    {singleProductData?.productImage &&*/}
@@ -1424,8 +1449,7 @@ const EditProduct = () => {
                                                                         },
                                                                     }}/>
 
-                                                                {errors.hsn && <span
-                                                                    style={{fontSize: '10px'}}>{errors.hsn.message}</span>}
+                                                                {errors.hsn && <span style={{fontSize: '10px'}}>{errors.hsn.message}</span>}
                                                             </div>
                                                         ) : ("")}
                                                     </div>
