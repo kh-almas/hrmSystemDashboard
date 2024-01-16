@@ -24,8 +24,10 @@ import {Container, Card, CardHeader, CardBody, Collapse} from 'reactstrap'
 import { Accordion } from 'react-bootstrap';
 import ProductImage from "./ProductImage";
 import {Trash2} from "react-feather";
+import { useNavigate } from 'react-router-dom';
 
 const AddProduct = () => {
+    const navigate = useNavigate();
     const [componentRender, setComponentRender] = useState(false)
     const [allStoredValue, setAllStoredValue] = useState({})
     const [photos, setPhotos] = useState([]);
@@ -533,12 +535,15 @@ const AddProduct = () => {
                     showConfirmButton: false,
                     timer: 1500
                 })
-                // reset();
-                // toggle();
-                // }
-                // reFetch();
+                if(type === "Service"){
+                    navigate('/dashboard/inventory-management/products/services');
+                }else{
+                    navigate('/dashboard/inventory-management/products');
+                }
+                
             })
             .catch(e => {
+                console.log('error', e);
                 if(e?.response?.data?.body?.message?.errno == 1062){
                     Swal.fire({
                         icon: 'error',

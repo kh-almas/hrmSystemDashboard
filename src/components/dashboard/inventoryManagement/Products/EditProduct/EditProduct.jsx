@@ -27,13 +27,15 @@ import {Trash2} from "react-feather";
 import {useParams} from "react-router-dom";
 import SelectComboVariantForEdit from "./SelectComboVariantForEdit";
 import EditProductImage from "./EditProductImage";
+import { useNavigate } from 'react-router-dom';
 
 // remove sku functionality
 
 
 const EditProduct = () => {
-    const [componentRender, setComponentRender] = useState(false)
-    const [allStoredValue, setAllStoredValue] = useState({})
+    const navigate = useNavigate();
+    const [componentRender, setComponentRender] = useState(false);
+    const [allStoredValue, setAllStoredValue] = useState({});
     const [parentCategory, setParentCategory] = useState({});
     const [processDataForCategory, setprocessDataForCategory] = useState([]);
     const [unit, setUnit] = useState(false);
@@ -72,9 +74,9 @@ const EditProduct = () => {
     const [makeProductOptions, setMakeProductOptions] = useState([]);
     const [productOptionsModal, setProductOptionsModal] = useState(false);
     const [addRowInOptionSelectValue, setAddRowInOptionSelectValue] = useState({})
-    const [addRowInOption, setAddRowInOption] = useState({})
-    const [addRowInOptionValue, setAddRowInOptionValue] = useState({})
-    const [quantityWisePrice, setQuantityWisePrice] = useState({})
+    const [addRowInOption, setAddRowInOption] = useState({});
+    const [addRowInOptionValue, setAddRowInOptionValue] = useState({});
+    const [quantityWisePrice, setQuantityWisePrice] = useState({});
 
     // combo state
     const [allDataForDropdown, setAllDataForDropdown] = useState([]);
@@ -645,8 +647,28 @@ const EditProduct = () => {
         fetchData()
     }, [isChange]);
 
+
+
+    // useEffect(() => {
+    //     const allSelectedValueKey = [];
+    //     selectedVariantForVariant?.map(singleVariant =>{
+    //         allSelectedValueKey.push(singleVariant?.value);
+    //     })
+    //     for(let key in variantFormValue){
+    //         const allVariantValue = variantFormValue[key]?.variant
+    //         for(let subKey in allVariantValue){
+    //             if (!allSelectedValueKey.includes(parseInt(subKey))) {
+    //                 delete allVariantValue[subKey];
+    //             }
+                
+    //         }
+    //     }
+    // }, [selectedVariantForVariant])
+
+
     const removeOptions = (id) => {
         const filterData = makeProductOptions?.filter(singleData => parseInt(singleData.value) !== parseInt(id))
+        delete addRowInOptionValue[id];
         setMakeProductOptions(filterData)
     }
 
@@ -682,16 +704,18 @@ const EditProduct = () => {
         addRowInOption[id] = makeField;
         setComponentRender(!componentRender);
     }
+
+
+    
+    
+        console.log('check', addRowInOptionValue);
+
     const removeItemFromVariantList = (singleOptions, singleRowData) => {
-
+        
         const removeItemFrom = addRowInOption[singleOptions];
-
         if (removeItemFrom && removeItemFrom.includes(singleRowData)) {
-            // Remove item from addRowInOption
             const remainingItems = removeItemFrom.filter(item => item !== singleRowData);
             addRowInOption[singleOptions] = remainingItems;
-
-            // Remove item from addRowInOptionValue
             const removedFrom = addRowInOptionValue[singleOptions];
             const remainingItem = {};
 
@@ -702,6 +726,9 @@ const EditProduct = () => {
             }
 
             addRowInOptionValue[singleOptions][singleRowData] = remainingItem;
+            delete addRowInOptionValue[singleOptions][singleRowData];
+         
+            console.log('check1', addRowInOptionValue);
             setComponentRender(prevState => !prevState);
         }
     };
@@ -762,7 +789,6 @@ const EditProduct = () => {
         data.sku = baseProductSKU;
         data.is_raw_material = isRowMaterialValue;
         data.deletedProductPhotos = JSON.stringify(deletedProductPhotos);
-        // data.product_image = photos;
         
         if (data.product_type === 'Variant'){
             data.variant_sku = JSON.stringify(variantFormValue);
@@ -790,9 +816,11 @@ const EditProduct = () => {
             return formData;
         } 
         const formData = createFormData(data);
+        console.log('data', data);
         
         axios.put(`/inventory-management/products/update/${singleProductData?.productID}/${singleProductData.id}`, formData)
             .then(info => {
+                navigate('/dashboard/inventory-management/products');
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
@@ -2326,6 +2354,10 @@ const EditProduct = () => {
                                                             }}>
                                                                 {singleOptions?.label}
                                                             </p>
+
+
+
+
                                                             <div style={{
                                                                 border: 'none',
                                                                 backgroundColor: 'white',
@@ -2338,6 +2370,10 @@ const EditProduct = () => {
                                                                     color: 'red'
                                                                 }}></Trash2>
                                                             </div>
+
+
+
+
                                                         </div>
                                                     </CardHeader>
                                                     <Collapse
@@ -2346,28 +2382,11 @@ const EditProduct = () => {
                                                             {
                                                                 addRowInOption[singleOptions?.value]?.length > 0 ?
                                                                     <>
-                                                                        <div
-                                                                            className="d-flex justify-content-between">
-                                                                            <p className="w-100 text-center m-2"
-                                                                                style={{
-                                                                                    fontWeight: 'bold',
-                                                                                    fontSize: '13px'
-                                                                                }}>Label</p>
-                                                                            <p className="w-100 text-center m-2"
-                                                                                style={{
-                                                                                    fontWeight: 'bold',
-                                                                                    fontSize: '13px'
-                                                                                }}>Price</p>
-                                                                            <p className="w-100 text-center m-2"
-                                                                                style={{
-                                                                                    fontWeight: 'bold',
-                                                                                    fontSize: '13px'
-                                                                                }}>Price Type</p>
-                                                                            <p className="w-25 text-center m-2"
-                                                                                style={{
-                                                                                    fontWeight: 'bold',
-                                                                                    fontSize: '13px'
-                                                                                }}>Action</p>
+                                                                        <div className="d-flex justify-content-between">
+                                                                            <p className="w-100 text-center m-2" style={{ fontWeight: 'bold', fontSize: '13px'}}>Label</p>
+                                                                            <p className="w-100 text-center m-2" style={{ fontWeight: 'bold', fontSize: '13px'}}>Price</p>
+                                                                            <p className="w-100 text-center m-2" style={{fontWeight: 'bold',fontSize: '13px'}}>Price Type</p>
+                                                                            <p className="w-25 text-center m-2" style={{ fontWeight: 'bold', fontSize: '13px'}}>Action</p>
                                                                         </div>
                                                                         <div>
                                                                             {
@@ -2495,9 +2514,7 @@ const EditProduct = () => {
                                     </div>
                                 </Accordion>
                                 <div className="d-flex justify-content-between align-items-center mb-2 mt-3">
-                                    <button onClick={() => toggle()} className="btn btn-secondary btn-sm"
-                                            type="button">Add new option
-                                    </button>
+                                    <button onClick={() => toggle()} className="btn btn-secondary btn-sm" type="button">Add new option</button>
                                     <div className="d-flex gap-2">
                                         <div style={{width: '200px', marginBottom: 0, paddingBottom: 0}}>
                                             <Select

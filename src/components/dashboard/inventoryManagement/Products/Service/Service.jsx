@@ -17,10 +17,6 @@ const Service = () => {
                 header: 'productSku'
             },
             {
-                accessorKey: 'barcodeType',
-                header: 'barcodeType'
-            },
-            {
                 accessorKey: 'openingStockQuantity',
                 header: 'openingStockQuantity'
             },
@@ -77,67 +73,26 @@ const Service = () => {
                 header: 'packageLength'
             },
             {
-                accessorKey: 'packageWeight',
-                header: 'packageWeight'
-            },
-            {
-                accessorKey: 'measurementUnit',
-                header: 'measurementUnit'
-            },
-            {
-                accessorKey: 'weightUnit',
-                header: 'weightUnit'
-            },
-            {
-                accessorKey: 'unitType',
-                header: 'unitType'
-            },
-            {
-                accessorKey: 'brandName',
-                header: 'brandName'
-            },
-            {
-                accessorKey: 'categoryName',
-                header: 'categoryName'
-            },
-            {
-                accessorKey: 'modelName',
-                header: 'modelName'
-            },
-            {
-                accessorKey: 'isRawMaterial',
-                header: 'isRawMaterial'
-            },
-            {
                 accessorKey: 'hasSerialKey',
                 header: 'hasSerialKey'
             },
             {
-                accessorKey: 'productType',
-                header: 'productType'
-            },
-            {
                 accessorKey: 'productName',
                 header: 'productName'
-            },
-            {
-                accessorKey: 'hsn',
-                header: 'hsn'
-            },
+            }
         ]
     )
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/inventory-management/products/list`);
+                const response = await axios.get(`/inventory-management/products/sku/list/services`);
                 setData(response?.data?.body?.data);
-                // console.log(response)
             } catch (error) {
                 console.error(error);
             }
         };
-        fetchData()
+        fetchData();
     }, []);
 
   return (
