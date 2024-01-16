@@ -1,23 +1,15 @@
 import React, {useState} from 'react';
 
-const EditProductImage = ({photos, setPhotos, usedIdsForImage}) => {
-    const [selectedPhotos, setSelectedPhotos] = useState([]);
+const EditProductImage = ({photos, setPhotos, usedIdsForImage, selectedProductPhotos, setSelectedProductPhotos, handleDeletedProductPhotos}) => {
+    
     const handleSelectedPhotos = (id) => {
-        const isPhotoExist = selectedPhotos?.find((photo) => photo == id);
+        const isPhotoExist = selectedProductPhotos?.find((photo) => photo == id);
         if (!isPhotoExist) {
-            setSelectedPhotos((prev) => [...prev, id]);
+            setSelectedProductPhotos((prev) => [...prev, id]);
         } else {
-            const remainingPhotos = selectedPhotos?.filter((photo) => photo != id);
-            setSelectedPhotos(remainingPhotos);
+            const remainingPhotos = selectedProductPhotos?.filter((photo) => photo != id);
+            setSelectedProductPhotos(remainingPhotos);
         }
-    };
-
-    const handleDeletedPhotos = () => {
-        const remainingPhotos = photos?.filter(
-            (photo) => !selectedPhotos.includes(photo?.id)
-        );
-        setPhotos(remainingPhotos);
-        setSelectedPhotos([]);
     };
 
     const handleAddPhoto = (e) => {
@@ -32,9 +24,6 @@ const EditProductImage = ({photos, setPhotos, usedIdsForImage}) => {
             const photo = URL.createObjectURL(file);
             return { id, image: photo, file };
         });
-
-        console.log('newPhotos', newPhotos)
-
         setPhotos((prevPhotos) => [...prevPhotos, ...newPhotos]);
     };
 
@@ -52,7 +41,7 @@ const EditProductImage = ({photos, setPhotos, usedIdsForImage}) => {
                             marginRight: "1rem",
                             marginTop: "1rem",
                             marginBottom: "1rem",
-                            "@media (min-width: 768px)": {
+                            "@media (minWidth: 768px)": {
                                 marginLeft: "2.5rem",
                                 marginRight: "2.5rem",
                             },
@@ -66,11 +55,11 @@ const EditProductImage = ({photos, setPhotos, usedIdsForImage}) => {
                                 gap: "10px",
                             }}
                         >
-                            {selectedPhotos?.length > 0 && (
+                            {selectedProductPhotos?.length > 0 && (
                                 <input
                                     readOnly
                                     type="checkbox"
-                                    checked={selectedPhotos?.length ? true : false}
+                                    checked={selectedProductPhotos?.length ? true : false}
                                     style={{
                                         width: "14px",
                                         height: " 14px",
@@ -79,7 +68,7 @@ const EditProductImage = ({photos, setPhotos, usedIdsForImage}) => {
                                             height: "18px",
                                         },
                                     }}
-                                    onChange={() => setSelectedPhotos([])}
+                                    onChange={() => selectedProductPhotos([])}
                                 />
                             )}
                             <p
@@ -90,31 +79,31 @@ const EditProductImage = ({photos, setPhotos, usedIdsForImage}) => {
                                 }}
                             >
                                 {/* toggle the Gallery / File / Files */}
-                                {selectedPhotos?.length > 0 && selectedPhotos?.length}{" "}
-                                {selectedPhotos?.length === 0
+                                {selectedProductPhotos?.length > 0 && selectedProductPhotos?.length}{" "}
+                                {selectedProductPhotos?.length === 0
                                     ? "Gallery"
-                                    : selectedPhotos?.length === 1
+                                    : selectedProductPhotos?.length === 1
                                         ? "File Selected"
                                         : "Files Selected"}{" "}
                             </p>
                         </div>
                         <div
-                            onClick={handleDeletedPhotos}
+                            onClick={handleDeletedProductPhotos}
                             style={{
                                 cursor: "pointer",
                                 display: "inline-block",
                                 fontWeight: "600",
                                 fontSize: "0.875rem",
                                 color: "#ff0000",
-                                "@media (min-width: 768px)": {
+                                "@media (minWidth: 768px)": {
                                     fontSize: "1.25rem",
                                 },
                             }}
                         >
                             {/* toggle the file / files when at least one photo selected*/}
-                            {selectedPhotos?.length === 0
+                            {selectedProductPhotos?.length === 0
                                 ? ""
-                                : selectedPhotos?.length === 1
+                                : selectedProductPhotos?.length === 1
                                     ? "Delete file"
                                     : "Delete files"}{" "}
                         </div>
@@ -149,7 +138,7 @@ const EditProductImage = ({photos, setPhotos, usedIdsForImage}) => {
                                     <div
                                         style={{ width: "70px", height: "70px" }}
                                         className={`${
-                                            selectedPhotos?.includes(photo?.id)
+                                            selectedProductPhotos?.includes(photo?.id)
                                                 ? "opacity-7"
                                                 : "hover-bg-secondary"
                                         }`}
@@ -168,7 +157,7 @@ const EditProductImage = ({photos, setPhotos, usedIdsForImage}) => {
                                         type="checkbox"
                                         name="gender"
                                         id={photo?.id}
-                                        checked={selectedPhotos?.includes(photo?.id)}
+                                        checked={selectedProductPhotos?.includes(photo?.id)}
                                         style={{
                                             position: "absolute",
                                             top: "10px",
@@ -225,7 +214,7 @@ const EditProductImage = ({photos, setPhotos, usedIdsForImage}) => {
                                         fontWeight: "600",
                                         fontSize: "11px",
                                         marginBottom: 0,
-                                        "@media (min-width: 768px)": {
+                                        "@media (minWidth: 768px)": {
                                             fontSize: "11px",
                                         },
                                     }}

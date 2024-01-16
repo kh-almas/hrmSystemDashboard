@@ -14,7 +14,7 @@ import EditVariantImage from "./EditVariantImage";
 
 const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVariantForVariant, previousSKU, setPreviousSKU, addRowInVariant, setAddRowInVariant, variantFormValue, setVariantFormValue}) => {
     const [isValueOfVariantUpdate, setIsValueOfVariantUpdate]= useState(false);
-    const [componentRender, setComponentRender] = useState(false)
+    const [componentRender, setComponentRender] = useState(false);
     const [rowImage, setRowImage] = useState({});
     const [deletedImage, setDeletedImage] = useState([]);
     const [photos, setPhotos] = useState([]);
@@ -26,6 +26,22 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
     const [isOpen, setIsOpen] = useState(0);
     const usedIdsForSkuImage = new Set();
     const [selectedPhotos, setSelectedPhotos] = useState([]);
+
+    useEffect(() => {
+        const allSelectedValueKey = [];
+        selectedVariantForVariant?.map(singleVariant =>{
+            allSelectedValueKey.push(singleVariant?.value);
+        })
+        for(let key in variantFormValue){
+            const allVariantValue = variantFormValue[key]?.variant
+            for(let subKey in allVariantValue){
+                if (!allSelectedValueKey.includes(parseInt(subKey))) {
+                    delete allVariantValue[subKey];
+                }
+                
+            }
+        }
+    }, [selectedVariantForVariant])
 
 
     useEffect(() => {
@@ -166,8 +182,6 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
                 const pathname = url.pathname;
                 const match = pathname.match(/\/([^\/]+)$/);
                 const filename = match[1];
-
-                // setDeletedImage(prev => [...prev, filename])
                 deletedFileNameArray.push(filename);
             }
         });
@@ -404,19 +418,11 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
                                         <div>
                                             {
                                                 addRowInVariant?.map((singleRowData, rowIndex) =>
-                                                    <Accordion defaultActiveKey="0">
+                                                    <Accordion defaultActiveKey="0" key={rowIndex}>
                                                         <div className="d-flex justify-content-between align-items-end" key={rowIndex}>
                                                             {
                                                                 selectedVariantForVariant?.map((singleVariantData,index) =>
                                                                     <div key={index} className="w-100 mx-2">
-
-                                                                        {/*<Select*/}
-                                                                        {/*    labelName={' '}*/}
-                                                                        {/*    placeholder={"Select an option"}*/}
-                                                                        {/*    previous={variantFormValue?.[singleRowData]?.['variant']?.[singleVariantData?.value]}*/}
-                                                                        {/*    options={formatAllDataForVariantValueDropdown[singleVariantData?.value]}*/}
-                                                                        {/*    cngFn={(selected) => handleSelectChange(selected, singleRowData, singleVariantData?.value)}*/}
-                                                                        {/*/>*/}
                                                                         <CreatableSelect
                                                                             isClearable
                                                                             isDisabled={isLoading}

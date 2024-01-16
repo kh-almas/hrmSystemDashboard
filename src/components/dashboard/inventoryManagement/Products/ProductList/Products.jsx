@@ -7,6 +7,7 @@ import {MaterialReactTable} from "material-react-table";
 import {Box, IconButton} from "@mui/material";
 import {Delete as DeleteIcon, Edit as EditIcon} from "@mui/icons-material";
 import axios from "../../../../../axios";
+import Swal from "sweetalert2";
 
 const Products = () => {
     const [data, setData] = useState([]);
@@ -136,15 +137,63 @@ const Products = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/inventory-management/products/sku/list`);
+                const response = await axios.get(`/inventory-management/products/sku/list/all`);
                 setData(response?.data?.body?.data);
-                // console.log(response)
             } catch (error) {
                 console.error(error);
             }
         };
         fetchData()
     }, []);
+
+    const handleDelete = id => {
+        console.log('id', id);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // axios.delete(`/inventory-management/variant/delete/${id}`)
+                axios.delete(`/inventory-management/products/delete/${id}`)
+                    .then(info => {
+                        if(info?.status == 200)
+                        {
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Your file has been deleted.",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        // isDarty();
+                    })
+                    .catch(e => {
+                        if(e?.response?.data?.body?.message?.sqlState === "23000")
+                        {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: `Can not delete variant.`,
+                            })
+                        }
+                        // if (!empty(e?.response?.data?.body?.message?.details[0].message))
+                        // {
+                        //     Swal.fire({
+                        //         icon: 'error',
+                        //         title: 'Oops...',
+                        //         text: `${e?.response?.data?.body?.message?.details[0].message}`,
+                        //     })
+                        // }
+                    })
+            }
+        })
+    };
 
     return (
         <div>
@@ -194,7 +243,8 @@ const Products = () => {
                                         onClick={() => {
                                             // data.splice(row.index, 1); //assuming simple data table
                                             // setData([...data]);
-                                            console.log(row?.original?.id)
+                                            // console.log(row?.original?.id)
+                                            handleDelete(row?.original?.id)
                                         }}
                                     >
                                         <DeleteIcon />
