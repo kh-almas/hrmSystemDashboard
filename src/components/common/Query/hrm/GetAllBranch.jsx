@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 
 const GetAllBranch = () => {
     const {status: allBranchStatus = '', refetch: allBranchReFetch, data: allBranch = [], error: allBranchError} = useQuery({
-        queryKey: ['allBranch'],
+        queryKey: ['allBranchhhhh'],
         queryFn: async () => {
             return axios.get('/hrm-system/branch/')
         }

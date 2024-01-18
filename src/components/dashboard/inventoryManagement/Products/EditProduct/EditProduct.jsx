@@ -705,11 +705,6 @@ const EditProduct = () => {
         setComponentRender(!componentRender);
     }
 
-
-    
-    
-        console.log('check', addRowInOptionValue);
-
     const removeItemFromVariantList = (singleOptions, singleRowData) => {
         
         const removeItemFrom = addRowInOption[singleOptions];
