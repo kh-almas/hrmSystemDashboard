@@ -524,7 +524,6 @@ const AddProduct = () => {
             return formData;
         }
         const formData = createFormData(data);
-        console.log('data', data);
 
         axios.post('/inventory-management/products/add', formData)
             .then(info => {

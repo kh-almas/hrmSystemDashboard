@@ -509,6 +509,11 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/inventory-management/products/variant",
           },
+          {
+            title: "Settings",
+            type: "link",
+            path: "/dashboard/inventory-management/products/setting",
+          },
         ],
       },
       //inventory
@@ -516,6 +521,11 @@ export const MENUITEMS = [
         title: "Inventory",
         type: "sub",
         children: [
+          {
+            title: "Product Initialization",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/product/initialization",
+          },
           {
             title: "Add Opening Stock",
             type: "link",

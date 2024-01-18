@@ -93,7 +93,6 @@ import ShiftSchedule from "../components/dashboard/hrmSystem/attendance/ShiftSch
 import EditContact from "../components/dashboard/inventoryManagement/Contacts/EditContact";
 import SupplierPurchaseProductList from "../components/dashboard/inventoryManagement/Contacts/SupplierPurchaseProductList";
 import ViewContact from "../components/dashboard/inventoryManagement/Contacts/ViewContact";
-import OpeningStock from "../components/dashboard/inventoryManagement/Inventory/OpeningStock";
 import ProductCosting from "../components/dashboard/inventoryManagement/Inventory/ProductCosting";
 import ProductInformation from "../components/dashboard/inventoryManagement/Inventory/ProductInformation";
 import ProductMovement from "../components/dashboard/inventoryManagement/Inventory/ProductMovement";
@@ -164,6 +163,8 @@ import InputTest from "../components/common/component/InputTest";
 import DropdownTable3 from "../components/common/component/DropdownTable3";
 import MultipleImageUploader from "../components/common/component/imageUpload/MultipleImageUploader";
 import EditProduct from "../components/dashboard/inventoryManagement/Products/EditProduct/EditProduct";
+import ProductSettings from "../components/dashboard/inventoryManagement/Products/ProductSettings/ProductSettings";
+import ProductInitialization from "../components/dashboard/inventoryManagement/Inventory/ProductInitialization";
 
 export const routes = [
   {
@@ -687,8 +688,18 @@ export const routes = [
     Component: <Variant />,
   },
   {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/setting`,
+    Component: <ProductSettings />,
+  },
+  //imventory management -> inventory
+  {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/add-opening-stock`,
-    Component: <OpeningStock />,
+    Component: <ProductSettings />,
+  },
+
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product/initialization`,
+    Component: <ProductInitialization />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-receive`,
