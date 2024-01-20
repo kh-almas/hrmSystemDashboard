@@ -4,7 +4,6 @@ import Ecommerce from "../components/dashboard/ecommerce";
 import Project from "../components/dashboard/project/project";
 import ServerComponent from "../components/dashboard/server/serverComponent";
 import University from "../components/dashboard/university";
-
 // sample page
 import ManualAttendance from "../components/dashboard/hrmSystem/attendance/ManualAttendance";
 import MeetingCalender from "../components/dashboard/MeetingCalender";
@@ -158,13 +157,13 @@ import DropdownTable from "../components/common/component/DropdownTable";
 import DropdownTable2 from "../components/common/component/DropdownTable2";
 import TreeViewExample from "../components/common/component/TreeViewExample";
 import TreeViewExample2 from "../components/common/component/TreeViewExample2";
-import Input from "../components/common/modal/Input";
 import InputTest from "../components/common/component/InputTest";
 import DropdownTable3 from "../components/common/component/DropdownTable3";
 import MultipleImageUploader from "../components/common/component/imageUpload/MultipleImageUploader";
 import EditProduct from "../components/dashboard/inventoryManagement/Products/EditProduct/EditProduct";
 import ProductSettings from "../components/dashboard/inventoryManagement/Products/ProductSettings/ProductSettings";
 import ProductInitialization from "../components/dashboard/inventoryManagement/Inventory/ProductInitialization";
+import OpeningStock from "../components/dashboard/inventoryManagement/Inventory/OpeningStock";
 
 export const routes = [
   {
@@ -693,8 +692,8 @@ export const routes = [
   },
   //imventory management -> inventory
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/add-opening-stock`,
-    Component: <ProductSettings />,
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/opening-stock`,
+    Component: <OpeningStock />,
   },
 
   {

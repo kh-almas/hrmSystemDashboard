@@ -529,7 +529,7 @@ export const MENUITEMS = [
           {
             title: "Add Opening Stock",
             type: "link",
-            path: "/dashboard/inventory-management/inventory/add-opening-stock",
+            path: "/dashboard/inventory-management/inventory/opening-stock",
           },
           {
             title: "Receive Your Product",

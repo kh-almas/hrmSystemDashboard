@@ -8,6 +8,8 @@ import SelectProductInCreateProductForm
     from "../../../common/component/form/inventory/product/selectProductInCreateProductForm";
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import {flexRender, MRT_TableBodyCellValue, useMaterialReactTable} from "material-react-table";
+import {Button} from "reactstrap";
+import Swal from "sweetalert2";
 
 const ProductInitialization = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -18,14 +20,12 @@ const ProductInitialization = () => {
     const [allDataForDropdown, setAllDataForDropdown] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState([]);
     const [rowSelection, setRowSelection] = useState([]);
+    const [selectedProductIdFromDB, setSelectedProductIdFromDB] = useState([]);
 
-    console.log('selectedProduct', selectedProduct)
-    console.log('selectedDataKeyForProductList', selectedDataKeyForProductList)
     useEffect(() => {
         const getDataFn = async () => {
             setAllBranch([])
             const getData = await axios.get('/hrm-system/branch/')
-            // console.log('getData', getData?.data?.body?.data?.data);
             getData?.data?.body?.data?.data?.map(item => {
                 const set_data = {
                     value: item.id,
@@ -36,7 +36,22 @@ const ProductInitialization = () => {
         }
         getDataFn();
     }, [])
-    // console.log('selectedBranch', selectedBranch)
+
+    useEffect(() => {
+        const getDataFn = async () => {
+            if (selectedBranch.value){
+                const setData = []
+                const getData = await axios.get(`/inventory-management/branch/products/initialization/${selectedBranch?.value}`);
+                const allData = getData?.data?.body?.data;
+                allData?.map(singleData => {
+                    setData.push(singleData.product_id);
+                })
+                setSelectedDataKeyForProductList(setData);
+            }
+
+        }
+        getDataFn();
+    }, [selectedBranch])
 
     const handleChangeForSelectedBranch = (selected) => {
         setSelectedBranch(selected);
@@ -55,7 +70,6 @@ const ProductInitialization = () => {
     }, []);
 
     const getSelectedData = (data) => {
-        console.log('selected data', data)
         if(!selectedDataKeyForProductList.includes(data.id)){
             selectedDataKeyForProductList.push(data.id);
             setSelectedProduct(prev => [...prev, data]);
@@ -114,6 +128,44 @@ const ProductInitialization = () => {
             rowSelection
         },
     });
+
+    const submitInitializationForm = () => {
+        axios.put(`/inventory-management/branch/products/initialization/update/${selectedBranch?.value}`, selectedProduct)
+            .then(info => {
+                if(info?.status == 200)
+                {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    // toggle();
+                    // reset();
+                }
+                // reFetch();
+            })
+            .catch(e => {
+                if(e?.response?.data?.body?.message?.errno == 1062){
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Can not duplicate variant name',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }else {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: `${e?.response?.data?.body?.message?.details[0].message}`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            })
+    }
 
     return (
         <>
@@ -180,9 +232,12 @@ const ProductInitialization = () => {
                                             </Table>
                                         </TableContainer>
                                     </div>
-
-
                                 </div>
+                            </div>
+                            <div>
+                                <Button color="primary mt-3 mb-4 d-flex mx-auto" onClick={() => submitInitializationForm()}>
+                                    Update
+                                </Button>
                             </div>
                         </div>
                     </>
