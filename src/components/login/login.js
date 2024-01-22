@@ -92,6 +92,7 @@ const Login = () => {
                               type="email"
                               placeholder="EMAIL"
                               className="form-control"
+                              value={'admin@gmail.com'}
                               {...register("email", {
                                 required: true,
                                 pattern:
@@ -116,6 +117,7 @@ const Login = () => {
                             <input
                               type="password"
                               placeholder="PASSWORD"
+                              value={'12345678'}
                               {...register("password", {
                                 required: true,
                                 pattern: /^(?!(<[^>]?>)|(<script.?>)).*$/,

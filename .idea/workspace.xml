@@ -6,356 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="d2166f86-5678-472f-a491-aa8a8e4f9ddd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/apitodoboard.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/bookmark.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/chat.chats.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/chatMember.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/customboard.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/defaultboard.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/email.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/featherData.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/files.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/flagIconData.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/fontawsomeData.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/general.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/icoData.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/image-big-light.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/image-light.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/jobSearch.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/knowledgebaseDB.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/learning.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/masonry.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/orederhistory.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/product.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/project.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/sticky.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/task.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/themifyData.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/todo.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/typeaheadData.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/user-edit-table.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/api/usercard.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/asset-manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/assets/css/color-1.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/assets/css/color-2.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/assets/css/color-3.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/assets/css/color-4.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/assets/css/color-5.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/assets/css/color-6.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/favicon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/final.rdlx-json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/report.rdlx-json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/report1.rdlx-json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/report_attan.rdlx-json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/robots.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/css/main.3c5c96f5.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/css/main.3c5c96f5.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/main.e469e299.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/main.e469e299.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/main.e469e299.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/1.2757fb6a17d124212df9.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/1.44b4e449317c61239bc0.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/2.c3f8ea02919ff96d7ccd.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/3.7933fb0b233c3680af72.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/4.e5d302899ee83125fadc.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/5.e0b14494f8733bcc0247.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/6.19c1f88b4047e4474591.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/6.c95e92cf86282ded17da.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/7.2f6832ce4d499b03240d.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/8.37444c7578f14967764b.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ad.ca31a793a936aace4d62.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ae.d6dbe72b1c0c91eb290d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/af.3edf6ac55b1034f0d28c.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ag.02bcf9e64b55190e587d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ai.bf2bb51d67f3de45a12b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/al.0c8f35616f3b4b85efa8.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/am.0d5a20b88add27ad82af.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ao.12686c0e54f1c7dade6a.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/aq.f30ea4ab70f763cf650f.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ar.a6308b511c3a2d2227fa.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/as.6799736fbb80fd1bddbc.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/at.5309bda704bf6ba0cfb8.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/au.94a2e0cd6c36e044c482.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/auth-bg-1.8184142c45a47fd52a9c.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/aw.de558b83521f73d7337e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ax.10c85636250faa8673a9.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/az.c03b04167198f809a2c5.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ba.1d0373f7dca222babc03.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bb.46ccdb98b09fb56324f8.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bd.7a30395b2f93bfd130e1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/be.ae873fc082ea79d67af9.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bf.ee6777409fbfbd1fc232.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bg.a7d1a4f049fa79946b67.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bh.92f2a89e21cbc16190c5.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bi.b1421422e30f6e34abf4.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bj.b0825519a8b4028c26d1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bl.42145fe6a1251343a271.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bm.d459fce0b62e27fc5d04.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bn.bd6ba1f4d7aa1e46b6e1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bo.134662950791c2ba51c6.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bq.606dd5875941d39f7c12.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/br.ed4137cfd44daa13ea49.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bs.e6d66fa2d415babf0b2a.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bt.cf9596dedd2478ca2fd0.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bv.ad7cca2596d6d9a95ba5.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bw.84fd039a0d9309eea30a.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/by.f59e5e2a62b34fa8f392.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/bz.bdc3e89f02c74252734c.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ca.35dd01991458aa7271c4.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cc.29a6a20c83da130db097.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cd.f5e1294f8e517b15a527.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cf.542a8c123b3c19f53fbc.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cg.6c02ddb7f4311a74692c.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ch.ab7dda100b5bbf81412c.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ci.92d4ba02727e231ec072.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ck.749147077a09d8f95e03.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cl.7635ca97906941277112.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cm.217204e81f8ef5008151.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cn.98d6f169ac7a66efed4d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/co.36a0e0e10fe4d2b22f42.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/coming-soon-bg.ddab5ef6c17d29138cca.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/companyLogo.2d3e524ca48e562b9ced.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cr.f3b91dfaac3611a2bb56.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cu.f33777307068cda04f1e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cv.5779e00be9a36ac84200.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cw.81ac7a6fc60f33b11f8d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cx.d4d3fe794c045f315725.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cy.254506ce880e90b3c0cd.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/cz.c0c9d9a505678e515514.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/de.888f6bdce53030a6e80f.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/dj.189ca57c7abd43199551.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/dk.fc98a12960b87d3b9e07.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/dm.13b72fbecbdf1ccf7809.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/do.b9b509413af90ea6f577.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/dz.a4060b64ec782b9d491b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ec.9f4a6c3a4146a5ce960c.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ee.e8920bf0542ed7d1e49b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/eg.cc70ccd77020873ecbb9.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/eh.362f24810003916e2364.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/endless-logo.2c38c9533e844d7a66bd.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/er.8186bf8d55de0b12503b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/es-ct.4a8f7a70be8381d17082.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/es.5399741c6f0109f01162.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/et.af379dccd7cf32303aac.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/eu.537d37f4bea4bf5f85d8.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/fi.6147315aa1e35f139e8d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/fj.897bc8adca0bbd54b558.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/fk.eb650a35194366974b13.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/fm.feb0dd190dfb09c78184.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/fo.be7dab642db4b6fac975.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/fontawesome-webfont.1e59d2330b4c6deb84b3.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/fontawesome-webfont.8b43027f47b20503057d.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/fontawesome-webfont.f691f37e57f04c152e23.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/fr.da032352a4efd19ac25a.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ga.656c7fedf6bc69dd79d1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gb-eng.c79b0bfc6d43f890a499.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gb-nir.58c5571943fe23fc6e02.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gb-sct.98ff327f4bcf8b90343c.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gb-wls.9c138db83115bbf972fe.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gb.a063eb2f1d9579017098.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gd.f881a0d2ea7719d39685.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ge.0d56bacc20b37fdcbbca.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gf.317ee07d2728c97b15f0.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gg.2645dca345466de0c97f.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gh.e14d619d2991f5eb2641.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gi.edc0a90556507b115001.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gl.5482d73939a64c274602.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gm.f42f77707f1ab37d7bb1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gn.be503e12b5bb96bc525b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gp.ec5c714d6742bfeb8be2.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gq.8094747272b38dab1871.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gr.eac01dcd2c839b33cb54.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gs.0216ae6087986fe857ae.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gt.a3fb60698fc52d78477d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gu.127e67ee10729427919d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gw.40e7b7d27af3f239f291.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/gy.507baf962a6d394365ea.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/hexgon.76dab1b4f5eff767606f.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/hk.a4e9643c21d3a2e3f519.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/hm.6837577b2861110dc100.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/hn.9140ac8170526aebca9f.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/hour.6548bc0623d611d7572e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/hr.08dfb4c1440307bc11ae.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ht.c42053a84a02ae87fc5e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/hu.5b5c4c8373e5f208d3ac.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/icofont.4f7f7bf78dfd2979cbba.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/icofont.556fa8050e7e3b9a829d.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/icofont.c2bb62e2c5c6870a5cb5.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/icofont.dae25655dd28a58eb576.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/id.915dbe7cfc0e2733a808.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ie.a3d22622729fbbb14da9.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/il.3dba417ae18611c0f9c6.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/im.d70438cbae06b6ff5aac.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/in.ff7549f7f779430e01aa.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/io.51e37fc19eeea15825cc.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/iq.fccaaef97d971ff7c84e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ir.7ffbb75e40eb98fe7410.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/is.542a47fe6652001b3dfd.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/it.fd6a03b76b2a20eb3aea.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/je.428ee52a62f1f269fac4.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/jm.d3cc5212b7096dd7cbae.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/jo.fd70ed53d23fa7996a84.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/jp.e88bdf022faaac9c6aab.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ke.142690140c31e8c7eedf.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/kg.1b7cb64f53991640f77b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/kh.9c4fe4438e93cf02afaa.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ki.b15f1c5f7d485491a594.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/km.fb930327745992be4eca.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/kn.a41408223acfe9dd6b66.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/kp.190eda65c04aaef16c5d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/kr.69cc2723c3244b005bc0.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/kw.ec2cbfd83734469d03da.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ky.4c51dd9a6b8316706d90.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/kz.0b7cc5e4ae1cd812cb22.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/la.4c14a3ce2f25efa37bd2.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/lb.c4293ad7d99789b123a3.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/lc.ab0355788cfb2e14fee5.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/li.67956510ad59f57af330.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/lk.e31bd4522b8de69169ab.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/lr.4a32c68ca8a95c56f4c8.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ls.a497d746a55018cd5f58.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/lt.18f279c12753cfb88ffa.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/lu.ea32843f342611313a04.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/lv.ae523190f36e2f04b9a0.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ly.0b0f3f3b3e5a038701bd.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ma.1147dd897a2b167632af.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/maintenance-bg.d7724a5941854c150480.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mc.40c202f79e0a848930a2.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/md.a829fc4868897053147b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/me.c76494939c9c9edb3784.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mf.b8f1a4ef0f6f26d08484.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mg.b6fef7e6f7df43304fab.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mh.aa0c01100fc344a66086.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/min.adcdc23489f6d03ca8b6.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mk.c5e8b09d4e81ebd0c41c.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ml.5204de404d88281e5c79.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mm.8ac531e1a069c5abec5e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mn.88f9e99a5733804b690e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mo.c31ad393b9be2177b000.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mobile-clock-wallpaper.5f2794381614219bd95e.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mp.4ac904225c98259e8495.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mq.68b83ca57cebe252aec5.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mr.fe0c99da894753ceb49e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ms.1e01db4943c166d0d99d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mt.8bb217f8dbf3757be544.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mu.fac1d9e56b6fc4d70f6b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mv.cca45d07fdeb8b51efed.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mw.47096f61604dcc35a736.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mx.2c3e6269a1d360cc4372.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/my.07a2b954a852d400cf1b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/mz.437e5e7e8baee752f624.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/na.341c9a95c15f7724623d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/nc.8964e9d288bee6d017d0.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ne.63d98e604e2655fa7560.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/nf.491e2cb1ed059769ee6c.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ng.63d11526ba189073cf88.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ni.a6a663fc3a131ea0338a.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/nl.90d37ba2f87b97413d72.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/no.ebc5cbbf9191fccacfa6.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/np.376ba69ac7efe6dd021e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/nr.7203adcc9109f98a90ce.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/nu.e0ebb0a0c1c386928744.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/nz.80de009680b35194008b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/om.a4165f8b917d1cf2a306.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/pa.c57742ff6c56050ca899.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/pe.bfc1b7612f46b109eaa9.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/pf.ced522d0c623c1ed205e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/pg.26ccc1adfdea63a62cec.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ph.ac201247831436678b2e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/pk.60cd1fcc109cbd09784d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/pl.72ad527630e5a5340bfa.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/pm.3177972a5fba1b438ed4.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/pn.3a7ee56fbb32fb452408.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/pr.f3e7609efc8f44b5b298.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ps.5f0171cf87f7834bb406.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/pt.a0d9acfb1c2a4e986423.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/pw.c7ab5051febfb1b8c4fd.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/py.5779800eac3b4129d113.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/qa.d9ba99e670733eb59fa0.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/re.9cd28549edb07c04561c.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ro.10df4fddff9f7332c736.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/rs.a06ce391e44f88818594.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ru.b15eaf603b43f783e205.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/rw.1d3a2837fd88af6dbbaf.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sa.04d0731eccf0867160fe.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sb.c4f275867785f7b9da7f.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sc.ca4d15445e80eaf27701.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sd.43885ad7472d8493cb68.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/se.7c4e34cc7d59651cea5d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sec.4445c03558213075e980.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sg.ea25cc8306d5c50f6f9c.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sh.51e2a5b4e26e4356fd3e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/si.ca179ac4c194b1ae22ae.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sj.ed3091f90ca33e68a478.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sk.ea01c9d3ae7b2a623a53.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sl.5b42385a9d1c7c1c0845.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/slick.2630a3e3eab21c607e21.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/slick.295183786cd8a1389865.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/slick.a4e97f5a2a64f0ab1323.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/slick.c94f7671dcc99dce43e2.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sm.9be0b31804b75d372956.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sn.4cebb6bcfdc50dabee8f.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/so.cb850010c79a4a5e80e1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sr.8a55c8800af3f3ef29da.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ss.b514a452c753222edb74.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/st.b6fe2ffad19ccf2a2668.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sv.727fdda95d0726a2f855.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sx.4c1191e8b14455ea4c37.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sy.0f554814ab873be01612.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/sz.39530ef0f606019c0c8e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tc.ff2766b3075c3d42c445.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/td.e8da56cbebbb3dde4144.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tf.a9e5f1da0851049e7588.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tg.b43eae00ae1ff50f3c54.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/th.7af9785ea63515b716b2.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/themify.29b39089170885ae2967.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/themify.9bad94440d49256265a5.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/themify.eda8b94308c6f538f04a.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/themify.f0fc8c798eac5636249c.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tj.6c2162b3efdb36b87d7e.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tk.1455c0103ac60cfa8ded.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tl.7d28e8d40168ce954275.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tm.a4225f49582a3e6efb79.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tn.8c354710fc62c5463e7a.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/to.349c2891172b7c5d52c9.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tr.b3a2944bab002e3d54a9.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tt.2202ac07ae4c9dac909d.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tv.0e4df57cb9c9807e406f.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tw.e09246826e565fc6c51b.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/tz.dc6b0e6b7a66c83d6308.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ua.bfb189806941462b4a66.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ug.ea13afded4e1f51ebdd0.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/um.ff13e83804d6e8c8e0a9.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/un.31da6099b952c8ddfb54.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/us.6721ec1703d6c70217dc.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/uy.acae891c26de107e0055.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/uz.768aad8665624dc7dbe9.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/va.92d8e5deb8a06804acc9.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/vc.7ede03d79eb30e0b9e39.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ve.16965260962de6c0cc26.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/vg.6522df4ca6b807d31bf1.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/vi.ddcb2a05ad0cafc4d624.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/vn.dc5c01120d8c744071c7.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/vu.b3180467e2c843cb399a.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/wf.b1cd4b7cbf8e0ed52a02.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ws.e3d730a023004cd1c4c4.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/ye.67becdbb6b9c41ee1d8c.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/yt.9e7546c6fbbba992e773.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/za.ec2f0f1e801da0e00cbd.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/zm.c9457bd128c84512d2c4.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/media/zw.f4d026d62b64ba5d54f7.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/axios.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/Query/hrm/GetAllBranch.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/Query/hrm/GetAllBranch.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/AddProduct.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/AddProduct.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/layouts-routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/layouts-routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/OpeningStock.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/OpeningStock.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductSettings/ProductSettings.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductSettings/ProductSettings.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -373,27 +27,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;alu&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/hrmSystemFinal/hrmSystemBackend&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2023.3.2\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "alu",
+    "last_opened_file_path": "D:/hrmSystemFinal/hrmSystemDashboard/src/components/common/Query/inventory",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2023.3.2\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\Query\inventory" />
+      <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Inventory" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Products\EditProduct" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Products\ProductList" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\modal" />
-      <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\Query\inventory" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Products\EditProduct" />
@@ -420,7 +75,11 @@
       <workItem from="1704258246067" duration="19135000" />
       <workItem from="1704344644978" duration="11004000" />
       <workItem from="1705490091791" duration="2714000" />
-      <workItem from="1705559431028" duration="8581000" />
+      <workItem from="1705559431028" duration="9270000" />
+      <workItem from="1705728302860" duration="16665000" />
+      <workItem from="1705822643646" duration="2777000" />
+      <workItem from="1705829647308" duration="11110000" />
+      <workItem from="1705902263291" duration="17599000" />
     </task>
     <servers />
   </component>
@@ -589,6 +248,48 @@
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
           <line>167</line>
           <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>172</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>79</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>110</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>112</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>113</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>115</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>131</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="44" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

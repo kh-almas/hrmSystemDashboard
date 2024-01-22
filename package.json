@@ -108,7 +108,7 @@
   },
   "scripts": {
     "start": "react-scripts --max-old-space-size=8128 start --host 0.0.0.0",
-    "build": "react-scripts --max-old-space-size=8096 build" ,
+    "build": "react-scripts --max-old-space-size=8096 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -142,7 +142,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@tanstack/eslint-plugin-query": "^4.34.1",
-    "moment": "^2.29.4",
+    "moment": "^2.30.1",
     "moment-timezone": "^0.5.41",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
