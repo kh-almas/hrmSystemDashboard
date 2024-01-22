@@ -4,31 +4,38 @@ import {useForm} from "react-hook-form";
 import TextField from '@mui/material/TextField';
 import axios from "../../../../../axios";
 import Swal from "sweetalert2";
+import Autocomplete from "@mui/material/Autocomplete";
+import {Checkbox} from "@mui/material";
+import * as PropTypes from "prop-types";
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 const ProductSettings = () => {
     const [data, setData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const [barcodeValue, setBarcodeValue] = useState([]);
+    const [barcodeType, setBarcodeType] = useState([]);
     const [profitFixed, setProfitFixed] = useState(false);
     const [showSellPriceOnProduct, setShowSellPriceOnProduct] = useState(false);
     const [showPurchasePriceOnProduct, setShowPurchasePriceOnProduct] = useState(false);
     const [continueSellIfStockout, setContinueSellIfStockout] = useState(false);
     const [hasLot, setHasLot] = useState(false);
-    const { 
-        register, handleSubmit, reset, setValue, formState: {errors}, clearErrors
-    } = useForm({
+    const [barcodeTypeValue, setBarcodeTypeValue] = useState([{value: "Singless", label: "Singless"}, {value: "Single", label: "Single"}])
+    const {register, handleSubmit, reset, setValue, formState: {errors}, clearErrors} = useForm({
         // defaultValues: useMemo(()=> {
         //     return data;
         // }, [data])
     });
+    const SubmitProductSettings = (formData) => {
+        formData.profit_fixed = profitFixed;
+        formData.show_sell_price_on_product = showSellPriceOnProduct;
+        formData.show_purchase_price_on_product = showPurchasePriceOnProduct;
+        formData.continue_sell_if_stockout = continueSellIfStockout;
+        formData.has_lot = hasLot;
+        formData.barcode_value = JSON.stringify(barcodeValue);
+        formData.barcode_type = barcodeType.value;
 
-    const SubmitProductSettings = (data) => {
-        data.profit_fixed = profitFixed;
-        data.show_sell_price_on_product = showSellPriceOnProduct;
-        data.show_purchase_price_on_product = showPurchasePriceOnProduct;
-        data.continue_sell_if_stockout = continueSellIfStockout;
-        data.has_lot = hasLot; 
-
-        axios.put(`/inventory-management/products/settings/update/${data?.id}`, data)
+        axios.put(`/inventory-management/products/settings/update/${data?.id}`, formData)
             .then(info => {
                 Swal.fire({
                     position: 'top-end',
@@ -63,6 +70,9 @@ const ProductSettings = () => {
                 setShowPurchasePriceOnProduct(parseData.show_purchase_price_on_product == '1' ? true : false);
                 setContinueSellIfStockout(parseData.continue_sell_if_stockout == '1' ? true : false);
                 setHasLot(parseData.has_lot == '1' ? true : false);
+                setBarcodeValue(JSON.parse(parseData.barcode_value));
+                const dbBarcode = barcodeTypeValue?.find(singleItem => singleItem?.value == parseData?.barcode_type)
+                setBarcodeType(dbBarcode);
                 reset();
             } catch (error) {
                 console.error(error);
@@ -71,6 +81,29 @@ const ProductSettings = () => {
         };
         fetchData()
     }, []);
+
+    const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+    const checkedIcon = <CheckBoxIcon fontSize="small" />;
+
+    function removeDuplicatesByProperty(arr, key) {
+        const uniqueValues = new Set();
+        const resultArray = arr.filter((item) => {
+            const value = item[key];
+            if (!uniqueValues.has(value)) {
+                uniqueValues.add(value);
+                return true;
+            }
+            return false;
+        });
+
+        return resultArray;
+    }
+
+    const setBarcodeValueFN = (selected) => {
+        // const mergedArray = barcodeValue.concat(selected);
+        // const uniqueArray = removeDuplicatesByProperty(mergedArray, 'value');
+        setBarcodeValue(selected);
+    }
 
     return (
         <>
@@ -173,43 +206,78 @@ const ProductSettings = () => {
                             </div>
                                 <div className="row">
                                     <div className={"mt-3 col-sm-6"}>
-                                        <TextField
-                                            focused
-                                            variant='outlined'
-                                            fullWidth
-                                            autoComplete="off"
-                                            size='small'
-                                            type={'text'}
-                                            label={'Barcode Type'}
-                                            defaultValue={data?.barcode_type}
-                                            {...register('barcode_type', {
-                                                required: 'This field is required',
-                                            })}
-                                            onChange={e => {
-                                                clearErrors(["barcode_type"])
-                                            }}
-
+                                        <Autocomplete
+                                            disablePortal
+                                            size={'small'}
+                                            id="combo-box-demo"
+                                            onChange={(e, data) => setBarcodeType(data)}
+                                            options={barcodeTypeValue}
+                                            value={barcodeType}
                                             sx={{
-                                                '& .MuiFormLabel-root': {
-                                                    fontWeight: 400,
-                                                    fontSize: 14,
-                                                },
-                                                '& label': {},
-                                                '& label.Mui-focused': {
+                                                width: '100%',
+                                                fontSize: "12px",
+                                                '& label': {
                                                     color: '#1c2437',
-                                                    fontSize: 16
+                                                    fontSize: 12
                                                 },
-                                                '& .MuiOutlinedInput-root': {
-                                                    height: 35,
-                                                    backgroundColor: 'white',
-                                                    '&.Mui-focused fieldset': {
-                                                        borderColor: '#979797',
-                                                        borderWidth: '1px'
-                                                    },
+                                                '& MuiProper-root': {
+                                                    color: '#1c2437',
+                                                    fontSize: 12
                                                 },
-                                            }}/>
-                                        {errors.barcode_type &&
-                                            <span style={{fontSize: '10px'}}>{errors.barcode_type.message}</span>}
+                                            }}
+                                            renderInput={(params) =>
+                                                <TextField
+                                                    {...params}
+                                                    label="Barcode type"
+                                                />
+                                        }
+                                        />
+                                    </div>
+
+                                    <div className={"mt-3 col-sm-6"}>
+                                        <Autocomplete
+                                            multiple
+                                            size={'small'}
+                                            id="checkboxes-tags-demo"
+                                            options={[{value: "Singless", label: "Singless"}, {value: "Single", label: "Single"}]}
+                                            // disableCloseOnSelect
+
+                                            getOptionLabel={(option) => option.label}
+                                            value={barcodeValue}
+                                            renderOption={(props, option, { selected }) => (
+                                                <li {...props}>
+                                                    <Checkbox
+                                                        icon={icon}
+                                                        checkedIcon={checkedIcon}
+                                                        style={{marginRight: 8}}
+                                                        // checked={selected}
+                                                        checked={barcodeValue.some(singleItem => singleItem?.value === option?.value)}
+                                                    />
+                                                    {option.label}
+                                                </li>
+                                            )}
+                                            onChange={(e, data) => setBarcodeValueFN(data)}
+                                            // value={barcodeValue}
+                                            sx={{
+                                                width: '100%',
+                                                fontSize: "12px",
+                                                '& label': {
+                                                    color: '#1c2437',
+                                                    fontSize: 12
+                                                },
+                                                '& MuiProper-root': {
+                                                    color: '#1c2437',
+                                                    fontSize: 12
+                                                },
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    label="Checkboxes"
+                                                    placeholder="Barcode Value"
+                                                />
+                                            )}
+                                        />
                                     </div>
 
                                     <div className={"mt-3 col-sm-6"}>
@@ -220,52 +288,13 @@ const ProductSettings = () => {
                                             autoComplete="off"
                                             size='small'
                                             type={'text'}
-                                            label={'Barcode value'}
-                                            defaultValue={data?.barcode_value}
-                                            {...register('barcode_value', {
-                                                required: 'This field is required',
-                                            })}
-                                            onChange={e => {
-                                                clearErrors(["barcode_value"])
-                                            }}
-
-                                            sx={{
-                                                '& .MuiFormLabel-root': {
-                                                    fontWeight: 400,
-                                                    fontSize: 14,
-                                                },
-                                                '& label': {},
-                                                '& label.Mui-focused': {
-                                                    color: '#1c2437',
-                                                    fontSize: 16
-                                                },
-                                                '& .MuiOutlinedInput-root': {
-                                                    height: 35,
-                                                    backgroundColor: 'white',
-                                                    '&.Mui-focused fieldset': {
-                                                        borderColor: '#979797',
-                                                        borderWidth: '1px'
-                                                    },
-                                                },
-                                            }}/>
-                                        {errors.barcode_value &&
-                                            <span style={{fontSize: '10px'}}>{errors.barcode_value.message}</span>}
-                                    </div>
-                                    <div className={"mt-3 col-sm-6"}>
-                                        <TextField
-                                            focused
-                                            variant='outlined'
-                                            fullWidth
-                                            autoComplete="off"
-                                            size='small'
-                                            type={'text'}
-                                            defaultValue={data?.min_sell_price_on_purchase}
+                                            defaultValue={data?.min_profit_percentage_on_purchase_price}
                                             label={'Min profit percentage on purchase price'}
-                                            {...register('min_sell_price_on_purchase', {
+                                            {...register('min_profit_percentage_on_purchase_price', {
                                                 required: 'This field is required',
                                             })}
                                             onChange={e => {
-                                                clearErrors(["min_sell_price_on_purchase"])
+                                                clearErrors(["min_profit_percentage_on_purchase_price"])
                                             }}
 
                                             sx={{
@@ -287,8 +316,7 @@ const ProductSettings = () => {
                                                     },
                                                 },
                                             }}/>
-                                        {errors.min_sell_price_on_purchase && <span
-                                            style={{fontSize: '10px'}}>{errors.min_sell_price_on_purchase.message}</span>}
+                                        {errors.min_sell_price_on_purchase && <span style={{fontSize: '10px'}}>{errors.min_sell_price_on_purchase.message}</span>}
                                     </div>
 
                                     <div className={"mt-3 col-sm-6"}>
@@ -300,12 +328,12 @@ const ProductSettings = () => {
                                             size='small'
                                             type={'text'}
                                             label={'Profit percentage on purchase price'}
-                                            defaultValue={data?.profit_on_purchase_price}
-                                            {...register('profit_on_purchase_price', {
+                                            defaultValue={data?.profit_percentage_on_purchase_price}
+                                            {...register('profit_percentage_on_purchase_price', {
                                                 required: 'This field is required',
                                             })}
                                             onChange={e => {
-                                                clearErrors(["profit_on_purchase_price"])
+                                                clearErrors(["profit_percentage_on_purchase_price"])
                                             }}
 
                                             sx={{
@@ -328,7 +356,7 @@ const ProductSettings = () => {
                                                 },
                                             }}/>
                                         {errors.profit_on_purchase_price && <span
-                                            style={{fontSize: '10px'}}>{errors.profit_on_purchase_price.message}</span>}
+                                            style={{fontSize: '10px'}}>{errors.profit_percentage_on_purchase_price.message}</span>}
                                     </div>
 
 
@@ -368,8 +396,7 @@ const ProductSettings = () => {
                                                     },
                                                 },
                                             }}/>
-                                        {errors.sku_prefix &&
-                                            <span style={{fontSize: '10px'}}>{errors.sku_prefix.message}</span>}
+                                        {errors.sku_prefix && <span style={{fontSize: '10px'}}>{errors.sku_prefix.message}</span>}
                                     </div>
 
                                     <div className={"mt-3 col-sm-6"}>
@@ -408,8 +435,7 @@ const ProductSettings = () => {
                                                     },
                                                 },
                                             }}/>
-                                        {errors.lot_prefix &&
-                                            <span style={{fontSize: '10px'}}>{errors.lot_prefix.message}</span>}
+                                        {errors.lot_prefix && <span style={{fontSize: '10px'}}>{errors.lot_prefix.message}</span>}
                                     </div>
                                 </div>
                                 <div className="text-end mt-4">

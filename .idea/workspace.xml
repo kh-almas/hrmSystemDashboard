@@ -8,13 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/axios.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/OpeningStock.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/OpeningStock.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/ProductInitialization.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/ProductInitialization.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductSettings/ProductSettings.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductSettings/ProductSettings.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/login/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/login/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/layouts-routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/layouts-routes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +32,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "alu",
-    "last_opened_file_path": "D:/hrmSystemFinal/hrmSystemDashboard/src/components/dashboard/inventoryManagement/Inventory",
+    "last_opened_file_path": "D:/hrmSystemFinal/hrmSystemDashboard/src/components/common/Query/inventory",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -49,11 +44,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\Query\inventory" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Inventory" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Products\EditProduct" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Products\ProductList" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\modal" />
-      <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\Query\inventory" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Products\EditProduct" />
@@ -81,7 +76,10 @@
       <workItem from="1704344644978" duration="11004000" />
       <workItem from="1705490091791" duration="2714000" />
       <workItem from="1705559431028" duration="9270000" />
-      <workItem from="1705728302860" duration="16329000" />
+      <workItem from="1705728302860" duration="16665000" />
+      <workItem from="1705822643646" duration="2777000" />
+      <workItem from="1705829647308" duration="11110000" />
+      <workItem from="1705902263291" duration="17599000" />
     </task>
     <servers />
   </component>
@@ -250,6 +248,48 @@
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx</url>
           <line>167</line>
           <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>172</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>79</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>110</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>112</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>113</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>115</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx</url>
+          <line>131</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="44" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
