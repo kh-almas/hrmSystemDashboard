@@ -1,68 +1,111 @@
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import ProductSelectTable from "./ProductSelectTable";
+import Chip from '@mui/material/Chip';
 
 const ProductSelect = () => {
-    const [showDiv, setShowDiv] = useState(false);
-    const [value, setValue] = useState(null);
+    const inputRef = useRef(null);
+    const secondBoxRef = useRef(null);
+    const [isFocused, setIsFocused] = useState(false);
 
-    const arrayOfObjects = [
-        { id: 1, name: 'Object 1' },
-        { id: 2, name: 'Object 2' },
-        { id: 3, name: 'Object 3' },
-        { id: 4, name: 'Object 4' },
-        { id: 5, name: 'Object 5' },
-        { id: 6, name: 'Object 6' },
-        { id: 7, name: 'Object 7' },
-        { id: 8, name: 'Object 8' },
-        { id: 9, name: 'Object 9' },
-        { id: 10, name: 'Object 10' },
-    ];
+    const handleBoxClick = (event) => {
+        event.stopPropagation();
+        if (inputRef.current) {
+            inputRef.current.focus();
+            setIsFocused(true);
+        }
+    };
 
-    const handleDivClick = () => {
-        setShowDiv(!showDiv);
+    const handleClickOutside = (event) => {
+        if (secondBoxRef.current && !secondBoxRef.current.contains(event.target)) {
+            setIsFocused(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
+
+    const handleDelete = () => {
+        console.info('You clicked the delete icon.');
     };
 
     return (
-        <div className={'mt-5 mb-5'}>
-            <Autocomplete
-                value={value}
-                onChange={(event, newValue) => {
-                    setValue(newValue);
+        <Box sx={{
+            position: "relative",
+        }}>
+            <Box
+                component="form"
+                sx={{
+                    display: 'flex',
+                    width: '100%',
+                    border: '1px solid red',
+                    marginBottom: 3,
+                    zIndex: 999,
+                    display: 'flex',
+                    alignItems: 'center',
+                    paddingLeft: 1
+
                 }}
-                inputValue={value}
-                onInputChange={(event, newInputValue) => {
-                    setValue(newInputValue);
-                }}
-                options={arrayOfObjects}
-                getOptionLabel={(option) => (option ? option?.name : '')}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="Custom Autocomplete"
-                        focused={showDiv}
-                        onClick={handleDivClick}
-                    />
-                )}
-            />
-            {showDiv && (
-                <div
-                    style={{
-                        width: '100%', // Adjust the width as needed
-                        padding: '10px',
-                        height: "500px",
-                        backgroundColor: 'white',
-                        zIndex: 10,
-                        boxShadow: '4px 5px 25px 1px #737373',
-                        borderRadius: '7px',
-                        top: '50px', // Adjust the position as needed
+                noValidate
+                autoComplete="off"
+                onClick={handleBoxClick}
+            >
+                <Box
+                    sx={{
+                        marginRight: "3px"
                     }}
                 >
-                    {/* Your custom content for the div */}
-                    Div Content
-                </div>
+                    <Chip label="Deletable" onDelete={handleDelete} />
+                </Box>
+                <TextField
+                    id="filled-basic"
+                    label="Filled"
+                    variant="filled"
+                    size={'small'}
+                    inputRef={inputRef}
+                    sx={{
+                        width: 300,
+                        '& label': {
+                            fontSize: 12,
+                        },
+                        '& label.Mui-focused': {
+                            fontSize: 16,
+                        },
+                    }}
+                />
+            </Box>
+            {isFocused && (
+                <Box
+                    ref={secondBoxRef}
+                    component="form"
+                    sx={{
+                        // display: 'flex',
+                        // width: '100%',
+                        // border: '1px solid red',
+                        // marginBottom: 3,
+                        position: 'absolute',
+                        top: '46px',
+                        width: '100%',
+                        // height: '500px',
+                        border: '1px solid red',
+                        backgroundColor: '#ffffff',
+                        zIndex: 9999,
+                        borderRadius: '5px',
+                        padding: '7px'
+                    }}
+                    noValidate
+                    autoComplete="off"
+                >
+                    <ProductSelectTable></ProductSelectTable>
+                </Box>
             )}
-        </div>
+        </Box>
     );
 };
 
