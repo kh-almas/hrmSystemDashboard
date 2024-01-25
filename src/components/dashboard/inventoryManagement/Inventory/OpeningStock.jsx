@@ -20,7 +20,7 @@ import TextField from "@mui/material/TextField";
 import AddOpeningStock from "./Form/AddOpeningStock";
 
 const OpeningStock = () => {
-  const [showFromForAdd , setShowFromForAdd] = useState(false);
+  const [showFromForAdd , setShowFromForAdd] = useState(true);
 
   return (
     <>

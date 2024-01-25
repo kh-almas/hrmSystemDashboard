@@ -17,6 +17,7 @@ import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForS
 import dayjs from "dayjs";
 import moment from 'moment';
 import Swal from "sweetalert2";
+import ProductSelect from "./component/ProductSelect";
 
 const AddOpeningStock = () => {
     const [branch, setBranch] = useState([]);
@@ -77,6 +78,9 @@ const AddOpeningStock = () => {
         <>
             <div className="p-30">
                 <form onSubmit={handleSubmit(onSubmit)}>
+                    <div>
+                        <ProductSelect></ProductSelect>
+                    </div>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Autocomplete
