@@ -22,6 +22,7 @@ import AddOpeningStock from "./Form/AddOpeningStock";
 const OpeningStock = () => {
   const [showFromForAdd , setShowFromForAdd] = useState(true);
 
+
   return (
     <>
       <Breadcrumb parent="Inventory management" title="Opening Stock" />

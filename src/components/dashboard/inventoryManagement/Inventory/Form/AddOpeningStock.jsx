@@ -20,16 +20,50 @@ import Swal from "sweetalert2";
 import ProductSelect from "./component/ProductSelect";
 
 const AddOpeningStock = () => {
+    const [selectedBranch, setSelectedBranch] = useState({});
+    const [batchNo, setBatchNo] = useState('');
+    const [uniqueKey, setUniqueKey] = useState('');
+    const [selected, setSelected] = React.useState([]);
     const [branch, setBranch] = useState([]);
     const [sku, setSku] = useState([]);
     const [date, setDate] = useState('');
+    const [data, setData] = React.useState([]);
     const {register, handleSubmit, formState: { errors },clearErrors} = useForm();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [allSkuStatus, allSkuReFetch, allSku, allSkuError] = getAllSKUForSelect();
+    function generateSkuCode(count) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let skuCode = '';
 
-    // console.log('date', date)
+        for (let i = 0; i < count; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            skuCode += characters.charAt(randomIndex);
+        }
+
+        return skuCode;
+    }
+
+
+
+    useEffect(() => {
+        const batchNo = generateSkuCode(12);
+        setBatchNo(batchNo);
+
+        const uniqueId = generateSkuCode(8);
+        setUniqueKey(uniqueId);
+
+        setDate(moment(new Date()).format('YYYY-MM-DD'));
+    }, [])
+    // console.log('batchNo', batchNo)
+
+    // console.log('data', data);
     const onSubmit = (data) => {
-        data.date = date
+        data.branch_id = selectedBranch?.id;
+        data.date = date;
+        data.uniqueKey = uniqueKey;
+        data.selectedProduct = selected;
+        data.batch_no = batchNo;
+        data.unique_key = `opening_stock_${uniqueKey}`;
         console.log('data', data);
         // axios.post('/inventory-management/stock/opening/add', data)
         //     .then(info => {
@@ -69,126 +103,107 @@ const AddOpeningStock = () => {
     useEffect(() => {
         setBranch(allBranch?.data?.body?.data?.data);
     }, [allBranch])
+    //
+    // useEffect(() => {
+    //     // setData(allSku?.data?.body?.data);
+    //     console.log('allSku', allSku?.data?.body?.data)
+    // }, [allSku])
 
-    useEffect(() => {
-        setSku(allSku?.data?.body?.data);
-    }, [allSku])
+
 
     return (
         <>
             <div className="p-30">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
-                        <ProductSelect></ProductSelect>
-                    </div>
-                    <div className="row row-cols-1 row-cols-lg-2">
-                        <div>
-                            <Autocomplete
-                                disablePortal
-                                size={'small'}
-                                id="branch"
-                                options={branch}
-                                getOptionLabel={(option) => option ? option?.name : ''}
-
-                                sx={{
-                                    width: '100%',
-                                    '& label': {
-                                        fontSize: 12,
-                                    },
-                                    '& label.Mui-focused': {
-                                        fontSize: 16
-                                    }
-                                }}
-                                renderInput={(params) =>
-                                    <TextField
-                                        {...params}
-                                        label="Branch"
-                                        {...register('branch', {
-                                            required: 'This field is required',
-                                        })}
-                                    />
+                        <Autocomplete
+                            disablePortal
+                            size={'small'}
+                            id="branch"
+                            options={branch}
+                            getOptionLabel={(option) => option ? option?.name : ''}
+                            onChange={(event, value) => {
+                                console.log('value', value)
+                                setSelectedBranch(value);  {/* Set the value in the form */}
+                            }}
+                            sx={{
+                                width: '100%',
+                                marginTop: 3,
+                                '& label': {
+                                    fontSize: 12,
+                                },
+                                '& label.Mui-focused': {
+                                    fontSize: 16
+                                }
+                            }}
+                            renderInput={(params) =>
+                                <TextField
+                                    {...params}
+                                    label="Branch"
+                                    {...register('branch', {
+                                        required: 'This field is required',
+                                    })}
+                                />
                             }
-                            />
-                            {errors.branch && <span style={{fontSize: '10px'}}>{errors.branch.message}</span>}
-                        </div>
-                        <div>
-                            <Autocomplete
-                                multiple
-                                id="tags-outlined"
-                                options={sku || []}
-                                getOptionLabel={(option) => option ? option?.name : ''}
-                                filterSelectedOptions
-                                onInputChange={(event, value) => {
-                                    const searchText = event.target.value;
-                                    console.log('Manually entered search text:', searchText);
-                                    // You can do whatever you want with the searchText here
-                                }}
-                                sx={{
-                                    width: '100%',
-                                    '& label': {
-                                        fontSize: 12,
-                                    },
-                                    '& label.Mui-focused': {
-                                        fontSize: 16
-                                    }
-                                }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="filterSelectedOptions"
-                                        placeholder="Favorites"
-                                    />
-                                )}
-                            />
-                            {/*<Autocomplete*/}
-                            {/*    disablePortal*/}
-                            {/*    size={'small'}*/}
-                            {/*    id="combo-box-demo"*/}
-                            {/*    options={sku}*/}
-                            {/*    getOptionLabel={(option) => option ? option?.name : ''}*/}
-                            {/*    // onChange={(e) => console.log('tor mayre bap',e.target.value)}*/}
-                            {/*    onInputChange={(event, value) => {*/}
-                            {/*        const searchText = event.target.value;*/}
-                            {/*        console.log('Manually entered search text:', searchText);*/}
-                            {/*        // You can do whatever you want with the searchText here*/}
-                            {/*    }}*/}
-                            {/*    sx={{*/}
-                            {/*        width: '100%',*/}
-                            {/*        '& label': {*/}
-                            {/*            fontSize: 12,*/}
-                            {/*        },*/}
-                            {/*        '& label.Mui-focused': {*/}
-                            {/*            fontSize: 16*/}
-                            {/*        }*/}
-                            {/*    }}*/}
-                            {/*    renderInput={(params) =>*/}
-                            {/*        <TextField*/}
-                            {/*            {...params}*/}
-                            {/*            label="SKU"*/}
+                        />
+                        {errors.branch && <span style={{fontSize: '10px'}}>{errors.branch.message}</span>}
+                    </div>
 
-                            {/*            {...register('sku', {*/}
-                            {/*                required: 'This field is required',*/}
-                            {/*            })}*/}
-                            {/*        />}*/}
-                            {/*/>*/}
-                            {errors.sku && <span style={{fontSize: '10px'}}>{errors.sku.message}</span>}
-                        </div>
+                    <div style={{marginTop: "24px"}}>
+                        <ProductSelect selected={selected} setSelected={setSelected} data={data} setData={setData}></ProductSelect>
+                    </div>
+
+                    <div className="row row-cols-1 row-cols-lg-2">
+                        {/*<div>*/}
+                        {/*    <TextField*/}
+                        {/*        readOnly*/}
+                        {/*        variant='outlined'*/}
+                        {/*        fullWidth*/}
+                        {/*        autoComplete="off"*/}
+                        {/*        size='small'*/}
+                        {/*        type='text'*/}
+                        {/*        value={batchNo}*/}
+                        {/*        label='Batch no'*/}
+                        {/*        {...register('batch_no', {*/}
+                        {/*            required: 'This field is required',*/}
+                        {/*        })}*/}
+                        {/*        onChange={e => {*/}
+                        {/*            clearErrors(["batch_no"])*/}
+                        {/*        }}*/}
+                        {/*        sx={{*/}
+                        {/*            marginTop: 2,*/}
+                        {/*            '& .MuiFormLabel-root': {*/}
+                        {/*                fontWeight: 400,*/}
+                        {/*                fontSize: 14,*/}
+                        {/*            },*/}
+                        {/*            '& label': {},*/}
+                        {/*            '& label.Mui-focused': {*/}
+                        {/*                color: '#1c2437',*/}
+                        {/*                fontSize: 16*/}
+                        {/*            },*/}
+                        {/*            '& .MuiOutlinedInput-root': {*/}
+                        {/*                height: 35,*/}
+                        {/*                backgroundColor: 'white',*/}
+                        {/*                '&.Mui-focused fieldset': {*/}
+                        {/*                    borderColor: '#979797',*/}
+                        {/*                    borderWidth: '1px'*/}
+                        {/*                },*/}
+                        {/*            },*/}
+                        {/*        }}*/}
+                        {/*    />*/}
+                        {/*    {errors.batch_no && <span style={{ fontSize: '10px' }}>{errors.batch_no.message}</span>}*/}
+                        {/*</div>*/}
+
                         <div>
                             <TextField
+                                readOnly
                                 variant='outlined'
                                 fullWidth
                                 autoComplete="off"
                                 size='small'
-                                type={'text'}
-                                value={'value'}
-                                label={'Batch no'}
-                                {...register('batch_no', {
-                                    required: 'This field is required',
-                                })}
-                                onChange={e => {
-                                    clearErrors(["batch_no"])
-                                }}
-
+                                type='text'
+                                value={batchNo}
+                                label='Batch no'
                                 sx={{
                                     marginTop: 2,
                                     '& .MuiFormLabel-root': {
@@ -208,9 +223,10 @@ const AddOpeningStock = () => {
                                             borderWidth: '1px'
                                         },
                                     },
-                                }}/>
-                            {errors.batch_no && <span style={{fontSize: '10px'}}>{errors.batch_no.message}</span>}
+                                }}
+                            />
                         </div>
+
                         <div>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 {/*<DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />*/}
@@ -381,8 +397,7 @@ const AddOpeningStock = () => {
                                         },
                                     },
                                 }}/>
-                            {errors.total_discount &&
-                                <span style={{fontSize: '10px'}}>{errors.total_discount.message}</span>}
+                            {errors.total_discount && <span style={{fontSize: '10px'}}>{errors.total_discount.message}</span>}
                         </div>
 
                     </div>

@@ -7,7 +7,7 @@ const GetAllSKUForSelect = () => {
     const {status: allSkuStatus = '', refetch: allSkuReFetch, data: allSku = [], error: allSkuError} = useQuery({
         queryKey: ['GetAllSKUForSelect'],
         queryFn: async () => {
-            return axios.get('/inventory-management/products//list/combo/select')
+            return axios.get('/inventory-management/products/list/combo/select')
         }
     });
 
