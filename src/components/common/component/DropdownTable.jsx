@@ -1,131 +1,180 @@
-import React, {useEffect, useState} from 'react';
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { DataGrid } from '@mui/x-data-grid';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/Input';
+import React, { useRef, useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Chip from '@mui/material/Chip';
+import MultiselectTable from "./CustomeMultiselect/MultiselectTable";
 
 const DropdownTable = () => {
-    const [selectedRows, setSelectedRows] = useState([]);
-    const [showSelectData, setShowSelectData] = useState([]);
-    const [anchorEl, setAnchorEl] = useState(null);
-    console.log(showSelectData, 'showSelectData');
+    const [selected, setSelected] = React.useState([]);
+    const [data, setData] = React.useState([]);
+    const inputRef = useRef(null);
+    const secondBoxRef = useRef(null);
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleBoxClick = (event) => {
+        event.stopPropagation();
+        if (inputRef.current) {
+            inputRef.current.focus();
+            setIsFocused(true);
+        }
+    };
+
+    const handleClickOutside = (event) => {
+        if (secondBoxRef.current && !secondBoxRef.current.contains(event.target)) {
+            setIsFocused(false);
+        }
+    };
 
     useEffect(() => {
-        setShowSelectData([]);
-        selectedRows?.map(singleData => setShowSelectData(pre_list => [...pre_list, singleData.firstName]))
-    }, [selectedRows]);
+        document.addEventListener('click', handleClickOutside);
 
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
 
-
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+    const handleDelete = (id) => {
+        const afterdelete = selected?.filter(item => item.id !== id);
+        setSelected(afterdelete);
+        // console.info('You clicked the delete icon.', afterdelete);
     };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
 
+    const [boxHeight, setBoxHeight] = useState(46); // Default height, adjust as needed
+    const boxRef = useRef(null);
 
-    //table
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'firstName', headerName: 'First name', width: 130 },
-        { field: 'lastName', headerName: 'Last name', width: 130 },
-        {
-            field: 'age',
-            headerName: 'Age',
-            type: 'number',
-            width: 90,
-        }
+    useEffect(() => {
+        const updateBoxHeight = () => {
+            if (boxRef.current) {
+                const height = boxRef.current.getBoundingClientRect().height;
+                setBoxHeight(height);
+            }
+        };
+
+        updateBoxHeight(); // Initial update
+        window.addEventListener('resize', updateBoxHeight);
+
+        return () => {
+            window.removeEventListener('resize', updateBoxHeight);
+        };
+    }, [selected]); // Update when the selected items change
+
+    const allData = [
+        { id: 2, name: 'Donut', calories: 'asd', fat: 25.0, carbs: 51, protein: 4.9 },
+        { id: 3, name: 'Eclair', calories: 262, fat: 16.0, carbs: 24, protein: 6.0 },
+        { id: 4, name: 'Frozen yoghurt', calories: 159, fat: 6.0, carbs: 24, protein: 4.0 },
+        { id: 5, name: 'Gingerbread', calories: 356, fat: 16.0, carbs: 49, protein: 3.9 },
+        { id: 6, name: 'Honeycomb', calories: 408, fat: 3.2, carbs: 87, protein: 6.5 },
+        { id: 7, name: 'Ice cream sandwich', calories: 237, fat: 9.0, carbs: 37, protein: 4.3 },
+        { id: 8, name: 'Jelly Bean', calories: 375, fat: 0.0, carbs: 94, protein: 0.0 },
+        { id: 9, name: 'KitKat', calories: 518, fat: 26.0, carbs: 65, protein: 7.0 },
+        { id: 10, name: 'Lollipop', calories: 392, fat: 0.2, carbs: 98, protein: 0.0 },
+        { id: 11, name: 'Marshmallow', calories: 318, fat: 0, carbs: 81, protein: 2.0 },
+        { id: 12, name: 'Nougat', calories: 360, fat: 19.0, carbs: 9, protein: 37.0 },
+        { id: 13, name: 'Oreo', calories: 437, fat: 18.0, carbs: 63, protein: 4.0 }
     ];
 
-    const rows = [
-        { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-        { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-        { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-        { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-        { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-        { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-        { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-        { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-        { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-    ];
-    const checkFN = (event) => {
-        setAnchorEl(event.currentTarget);
-        console.log('akjdfhlak');
+    useEffect(() => {
+        setData(allData);
+    }, [])
+
+
+
+    function searchAndSort(input) {
+        // console.log('input', input);
+        const lowerCaseInput = input.toLowerCase();
+
+        const filteredAndSortedArray = allData
+            .filter(obj => {
+                return Object.values(obj).some(value => {
+                    if (typeof value === 'string' || typeof value === 'number') {
+                        const stringValue = typeof value === 'number' ? value.toString() : value;
+                        return stringValue.toLowerCase().includes(lowerCaseInput);
+                    }
+                    return false;
+                });
+            })
+            .sort((a, b) => {
+                const valueA = Object.values(a).join('').toLowerCase();
+                const valueB = Object.values(b).join('').toLowerCase();
+                return valueA.localeCompare(valueB);
+            });
+
+        setData(filteredAndSortedArray);
+        // console.log('filteredAndSortedArray', filteredAndSortedArray);
     }
 
-
-
-
-
     return (
-        <>
-            {/*<Autocomplete*/}
-            {/*    disablePortal*/}
-            {/*    id="combo-box-demo"*/}
-            {/*    options={top100Films}*/}
-            {/*    sx={{ width: 300 }}*/}
-            {/*    renderInput={(params) => <TextField {...params} label="Movie" />}*/}
-            {/*/>*/}
-            <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                options={[
-                    { label: 'The Shawshank Redemption', year: 1994 },
-                    { label: 'The Godfather', year: 1972 },
-                    { label: 'The Godfather: Part II', year: 1974 },
-                    { label: 'The Dark Knight', year: 2008 },
-                    { label: '12 Angry Men', year: 1957 },
-                    { label: "Schindler's List", year: 1993 },
-                    { label: 'Pulp Fiction', year: 1994 }]}
-                sx={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Movie" />}
-            />
+        <Box sx={{position: "relative",}}>
+            <Box
+                component="form"
+                sx={{
+                    display: 'flex',
+                    width: '100%',
+                    border: '1px solid red',
+                    marginBottom: 3,
+                    zIndex: 999,
+                    alignItems: 'center',
+                    paddingLeft: 1,
+                    minHight: `${boxHeight}px`,
 
-            <input onClick={checkFN} name={''} value={showSelectData}/>
-            <button onClick={() => setShowSelectData('')}>clear</button>
-            {/*<TextField*/}
+                }}
+                noValidate
+                autoComplete="off"
+                onClick={handleBoxClick}
+            >
+                <Box
+                    sx={{marginRight: "3px"}}
+                    ref={boxRef}
+                >
+                    {
+                        selected?.map(item => <Chip label={item.name} onDelete={() => handleDelete(item.id)} sx={{margin: "2px"}} />)
+                    }
 
-            {/*    label="Enter your text"*/}
-            {/*    variant="outlined"*/}
-            {/*    width="450px"*/}
-            {/*    // You can add more props as needed*/}
-            {/*/>*/}
-            <div>
-                <Button aria-describedby={id} variant="contained" onClick={handleClick}>
-                    Open Popover
-                </Button>
-                <Popover id={id} open={open} anchorEl={anchorEl} onClose={handleClose} anchorOrigin={{vertical: 'bottom', horizontal: 'left',}}>
-                    <Typography sx={{ p: 2 }}>
-                        <div style={{ height: 400, width: '100%' }}>
-                            <DataGrid
-                                rows={rows}
-                                columns={columns}
-                                initialState={{
-                                pagination: {
-                                    paginationModel: { page: 0, pageSize: 13 },
-                                },
-                            }}
-                                checkboxSelection
-                                onRowSelectionModelChange={(ids) => {
-                                    const selectedIDs = new Set(ids);
-                                    const selectedRows = rows.filter((row) =>
-                                        selectedIDs.has(row.id)
-                                    );
-                                    setSelectedRows(selectedRows);
-                                }}
-                            />
-                        </div>
-                    </Typography>
-                </Popover>
-            </div>
+                    <TextField
+                        id="filled-basic"
+                        label="Filled"
+                        variant="filled"
+                        size={'small'}
+                        inputRef={inputRef}
+                        onChange={(e) => {
+                            searchAndSort(e.target.value)
+                            // console.log(e.target.value)
+                        }}
+                        sx={{
+                            width: 300,
+                            '& label': {
+                                fontSize: 12,
+                            },
+                            '& label.Mui-focused': {
+                                fontSize: 16,
+                            },
+                        }}
+                    />
 
-        </>
+                </Box>
+
+            </Box>
+            {isFocused && (
+                <Box
+                    ref={secondBoxRef}
+                    component="form"
+                    sx={{
+                        position: 'absolute',
+                        top: `calc(${boxHeight}px + 4px)`,
+                        width: '100%',
+                        border: '1px solid red',
+                        backgroundColor: '#ffffff',
+                        zIndex: 9999,
+                        borderRadius: '5px',
+                        padding: '7px'
+                    }}
+                    noValidate
+                    autoComplete="off"
+                >
+                    <MultiselectTable selected={selected} setSelected={setSelected} data={data}></MultiselectTable>
+                </Box>
+            )}
+        </Box>
     );
 };
 

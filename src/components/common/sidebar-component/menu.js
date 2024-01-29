@@ -200,7 +200,7 @@ export const MENUITEMS = [
       {
         title: "Dropdown",
         type: "link",
-        path: "/dashboard/dropdown",
+        path: "/dashboard/multiple/dropdown",
       },
       {
         title: "Dropdown2",

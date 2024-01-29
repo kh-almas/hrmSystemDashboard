@@ -108,9 +108,7 @@ const ProductSelect = ({selected, setSelected, data, setData}) => {
     }
 
     return (
-        <Box sx={{
-            position: "relative",
-        }}>
+        <Box sx={{position: "relative",}}>
             <Box
                 component="form"
                 sx={{

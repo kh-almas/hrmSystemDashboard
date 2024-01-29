@@ -428,7 +428,7 @@ export const routes = [
     Component: <MaterialReactTableExample />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/dropdown`,
+    path: `${process.env.PUBLIC_URL}/dashboard/multiple/dropdown`,
     Component: <DropdownTable />,
   },
   {
