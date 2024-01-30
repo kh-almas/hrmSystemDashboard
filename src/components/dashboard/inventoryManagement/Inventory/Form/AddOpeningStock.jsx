@@ -17,70 +17,158 @@ import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForS
 import dayjs from "dayjs";
 import moment from 'moment';
 import Swal from "sweetalert2";
-import ProductSelect from "./component/ProductSelect";
+import ProductSelect from "../../../../common/component/SingleProductSelect/ProductSelect";
+import DataTable from "../../../../common/component/DataTable";
 
-const AddOpeningStock = () => {
+const AddOpeningStock = ({allOpeningStockReFetch}) => {
+    const [selectedBranch, setSelectedBranch] = useState({});
+    const [batchNo, setBatchNo] = useState('');
+    const [uniqueKey, setUniqueKey] = useState('');
+    const [selected, setSelected] = React.useState([]);
+    const [showSelected, setShowSelected] = React.useState('');
+
     const [branch, setBranch] = useState([]);
     const [sku, setSku] = useState([]);
     const [date, setDate] = useState('');
-    const {register, handleSubmit, formState: { errors },clearErrors} = useForm();
+    const [data, setData] = React.useState([]);
+    const {register,
+        handleSubmit,
+        formState: { errors },
+        clearErrors,
+        reset
+    } = useForm();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [allSkuStatus, allSkuReFetch, allSku, allSkuError] = getAllSKUForSelect();
 
-    // console.log('date', date)
+    function generateSkuCode(count) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let code = '';
+
+        for (let i = 0; i < count; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            code += characters.charAt(randomIndex);
+        }
+
+        return code;
+    }
+
+
+
+    useEffect(() => {
+        const batchNo = generateSkuCode(12);
+        setBatchNo(batchNo);
+
+        const uniqueId = generateSkuCode(8);
+        setUniqueKey(uniqueId);
+
+        setDate(moment(new Date()).format('YYYY-MM-DD'));
+    }, [])
+
     const onSubmit = (data) => {
-        data.date = date
-        console.log('data', data);
-        // axios.post('/inventory-management/stock/opening/add', data)
-        //     .then(info => {
-        //         if(info?.status == 200)
-        //         {
-        //             Swal.fire({
-        //                 position: 'top-end',
-        //                 icon: 'success',
-        //                 title: 'Your work has been saved',
-        //                 showConfirmButton: false,
-        //                 timer: 1500
-        //             })
-        //         }
-        //     })
-        //     .catch(e => {
-        //         console.log(e);
-        //         if(e?.response?.data?.body?.message?.errno == 1062){
-        //             Swal.fire({
-        //                 position: 'top-end',
-        //                 icon: 'error',
-        //                 title: 'Can not duplicate variant name',
-        //                 showConfirmButton: false,
-        //                 timer: 1500
-        //             })
-        //         }else {
-        //             Swal.fire({
-        //                 position: 'top-end',
-        //                 icon: 'error',
-        //                 title: `${e?.response?.data?.body?.message?.details[0].message}`,
-        //                 showConfirmButton: false,
-        //                 timer: 1500
-        //             })
-        //         }
-        //     })
+        data.branch_id = selectedBranch?.id;
+        data.date = date;
+        data.sku_id = selected?.[0]?.id;
+        data.batch_no = batchNo;
+        data.unique_key = `opening_stock_${uniqueKey}`;
+        axios.post('/inventory-management/stock/opening/add', data)
+            .then(info => {
+                if(info?.status == 200)
+                {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    allOpeningStockReFetch();
+                    reset();
+                    setSelected([]);
+                    setSelectedBranch({});
+                    setDate(moment(new Date()).format('YYYY-MM-DD'));
+                    const batchNo = generateSkuCode(12);
+                    setBatchNo(batchNo);
+                    setShowSelected('')
+                    const uniqueId = generateSkuCode(8);
+                    setUniqueKey(uniqueId);
+                }
+            })
+            .catch(e => {
+                console.log(e);
+                if(e?.response?.data?.body?.message?.errno == 1062){
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Can not duplicate variant name',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }else {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
+                        title: `Something is wrong`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            })
     };
 
     useEffect(() => {
         setBranch(allBranch?.data?.body?.data?.data);
     }, [allBranch])
-
+    //
     useEffect(() => {
-        setSku(allSku?.data?.body?.data);
+        setData(allSku?.data?.body?.data);
     }, [allSku])
+
+    const headCells = [
+        {
+            id: '',
+            numeric: false,
+            disablePadding: true,
+            label: '',
+        },
+        {
+            id: 'name',
+            numeric: false,
+            disablePadding: true,
+            label: 'Name',
+        },
+        {
+            id: 'sku',
+            numeric: false,
+            disablePadding: false,
+            label: 'SKU',
+        },
+        {
+            id: 'category_name',
+            numeric: false,
+            disablePadding: false,
+            label: 'Category Name',
+        },
+        {
+            id: 'brand_name',
+            numeric: false,
+            disablePadding: false,
+            label: 'Brand Name',
+        },
+        {
+            id: 'model_name',
+            numeric: false,
+            disablePadding: false,
+            label: 'Model Name',
+        }
+    ];
+
+
 
     return (
         <>
             <div className="p-30">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <ProductSelect></ProductSelect>
-                    </div>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
                             <Autocomplete
@@ -89,9 +177,12 @@ const AddOpeningStock = () => {
                                 id="branch"
                                 options={branch}
                                 getOptionLabel={(option) => option ? option?.name : ''}
-
+                                onChange={(event, value) => {
+                                    setSelectedBranch(value);
+                                }}
                                 sx={{
                                     width: '100%',
+                                    marginTop: 3,
                                     '& label': {
                                         fontSize: 12,
                                     },
@@ -103,99 +194,38 @@ const AddOpeningStock = () => {
                                     <TextField
                                         {...params}
                                         label="Branch"
-                                        {...register('branch', {
+                                        {...register('branch_id', {
                                             required: 'This field is required',
                                         })}
                                     />
-                            }
+                                }
                             />
                             {errors.branch && <span style={{fontSize: '10px'}}>{errors.branch.message}</span>}
                         </div>
-                        <div>
-                            <Autocomplete
-                                multiple
-                                id="tags-outlined"
-                                options={sku || []}
-                                getOptionLabel={(option) => option ? option?.name : ''}
-                                filterSelectedOptions
-                                onInputChange={(event, value) => {
-                                    const searchText = event.target.value;
-                                    console.log('Manually entered search text:', searchText);
-                                    // You can do whatever you want with the searchText here
-                                }}
-                                sx={{
-                                    width: '100%',
-                                    '& label': {
-                                        fontSize: 12,
-                                    },
-                                    '& label.Mui-focused': {
-                                        fontSize: 16
-                                    }
-                                }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="filterSelectedOptions"
-                                        placeholder="Favorites"
-                                    />
-                                )}
-                            />
-                            {/*<Autocomplete*/}
-                            {/*    disablePortal*/}
-                            {/*    size={'small'}*/}
-                            {/*    id="combo-box-demo"*/}
-                            {/*    options={sku}*/}
-                            {/*    getOptionLabel={(option) => option ? option?.name : ''}*/}
-                            {/*    // onChange={(e) => console.log('tor mayre bap',e.target.value)}*/}
-                            {/*    onInputChange={(event, value) => {*/}
-                            {/*        const searchText = event.target.value;*/}
-                            {/*        console.log('Manually entered search text:', searchText);*/}
-                            {/*        // You can do whatever you want with the searchText here*/}
-                            {/*    }}*/}
-                            {/*    sx={{*/}
-                            {/*        width: '100%',*/}
-                            {/*        '& label': {*/}
-                            {/*            fontSize: 12,*/}
-                            {/*        },*/}
-                            {/*        '& label.Mui-focused': {*/}
-                            {/*            fontSize: 16*/}
-                            {/*        }*/}
-                            {/*    }}*/}
-                            {/*    renderInput={(params) =>*/}
-                            {/*        <TextField*/}
-                            {/*            {...params}*/}
-                            {/*            label="SKU"*/}
 
-                            {/*            {...register('sku', {*/}
-                            {/*                required: 'This field is required',*/}
-                            {/*            })}*/}
-                            {/*        />}*/}
-                            {/*/>*/}
-                            {errors.sku && <span style={{fontSize: '10px'}}>{errors.sku.message}</span>}
+                        <div>
+                            <ProductSelect showSelected={showSelected} setShowSelected={setShowSelected} selected={selected} setSelected={setSelected} data={data} headCells={headCells}></ProductSelect>
                         </div>
+
                         <div>
                             <TextField
+                                readOnly
                                 variant='outlined'
                                 fullWidth
                                 autoComplete="off"
                                 size='small'
-                                type={'text'}
-                                value={'value'}
-                                label={'Batch no'}
-                                {...register('batch_no', {
-                                    required: 'This field is required',
-                                })}
-                                onChange={e => {
-                                    clearErrors(["batch_no"])
-                                }}
-
+                                type='text'
+                                value={batchNo}
+                                label='Batch no'
                                 sx={{
                                     marginTop: 2,
                                     '& .MuiFormLabel-root': {
                                         fontWeight: 400,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                     },
-                                    '& label': {},
+                                    '& label': {
+                                        fontSize: 12,
+                                    },
                                     '& label.Mui-focused': {
                                         color: '#1c2437',
                                         fontSize: 16
@@ -208,15 +238,16 @@ const AddOpeningStock = () => {
                                             borderWidth: '1px'
                                         },
                                     },
-                                }}/>
-                            {errors.batch_no && <span style={{fontSize: '10px'}}>{errors.batch_no.message}</span>}
+                                }}
+                            />
                         </div>
+
                         <div>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 {/*<DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />*/}
                                 <DatePicker
                                     label="Date"
-                                    slotProps={{ textField: { size: 'small' } }}
+                                    slotProps={{textField: {size: 'small'}}}
                                     value={dayjs(date)}
                                     onChange={(newValue) => {
                                         setDate(moment(newValue.$d).format('YYYY-MM-DD'));
@@ -255,9 +286,11 @@ const AddOpeningStock = () => {
                                     marginTop: 2,
                                     '& .MuiFormLabel-root': {
                                         fontWeight: 400,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                     },
-                                    '& label': {},
+                                    '& label': {
+                                        fontSize: 12,
+                                    },
                                     '& label.Mui-focused': {
                                         color: '#1c2437',
                                         fontSize: 16
@@ -292,7 +325,10 @@ const AddOpeningStock = () => {
                                     marginTop: 2,
                                     '& .MuiFormLabel-root': {
                                         fontWeight: 400,
-                                        fontSize: 14,
+                                        fontSize: 12,
+                                    },
+                                    '& label': {
+                                        fontSize: 12,
                                     },
                                     '& label.Mui-focused': {
                                         color: '#1c2437',
@@ -307,7 +343,8 @@ const AddOpeningStock = () => {
                                         },
                                     },
                                 }}/>
-                            {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
+                            {errors.purchase_price &&
+                                <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
                         </div>
                         <div>
                             <TextField
@@ -316,21 +353,23 @@ const AddOpeningStock = () => {
                                 autoComplete="off"
                                 size='small'
                                 type={'number'}
-                                label={'Sales price'}
-                                {...register('sales_price', {
+                                label={'Selling price'}
+                                {...register('selling_price', {
                                     required: 'This field is required',
                                 })}
                                 onChange={e => {
-                                    clearErrors(["sales_price"])
+                                    clearErrors(["selling_price"])
                                 }}
 
                                 sx={{
                                     marginTop: 2,
                                     '& .MuiFormLabel-root': {
                                         fontWeight: 400,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                     },
-                                    '& label': {},
+                                    '& label': {
+                                        fontSize: 12,
+                                    },
                                     '& label.Mui-focused': {
                                         color: '#1c2437',
                                         fontSize: 16
@@ -344,7 +383,8 @@ const AddOpeningStock = () => {
                                         },
                                     },
                                 }}/>
-                            {errors.sales_price && <span style={{fontSize: '10px'}}>{errors.sales_price.message}</span>}
+                            {errors.selling_price &&
+                                <span style={{fontSize: '10px'}}>{errors.selling_price.message}</span>}
                         </div>
                         <div>
                             <TextField
@@ -365,9 +405,11 @@ const AddOpeningStock = () => {
                                     marginTop: 2,
                                     '& .MuiFormLabel-root': {
                                         fontWeight: 400,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                     },
-                                    '& label': {},
+                                    '& label': {
+                                        fontSize: 12,
+                                    },
                                     '& label.Mui-focused': {
                                         color: '#1c2437',
                                         fontSize: 16
