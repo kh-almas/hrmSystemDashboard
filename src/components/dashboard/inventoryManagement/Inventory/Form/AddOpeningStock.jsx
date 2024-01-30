@@ -18,12 +18,15 @@ import dayjs from "dayjs";
 import moment from 'moment';
 import Swal from "sweetalert2";
 import ProductSelect from "./component/ProductSelect";
+import DataTable from "../../../../common/component/DataTable";
 
 const AddOpeningStock = () => {
     const [selectedBranch, setSelectedBranch] = useState({});
     const [batchNo, setBatchNo] = useState('');
     const [uniqueKey, setUniqueKey] = useState('');
     const [selected, setSelected] = React.useState([]);
+    const [showSelected, setShowSelected] = React.useState('');
+
     const [branch, setBranch] = useState([]);
     const [sku, setSku] = useState([]);
     const [date, setDate] = useState('');
@@ -31,6 +34,11 @@ const AddOpeningStock = () => {
     const {register, handleSubmit, formState: { errors },clearErrors} = useForm();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [allSkuStatus, allSkuReFetch, allSku, allSkuError] = getAllSKUForSelect();
+
+    useEffect(() => {
+        setShowSelected(selected?.[0]?.name);
+        console.log('selected', )
+    }, [selected]);
     function generateSkuCode(count) {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let skuCode = '';
@@ -54,60 +62,56 @@ const AddOpeningStock = () => {
 
         setDate(moment(new Date()).format('YYYY-MM-DD'));
     }, [])
-    // console.log('batchNo', batchNo)
 
-    // console.log('data', data);
     const onSubmit = (data) => {
         data.branch_id = selectedBranch?.id;
         data.date = date;
-        data.uniqueKey = uniqueKey;
-        data.selectedProduct = selected;
+        data.sku_id = selected?.[0]?.id;
         data.batch_no = batchNo;
         data.unique_key = `opening_stock_${uniqueKey}`;
-        console.log('data', data);
-        // axios.post('/inventory-management/stock/opening/add', data)
-        //     .then(info => {
-        //         if(info?.status == 200)
-        //         {
-        //             Swal.fire({
-        //                 position: 'top-end',
-        //                 icon: 'success',
-        //                 title: 'Your work has been saved',
-        //                 showConfirmButton: false,
-        //                 timer: 1500
-        //             })
-        //         }
-        //     })
-        //     .catch(e => {
-        //         console.log(e);
-        //         if(e?.response?.data?.body?.message?.errno == 1062){
-        //             Swal.fire({
-        //                 position: 'top-end',
-        //                 icon: 'error',
-        //                 title: 'Can not duplicate variant name',
-        //                 showConfirmButton: false,
-        //                 timer: 1500
-        //             })
-        //         }else {
-        //             Swal.fire({
-        //                 position: 'top-end',
-        //                 icon: 'error',
-        //                 title: `${e?.response?.data?.body?.message?.details[0].message}`,
-        //                 showConfirmButton: false,
-        //                 timer: 1500
-        //             })
-        //         }
-        //     })
+        axios.post('/inventory-management/stock/opening/add', data)
+            .then(info => {
+                if(info?.status == 200)
+                {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            })
+            .catch(e => {
+                console.log(e);
+                if(e?.response?.data?.body?.message?.errno == 1062){
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Can not duplicate variant name',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }else {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
+                        title: `Something is wrong`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                }
+            })
     };
 
     useEffect(() => {
         setBranch(allBranch?.data?.body?.data?.data);
     }, [allBranch])
     //
-    // useEffect(() => {
-    //     // setData(allSku?.data?.body?.data);
-    //     console.log('allSku', allSku?.data?.body?.data)
-    // }, [allSku])
+    useEffect(() => {
+        setData(allSku?.data?.body?.data);
+    }, [allSku])
 
 
 
@@ -115,44 +119,6 @@ const AddOpeningStock = () => {
         <>
             <div className="p-30">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        <Autocomplete
-                            disablePortal
-                            size={'small'}
-                            id="branch"
-                            options={branch}
-                            getOptionLabel={(option) => option ? option?.name : ''}
-                            onChange={(event, value) => {
-                                console.log('value', value)
-                                setSelectedBranch(value);  {/* Set the value in the form */}
-                            }}
-                            sx={{
-                                width: '100%',
-                                marginTop: 3,
-                                '& label': {
-                                    fontSize: 12,
-                                },
-                                '& label.Mui-focused': {
-                                    fontSize: 16
-                                }
-                            }}
-                            renderInput={(params) =>
-                                <TextField
-                                    {...params}
-                                    label="Branch"
-                                    {...register('branch', {
-                                        required: 'This field is required',
-                                    })}
-                                />
-                            }
-                        />
-                        {errors.branch && <span style={{fontSize: '10px'}}>{errors.branch.message}</span>}
-                    </div>
-
-                    <div style={{marginTop: "24px"}}>
-                        <ProductSelect selected={selected} setSelected={setSelected} data={data} setData={setData}></ProductSelect>
-                    </div>
-
                     <div className="row row-cols-1 row-cols-lg-2">
                         {/*<div>*/}
                         {/*    <TextField*/}
@@ -195,6 +161,44 @@ const AddOpeningStock = () => {
                         {/*</div>*/}
 
                         <div>
+                            <Autocomplete
+                                disablePortal
+                                size={'small'}
+                                id="branch"
+                                options={branch}
+                                getOptionLabel={(option) => option ? option?.name : ''}
+                                onChange={(event, value) => {
+                                    setSelectedBranch(value);
+                                }}
+                                sx={{
+                                    width: '100%',
+                                    marginTop: 3,
+                                    '& label': {
+                                        fontSize: 12,
+                                    },
+                                    '& label.Mui-focused': {
+                                        fontSize: 16
+                                    }
+                                }}
+                                renderInput={(params) =>
+                                    <TextField
+                                        {...params}
+                                        label="Branch"
+                                        {...register('branch_id', {
+                                            required: 'This field is required',
+                                        })}
+                                    />
+                                }
+                            />
+                            {errors.branch && <span style={{fontSize: '10px'}}>{errors.branch.message}</span>}
+                        </div>
+
+                        <div>
+                            <ProductSelect showSelected={showSelected} setShowSelected={setShowSelected} selected={selected} setSelected={setSelected} data={data}
+                                           setData={setData}></ProductSelect>
+                        </div>
+
+                        <div>
                             <TextField
                                 readOnly
                                 variant='outlined'
@@ -210,7 +214,6 @@ const AddOpeningStock = () => {
                                         fontWeight: 400,
                                         fontSize: 14,
                                     },
-                                    '& label': {},
                                     '& label.Mui-focused': {
                                         color: '#1c2437',
                                         fontSize: 16
@@ -232,7 +235,7 @@ const AddOpeningStock = () => {
                                 {/*<DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />*/}
                                 <DatePicker
                                     label="Date"
-                                    slotProps={{ textField: { size: 'small' } }}
+                                    slotProps={{textField: {size: 'small'}}}
                                     value={dayjs(date)}
                                     onChange={(newValue) => {
                                         setDate(moment(newValue.$d).format('YYYY-MM-DD'));
@@ -273,7 +276,6 @@ const AddOpeningStock = () => {
                                         fontWeight: 400,
                                         fontSize: 14,
                                     },
-                                    '& label': {},
                                     '& label.Mui-focused': {
                                         color: '#1c2437',
                                         fontSize: 16
@@ -323,7 +325,8 @@ const AddOpeningStock = () => {
                                         },
                                     },
                                 }}/>
-                            {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
+                            {errors.purchase_price &&
+                                <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
                         </div>
                         <div>
                             <TextField
@@ -332,12 +335,12 @@ const AddOpeningStock = () => {
                                 autoComplete="off"
                                 size='small'
                                 type={'number'}
-                                label={'Sales price'}
-                                {...register('sales_price', {
+                                label={'Selling price'}
+                                {...register('selling_price', {
                                     required: 'This field is required',
                                 })}
                                 onChange={e => {
-                                    clearErrors(["sales_price"])
+                                    clearErrors(["selling_price"])
                                 }}
 
                                 sx={{
@@ -360,7 +363,8 @@ const AddOpeningStock = () => {
                                         },
                                     },
                                 }}/>
-                            {errors.sales_price && <span style={{fontSize: '10px'}}>{errors.sales_price.message}</span>}
+                            {errors.selling_price &&
+                                <span style={{fontSize: '10px'}}>{errors.selling_price.message}</span>}
                         </div>
                         <div>
                             <TextField
@@ -397,7 +401,8 @@ const AddOpeningStock = () => {
                                         },
                                     },
                                 }}/>
-                            {errors.total_discount && <span style={{fontSize: '10px'}}>{errors.total_discount.message}</span>}
+                            {errors.total_discount &&
+                                <span style={{fontSize: '10px'}}>{errors.total_discount.message}</span>}
                         </div>
 
                     </div>

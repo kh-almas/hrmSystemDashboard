@@ -23,6 +23,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import Badge from '@mui/material/Badge';
 import Chip from '@mui/material/Chip';
+import {Radio} from "@mui/material";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -53,39 +54,6 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-const headCells = [
-    {
-        id: 'name',
-        numeric: false,
-        disablePadding: true,
-        label: 'Name',
-    },
-    {
-        id: 'calories',
-        numeric: true,
-        disablePadding: false,
-        label: 'SKU',
-    },
-    {
-        id: 'fat',
-        numeric: true,
-        disablePadding: false,
-        label: 'Category',
-    },
-    {
-        id: 'carbs',
-        numeric: true,
-        disablePadding: false,
-        label: 'Brand',
-    },
-    {
-        id: 'protein',
-        numeric: true,
-        disablePadding: false,
-        label: 'Modal',
-    },
-];
-
 // const headCells = [
 //     {
 //         id: 'name',
@@ -94,18 +62,63 @@ const headCells = [
 //         label: 'Name',
 //     },
 //     {
-//         id: 'category_name',
-//         numeric: false,
+//         id: 'calories',
+//         numeric: true,
 //         disablePadding: false,
-//         label: 'Category Name',
+//         label: 'SKU',
 //     },
 //     {
-//         id: 'brand_name',
-//         numeric: false,
+//         id: 'fat',
+//         numeric: true,
 //         disablePadding: false,
-//         label: 'Brand Name',
-//     }
+//         label: 'Category',
+//     },
+//     {
+//         id: 'carbs',
+//         numeric: true,
+//         disablePadding: false,
+//         label: 'Brand',
+//     },
+//     {
+//         id: 'protein',
+//         numeric: true,
+//         disablePadding: false,
+//         label: 'Modal',
+//     },
 // ];
+
+const headCells = [
+    {
+        id: 'name',
+        numeric: false,
+        disablePadding: true,
+        label: 'Name',
+    },
+    {
+        id: 'sku',
+        numeric: false,
+        disablePadding: false,
+        label: 'SKU',
+    },
+    {
+        id: 'category_name',
+        numeric: false,
+        disablePadding: false,
+        label: 'Category Name',
+    },
+    {
+        id: 'brand_name',
+        numeric: false,
+        disablePadding: false,
+        label: 'Brand Name',
+    },
+    {
+        id: 'model_name',
+        numeric: false,
+        disablePadding: false,
+        label: 'Model Name',
+    }
+];
 
 function EnhancedTableHead(props) {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
@@ -118,15 +131,15 @@ function EnhancedTableHead(props) {
         <TableHead>
             <TableRow>
                 <TableCell padding="checkbox">
-                    <Checkbox
-                        color="primary"
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{
-                            'aria-label': 'select all desserts',
-                        }}
-                    />
+                    {/*<Checkbox*/}
+                    {/*    color="primary"*/}
+                    {/*    indeterminate={numSelected > 0 && numSelected < rowCount}*/}
+                    {/*    checked={rowCount > 0 && numSelected === rowCount}*/}
+                    {/*    onChange={onSelectAllClick}*/}
+                    {/*    inputProps={{*/}
+                    {/*        'aria-label': 'select all desserts',*/}
+                    {/*    }}*/}
+                    {/*/>*/}
                 </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell
@@ -219,6 +232,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 const ProductSelectTable = ({selected, setSelected, data}) => {
+    console.log('data', data)
     const [rows, setRows] = React.useState(data);
     React.useEffect(() => {
         setRows(data);
@@ -248,22 +262,23 @@ const ProductSelectTable = ({selected, setSelected, data}) => {
     };
 
     const handleClick = (event, id) => {
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-        setSelected(newSelected);
+        console.log('asdjklkl', event, id)
+        // const selectedIndex = selected.indexOf(id);
+        // let newSelected = [];
+        //
+        // if (selectedIndex === -1) {
+        //     newSelected = newSelected.concat(selected, id);
+        // } else if (selectedIndex === 0) {
+        //     newSelected = newSelected.concat(selected.slice(1));
+        // } else if (selectedIndex === selected.length - 1) {
+        //     newSelected = newSelected.concat(selected.slice(0, -1));
+        // } else if (selectedIndex > 0) {
+        //     newSelected = newSelected.concat(
+        //         selected.slice(0, selectedIndex),
+        //         selected.slice(selectedIndex + 1),
+        //     );
+        // }
+        setSelected([id]);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -295,7 +310,7 @@ const ProductSelectTable = ({selected, setSelected, data}) => {
     );
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ maxHeight: '500px', overflow: 'scroll' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 {/*<EnhancedTableToolbar numSelected={selected.length} />*/}
 
@@ -344,7 +359,7 @@ const ProductSelectTable = ({selected, setSelected, data}) => {
                                         sx={{ cursor: 'pointer' }}
                                     >
                                         <TableCell padding="checkbox">
-                                            <Checkbox
+                                            <Radio
                                                 color="primary"
                                                 checked={isItemSelected}
                                                 inputProps={{
@@ -360,9 +375,9 @@ const ProductSelectTable = ({selected, setSelected, data}) => {
                                         >
                                             {row.name}
                                         </TableCell>
-                                        <TableCell align="right">{row.calories}</TableCell>
-                                        <TableCell align="right">{row.fat}</TableCell>
-                                        <TableCell align="right">{row.carbs}</TableCell>
+                                        <TableCell align="right">{row.category_name}</TableCell>
+                                        <TableCell align="right">{row.brand_name}</TableCell>
+                                        <TableCell align="right">{row.model_name}</TableCell>
                                         <TableCell align="right">{row.protein}</TableCell>
                                     </TableRow>
                                 );

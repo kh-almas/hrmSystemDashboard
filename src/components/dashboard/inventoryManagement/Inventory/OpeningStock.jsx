@@ -1,26 +1,73 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Breadcrumb from "../../../common/breadcrumb";
-import Select from "../../../common/modal/Select";
-import Input from "../../../common/modal/Input";
-import CkEditorComponent from "../../../common/modal/CkEditorComponent";
 import { Button } from "react-bootstrap";
-import { useForm } from "react-hook-form";
-import Textarea from "../../../common/modal/Textarea";
-import Submitbtn from "../../../common/button/Submitbtn";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
-import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import Paginationbtn from "../../../common/Paginationbtn";
 import {Card, Collapse} from "reactstrap";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
-import {Box} from "@mui/material";
-import TextField from "@mui/material/TextField";
 import AddOpeningStock from "./Form/AddOpeningStock";
+import Swal from "sweetalert2";
+import axios from "../../../../axios";
+import DataTable from "../../../common/component/DataTable";
+import GetAllOpeningStock from "../../../common/Query/inventory/GetAllOpeningStock";
 
 const OpeningStock = () => {
-  const [showFromForAdd , setShowFromForAdd] = useState(true);
+  const [showFromForAdd , setShowFromForAdd] = useState(false);
+  const [allOpeningStock , setAllOpeningStock] = useState([]);
+    const [isChange, setIsChange] = useState(false);
+    const [valueForEdit, setValueForEdit] = useState({});
+    const [editModal, setEditModal] = useState(false);
+    const [allOpeningStockStatus, allOpeningStockReFetch, allOpeningStockData, allOpeningStockError] = GetAllOpeningStock()
+
+    const isDarty = () =>
+    {
+        setIsChange(!isChange);
+    }
+
+    useEffect(() => {
+        setAllOpeningStock(allOpeningStockData?.data?.body?.data);
+    }, [allOpeningStockData]);
+
+    const updateToggle = () => {
+        setEditModal(!editModal);
+    };
+
+    const handleDelete = id => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`/inventory-management/model/delete/${id}`)
+                    .then(info => {
+                        if(info?.status == 200)
+                        {
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Your file has been deleted.",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        isDarty();
+                    })
+                    .catch(e => {
+                        if(e?.response?.data?.body?.message?.sqlState === "23000")
+                        {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: `Can not delete variant.`,
+                            })
+                        }
+                    })
+            }
+        })
+    };
 
 
   return (
@@ -46,40 +93,15 @@ const OpeningStock = () => {
         </div>
       </div>
 
-      <div className="card mb-0" style={{ padding: "20px" }}>
-        <CommonSearchComponet />
-        <div className="table-responsive">
-          <table className="table">
-            <thead className=" table-border">
-              <tr>
-                <th scope="col">{"Sl"}</th>
-                <th scope="col">{"Date"}</th>
-                <th scope="col">{"Name"}</th>
-                <th scope="col">{"SKU"}</th>
-                <th scope="col">{"Model"}</th>
-                <th scope="col">{"Brand"}</th>
-                <th scope="col">{"Branch"}</th>
-                <th scope="col">{"Purchase Price"}</th>
-                <th scope="col">{"Selling Price"}</th>
-                <th scope="col">{"Stock"}</th>
-                <th scope="col">{"Created User"}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* <tr>
-                <th scope="row">{""}</th>
-                <td>{""}</td>
-                <td>{""}</td>
-                <td>{""}</td>
-                <td>{""}</td>
-                <td></td>
-              </tr> */}
-            </tbody>
-          </table>
-          <p className="text-center p-t-10">No entries found</p>
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col-sm-12">
+                    <div className="card" style={{padding: "20px"}}>
+                        <DataTable getAllData={allOpeningStock} handleDelete={handleDelete} toggleUpdateModal={updateToggle} setValueForEdit={setValueForEdit}></DataTable>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <Paginationbtn />
     </>
   );
 };

@@ -34,6 +34,7 @@ const Model = () => {
     const getData = async () => {
       const getData = await getInventoryModel();
       setData(getData?.data?.body?.data);
+      console.log(getData?.data?.body?.data)
     };
     getData();
   }, [isChange]);

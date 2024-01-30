@@ -3,17 +3,13 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import ProductSelectTable from "./ProductSelectTable";
 import Chip from '@mui/material/Chip';
+import Autocomplete from "@mui/material/Autocomplete";
 
-const ProductSelect = ({selected, setSelected, data, setData}) => {
-    // state that need to pass
-    // const [selected, setSelected] = React.useState([]);
-
-    // console.log('data', data)
-
-
+const ProductSelect = ({selected, setSelected, data, setData, showSelected}) => {
     const inputRef = useRef(null);
     const secondBoxRef = useRef(null);
     const [isFocused, setIsFocused] = useState(false);
+    const [sortedData, setSortedData] = useState([]);
 
     const handleBoxClick = (event) => {
         event.stopPropagation();
@@ -22,6 +18,10 @@ const ProductSelect = ({selected, setSelected, data, setData}) => {
             setIsFocused(true);
         }
     };
+
+    useEffect(() => {
+        setSortedData(data);
+    }, [data]);
 
     const handleClickOutside = (event) => {
         if (secondBoxRef.current && !secondBoxRef.current.contains(event.target)) {
@@ -62,32 +62,31 @@ const ProductSelect = ({selected, setSelected, data, setData}) => {
         };
     }, [selected]); // Update when the selected items change
 
-    const allData = [
-        { id: 2, name: 'Donut', calories: 'asd', fat: 25.0, carbs: 51, protein: 4.9 },
-        { id: 3, name: 'Eclair', calories: 262, fat: 16.0, carbs: 24, protein: 6.0 },
-        { id: 4, name: 'Frozen yoghurt', calories: 159, fat: 6.0, carbs: 24, protein: 4.0 },
-        { id: 5, name: 'Gingerbread', calories: 356, fat: 16.0, carbs: 49, protein: 3.9 },
-        { id: 6, name: 'Honeycomb', calories: 408, fat: 3.2, carbs: 87, protein: 6.5 },
-        { id: 7, name: 'Ice cream sandwich', calories: 237, fat: 9.0, carbs: 37, protein: 4.3 },
-        { id: 8, name: 'Jelly Bean', calories: 375, fat: 0.0, carbs: 94, protein: 0.0 },
-        { id: 9, name: 'KitKat', calories: 518, fat: 26.0, carbs: 65, protein: 7.0 },
-        { id: 10, name: 'Lollipop', calories: 392, fat: 0.2, carbs: 98, protein: 0.0 },
-        { id: 11, name: 'Marshmallow', calories: 318, fat: 0, carbs: 81, protein: 2.0 },
-        { id: 12, name: 'Nougat', calories: 360, fat: 19.0, carbs: 9, protein: 37.0 },
-        { id: 13, name: 'Oreo', calories: 437, fat: 18.0, carbs: 63, protein: 4.0 }
-    ];
+    // const allData = [
+    //     { id: 2, name: 'Donut', calories: 'asd', fat: 25.0, carbs: 51, protein: 4.9 },
+    //     { id: 3, name: 'Eclair', calories: 262, fat: 16.0, carbs: 24, protein: 6.0 },
+    //     { id: 4, name: 'Frozen yoghurt', calories: 159, fat: 6.0, carbs: 24, protein: 4.0 },
+    //     { id: 5, name: 'Gingerbread', calories: 356, fat: 16.0, carbs: 49, protein: 3.9 },
+    //     { id: 6, name: 'Honeycomb', calories: 408, fat: 3.2, carbs: 87, protein: 6.5 },
+    //     { id: 7, name: 'Ice cream sandwich', calories: 237, fat: 9.0, carbs: 37, protein: 4.3 },
+    //     { id: 8, name: 'Jelly Bean', calories: 375, fat: 0.0, carbs: 94, protein: 0.0 },
+    //     { id: 9, name: 'KitKat', calories: 518, fat: 26.0, carbs: 65, protein: 7.0 },
+    //     { id: 10, name: 'Lollipop', calories: 392, fat: 0.2, carbs: 98, protein: 0.0 },
+    //     { id: 11, name: 'Marshmallow', calories: 318, fat: 0, carbs: 81, protein: 2.0 },
+    //     { id: 12, name: 'Nougat', calories: 360, fat: 19.0, carbs: 9, protein: 37.0 },
+    //     { id: 13, name: 'Oreo', calories: 437, fat: 18.0, carbs: 63, protein: 4.0 }
+    // ];
 
-    useEffect(() => {
-        setData(allData);
-    }, [])
+    // useEffect(() => {
+    //     setData(allData);
+    // }, [])
 
 
 
     function searchAndSort(input) {
-        // console.log('input', input);
         const lowerCaseInput = input.toLowerCase();
 
-        const filteredAndSortedArray = allData
+        const filteredAndSortedArray = data
             .filter(obj => {
                 return Object.values(obj).some(value => {
                     if (typeof value === 'string' || typeof value === 'number') {
@@ -103,61 +102,91 @@ const ProductSelect = ({selected, setSelected, data, setData}) => {
                 return valueA.localeCompare(valueB);
             });
 
-        setData(filteredAndSortedArray);
-        // console.log('filteredAndSortedArray', filteredAndSortedArray);
+        setSortedData(filteredAndSortedArray);
     }
 
     return (
         <Box sx={{position: "relative",}}>
-            <Box
-                component="form"
-                sx={{
-                    display: 'flex',
-                    width: '100%',
-                    border: '1px solid red',
-                    marginBottom: 3,
-                    zIndex: 999,
-                    alignItems: 'center',
-                    paddingLeft: 1,
-                    minHight: `${boxHeight}px`,
+            {/*<Box*/}
+            {/*    component="form"*/}
+            {/*    sx={{*/}
+            {/*        display: 'flex',*/}
+            {/*        width: '100%',*/}
+            {/*        border: '1px solid red',*/}
+            {/*        marginBottom: 3,*/}
+            {/*        zIndex: 999,*/}
+            {/*        alignItems: 'center',*/}
+            {/*        paddingLeft: 1,*/}
+            {/*        minHight: `${boxHeight}px`,*/}
 
-                }}
-                noValidate
-                autoComplete="off"
-                onClick={handleBoxClick}
-            >
-                <Box
-                    sx={{marginRight: "3px"}}
-                    ref={boxRef}
-                >
-                    {
-                        selected?.map(item => <Chip label={item.name} onDelete={() => handleDelete(item.id)} sx={{margin: "2px"}} />)
-                    }
+            {/*    }}*/}
+            {/*    noValidate*/}
+            {/*    autoComplete="off"*/}
+            {/*    onClick={handleBoxClick}*/}
+            {/*>*/}
+            {/*    <Box*/}
+            {/*        sx={{marginRight: "3px"}}*/}
+            {/*        ref={boxRef}*/}
+            {/*    >*/}
+            {/*        {*/}
+            {/*            selected?.map(item => <Chip label={item.name} onDelete={() => handleDelete(item.id)} sx={{margin: "2px"}} />)*/}
+            {/*        }*/}
 
+            {/*<Autocomplete*/}
+            {/*    disablePortal*/}
+            {/*    size={'small'}*/}
+            {/*    id="branch"*/}
+            {/*    value={selected?.[0]?.name}*/}
+            {/*    inputRef={inputRef}*/}
+            {/*    onClick={handleBoxClick}*/}
+            {/*    onChange={(e) => {*/}
+            {/*        searchAndSort(e.target.value)*/}
+            {/*    }}*/}
+            {/*    getOptionLabel={(option) => option ? option?.name : ''}*/}
+            {/*    sx={{*/}
+            {/*        width: '100%',*/}
+            {/*        marginTop: 3,*/}
+            {/*        '& label': {*/}
+            {/*            fontSize: 12,*/}
+            {/*        },*/}
+            {/*        '& label.Mui-focused': {*/}
+            {/*            fontSize: 16*/}
+            {/*        }*/}
+            {/*    }}*/}
+            {/*    renderInput={(params) =>*/}
+            {/*        <TextField*/}
+            {/*            {...params}*/}
+            {/*            label="Branch"*/}
+            {/*        />*/}
+            {/*    }*/}
+            {/*/>*/}
                     <TextField
+                        focused={selected?.[0]?.name}
                         id="filled-basic"
-                        label="Filled"
-                        variant="filled"
+                        disablePortal
                         size={'small'}
+                        label="Select Product"
+                        value={selected?.[0]?.name}
                         inputRef={inputRef}
+                        onClick={handleBoxClick}
                         onChange={(e) => {
                             searchAndSort(e.target.value)
-                            // console.log(e.target.value)
                         }}
                         sx={{
-                            width: 300,
+                            width: '100%',
+                            marginTop: 3,
                             '& label': {
                                 fontSize: 12,
                             },
                             '& label.Mui-focused': {
-                                fontSize: 16,
-                            },
+                                fontSize: 16
+                            }
                         }}
                     />
 
-                </Box>
+            {/*    </Box>*/}
 
-            </Box>
+            {/*</Box>*/}
             {isFocused && (
                 <Box
                     ref={secondBoxRef}
@@ -175,7 +204,7 @@ const ProductSelect = ({selected, setSelected, data, setData}) => {
                     noValidate
                     autoComplete="off"
                 >
-                    <ProductSelectTable selected={selected} setSelected={setSelected} data={data}></ProductSelectTable>
+                    <ProductSelectTable selected={selected} setSelected={setSelected} data={sortedData}></ProductSelectTable>
                 </Box>
             )}
         </Box>
