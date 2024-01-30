@@ -4,7 +4,7 @@ import {Box, IconButton} from "@mui/material";
 import {Delete as DeleteIcon, Edit as EditIcon} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 
-const DataTable = ({ getAllData, handleDelete, editLink = '', toggleUpdateModal, setValueForEdit }) => {
+const DataTable = ({ getAllData, handleDelete, editLink = '', toggleUpdateModal, setValueForEdit, baseForDelete}) => {
     const [data, setData] = useState([]);
     const [tableInfo, setTableInfo] = useState([]);
     const [groupingItem, setGrouping] = useState('');
@@ -143,10 +143,7 @@ const DataTable = ({ getAllData, handleDelete, editLink = '', toggleUpdateModal,
                                 <IconButton
                                     color="error"
                                     onClick={() => {
-                                        // data.splice(row.index, 1); //assuming simple data table
-                                        // setData([...data]);
-                                        handleDelete(row?.original?.id)
-                                        console.log(row?.original?.id)
+                                        handleDelete(!baseForDelete ? row?.original?.id : row?.original?.[baseForDelete])
                                     }}
                                 >
                                     <DeleteIcon />

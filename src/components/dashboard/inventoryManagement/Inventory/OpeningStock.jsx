@@ -24,6 +24,7 @@ const OpeningStock = () => {
 
     useEffect(() => {
         setAllOpeningStock(allOpeningStockData?.data?.body?.data);
+        console.log('allOpeningStockData'. allOpeningStockData)
     }, [allOpeningStockData]);
 
     const updateToggle = () => {
@@ -31,6 +32,7 @@ const OpeningStock = () => {
     };
 
     const handleDelete = id => {
+        console.log(id, 'id');
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -41,7 +43,7 @@ const OpeningStock = () => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`/inventory-management/model/delete/${id}`)
+                axios.delete(`/inventory-management/stock/opening/delete/${id}`)
                     .then(info => {
                         if(info?.status == 200)
                         {
@@ -53,7 +55,7 @@ const OpeningStock = () => {
                                 timer: 1500
                             });
                         }
-                        isDarty();
+                        allOpeningStockReFetch();
                     })
                     .catch(e => {
                         if(e?.response?.data?.body?.message?.sqlState === "23000")
@@ -80,7 +82,7 @@ const OpeningStock = () => {
 
       <Card className="mt-2">
         <Collapse isOpen={showFromForAdd}>
-            <AddOpeningStock></AddOpeningStock>
+            <AddOpeningStock allOpeningStockReFetch={allOpeningStockReFetch}></AddOpeningStock>
         </Collapse>
       </Card>
 
@@ -97,7 +99,7 @@ const OpeningStock = () => {
             <div className="row">
                 <div className="col-sm-12">
                     <div className="card" style={{padding: "20px"}}>
-                        <DataTable getAllData={allOpeningStock} handleDelete={handleDelete} toggleUpdateModal={updateToggle} setValueForEdit={setValueForEdit}></DataTable>
+                        <DataTable baseForDelete={'batch_s'} getAllData={allOpeningStock} handleDelete={handleDelete} toggleUpdateModal={updateToggle} setValueForEdit={setValueForEdit}></DataTable>
                     </div>
                 </div>
             </div>

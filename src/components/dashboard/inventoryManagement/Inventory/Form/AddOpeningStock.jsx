@@ -17,10 +17,10 @@ import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForS
 import dayjs from "dayjs";
 import moment from 'moment';
 import Swal from "sweetalert2";
-import ProductSelect from "./component/ProductSelect";
+import ProductSelect from "../../../../common/component/SingleProductSelect/ProductSelect";
 import DataTable from "../../../../common/component/DataTable";
 
-const AddOpeningStock = () => {
+const AddOpeningStock = ({allOpeningStockReFetch}) => {
     const [selectedBranch, setSelectedBranch] = useState({});
     const [batchNo, setBatchNo] = useState('');
     const [uniqueKey, setUniqueKey] = useState('');
@@ -31,24 +31,25 @@ const AddOpeningStock = () => {
     const [sku, setSku] = useState([]);
     const [date, setDate] = useState('');
     const [data, setData] = React.useState([]);
-    const {register, handleSubmit, formState: { errors },clearErrors} = useForm();
+    const {register,
+        handleSubmit,
+        formState: { errors },
+        clearErrors,
+        reset
+    } = useForm();
     const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
     const [allSkuStatus, allSkuReFetch, allSku, allSkuError] = getAllSKUForSelect();
 
-    useEffect(() => {
-        setShowSelected(selected?.[0]?.name);
-        console.log('selected', )
-    }, [selected]);
     function generateSkuCode(count) {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let skuCode = '';
+        let code = '';
 
         for (let i = 0; i < count; i++) {
             const randomIndex = Math.floor(Math.random() * characters.length);
-            skuCode += characters.charAt(randomIndex);
+            code += characters.charAt(randomIndex);
         }
 
-        return skuCode;
+        return code;
     }
 
 
@@ -80,6 +81,16 @@ const AddOpeningStock = () => {
                         showConfirmButton: false,
                         timer: 1500
                     })
+                    allOpeningStockReFetch();
+                    reset();
+                    setSelected([]);
+                    setSelectedBranch({});
+                    setDate(moment(new Date()).format('YYYY-MM-DD'));
+                    const batchNo = generateSkuCode(12);
+                    setBatchNo(batchNo);
+                    setShowSelected('')
+                    const uniqueId = generateSkuCode(8);
+                    setUniqueKey(uniqueId);
                 }
             })
             .catch(e => {
@@ -113,6 +124,45 @@ const AddOpeningStock = () => {
         setData(allSku?.data?.body?.data);
     }, [allSku])
 
+    const headCells = [
+        {
+            id: '',
+            numeric: false,
+            disablePadding: true,
+            label: '',
+        },
+        {
+            id: 'name',
+            numeric: false,
+            disablePadding: true,
+            label: 'Name',
+        },
+        {
+            id: 'sku',
+            numeric: false,
+            disablePadding: false,
+            label: 'SKU',
+        },
+        {
+            id: 'category_name',
+            numeric: false,
+            disablePadding: false,
+            label: 'Category Name',
+        },
+        {
+            id: 'brand_name',
+            numeric: false,
+            disablePadding: false,
+            label: 'Brand Name',
+        },
+        {
+            id: 'model_name',
+            numeric: false,
+            disablePadding: false,
+            label: 'Model Name',
+        }
+    ];
+
 
 
     return (
@@ -120,46 +170,6 @@ const AddOpeningStock = () => {
             <div className="p-30">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row row-cols-1 row-cols-lg-2">
-                        {/*<div>*/}
-                        {/*    <TextField*/}
-                        {/*        readOnly*/}
-                        {/*        variant='outlined'*/}
-                        {/*        fullWidth*/}
-                        {/*        autoComplete="off"*/}
-                        {/*        size='small'*/}
-                        {/*        type='text'*/}
-                        {/*        value={batchNo}*/}
-                        {/*        label='Batch no'*/}
-                        {/*        {...register('batch_no', {*/}
-                        {/*            required: 'This field is required',*/}
-                        {/*        })}*/}
-                        {/*        onChange={e => {*/}
-                        {/*            clearErrors(["batch_no"])*/}
-                        {/*        }}*/}
-                        {/*        sx={{*/}
-                        {/*            marginTop: 2,*/}
-                        {/*            '& .MuiFormLabel-root': {*/}
-                        {/*                fontWeight: 400,*/}
-                        {/*                fontSize: 14,*/}
-                        {/*            },*/}
-                        {/*            '& label': {},*/}
-                        {/*            '& label.Mui-focused': {*/}
-                        {/*                color: '#1c2437',*/}
-                        {/*                fontSize: 16*/}
-                        {/*            },*/}
-                        {/*            '& .MuiOutlinedInput-root': {*/}
-                        {/*                height: 35,*/}
-                        {/*                backgroundColor: 'white',*/}
-                        {/*                '&.Mui-focused fieldset': {*/}
-                        {/*                    borderColor: '#979797',*/}
-                        {/*                    borderWidth: '1px'*/}
-                        {/*                },*/}
-                        {/*            },*/}
-                        {/*        }}*/}
-                        {/*    />*/}
-                        {/*    {errors.batch_no && <span style={{ fontSize: '10px' }}>{errors.batch_no.message}</span>}*/}
-                        {/*</div>*/}
-
                         <div>
                             <Autocomplete
                                 disablePortal
@@ -194,8 +204,7 @@ const AddOpeningStock = () => {
                         </div>
 
                         <div>
-                            <ProductSelect showSelected={showSelected} setShowSelected={setShowSelected} selected={selected} setSelected={setSelected} data={data}
-                                           setData={setData}></ProductSelect>
+                            <ProductSelect showSelected={showSelected} setShowSelected={setShowSelected} selected={selected} setSelected={setSelected} data={data} headCells={headCells}></ProductSelect>
                         </div>
 
                         <div>
@@ -212,7 +221,10 @@ const AddOpeningStock = () => {
                                     marginTop: 2,
                                     '& .MuiFormLabel-root': {
                                         fontWeight: 400,
-                                        fontSize: 14,
+                                        fontSize: 12,
+                                    },
+                                    '& label': {
+                                        fontSize: 12,
                                     },
                                     '& label.Mui-focused': {
                                         color: '#1c2437',
@@ -274,7 +286,10 @@ const AddOpeningStock = () => {
                                     marginTop: 2,
                                     '& .MuiFormLabel-root': {
                                         fontWeight: 400,
-                                        fontSize: 14,
+                                        fontSize: 12,
+                                    },
+                                    '& label': {
+                                        fontSize: 12,
                                     },
                                     '& label.Mui-focused': {
                                         color: '#1c2437',
@@ -310,7 +325,10 @@ const AddOpeningStock = () => {
                                     marginTop: 2,
                                     '& .MuiFormLabel-root': {
                                         fontWeight: 400,
-                                        fontSize: 14,
+                                        fontSize: 12,
+                                    },
+                                    '& label': {
+                                        fontSize: 12,
                                     },
                                     '& label.Mui-focused': {
                                         color: '#1c2437',
@@ -347,9 +365,11 @@ const AddOpeningStock = () => {
                                     marginTop: 2,
                                     '& .MuiFormLabel-root': {
                                         fontWeight: 400,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                     },
-                                    '& label': {},
+                                    '& label': {
+                                        fontSize: 12,
+                                    },
                                     '& label.Mui-focused': {
                                         color: '#1c2437',
                                         fontSize: 16
@@ -385,9 +405,11 @@ const AddOpeningStock = () => {
                                     marginTop: 2,
                                     '& .MuiFormLabel-root': {
                                         fontWeight: 400,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                     },
-                                    '& label': {},
+                                    '& label': {
+                                        fontSize: 12,
+                                    },
                                     '& label.Mui-focused': {
                                         color: '#1c2437',
                                         fontSize: 16
