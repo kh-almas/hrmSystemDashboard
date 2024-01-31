@@ -1,40 +1,41 @@
-import React, {useEffect, useState} from 'react';
-import Select from "../../../../common/modal/Select";
-import {Box} from "@mui/material";
-import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
-import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
-import {DatePicker} from "@mui/x-date-pickers/DatePicker";
-import Input from "../../../../common/modal/Input";
-import TextField from "@mui/material/TextField";
-import Submitbtn from "../../../../common/button/Submitbtn";
-import {useForm} from "react-hook-form";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import React, {useEffect, useMemo, useState} from 'react';
+import BaseModal from "../../../../common/modal/BaseModal";
 import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {DatePicker} from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import moment from "moment/moment";
 import {Button} from "react-bootstrap";
+import {useForm} from "react-hook-form";
 import axios from "../../../../../axios";
+import Swal from "sweetalert2";
 import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
-import dayjs from "dayjs";
-import moment from 'moment';
-import Swal from "sweetalert2";
 
-const AddOpeningStock = ({allOpeningStockReFetch}) => {
-    const [selectedBranch, setSelectedBranch] = useState({});
-    const [batchNo, setBatchNo] = useState('');
-    const [uniqueKey, setUniqueKey] = useState('');
-    const [data, setData] = React.useState([]);
+const EditOpeningStock = ({modal, toggle, reFetch, valueForEdit}) => {
     const [branch, setBranch] = useState([]);
-    const [sku, setSku] = useState([]);
+    const [selectedBranch, setSelectedBranch] = useState({});
+    const [data, setData] = React.useState([]);
     const [date, setDate] = useState('');
+    const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
+    const [allSkuStatus, allSkuReFetch, allSku, allSkuError] = getAllSKUForSelect();
+
     const {
         register,
         handleSubmit,
-        formState: {errors},
         clearErrors,
-        reset
-    } = useForm();
-    const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = getAllBranch();
-    const [allSkuStatus, allSkuReFetch, allSku, allSkuError] = getAllSKUForSelect();
+        setError,
+        formState: {errors},
+        reset,
+    } = useForm(
+        {
+            defaultValues: useMemo(() => {
+                return valueForEdit;
+            }, [valueForEdit])
+        }
+    );
 
     function generateSkuCode(count) {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -50,70 +51,23 @@ const AddOpeningStock = ({allOpeningStockReFetch}) => {
 
 
     useEffect(() => {
-        const batchNo = generateSkuCode(12);
-        setBatchNo(batchNo);
+        const previousValue = valueForEdit?.original;
 
-        const uniqueId = generateSkuCode(8);
-        setUniqueKey(uniqueId);
+        setDate(previousValue?.date_s_g ? previousValue?.date_s_g : moment(new Date()).format('YYYY-MM-DD'));
+    }, [valueForEdit?.original])
 
-        setDate(moment(new Date()).format('YYYY-MM-DD'));
-    }, [])
-
-    const onSubmit = (data) => {
-        data.branch_id = selectedBranch?.id;
-        data.date = date;
-        data.batch_no = batchNo;
-        data.unique_key = `opening_stock_${uniqueKey}`;
-        axios.post('/inventory-management/stock/opening/add', data)
-            .then(info => {
-                if (info?.status == 200) {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    allOpeningStockReFetch();
-                    reset();
-                    setSelectedBranch({});
-                    setDate(moment(new Date()).format('YYYY-MM-DD'));
-                    const batchNo = generateSkuCode(12);
-                    setBatchNo(batchNo);
-                    const uniqueId = generateSkuCode(8);
-                    setUniqueKey(uniqueId);
-                }
-            })
-            .catch(e => {
-                console.log(e);
-                if (e?.response?.data?.body?.message?.errno == 1062) {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: 'Can not duplicate variant name',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                } else {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
-                        title: `Something is wrong`,
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            })
-    };
 
     useEffect(() => {
-        setBranch(allBranch?.data?.body?.data?.data);
+        const allBranchs = allBranch?.data?.body?.data?.data
+        setBranch(allBranchs);
+        const selected = allBranchs?.find(item => item?.id == valueForEdit?.original?.branch_id);
+        console.log('selected', selected)
+        setSelectedBranch(selected);
+
     }, [allBranch])
 
     useEffect(() => {
-        const allProduct = allSku?.data?.body?.data
-        // console.log('allProduct', allProduct);
+        const allProduct = allSku?.data?.body?.data;
 
         let finalArray = [];
         allProduct?.map(item => {
@@ -128,15 +82,56 @@ const AddOpeningStock = ({allOpeningStockReFetch}) => {
         setData(finalArray);
     }, [allSku])
 
+    const onSubmit = async (data) => {
+        console.log('data', data)
+        // axios.put(`/inventory-management/unit-type/update/${oldData?.id}`, data)
+        //     .then(info => {
+        //         if(info?.status == 200)
+        //         {
+        //             Swal.fire({
+        //                 position: 'top-end',
+        //                 icon: 'success',
+        //                 title: 'Your work has been saved',
+        //                 showConfirmButton: false,
+        //                 timer: 1500
+        //             })
+        //             toggle();
+        //             // reset();
+        //         }
+        //         reFetch();
+        //     })
+        //     .catch(e => {
+        //         console.log(e);
+        //         if(e?.response?.data?.body?.message?.errno == 1062){
+        //             Swal.fire({
+        //                 position: 'top-end',
+        //                 icon: 'error',
+        //                 title: 'Can not duplicate variant name',
+        //                 showConfirmButton: false,
+        //                 timer: 1500
+        //             })
+        //         }else {
+        //             Swal.fire({
+        //                 position: 'top-end',
+        //                 icon: 'error',
+        //                 title: `${e?.response?.data?.body?.message?.details[0].message}`,
+        //                 showConfirmButton: false,
+        //                 timer: 1500
+        //             })
+        //         }
+        //     })
+    }
+
     return (
         <>
-            <div className="p-30">
+            <BaseModal title={"Edit opening stock"} dataModal={modal} dataToggle={toggle}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <Autocomplete
                             disablePortal
                             size={'small'}
                             id="branch"
+                            value={selectedBranch}
                             options={branch}
                             getOptionLabel={(option) => option ? option?.name : ''}
                             onChange={(event, value) => {
@@ -205,7 +200,7 @@ const AddOpeningStock = ({allOpeningStockReFetch}) => {
                                 autoComplete="off"
                                 size='small'
                                 type='text'
-                                value={batchNo}
+                                value={valueForEdit?.original?.batch_s}
                                 label='Batch no'
                                 sx={{
                                     marginTop: 2,
@@ -413,7 +408,8 @@ const AddOpeningStock = ({allOpeningStockReFetch}) => {
                                         },
                                     },
                                 }}/>
-                            {errors.total_discount && <span style={{fontSize: '10px'}}>{errors.total_discount.message}</span>}
+                            {errors.total_discount &&
+                                <span style={{fontSize: '10px'}}>{errors.total_discount.message}</span>}
                         </div>
 
                     </div>
@@ -424,9 +420,9 @@ const AddOpeningStock = ({allOpeningStockReFetch}) => {
                         </Button>
                     </div>
                 </form>
-            </div>
+            </BaseModal>
         </>
     );
 };
 
-export default AddOpeningStock;
+export default EditOpeningStock;

@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
-import MultiselectTable from "./CustomeMultiselect/MultiselectTable";
+import MultiselectTable from "./MultiselectTable";
 
 const DropdownTable = () => {
     const [selected, setSelected] = React.useState([]);
