@@ -198,19 +198,19 @@ export const MENUITEMS = [
         path: "/dashboard/table",
       },
       {
-        title: "Dropdown",
+        title: "Single Select",
         type: "link",
-        path: "/dashboard/multiple/dropdown",
+        path: "/dashboard/single/select",
+      },
+      {
+        title: "Multiple select",
+        type: "link",
+        path: "/dashboard/multiple/select",
       },
       {
         title: "Dropdown2",
         type: "link",
         path: "/dashboard/dropdown2",
-      },
-      {
-        title: "Dropdown3",
-        type: "link",
-        path: "/dashboard/dropdown3",
       },
       {
         title: "Tree view",

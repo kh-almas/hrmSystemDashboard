@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import axios from "../../../../axios";
 import DataTable from "../../../common/component/DataTable";
 import GetAllOpeningStock from "../../../common/Query/inventory/GetAllOpeningStock";
+import EditOpeningStock from "./Form/EditOpeningStock";
 
 const OpeningStock = () => {
   const [showFromForAdd , setShowFromForAdd] = useState(false);
@@ -24,15 +25,15 @@ const OpeningStock = () => {
 
     useEffect(() => {
         setAllOpeningStock(allOpeningStockData?.data?.body?.data);
-        console.log('allOpeningStockData'. allOpeningStockData)
     }, [allOpeningStockData]);
 
     const updateToggle = () => {
         setEditModal(!editModal);
     };
+    console.log('editModal', editModal)
+    console.log('valueForEdit', valueForEdit?.original)
 
     const handleDelete = id => {
-        console.log(id, 'id');
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -104,6 +105,7 @@ const OpeningStock = () => {
                 </div>
             </div>
         </div>
+        <EditOpeningStock modal={editModal} toggle={updateToggle} reFetch={isDarty} valueForEdit={valueForEdit}></EditOpeningStock>
     </>
   );
 };

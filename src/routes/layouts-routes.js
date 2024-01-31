@@ -153,17 +153,17 @@ import Role from "../components/dashboard/Role";
 import MachineInfo from "../components/dashboard/hrmSystem/attendance/MachineInfo";
 import CreateUser from "../components/dashboard/user/CreateUser";
 import MaterialReactTableExample from "../components/common/component/material-react-table-example";
-import DropdownTable from "../components/common/component/DropdownTable";
+import DropdownTable from "../components/common/component/CustomeMultiselect/DropdownTable";
 import DropdownTable2 from "../components/common/component/DropdownTable2";
 import TreeViewExample from "../components/common/component/TreeViewExample";
 import TreeViewExample2 from "../components/common/component/TreeViewExample2";
 import InputTest from "../components/common/component/InputTest";
-import DropdownTable3 from "../components/common/component/DropdownTable3";
 import MultipleImageUploader from "../components/common/component/imageUpload/MultipleImageUploader";
 import EditProduct from "../components/dashboard/inventoryManagement/Products/EditProduct/EditProduct";
 import ProductSettings from "../components/dashboard/inventoryManagement/Products/ProductSettings/ProductSettings";
 import ProductInitialization from "../components/dashboard/inventoryManagement/Inventory/ProductInitialization";
 import OpeningStock from "../components/dashboard/inventoryManagement/Inventory/OpeningStock";
+import ProductSelect from "../components/common/component/CustomeSingleSelect/ProductSelect";
 
 export const routes = [
   {
@@ -428,16 +428,16 @@ export const routes = [
     Component: <MaterialReactTableExample />,
   },
   {
-    path: `${process.env.PUBLIC_URL}/dashboard/multiple/dropdown`,
+    path: `${process.env.PUBLIC_URL}/dashboard/single/select`,
+    Component: <ProductSelect />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/multiple/select`,
     Component: <DropdownTable />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/dropdown2`,
     Component: <DropdownTable2 />,
-  },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/dropdown3`,
-    Component: <DropdownTable3 />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/treeview`,

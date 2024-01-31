@@ -10,7 +10,6 @@ import axios from "../../../../../../axios";
 import Swal from "sweetalert2";
 
 const EditUnitTypeModal = ({modal, toggle, reFetch, valueForEdit}) => {
-    console.log(valueForEdit)
     const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("com_id"));
     const [selectedBranch, setSelectedBranch] = useState(localStorage.getItem("branch_id"));
     const [status, setStatus] = useState({});

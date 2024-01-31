@@ -6,12 +6,17 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CloseIcon from '@mui/icons-material/Close';
+import getAllSKUForSelect from "../../Query/inventory/GetAllSKUForSelect";
 
-const ProductSelect = ({selected, setSelected, data, headCells, showSelected, setShowSelected}) => {
+const ProductSelect = () => {
     const inputRef = useRef(null);
     const secondBoxRef = useRef(null);
     const [isFocused, setIsFocused] = useState(false);
     const [sortedData, setSortedData] = useState([]);
+    const [showSelected, setShowSelected] = React.useState('');
+    const [selected, setSelected] = React.useState([]);
+    const [data, setData] = React.useState([]);
+    const [allSkuStatus, allSkuReFetch, allSku, allSkuError] = getAllSKUForSelect();
 
     useEffect(() => {
         if (Object.keys(selected).length > 0){
@@ -91,6 +96,49 @@ const ProductSelect = ({selected, setSelected, data, headCells, showSelected, se
 
         setSortedData(filteredAndSortedArray);
     }
+
+
+    useEffect(() => {
+        setData(allSku?.data?.body?.data);
+    }, [allSku])
+    const headCells = [
+        {
+            id: '',
+            numeric: false,
+            disablePadding: true,
+            label: '',
+        },
+        {
+            id: 'name',
+            numeric: false,
+            disablePadding: true,
+            label: 'Name',
+        },
+        {
+            id: 'sku',
+            numeric: false,
+            disablePadding: false,
+            label: 'SKU',
+        },
+        {
+            id: 'category_name',
+            numeric: false,
+            disablePadding: false,
+            label: 'Category Name',
+        },
+        {
+            id: 'brand_name',
+            numeric: false,
+            disablePadding: false,
+            label: 'Brand Name',
+        },
+        {
+            id: 'model_name',
+            numeric: false,
+            disablePadding: false,
+            label: 'Model Name',
+        }
+    ];
 
     return (
         <Box sx={{position: "relative"}}>

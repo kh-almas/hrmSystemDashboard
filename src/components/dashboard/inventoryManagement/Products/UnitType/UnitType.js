@@ -117,7 +117,7 @@ const UnitType = () => {
           </div>
         </div>
         <AddUnitTypeModal modal={modal} toggle={toggle} reFetch={isDarty}></AddUnitTypeModal>
-        <EditUnitTypeModal modal={editModal} toggle={updateToggle} reFetch={isDarty} valueForEdit={valueForEdit} ></EditUnitTypeModal>
+        <EditUnitTypeModal modal={editModal} toggle={updateToggle} reFetch={isDarty} valueForEdit={valueForEdit}></EditUnitTypeModal>
       </>
   );
 };

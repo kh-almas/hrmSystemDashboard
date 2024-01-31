@@ -5,22 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b70791c6-b211-48c4-89c4-e4ed209f8fc5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/common/component/SingleProductSelect/ProductSelect.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/asset-manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/css/main.baab04b0.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/css/main.baab04b0.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/main.b3a1b97f.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/main.b3a1b97f.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/static/js/main.b3a1b97f.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/axios.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/component/DataTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/DataTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/component/DropdownTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/CustomeMultiselect/DropdownTable.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/component/DropdownTable3.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/component/SingleProductSelect/ProductSelect.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/CustomeSingleSelect/ProductSelect.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/component/SingleProductSelect/ProductSelectTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/CustomeSingleSelect/ProductSelectTable.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/component/form/inventory/unitType/EditUnitTypeModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/form/inventory/unitType/EditUnitTypeModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/component/ProductSelect.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/component/ProductSelectTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/SingleProductSelect/ProductSelectTable.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/OpeningStock.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/OpeningStock.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/UnitType/UnitType.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/UnitType/UnitType.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/layouts-routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/layouts-routes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +55,8 @@
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\Query\inventory" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\component\CustomeSingleSelect" />
+      <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\component\CustomeMultiselect" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\component\SingleProductSelect" />
     </key>
   </component>
@@ -76,7 +73,8 @@
       <workItem from="1706360900399" duration="661000" />
       <workItem from="1706518715420" duration="604000" />
       <workItem from="1706520577766" duration="16711000" />
-      <workItem from="1706589390354" duration="19206000" />
+      <workItem from="1706589390354" duration="20098000" />
+      <workItem from="1706675145779" duration="16718000" />
     </task>
     <servers />
   </component>
@@ -87,26 +85,23 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/components/common/component/SingleProductSelect/ProductSelectTable.jsx</url>
+          <url>file://$PROJECT_DIR$/src/components/common/component/CustomeSingleSelect/ProductSelectTable.jsx</url>
           <line>290</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/components/common/component/SingleProductSelect/ProductSelectTable.jsx</url>
+          <url>file://$PROJECT_DIR$/src/components/common/component/CustomeSingleSelect/ProductSelectTable.jsx</url>
           <line>139</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/components/common/component/SingleProductSelect/ProductSelectTable.jsx</url>
+          <url>file://$PROJECT_DIR$/src/components/common/component/CustomeSingleSelect/ProductSelectTable.jsx</url>
           <line>141</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/components/common/component/SingleProductSelect/ProductSelectTable.jsx</url>
+          <url>file://$PROJECT_DIR$/src/components/common/component/CustomeSingleSelect/ProductSelectTable.jsx</url>
           <line>142</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
