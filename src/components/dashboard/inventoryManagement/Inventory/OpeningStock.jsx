@@ -30,8 +30,6 @@ const OpeningStock = () => {
     const updateToggle = () => {
         setEditModal(!editModal);
     };
-    console.log('editModal', editModal)
-    console.log('valueForEdit', valueForEdit?.original)
 
     const handleDelete = id => {
         Swal.fire({
@@ -83,7 +81,7 @@ const OpeningStock = () => {
 
       <Card className="mt-2">
         <Collapse isOpen={showFromForAdd}>
-            <AddOpeningStock allOpeningStockReFetch={allOpeningStockReFetch}></AddOpeningStock>
+            <AddOpeningStock allOpeningStockReFetch={allOpeningStockReFetch} setShowFromForAdd={setShowFromForAdd}></AddOpeningStock>
         </Collapse>
       </Card>
 
@@ -105,7 +103,7 @@ const OpeningStock = () => {
                 </div>
             </div>
         </div>
-        <EditOpeningStock modal={editModal} toggle={updateToggle} reFetch={isDarty} valueForEdit={valueForEdit}></EditOpeningStock>
+        <EditOpeningStock modal={editModal} toggle={updateToggle} reFetch={isDarty} valueForEdit={valueForEdit?.original} setValueForEdit={setValueForEdit} allOpeningStockReFetch={allOpeningStockReFetch}></EditOpeningStock>
     </>
   );
 };
