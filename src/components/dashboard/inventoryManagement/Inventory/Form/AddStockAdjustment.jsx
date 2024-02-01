@@ -8,18 +8,23 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import axios from "../../../../../axios";
 import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
 
 const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
   const [selectedBranch, setSelectedBranch] = useState({});
   const [batchNo, setBatchNo] = useState("");
-  const [uniqueKey, setUniqueKey] = useState("");
+  // const [uniqueKey, setUniqueKey] = useState("");
   const [data, setData] = React.useState([]);
   const [branch, setBranch] = useState([]);
-  const [purpose, setPurpose] = useState(["Damage", "Recompilation"]);
+  const [purpose, setPurpose] = useState([
+    { id: "Damage", label: "Damage" },
+    { id: "Recompilation", label: "Recompilation" },
+  ]);
   const [selectedPurpose, setSelectedPurpose] = useState("");
-  const [sku, setSku] = useState([]);
+  const [sku, setSku] = useState({});
   const [date, setDate] = useState("");
   const {
     register,
@@ -49,62 +54,64 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
     const batchNo = generateSkuCode(12);
     setBatchNo(batchNo);
 
-    const uniqueId = generateSkuCode(8);
-    setUniqueKey(uniqueId);
+    // const uniqueId = generateSkuCode(8);
+    // setUniqueKey(uniqueId);
 
     setDate(moment(new Date()).format("YYYY-MM-DD"));
   }, []);
 
   const onSubmit = (data) => {
     data.branch_id = selectedBranch?.id;
+    data.sku_id = sku?.id;
+    data.purpose_type = selectedPurpose?.id;
     data.date = date;
     data.batch_no = batchNo;
-    data.unique_key = `opening_stock_${uniqueKey}`;
+    // data.unique_key = `opening_stock_${uniqueKey}`;
 
     console.log("data", data);
 
-    // axios
-    //   .post("/inventory-management/stock/opening/add", data)
-    //   .then((info) => {
-    //     if (info?.status == 200) {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "success",
-    //         title: "Your work has been saved",
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //       allStockAdjustmentReFetch();
-    //       reset();
-    //       setSelectedBranch({});
-    //       setDate(moment(new Date()).format("YYYY-MM-DD"));
-    //       const batchNo = generateSkuCode(12);
-    //       setBatchNo(batchNo);
-    //       const uniqueId = generateSkuCode(8);
-    //       setUniqueKey(uniqueId);
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //     if (e?.response?.data?.body?.message?.errno == 1062) {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "error",
-    //         title: "Can not duplicate variant name",
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     } else {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "error",
-    //         // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
-    //         title: `Something is wrong`,
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     }
-    //   });
+      axios.post('inventory-management/stock/adjustment/add', data)
+          .then(info => {
+              if (info?.status == 200) {
+                  Swal.fire({
+                      position: 'top-end',
+                      icon: 'success',
+                      title: 'Your work has been saved',
+                      showConfirmButton: false,
+                      timer: 1500
+                  })
+                  // allOpeningStockReFetch();
+                  // reset();
+                  // // setSelectedBranch({});
+                  // setDate(moment(new Date()).format('YYYY-MM-DD'));
+                  const batchNo = generateSkuCode(12);
+                  setBatchNo(batchNo);
+                  // allOpeningStockReFetch();
+                  // setShowFromForAdd(false);
+                  // const uniqueId = generateSkuCode(8);
+                  // setUniqueKey(uniqueId);
+              }
+          })
+          .catch(e => {
+              if (e?.response?.data?.body?.message?.errno == 1062) {
+                  Swal.fire({
+                      position: 'top-end',
+                      icon: 'error',
+                      title: 'Can not duplicate variant name',
+                      showConfirmButton: false,
+                      timer: 1500
+                  })
+              } else {
+                  Swal.fire({
+                      position: 'top-end',
+                      icon: 'error',
+                      // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
+                      title: `Something is wrong`,
+                      showConfirmButton: false,
+                      timer: 1500
+                  })
+              }
+          })
   };
 
   useEffect(() => {
@@ -177,7 +184,7 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
               options={data}
               // getOptionLabel={(option) => option ? option?.name : ''}
               onChange={(event, value) => {
-                setSelectedBranch(value);
+                setSku(value);
               }}
               sx={{
                 width: "100%",
@@ -193,15 +200,15 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
                 <TextField
                   {...params}
                   label="Select product"
-                  {...register("product_id", {
+                  {...register("sku_id", {
                     required: "This field is required",
                   })}
                 />
               )}
             />
-            {errors.product_id && (
+            {errors?.sku_id && (
               <span style={{ fontSize: "10px", color: "red" }}>
-                {errors.product_id.message}
+                {errors?.sku_id?.message}
               </span>
             )}
           </div>
@@ -242,13 +249,42 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
             </div>
 
             <div>
-          
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {/*<DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />*/}
+                <DatePicker
+                  label="Date"
+                  slotProps={{ textField: { size: "small" } }}
+                  value={dayjs(date)}
+                  onChange={(newValue) => {
+                    setDate(moment(newValue.$d).format("YYYY-MM-DD"));
+                  }}
+                  sx={{
+                    width: "100%",
+                    marginTop: 2,
+                    "& label": {
+                      fontSize: 12,
+                    },
+                    "& label.Mui-focused": {
+                      fontSize: 16,
+                    },
+                  }}
+                />
+              </LocalizationProvider>
+
+              {errors.date && (
+                <span style={{ fontSize: "10px", color: "red" }}>
+                  {errors.date.message}
+                </span>
+              )}
+            </div>
+
+            <div>
               <Autocomplete
                 disablePortal
                 size={"small"}
                 id="purpose"
                 options={purpose}
-                getOptionLabel={(option) => (option ? option : "")}
+                // getOptionLabel={(option) => (option ? option?.id : "")}
                 onChange={(event, value) => {
                   setSelectedPurpose(value);
                 }}
@@ -287,16 +323,16 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Purpose "
-                    {...register("purpose", {
+                    label="Purpose type "
+                    {...register("purpose_type", {
                       required: "This field is required",
                     })}
                   />
                 )}
               />
-              {errors.purpose && (
+              {errors?.purpose_type && (
                 <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.purpose.message}
+                  {errors?.purpose_type?.message}
                 </span>
               )}
             </div>
@@ -309,11 +345,11 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
                 size="small"
                 type={"text"}
                 label={"Ref Id"}
-                {...register("refId", {
+                {...register("ref_id", {
                   required: "This field is required",
                 })}
                 onChange={(e) => {
-                  clearErrors(["refId"]);
+                  clearErrors(["ref_id"]);
                 }}
                 sx={{
                   marginTop: 2,
@@ -338,42 +374,13 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
                   },
                 }}
               />
-              {errors.refId && (
+              {errors?.ref_id && (
                 <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.refId.message}
+                  {errors?.ref_id.message}
                 </span>
               )}
             </div>
 
-            <div>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                {/*<DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />*/}
-                <DatePicker
-                  label="Date"
-                  slotProps={{ textField: { size: "small" } }}
-                  value={dayjs(date)}
-                  onChange={(newValue) => {
-                    setDate(moment(newValue.$d).format("YYYY-MM-DD"));
-                  }}
-                  sx={{
-                    width: "100%",
-                    marginTop: 2,
-                    "& label": {
-                      fontSize: 12,
-                    },
-                    "& label.Mui-focused": {
-                      fontSize: 16,
-                    },
-                  }}
-                />
-              </LocalizationProvider>
-
-              {errors.date && (
-                <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.date.message}
-                </span>
-              )}
-            </div>
             <div>
               <TextField
                 variant="outlined"
@@ -511,11 +518,11 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
                 size="small"
                 type={"number"}
                 label={"Total discount"}
-                {...register("purpose", {
+                {...register("total_discount", {
                   required: "This field is required",
                 })}
                 onChange={(e) => {
-                  clearErrors(["purpose"]);
+                  clearErrors(["total_discount"]);
                 }}
                 sx={{
                   marginTop: 2,
@@ -540,9 +547,9 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
                   },
                 }}
               />
-              {errors.purpose && (
+              {errors.total_discount && (
                 <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.purpose.message}
+                  {errors.total_discount.message}
                 </span>
               )}
             </div>

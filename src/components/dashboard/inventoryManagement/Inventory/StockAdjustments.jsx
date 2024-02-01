@@ -8,7 +8,7 @@ import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import AddStockAdjustment from "./Form/AddStockAdjustment";
 
 const StockAdjustments = () => {
-  const [showFromForAdd, setShowFromForAdd] = useState(false);
+  const [showFromForAdd, setShowFromForAdd] = useState(true);
   const [allStockAdjustment, setAllStockAdjustment] = useState([]);
   const [isChange, setIsChange] = useState(false);
   const [valueForEdit, setValueForEdit] = useState({});
@@ -51,20 +51,14 @@ const StockAdjustments = () => {
       </div>
 
       <div className="container-fluid">
-        <div className="row">
-          <div className="col-sm-12">
-            <div className="card" >
-              {/* <DataTable
-                baseForDelete={"batch_s"}
-                getAllData={allStockAdjustment}
-                handleDelete={handleDelete}
-                toggleUpdateModal={updateToggle}
-                setValueForEdit={setValueForEdit}
-              ></DataTable> */}
+            <div className="row">
+                <div className="col-sm-12">
+                    <div className="card" style={{padding: "20px"}}>
+                        {/* <DataTable baseForDelete={'batch_s'} getAllData={allOpeningStock} handleDelete={handleDelete} toggleUpdateModal={updateToggle} setValueForEdit={setValueForEdit}></DataTable> */}
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </>
   );
 };
