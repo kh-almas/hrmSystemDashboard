@@ -32,43 +32,44 @@ const OpeningStock = () => {
     };
 
     const handleDelete = id => {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                axios.delete(`/inventory-management/stock/opening/delete/${id}`)
-                    .then(info => {
-                        if(info?.status == 200)
-                        {
-                            Swal.fire({
-                                position: "top-end",
-                                icon: "success",
-                                title: "Your file has been deleted.",
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                        }
-                        allOpeningStockReFetch();
-                    })
-                    .catch(e => {
-                        if(e?.response?.data?.body?.message?.sqlState === "23000")
-                        {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: `Can not delete variant.`,
-                            })
-                        }
-                    })
-            }
-        })
-    };
+      Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+          if (result.isConfirmed) {
+              axios.delete(`/inventory-management/stock/opening/delete/${id}`)
+                  .then(info => {
+                      if(info?.status == 200)
+                      {
+                          Swal.fire({
+                              position: "top-end",
+                              icon: "success",
+                              title: "Your file has been deleted.",
+                              showConfirmButton: false,
+                              timer: 1500
+                          });
+                      }
+                      allOpeningStockReFetch();
+                  })
+                  .catch(e => {
+                      if(e?.response?.data?.body?.message?.sqlState === "23000")
+                      {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'Oops...',
+                              text: `Can not delete variant.`,
+                          })
+                      }
+                  })
+          }
+      })
+  };
+  
 
 
   return (

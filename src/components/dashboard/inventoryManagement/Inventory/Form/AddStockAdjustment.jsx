@@ -13,7 +13,10 @@ import axios from "../../../../../axios";
 import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
 
-const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
+const AddStockAdjustment = ({
+  allStockAdjustmentReFetch,
+  setShowFromForAdd,
+}) => {
   const [selectedBranch, setSelectedBranch] = useState({});
   const [batchNo, setBatchNo] = useState("");
   // const [uniqueKey, setUniqueKey] = useState("");
@@ -70,48 +73,52 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
 
     console.log("data", data);
 
-      axios.post('inventory-management/stock/adjustment/add', data)
-          .then(info => {
-              if (info?.status == 200) {
-                  Swal.fire({
-                      position: 'top-end',
-                      icon: 'success',
-                      title: 'Your work has been saved',
-                      showConfirmButton: false,
-                      timer: 1500
-                  })
-                  // allOpeningStockReFetch();
-                  // reset();
-                  // // setSelectedBranch({});
-                  // setDate(moment(new Date()).format('YYYY-MM-DD'));
-                  const batchNo = generateSkuCode(12);
-                  setBatchNo(batchNo);
-                  // allOpeningStockReFetch();
-                  // setShowFromForAdd(false);
-                  // const uniqueId = generateSkuCode(8);
-                  // setUniqueKey(uniqueId);
-              }
-          })
-          .catch(e => {
-              if (e?.response?.data?.body?.message?.errno == 1062) {
-                  Swal.fire({
-                      position: 'top-end',
-                      icon: 'error',
-                      title: 'Can not duplicate variant name',
-                      showConfirmButton: false,
-                      timer: 1500
-                  })
-              } else {
-                  Swal.fire({
-                      position: 'top-end',
-                      icon: 'error',
-                      // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
-                      title: `Something is wrong`,
-                      showConfirmButton: false,
-                      timer: 1500
-                  })
-              }
-          })
+    axios
+      .post("inventory-management/stock/adjustment/add", data)
+      .then((info) => {
+        if (info?.status == 200) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+
+          const batchNo = generateSkuCode(12);
+          setBatchNo(batchNo);
+       
+          setSku("");
+          setSelectedBranch('');
+          setSelectedPurpose("");
+          setPurpose("");
+          reset();
+          allStockAdjustmentReFetch();
+          setShowFromForAdd(false);
+        
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        if (e?.response?.data?.body?.message?.errno == 1062) {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Can not duplicate variant name",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
+            title: `Something is wrong`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
   };
 
   useEffect(() => {
@@ -463,7 +470,7 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
               />
               {errors.purchase_price && (
                 <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.purchase_price.message}
+                  {errors?.purchase_price?.message}
                 </span>
               )}
             </div>
@@ -475,7 +482,7 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
                 size="small"
                 type={"number"}
                 label={"Selling price"}
-                {...register("selling_price", {
+                {...register("sales_price", {
                   required: "This field is required",
                 })}
                 onChange={(e) => {
@@ -504,13 +511,13 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
                   },
                 }}
               />
-              {errors.selling_price && (
+              {errors.sales_price && (
                 <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.selling_price.message}
+                  {errors?.sales_price?.message}
                 </span>
               )}
             </div>
-            <div>
+            {/* <div>
               <TextField
                 variant="outlined"
                 fullWidth
@@ -552,7 +559,7 @@ const AddStockAdjustment = ({ allStockAdjustmentReFetch }) => {
                   {errors.total_discount.message}
                 </span>
               )}
-            </div>
+            </div> */}
           </div>
 
           <div className="d-flex justify-content-center align-items-center mt-3">
