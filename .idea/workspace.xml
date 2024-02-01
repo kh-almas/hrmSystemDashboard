@@ -6,16 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="b70791c6-b211-48c4-89c4-e4ed209f8fc5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/component/DropdownTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/CustomeMultiselect/DropdownTable.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/component/DropdownTable3.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/component/SingleProductSelect/ProductSelect.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/CustomeSingleSelect/ProductSelect.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/component/SingleProductSelect/ProductSelectTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/CustomeSingleSelect/ProductSelectTable.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/component/form/inventory/unitType/EditUnitTypeModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/form/inventory/unitType/EditUnitTypeModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/EditOpeningStock.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/EditOpeningStock.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/OpeningStock.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/OpeningStock.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/UnitType/UnitType.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/UnitType/UnitType.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/layouts-routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/layouts-routes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +67,8 @@
       <workItem from="1706518715420" duration="604000" />
       <workItem from="1706520577766" duration="16711000" />
       <workItem from="1706589390354" duration="20098000" />
-      <workItem from="1706675145779" duration="16718000" />
+      <workItem from="1706675145779" duration="19077000" />
+      <workItem from="1706761112103" duration="12778000" />
     </task>
     <servers />
   </component>
