@@ -18,13 +18,13 @@ import dayjs from "dayjs";
 import moment from 'moment';
 import Swal from "sweetalert2";
 
-const AddOpeningStock = ({allOpeningStockReFetch}) => {
+const AddOpeningStock = ({allOpeningStockReFetch, setShowFromForAdd}) => {
     const [selectedBranch, setSelectedBranch] = useState({});
     const [batchNo, setBatchNo] = useState('');
     const [uniqueKey, setUniqueKey] = useState('');
     const [data, setData] = React.useState([]);
     const [branch, setBranch] = useState([]);
-    const [sku, setSku] = useState([]);
+    const [sku, setSku] = useState({});
     const [date, setDate] = useState('');
     const {
         register,
@@ -63,7 +63,7 @@ const AddOpeningStock = ({allOpeningStockReFetch}) => {
         data.branch_id = selectedBranch?.id;
         data.date = date;
         data.batch_no = batchNo;
-        data.unique_key = `opening_stock_${uniqueKey}`;
+        data.sku_id = sku.id;
         axios.post('/inventory-management/stock/opening/add', data)
             .then(info => {
                 if (info?.status == 200) {
@@ -74,18 +74,19 @@ const AddOpeningStock = ({allOpeningStockReFetch}) => {
                         showConfirmButton: false,
                         timer: 1500
                     })
-                    allOpeningStockReFetch();
-                    reset();
-                    setSelectedBranch({});
-                    setDate(moment(new Date()).format('YYYY-MM-DD'));
+                    // allOpeningStockReFetch();
+                    // reset();
+                    // // setSelectedBranch({});
+                    // setDate(moment(new Date()).format('YYYY-MM-DD'));
                     const batchNo = generateSkuCode(12);
                     setBatchNo(batchNo);
-                    const uniqueId = generateSkuCode(8);
-                    setUniqueKey(uniqueId);
+                    allOpeningStockReFetch();
+                    setShowFromForAdd(false);
+                    // const uniqueId = generateSkuCode(8);
+                    // setUniqueKey(uniqueId);
                 }
             })
             .catch(e => {
-                console.log(e);
                 if (e?.response?.data?.body?.message?.errno == 1062) {
                     Swal.fire({
                         position: 'top-end',
@@ -113,8 +114,6 @@ const AddOpeningStock = ({allOpeningStockReFetch}) => {
 
     useEffect(() => {
         const allProduct = allSku?.data?.body?.data
-        // console.log('allProduct', allProduct);
-
         let finalArray = [];
         allProduct?.map(item => {
             let initialObj = {
@@ -162,7 +161,7 @@ const AddOpeningStock = ({allOpeningStockReFetch}) => {
                                 />
                             }
                         />
-                        {errors.branch && <span style={{fontSize: '10px'}}>{errors.branch.message}</span>}
+                        {errors.branch_id && <span style={{fontSize: '10px'}}>{errors.branch_id.message}</span>}
                     </div>
                     <div>
                         <Autocomplete
@@ -172,7 +171,7 @@ const AddOpeningStock = ({allOpeningStockReFetch}) => {
                             options={data}
                             // getOptionLabel={(option) => option ? option?.name : ''}
                             onChange={(event, value) => {
-                                setSelectedBranch(value);
+                                setSku(value);
                             }}
                             sx={{
                                 width: '100%',
@@ -194,7 +193,7 @@ const AddOpeningStock = ({allOpeningStockReFetch}) => {
                                 />
                             }
                         />
-                        {errors.branch && <span style={{fontSize: '10px'}}>{errors.branch.message}</span>}
+                        {errors.product_id && <span style={{fontSize: '10px'}}>{errors.product_id.message}</span>}
                     </div>
                     <div className="row row-cols-1 row-cols-lg-2">
                         <div>
@@ -415,7 +414,6 @@ const AddOpeningStock = ({allOpeningStockReFetch}) => {
                                 }}/>
                             {errors.total_discount && <span style={{fontSize: '10px'}}>{errors.total_discount.message}</span>}
                         </div>
-
                     </div>
 
                     <div className="d-flex justify-content-center align-items-center mt-3">
