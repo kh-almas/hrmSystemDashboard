@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Card, Collapse } from "reactstrap";
+import Swal from "sweetalert2";
+import axios from "../../../../axios";
+import GetAllStockAdjustment from "../../../common/Query/inventory/GetAllStockAdjustment";
 import Breadcrumb from "../../../common/breadcrumb";
 import DataTable from "../../../common/component/DataTable";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import AddStockAdjustment from "./Form/AddStockAdjustment";
-import Swal from "sweetalert2";
-import axios from "../../../../axios";
-import GetAllStockAdjustment from "../../../common/Query/inventory/GetAllStockAdjustment";
 import EditStockAdjustment from "./Form/EditStockAdjustment";
-
 
 const StockAdjustments = () => {
   const [showFromForAdd, setShowFromForAdd] = useState(false);
@@ -24,63 +23,57 @@ const StockAdjustments = () => {
     allStockAdjustmentError,
   ] = GetAllStockAdjustment();
 
-
-  const isDarty = () =>
-  {
-      setIsChange(!isChange);
-  }
+  const isDarty = () => {
+    setIsChange(!isChange);
+  };
 
   useEffect(() => {
     setAllStockAdjustment(allStockAdjustmentData?.data?.body?.data);
   }, [allStockAdjustmentData]);
 
   const updateToggle = () => {
-      setEditModal(!editModal);
+    setEditModal(!editModal);
   };
-
 
   // console.log('allStockAdjustmentData',allStockAdjustment)
 
-  const handleDelete = batch_id => {
+  const handleDelete = (batch_id) => {
     Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
-        if (result.isConfirmed) {
-            axios.delete(`/inventory-management/stock/adjustment/delete/${batch_id}`)
-                .then(info => {
-                    if(info?.status == 200)
-                    {
-                        Swal.fire({
-                            position: "top-end",
-                            icon: "success",
-                            title: "Your file has been deleted.",
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    }
-                    allStockAdjustmentReFetch();
-                })
-                .catch(e => {
-                    if(e?.response?.data?.body?.message?.sqlState === "23000")
-                    {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: `Can not delete variant.`,
-                        })
-                    }
-                })
-        }
-    })
-};
-
-
+      if (result.isConfirmed) {
+        axios
+          .delete(`/inventory-management/stock/adjustment/delete/${batch_id}`)
+          .then((info) => {
+            if (info?.status == 200) {
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Your file has been deleted.",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+            allStockAdjustmentReFetch();
+          })
+          .catch((e) => {
+            if (e?.response?.data?.body?.message?.sqlState === "23000") {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `Can not delete Stock Adjustment.`,
+              });
+            }
+          });
+      }
+    });
+  };
 
   return (
     <>
@@ -90,15 +83,13 @@ const StockAdjustments = () => {
         className="mt-3 btn btn-pill btn-info btn-air-info btn-air-info"
         onClick={() => setShowFromForAdd(!showFromForAdd)}
       >
-
         Add Stock Adjustment
       </Button>
-
 
       <Card className="mt-2">
         <Collapse isOpen={showFromForAdd}>
           <AddStockAdjustment
-          setShowFromForAdd={setShowFromForAdd}
+            setShowFromForAdd={setShowFromForAdd}
             allStockAdjustmentReFetch={allStockAdjustmentReFetch}
           ></AddStockAdjustment>
         </Collapse>
@@ -114,15 +105,28 @@ const StockAdjustments = () => {
       </div>
 
       <div className="container-fluid">
-            <div className="row">
-                <div className="col-sm-12">
-                    <div className="card" style={{padding: "20px"}}>
-                        <DataTable baseForDelete={'batch_s'} getAllData={allStockAdjustment} handleDelete={handleDelete} toggleUpdateModal={updateToggle} setValueForEdit={setValueForEdit}></DataTable>
-                    </div>
-                </div>
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="card" style={{ padding: "20px" }}>
+              <DataTable
+                baseForDelete={"batch_s"}
+                getAllData={allStockAdjustment}
+                handleDelete={handleDelete}
+                toggleUpdateModal={updateToggle}
+                setValueForEdit={setValueForEdit}
+              ></DataTable>
             </div>
+          </div>
         </div>
-        <EditStockAdjustment modal={editModal} toggle={updateToggle} reFetch={isDarty} valueForEdit={valueForEdit?.original} setValueForEdit={setValueForEdit} allStockAdjustmentReFetch={allStockAdjustmentReFetch}></EditStockAdjustment>
+      </div>
+      <EditStockAdjustment
+        modal={editModal}
+        toggle={updateToggle}
+        reFetch={isDarty}
+        valueForEdit={valueForEdit?.original}
+        setValueForEdit={setValueForEdit}
+        allStockAdjustmentReFetch={allStockAdjustmentReFetch}
+      ></EditStockAdjustment>
     </>
   );
 };
