@@ -527,9 +527,14 @@ export const MENUITEMS = [
             path: "/dashboard/inventory-management/inventory/product/initialization",
           },
           {
-            title: "Add Opening Stock",
+            title: "Opening Stock",
             type: "link",
             path: "/dashboard/inventory-management/inventory/opening-stock",
+          },
+          {
+            title: "Product Reconciliation",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/product/reconciliation",
           },
           {
             title: "Receive Your Product",
