@@ -3,39 +3,39 @@ import { Button } from "react-bootstrap";
 import { Card, Collapse } from "reactstrap";
 import Swal from "sweetalert2";
 import axios from "../../../../axios";
-import GetAllStockAdjustment from "../../../common/Query/inventory/GetAllStockAdjustment";
+import GetAllProductReconciliation from "../../../common/Query/inventory/GetAllProductReconciliation";
 import Breadcrumb from "../../../common/breadcrumb";
 import DataTable from "../../../common/component/DataTable";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
-import AddStockAdjustment from "./Form/AddStockAdjustment";
-import EditStockAdjustment from "./Form/EditStockAdjustment";
+import AddProductReconciliation from "./Form/AddProductReconciliation";
+import EditProductReconciliation from "./Form/EditProductReconciliation";
 
-const StockAdjustments = () => {
+const ProductReconciliation = () => {
   const [showFromForAdd, setShowFromForAdd] = useState(false);
-  const [allStockAdjustment, setAllStockAdjustment] = useState([]);
+  const [allProductReconciliation, setAllProductReconciliation] = useState([]);
   const [isChange, setIsChange] = useState(false);
   const [valueForEdit, setValueForEdit] = useState({});
   const [editModal, setEditModal] = useState(false);
   const [
-    allStockAdjustmentStatus,
-    allStockAdjustmentReFetch,
-    allStockAdjustmentData,
-    allStockAdjustmentError,
-  ] = GetAllStockAdjustment();
+    allProductReconciliationtatus,
+    allProductReconciliationReFetch,
+    allProductReconciliationData,
+    allProductReconciliationError,
+  ] = GetAllProductReconciliation();
 
   const isDarty = () => {
     setIsChange(!isChange);
   };
 
   useEffect(() => {
-    setAllStockAdjustment(allStockAdjustmentData?.data?.body?.data);
-  }, [allStockAdjustmentData]);
+    setAllProductReconciliation(allProductReconciliationData?.data?.body?.data);
+  }, [allProductReconciliationData]);
 
   const updateToggle = () => {
     setEditModal(!editModal);
   };
 
-  // console.log('allStockAdjustmentData',allStockAdjustment)
+  // console.log('allProductReconciliationData',allProductReconciliation)
 
   const handleDelete = (batch_id) => {
     Swal.fire({
@@ -49,7 +49,9 @@ const StockAdjustments = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`/inventory-management/stock/adjustment/delete/${batch_id}`)
+          .delete(
+            `/inventory-management/stock/reconciliation/delete/${batch_id}`
+          )
           .then((info) => {
             if (info?.status == 200) {
               Swal.fire({
@@ -60,14 +62,14 @@ const StockAdjustments = () => {
                 timer: 1500,
               });
             }
-            allStockAdjustmentReFetch();
+            allProductReconciliationReFetch();
           })
           .catch((e) => {
             if (e?.response?.data?.body?.message?.sqlState === "23000") {
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: `Can not delete Stock Adjustment.`,
+                text: `Can not delete Reconciliation.`,
               });
             }
           });
@@ -77,27 +79,30 @@ const StockAdjustments = () => {
 
   return (
     <>
-      <Breadcrumb parent="Inventory management" title="Stock Adjustment" />
+      <Breadcrumb
+        parent="Inventory management"
+        title="Product Reconciliation"
+      />
 
       <Button
         className="mt-3 btn btn-pill btn-info btn-air-info btn-air-info"
         onClick={() => setShowFromForAdd(!showFromForAdd)}
       >
-        Add Stock Adjustment
+        Add Product Reconciliation
       </Button>
 
       <Card className="mt-2">
         <Collapse isOpen={showFromForAdd}>
-          <AddStockAdjustment
+          <AddProductReconciliation
             setShowFromForAdd={setShowFromForAdd}
-            allStockAdjustmentReFetch={allStockAdjustmentReFetch}
-          ></AddStockAdjustment>
+            allProductReconciliationReFetch={allProductReconciliationReFetch}
+          ></AddProductReconciliation>
         </Collapse>
       </Card>
 
       <div className="d-flex align-items-center justify-content-between mb-2">
         <div>
-          <h5>Stock Adjustment List</h5>
+          <h5>Add Product Reconciliation</h5>
         </div>
         <div>
           <FilesComponent />
@@ -110,7 +115,7 @@ const StockAdjustments = () => {
             <div className="card" style={{ padding: "20px" }}>
               <DataTable
                 baseForDelete={"batch_s"}
-                getAllData={allStockAdjustment}
+                getAllData={allProductReconciliation}
                 handleDelete={handleDelete}
                 toggleUpdateModal={updateToggle}
                 setValueForEdit={setValueForEdit}
@@ -119,16 +124,18 @@ const StockAdjustments = () => {
           </div>
         </div>
       </div>
-      <EditStockAdjustment
-        modal={editModal}
-        toggle={updateToggle}
-        reFetch={isDarty}
-        valueForEdit={valueForEdit?.original}
-        setValueForEdit={setValueForEdit}
-        allStockAdjustmentReFetch={allStockAdjustmentReFetch}
-      ></EditStockAdjustment>
+      {editModal && (
+        <EditProductReconciliation
+          modal={editModal}
+          toggle={updateToggle}
+          reFetch={isDarty}
+          valueForEdit={valueForEdit?.original}
+          setValueForEdit={setValueForEdit}
+          allProductReconciliationReFetch={allProductReconciliationReFetch}
+        />
+      )}
     </>
   );
 };
 
-export default StockAdjustments;
+export default ProductReconciliation;

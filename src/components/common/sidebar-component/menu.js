@@ -537,6 +537,11 @@ export const MENUITEMS = [
             path: "/dashboard/inventory-management/inventory/stock-adjustment",
           },
           {
+            title: "Product Reconciliation",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/product/reconciliation",
+          },
+          {
             title: "Receive Your Product",
             type: "link",
             path: "/dashboard/inventory-management/inventory/product-receive",
