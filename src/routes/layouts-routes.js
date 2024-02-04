@@ -165,6 +165,7 @@ import ProductInitialization from "../components/dashboard/inventoryManagement/I
 import OpeningStock from "../components/dashboard/inventoryManagement/Inventory/OpeningStock";
 import ProductSelect from "../components/common/component/CustomeSingleSelect/ProductSelect";
 import ProductReconciliation from "../components/dashboard/inventoryManagement/Inventory/ProductReconciliation";
+import ProductDiscount from "../components/dashboard/inventoryManagement/Inventory/ProductDiscount";
 
 export const routes = [
   {
@@ -703,6 +704,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product/reconciliation`,
     Component: <ProductReconciliation />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product/discount`,
+    Component: <ProductDiscount />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-receive`,

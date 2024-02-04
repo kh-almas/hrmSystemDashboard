@@ -20,7 +20,7 @@ const ProductReconciliation = ({
   toggle,
   reFetch,
   valueForEdit,
-  allOpeningStockReFetch,
+  allProductReconciliationReFetch,
   setValueForEdit,
 }) => {
   // const [isLoading, setIsLoading] = useState(true);
@@ -67,15 +67,6 @@ const ProductReconciliation = ({
     return code;
   }
 
-  useEffect(() => {
-    allEmployee?.data?.body?.data?.data?.map((item) => {
-      const set_data = {
-        value: item.id,
-        label: item?.full_name,
-      };
-      setEmployee((prevEmployee) => [...prevEmployee, set_data]);
-    });
-  }, [allEmployee]);
 
   useEffect(() => {
     // setIsLoading(true);
@@ -111,26 +102,41 @@ const ProductReconciliation = ({
       (item) => item?.id == valueForEdit?.branch_id
     );
     setSelectedBranch(selected);
+    // setIsLoading(false);
+  }, [allBranch, valueForEdit, allSku]);
 
+
+  useEffect(() => {
+    allEmployee?.data?.body?.data?.data?.map((item) => {
+      const set_data = {
+        value: item.id,
+        label: item?.full_name,
+      };
+      setEmployee((prevEmployee) => [...prevEmployee, set_data]);
+    });
+
+
+  
+  }, [allEmployee]);
+
+
+  useEffect(()=>{
     const selectAuditMember = employee?.find(
       (item) => item?.value == valueForEdit?.audit_by_s
     );
-    // const selectAuditMember = employee?.find(
-    //     (item) => console.log('item',item)
-    //   );
     setSelectedUser(selectAuditMember);
+  },[employee, valueForEdit?.audit_by_s])
 
-    console.log("employeeInfo", employeeInfo);
-    console.log("selectAuditMember", selectAuditMember);
 
-    // setIsLoading(false);
-  }, [allBranch, valueForEdit, allSku]);
+
 
   const onSubmit = async (data) => {
     data.branch_id = selectedBranch?.id;
     data.date = date;
     data.batch_no = valueForEdit?.batch_s;
     data.sku_id = selectedProduct.id;
+    data.audit_by = selectedUser?.value;
+    data.approve_status = false;
     axios
       .put(
         `/inventory-management/stock/reconciliation/update/${valueForEdit?.batch_s}`,
@@ -145,13 +151,14 @@ const ProductReconciliation = ({
             showConfirmButton: false,
             timer: 1500,
           });
-          allOpeningStockReFetch();
+          allProductReconciliationReFetch();
           setValueForEdit({});
           toggle();
         }
         reFetch();
       })
       .catch((e) => {
+        console.log("e---------", e);
         if (e?.response?.data?.body?.message?.errno == 1062) {
           Swal.fire({
             position: "top-end",
