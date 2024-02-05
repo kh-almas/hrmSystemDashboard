@@ -1,31 +1,39 @@
-import React, { useEffect, useState } from "react";
-import Select from "../../../../common/modal/Select";
-import { Box } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Input from "../../../../common/modal/Input";
-import TextField from "@mui/material/TextField";
-import Submitbtn from "../../../../common/button/Submitbtn";
-import { useForm } from "react-hook-form";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Autocomplete from "@mui/material/Autocomplete";
-import { Button } from "react-bootstrap";
-import axios from "../../../../../axios";
-import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
-import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
+import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
+import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import axios from "../../../../../axios";
+import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
+import GetEmployee from "../../../../common/Query/hrm/GetEmployee";
+import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
+import Select from "../../../../common/modal/Select";
 
-const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
+const AddProductReconciliation = ({
+  allProductReconciliationReFetch,
+  setShowFromForAdd,
+}) => {
   const [selectedBranch, setSelectedBranch] = useState({});
   const [batchNo, setBatchNo] = useState("");
-  const [uniqueKey, setUniqueKey] = useState("");
   const [data, setData] = React.useState([]);
   const [branch, setBranch] = useState([]);
   const [sku, setSku] = useState({});
   const [date, setDate] = useState("");
+  const [employeeInfo, setEmployeeInfo] = useState("");
+  const [employee, setEmployee] = useState([]);
+  const [allEmployeeStatus, allEmployeeReFetch, allEmployee, allEmployeeError] =
+    GetEmployee();
+
+  const handleChangeForUpdateStatus = (selected) => {
+    setEmployeeInfo(selected);
+  };
+
   const {
     register,
     handleSubmit,
@@ -35,6 +43,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   } = useForm();
   const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] =
     getAllBranch();
+
   const [allSkuStatus, allSkuReFetch, allSku, allSkuError] =
     getAllSKUForSelect();
 
@@ -54,19 +63,37 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     const batchNo = generateSkuCode(12);
     setBatchNo(batchNo);
 
-    const uniqueId = generateSkuCode(8);
-    setUniqueKey(uniqueId);
-
     setDate(moment(new Date()).format("YYYY-MM-DD"));
   }, []);
 
+  useEffect(() => {
+    allEmployee?.data?.body?.data?.data?.map((item) => {
+      const set_data = {
+        value: item.id,
+        label: item?.full_name,
+      };
+      setEmployee((prevEmployee) => [...prevEmployee, set_data]);
+    });
+  }, [allEmployee]);
+
+
+
+
+
   const onSubmit = (data) => {
     data.branch_id = selectedBranch?.id;
+    data.sku_id = sku?.id;
     data.date = date;
     data.batch_no = batchNo;
-    data.sku_id = sku.id;
+    data.audit_by = employeeInfo?.value;
+    data.approve_status = false;
+
+
+
+    console.log("data=====---", data);
+
     axios
-      .post("/inventory-management/stock/opening/add", data)
+      .post("inventory-management/stock/reconciliation/add", data)
       .then((info) => {
         if (info?.status == 200) {
           Swal.fire({
@@ -76,19 +103,19 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
             showConfirmButton: false,
             timer: 1500,
           });
-          // allOpeningStockReFetch();
-          // reset();
-          // // setSelectedBranch({});
-          // setDate(moment(new Date()).format('YYYY-MM-DD'));
+
           const batchNo = generateSkuCode(12);
           setBatchNo(batchNo);
-          allOpeningStockReFetch();
+
+          setSku("");
+          setSelectedBranch("");
+          reset();
+          allProductReconciliationReFetch();
           setShowFromForAdd(false);
-          // const uniqueId = generateSkuCode(8);
-          // setUniqueKey(uniqueId);
         }
       })
       .catch((e) => {
+        console.log(e);
         if (e?.response?.data?.body?.message?.errno == 1062) {
           Swal.fire({
             position: "top-end",
@@ -116,6 +143,8 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
 
   useEffect(() => {
     const allProduct = allSku?.data?.body?.data;
+    // console.log('allProduct', allProduct);
+
     let finalArray = [];
     allProduct?.map((item) => {
       let initialObj = {
@@ -128,6 +157,10 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
 
     setData(finalArray);
   }, [allSku]);
+
+  //   console.log("allEmployee=====---", allEmployee);
+  //   console.log("employeeInfo=====---", employeeInfo);
+  //   console.log("employee=====---", employee);
 
   return (
     <>
@@ -169,6 +202,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
               </span>
             )}
           </div>
+
           <div>
             <Autocomplete
               disablePortal
@@ -193,15 +227,15 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                 <TextField
                   {...params}
                   label="Select product"
-                  {...register("product_id", {
+                  {...register("sku_id", {
                     required: "This field is required",
                   })}
                 />
               )}
             />
-            {errors.product_id && (
+            {errors?.sku_id && (
               <span style={{ fontSize: "10px", color: "red" }}>
-                {errors.product_id.message}
+                {errors?.sku_id?.message}
               </span>
             )}
           </div>
@@ -270,6 +304,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                 </span>
               )}
             </div>
+
             <div>
               <TextField
                 variant="outlined"
@@ -277,12 +312,12 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                 autoComplete="off"
                 size="small"
                 type={"number"}
-                label={"Quantity"}
-                {...register("qty", {
+                label={"System Stock Qty"}
+                {...register("system_stock_qty", {
                   required: "This field is required",
                 })}
                 onChange={(e) => {
-                  clearErrors(["qty"]);
+                  clearErrors(["system_stock_qty"]);
                 }}
                 sx={{
                   marginTop: 2,
@@ -307,9 +342,9 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                   },
                 }}
               />
-              {errors.qty && (
+              {errors.system_stock_qty && (
                 <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.qty.message}
+                  {errors.system_stock_qty.message}
                 </span>
               )}
             </div>
@@ -320,12 +355,12 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                 autoComplete="off"
                 size="small"
                 type={"number"}
-                label={"Purchase price"}
-                {...register("purchase_price", {
+                label={"Physical qty"}
+                {...register("physical_qty", {
                   required: "This field is required",
                 })}
                 onChange={(e) => {
-                  clearErrors(["purchase_price"]);
+                  clearErrors(["physical_qty"]);
                 }}
                 sx={{
                   marginTop: 2,
@@ -350,12 +385,13 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                   },
                 }}
               />
-              {errors.purchase_price && (
+              {errors.physical_qty && (
                 <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.purchase_price.message}
+                  {errors.physical_qty.message}
                 </span>
               )}
             </div>
+
             <div>
               <TextField
                 variant="outlined"
@@ -363,12 +399,12 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                 autoComplete="off"
                 size="small"
                 type={"number"}
-                label={"Selling price"}
-                {...register("selling_price", {
+                label={"Adjust Qty"}
+                {...register("adjust_qty", {
                   required: "This field is required",
                 })}
                 onChange={(e) => {
-                  clearErrors(["selling_price"]);
+                  clearErrors(["adjust_qty"]);
                 }}
                 sx={{
                   marginTop: 2,
@@ -393,25 +429,26 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                   },
                 }}
               />
-              {errors.selling_price && (
+              {errors?.adjust_qty && (
                 <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.selling_price.message}
+                  {errors?.adjust_qty?.message}
                 </span>
               )}
             </div>
+
             <div>
               <TextField
                 variant="outlined"
                 fullWidth
                 autoComplete="off"
                 size="small"
-                type={"number"}
-                label={"Total discount"}
-                {...register("total_discount", {
+                type={"text"}
+                label={"Remarks"}
+                {...register("remarks", {
                   required: "This field is required",
                 })}
                 onChange={(e) => {
-                  clearErrors(["total_discount"]);
+                  clearErrors(["remarks"]);
                 }}
                 sx={{
                   marginTop: 2,
@@ -436,15 +473,25 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                   },
                 }}
               />
-              {errors.total_discount && (
+              {errors.remarks && (
                 <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.total_discount.message}
+                  {errors?.remarks?.message}
                 </span>
               )}
+            </div>
+
+            <div style={{ marginTop: "15px" }}>
+              <Select
+                // labelName={"Employee Name"}
+                placeholder={"Select an option"}
+                options={employee}
+                setValue={setEmployeeInfo}
+                cngFn={handleChangeForUpdateStatus}
+              />
             </div>
           </div>
 
-          <div className="d-flex justify-content-center align-items-center mt-3">
+          <div className="d-flex justify-content-center align-items-center mt-5">
             <Button
               type="submit"
               className="me-2 btn btn-pill btn-info btn-air-info btn-info-gradien px-4"
@@ -458,4 +505,4 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   );
 };
 
-export default AddOpeningStock;
+export default AddProductReconciliation;

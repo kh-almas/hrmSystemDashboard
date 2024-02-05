@@ -1,4 +1,4 @@
-import { Box, Headphones, Home } from "react-feather";
+import { Box } from "react-feather";
 
 export const MENUITEMS = [
   // {
@@ -56,7 +56,7 @@ export const MENUITEMS = [
           },
         ],
       },
-        //company info
+      //company info
       {
         title: "Company Information",
         type: "sub",
@@ -527,14 +527,24 @@ export const MENUITEMS = [
             path: "/dashboard/inventory-management/inventory/product/initialization",
           },
           {
-            title: "Opening Stock",
+            title: "Add Opening Stock",
             type: "link",
             path: "/dashboard/inventory-management/inventory/opening-stock",
+          },
+          {
+            title: "Stock Adjustment",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/stock-adjustment",
           },
           {
             title: "Product Reconciliation",
             type: "link",
             path: "/dashboard/inventory-management/inventory/product/reconciliation",
+          },
+          {
+            title: "Product Discount",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/product/discount",
           },
           {
             title: "Receive Your Product",
@@ -566,11 +576,7 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/inventory-management/inventory/product-movement",
           },
-          {
-            title: "Stock Adjustment",
-            type: "link",
-            path: "/dashboard/inventory-management/inventory/stock-adjustment",
-          },
+
           {
             title: "Product Info",
             type: "link",

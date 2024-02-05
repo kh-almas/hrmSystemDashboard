@@ -3,41 +3,41 @@ import { Button } from "react-bootstrap";
 import { Card, Collapse } from "reactstrap";
 import Swal from "sweetalert2";
 import axios from "../../../../axios";
-import GetAllStockAdjustment from "../../../common/Query/inventory/GetAllStockAdjustment";
+import GetAllProductDiscount from "../../../common/Query/inventory/GetAllProductDiscount";
 import Breadcrumb from "../../../common/breadcrumb";
 import DataTable from "../../../common/component/DataTable";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
-import AddStockAdjustment from "./Form/AddStockAdjustment";
-import EditStockAdjustment from "./Form/EditStockAdjustment";
+import AddProductDiscount from "./Form/AddProductDiscount";
+import EditProductDiscount from "./Form/EditProductDiscount";
 
-const StockAdjustments = () => {
+const ProductDiscount = () => {
   const [showFromForAdd, setShowFromForAdd] = useState(false);
-  const [allStockAdjustment, setAllStockAdjustment] = useState([]);
+  const [allProductDiscount, setAllProductDiscount] = useState([]);
   const [isChange, setIsChange] = useState(false);
   const [valueForEdit, setValueForEdit] = useState({});
   const [editModal, setEditModal] = useState(false);
   const [
-    allStockAdjustmentStatus,
-    allStockAdjustmentReFetch,
-    allStockAdjustmentData,
-    allStockAdjustmentError,
-  ] = GetAllStockAdjustment();
+    allProductDiscountStatus,
+    allProductDiscountReFetch,
+    allProductDiscountData,
+    allProductDiscountError,
+  ] = GetAllProductDiscount();
 
   const isDarty = () => {
     setIsChange(!isChange);
   };
 
   useEffect(() => {
-    setAllStockAdjustment(allStockAdjustmentData?.data?.body?.data);
-  }, [allStockAdjustmentData]);
+    setAllProductDiscount(allProductDiscountData?.data?.body?.data);
+  }, [allProductDiscountData]);
 
   const updateToggle = () => {
     setEditModal(!editModal);
   };
 
-  // console.log('allStockAdjustmentData',allStockAdjustment)
+  // console.log('allProductDiscountData',allProductDiscount)
 
-  const handleDelete = (batch_id) => {
+  const handleDelete = (primary_id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -49,7 +49,7 @@ const StockAdjustments = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`/inventory-management/stock/adjustment/delete/${batch_id}`)
+          .delete(`/inventory-management/product/discount/delete/${primary_id}`)
           .then((info) => {
             if (info?.status == 200) {
               Swal.fire({
@@ -60,7 +60,7 @@ const StockAdjustments = () => {
                 timer: 1500,
               });
             }
-            allStockAdjustmentReFetch();
+            allProductDiscountReFetch();
           })
           .catch((e) => {
             if (e?.response?.data?.body?.message?.sqlState === "23000") {
@@ -83,21 +83,21 @@ const StockAdjustments = () => {
         className="mt-3 btn btn-pill btn-info btn-air-info btn-air-info"
         onClick={() => setShowFromForAdd(!showFromForAdd)}
       >
-        Add Stock Adjustment
+        Add Product Discount
       </Button>
 
       <Card className="mt-2">
         <Collapse isOpen={showFromForAdd}>
-          <AddStockAdjustment
+          <AddProductDiscount
             setShowFromForAdd={setShowFromForAdd}
-            allStockAdjustmentReFetch={allStockAdjustmentReFetch}
-          ></AddStockAdjustment>
+            allProductDiscountReFetch={allProductDiscountReFetch}
+          ></AddProductDiscount>
         </Collapse>
       </Card>
 
       <div className="d-flex align-items-center justify-content-between mb-2">
         <div>
-          <h5>Stock Adjustment List</h5>
+          <h5>Product Discount List</h5>
         </div>
         <div>
           <FilesComponent />
@@ -109,8 +109,8 @@ const StockAdjustments = () => {
           <div className="col-sm-12">
             <div className="card" style={{ padding: "20px" }}>
               <DataTable
-                baseForDelete={"batch_s"}
-                getAllData={allStockAdjustment}
+                baseForDelete={"primary_id"}
+                getAllData={allProductDiscount}
                 handleDelete={handleDelete}
                 toggleUpdateModal={updateToggle}
                 setValueForEdit={setValueForEdit}
@@ -119,16 +119,16 @@ const StockAdjustments = () => {
           </div>
         </div>
       </div>
-      <EditStockAdjustment
+      <EditProductDiscount
         modal={editModal}
         toggle={updateToggle}
         reFetch={isDarty}
         valueForEdit={valueForEdit?.original}
         setValueForEdit={setValueForEdit}
-        allStockAdjustmentReFetch={allStockAdjustmentReFetch}
-      ></EditStockAdjustment>
+        allProductDiscountReFetch={allProductDiscountReFetch}
+      ></EditProductDiscount>
     </>
   );
 };
 
-export default StockAdjustments;
+export default ProductDiscount;

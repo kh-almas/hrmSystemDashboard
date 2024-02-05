@@ -14,25 +14,36 @@ import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
 import BaseModal from "../../../../common/modal/BaseModal";
 
-const EditStockAdjustment = ({
+const EditProductDiscount = ({
   modal,
   toggle,
   reFetch,
   valueForEdit,
-  allStockAdjustmentReFetch,
+  allProductDiscountReFetch,
   setValueForEdit,
 }) => {
   // const [isLoading, setIsLoading] = useState(true);
   const [branch, setBranch] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState({});
-  const [purpose, setPurpose] = useState([
-    { id: "Damage", label: "Damage" },
-    { id: "Recompilation", label: "Recompilation" },
-  ]);
-  const [selectedPurpose, setSelectedPurpose] = useState("");
   const [selectedProduct, setSelectedProduct] = useState({});
   const [data, setData] = React.useState([]);
   const [date, setDate] = useState("");
+
+  const [discountType, setDiscountType] = useState([
+    { id: "Percent", label: "Percent" },
+    { id: "Fixed", label: "Fixed" },
+  ]);
+  const [selectedDiscountType, setSelectedDiscountType] = useState("");
+  const [sellingPrice, setSellingPrice] = useState();
+  const [discountPercent, setDiscountPercent] = useState();
+  const [discountValue, setDiscountValue] = useState(0);
+
+  useEffect(() => {
+    const discountAmount = (sellingPrice * discountPercent) / 100;
+
+    setDiscountValue(discountAmount);
+  }, [discountPercent, sellingPrice]);
+
   const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] =
     getAllBranch();
   const [allSkuStatus, allSkuReFetch, allSku, allSkuError] =
@@ -82,6 +93,7 @@ const EditStockAdjustment = ({
     );
 
     setSelectedProduct(filterProduct);
+
     setData(finalArray);
 
     setDate(
@@ -96,28 +108,34 @@ const EditStockAdjustment = ({
     );
     setSelectedBranch(selected);
 
-    const selectPurpose = purpose?.find(
-      (item) => item?.id == valueForEdit?.purpose_type_s
+    const selectDiscount = discountType?.find(
+      (item) => item?.id == valueForEdit?.discount_type_s
     );
-    setSelectedPurpose(selectPurpose);
+    setSelectedDiscountType(selectDiscount);
+    setDiscountValue(valueForEdit?.discount_value_s);
+    setDiscountPercent(valueForEdit?.discount_percent_s);
+    setSellingPrice(valueForEdit?.selling_price_s);
 
-    // setIsLoading(false);
-  }, [allBranch, valueForEdit, allSku, purpose]);
+    if (selectedDiscountType?.id == "Fixed") {
+      setDiscountValue(0);
+      setDiscountPercent(0);
+    }
 
-
+    console.log("sellingPrice----", sellingPrice);
+    console.log("discountPercent----", discountPercent);
+    console.log("discountValue----", discountValue);
+  }, [allBranch, valueForEdit, allSku, discountType]);
 
   const onSubmit = async (data) => {
     data.branch_id = selectedBranch?.id;
     data.date = date;
-    data.purpose_type = selectedPurpose?.id;
     data.batch_no = valueForEdit?.batch_s;
     data.sku_id = selectedProduct.id;
-
-    // console.log("datdaaaa", data);
-
+    data.discount_value = discountValue ? discountValue : 0;
+    data.approve_status = "Approved";
     axios
       .put(
-        `/inventory-management/stock/adjustment/update/${valueForEdit?.batch_s}`,
+        `/inventory-management/product/discount/update/${valueForEdit?.primary_id}`,
         data
       )
       .then((info) => {
@@ -125,18 +143,17 @@ const EditStockAdjustment = ({
           Swal.fire({
             position: "top-end",
             icon: "success",
-            title: "Update Successfully",
+            title: "Your work has been saved",
             showConfirmButton: false,
             timer: 1500,
           });
-          allStockAdjustmentReFetch();
+          allProductDiscountReFetch();
           setValueForEdit({});
           toggle();
         }
         reFetch();
       })
       .catch((e) => {
-        console.log("e---------", e);
         if (e?.response?.data?.body?.message?.errno == 1062) {
           Swal.fire({
             position: "top-end",
@@ -161,7 +178,7 @@ const EditStockAdjustment = ({
     <>
       {selectedBranch ? (
         <BaseModal
-          title={"Edit Stock Adjustment"}
+          title={"Edit opening stock"}
           dataModal={modal}
           dataToggle={toggle}
         >
@@ -195,9 +212,9 @@ const EditStockAdjustment = ({
                   />
                 )}
               />
-              {errors?.branch && (
+              {errors.branch && (
                 <span style={{ fontSize: "10px" }}>
-                  {errors?.branch.message}
+                  {errors.branch.message}
                 </span>
               )}
             </div>
@@ -302,16 +319,16 @@ const EditStockAdjustment = ({
                 )}
               </div>
 
-              <div>
+              {/* <div>
                 <Autocomplete
                   disablePortal
                   size={"small"}
-                  id="purpose"
-                  options={purpose}
-                  defaultValue={valueForEdit?.purpose_type_s}
-                  // getOptionLabel={(option) => (option ? option?.id : "")}
+                  id="discountType"
+                  options={discountType}
+                  defaultValue={valueForEdit?.discount_type_s}
+                  getOptionLabel={(option) => (option ? option?.id : "")}
                   onChange={(event, value) => {
-                    setSelectedPurpose(value);
+                    setSelectedDiscountType(value);
                   }}
                   sx={{
                     marginTop: 2,
@@ -338,34 +355,30 @@ const EditStockAdjustment = ({
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Purpose type "
-                      {...register("purpose_type", {
+                      label="Discount Type"
+                      {...register("discount_type", {
                         required: "This field is required",
                       })}
                     />
                   )}
                 />
-                {errors?.purpose_type && (
+                {errors.discount_type && (
                   <span style={{ fontSize: "10px", color: "red" }}>
-                    {errors?.purpose_type?.message}
+                    {errors.discount_type.message}
                   </span>
                 )}
-              </div>
+              </div> */}
 
               <div>
-                <TextField
-                  variant="outlined"
-                  fullWidth
-                  autoComplete="off"
-                  size="small"
-                  type={"text"}
-                  label={"Ref Id"}
-                  defaultValue={valueForEdit?.ref_id_s}
-                  {...register("ref_id", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => {
-                    clearErrors(["ref_id"]);
+                <Autocomplete
+                  disablePortal
+                  size={"small"}
+                  id="discountType"
+                  options={discountType}
+                  defaultValue={valueForEdit?.discount_type_s}
+                  // getOptionLabel={(option) => (option ? option?.id : "")}
+                  onChange={(event, value) => {
+                    setSelectedDiscountType(value);
                   }}
                   sx={{
                     marginTop: 2,
@@ -389,56 +402,23 @@ const EditStockAdjustment = ({
                       },
                     },
                   }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Discount Type "
+                      {...register("discount_type", {
+                        required: "This field is required",
+                      })}
+                    />
+                  )}
                 />
-                {errors?.ref_id && (
-                  <span style={{ fontSize: "10px" }}>
-                    {errors.ref_id.message}
+                {errors?.discount_type && (
+                  <span style={{ fontSize: "10px", color: "red" }}>
+                    {errors?.discount_type?.message}
                   </span>
                 )}
               </div>
 
-              <div>
-                <TextField
-                  variant="outlined"
-                  fullWidth
-                  autoComplete="off"
-                  size="small"
-                  type={"number"}
-                  label={"Quantity"}
-                  defaultValue={valueForEdit?.quantity_s}
-                  {...register("qty", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => {
-                    clearErrors(["qty"]);
-                  }}
-                  sx={{
-                    marginTop: 2,
-                    "& .MuiFormLabel-root": {
-                      fontWeight: 400,
-                      fontSize: 12,
-                    },
-                    "& label": {
-                      fontSize: 12,
-                    },
-                    "& label.Mui-focused": {
-                      color: "#1c2437",
-                      fontSize: 16,
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      height: 35,
-                      backgroundColor: "white",
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#979797",
-                        borderWidth: "1px",
-                      },
-                    },
-                  }}
-                />
-                {errors.qty && (
-                  <span style={{ fontSize: "10px" }}>{errors.qty.message}</span>
-                )}
-              </div>
               <div>
                 <TextField
                   variant="outlined"
@@ -492,11 +472,12 @@ const EditStockAdjustment = ({
                   type={"number"}
                   label={"Selling price"}
                   defaultValue={valueForEdit?.selling_price_s}
-                  {...register("sales_price", {
+                  {...register("selling_price", {
                     required: "This field is required",
                   })}
                   onChange={(e) => {
-                    clearErrors(["sales_price"]);
+                    setSellingPrice(e.target.value);
+                    clearErrors(["selling_price"]);
                   }}
                   sx={{
                     marginTop: 2,
@@ -521,12 +502,108 @@ const EditStockAdjustment = ({
                     },
                   }}
                 />
-                {errors.sales_price && (
+                {errors.selling_price && (
                   <span style={{ fontSize: "10px" }}>
-                    {errors.sales_price.message}
+                    {errors.selling_price.message}
                   </span>
                 )}
               </div>
+
+              {selectedDiscountType?.id == "Percent" && (
+                <>
+                  <div>
+                    <TextField
+                      variant="outlined"
+                      fullWidth
+                      autoComplete="off"
+                      size="small"
+                      type={"number"}
+                      defaultValue={valueForEdit?.discount_percent_s}
+                      label={"Discount Percent"}
+                      {...register("discount_percent", {
+                        required: "This field is required",
+                      })}
+                      onChange={(e) => {
+                        setDiscountPercent(e.target.value);
+                        clearErrors(["discount_percent"]);
+                      }}
+                      sx={{
+                        marginTop: 2,
+                        "& .MuiFormLabel-root": {
+                          fontWeight: 400,
+                          fontSize: 12,
+                        },
+                        "& label": {
+                          fontSize: 12,
+                        },
+                        "& label.Mui-focused": {
+                          color: "#1c2437",
+                          fontSize: 16,
+                        },
+                        "& .MuiOutlinedInput-root": {
+                          height: 35,
+                          backgroundColor: "white",
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#979797",
+                            borderWidth: "1px",
+                          },
+                        },
+                      }}
+                    />
+                    {errors.discount_percent && (
+                      <span style={{ fontSize: "10px", color: "red" }}>
+                        {errors.discount_percent.message}
+                      </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <TextField
+                      variant="outlined"
+                      fullWidth
+                      autoComplete="off"
+                      disabled
+                      size="small"
+                      type={"number"}
+                      label={"Discount Value"}
+                      // {...register("discount_value", {
+                      //   required: "This field is required",
+                      // })}
+                      value={discountValue}
+                      onChange={(e) => {
+                        clearErrors(["discount_value"]);
+                      }}
+                      sx={{
+                        marginTop: 2,
+                        "& .MuiFormLabel-root": {
+                          fontWeight: 400,
+                          fontSize: 12,
+                        },
+                        "& label": {
+                          fontSize: 12,
+                        },
+                        "& label.Mui-focused": {
+                          color: "#1c2437",
+                          fontSize: 16,
+                        },
+                        "& .MuiOutlinedInput-root": {
+                          height: 35,
+                          backgroundColor: "white",
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#979797",
+                            borderWidth: "1px",
+                          },
+                        },
+                      }}
+                    />
+                    {/* {errors.discount_value && (
+  <span style={{ fontSize: "10px", color: "red" }}>
+    {errors.discount_value.message}
+  </span>
+)} */}
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="d-flex justify-content-center align-items-center mt-3">
@@ -546,4 +623,4 @@ const EditStockAdjustment = ({
   );
 };
 
-export default EditStockAdjustment;
+export default EditProductDiscount;

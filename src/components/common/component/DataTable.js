@@ -177,13 +177,13 @@ const DataTable = ({
                   <EditIcon />
                 </IconButton>
               )}
-
+{/* {console.log('row----',row)} */}
               <IconButton
                 color="error"
                 onClick={() => {
                   handleDelete(
                     !baseForDelete
-                      ? row?.original?.id
+                      ? row?.original?.primary_id
                       : row?.original?.[baseForDelete]
                   );
                 }}

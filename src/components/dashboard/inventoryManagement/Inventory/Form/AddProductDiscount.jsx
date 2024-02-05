@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from "react";
-import Select from "../../../../common/modal/Select";
-import { Box } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Input from "../../../../common/modal/Input";
-import TextField from "@mui/material/TextField";
-import Submitbtn from "../../../../common/button/Submitbtn";
-import { useForm } from "react-hook-form";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 import axios from "../../../../../axios";
 import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
-import dayjs from "dayjs";
-import moment from "moment";
-import Swal from "sweetalert2";
 
-const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
+const AddProductDiscount = ({
+  allProductDiscountReFetch,
+  setShowFromForAdd,
+}) => {
   const [selectedBranch, setSelectedBranch] = useState({});
   const [batchNo, setBatchNo] = useState("");
   const [uniqueKey, setUniqueKey] = useState("");
@@ -26,6 +24,25 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   const [branch, setBranch] = useState([]);
   const [sku, setSku] = useState({});
   const [date, setDate] = useState("");
+  const [discountType, setDiscountType] = useState([
+    { id: "Percent", label: "Percent" },
+    { id: "Fixed", label: "Fixed" },
+  ]);
+  const [selectedDiscountType, setSelectedDiscountType] = useState("");
+  const [sellingPrice, setSellingPrice] = useState();
+  const [discountPercent, setDiscountPercent] = useState();
+  const [discountValue, setDiscountValue] = useState(0);
+
+  useEffect(() => {
+    const discountAmount = (sellingPrice * discountPercent) / 100;
+
+    setDiscountValue(discountAmount);
+  }, [discountPercent, sellingPrice]);
+
+  //   console.log("sellingPrice----", sellingPrice);
+  //   console.log("discountPercent----", discountPercent);
+  // console.log("discountValue----", discountValue);
+
   const {
     register,
     handleSubmit,
@@ -65,8 +82,13 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     data.date = date;
     data.batch_no = batchNo;
     data.sku_id = sku.id;
+    data.discount_value = discountValue ? discountValue : 0;
+    data.approve_status = "Approved";
+
+ 
+
     axios
-      .post("/inventory-management/stock/opening/add", data)
+      .post("/inventory-management/product/discount/add", data)
       .then((info) => {
         if (info?.status == 200) {
           Swal.fire({
@@ -82,13 +104,19 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
           // setDate(moment(new Date()).format('YYYY-MM-DD'));
           const batchNo = generateSkuCode(12);
           setBatchNo(batchNo);
-          allOpeningStockReFetch();
+          allProductDiscountReFetch();
+          setDiscountType("");
+          setSelectedBranch({});
+          setDiscountType([]);
+          setDiscountValue(0);
+          setSelectedDiscountType("");
           setShowFromForAdd(false);
           // const uniqueId = generateSkuCode(8);
           // setUniqueKey(uniqueId);
         }
       })
       .catch((e) => {
+        console.log("e-------", e);
         if (e?.response?.data?.body?.message?.errno == 1062) {
           Swal.fire({
             position: "top-end",
@@ -169,6 +197,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
               </span>
             )}
           </div>
+
           <div>
             <Autocomplete
               disablePortal
@@ -205,6 +234,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
               </span>
             )}
           </div>
+
           <div className="row row-cols-1 row-cols-lg-2">
             <div>
               <TextField
@@ -270,19 +300,16 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                 </span>
               )}
             </div>
+
             <div>
-              <TextField
-                variant="outlined"
-                fullWidth
-                autoComplete="off"
-                size="small"
-                type={"number"}
-                label={"Quantity"}
-                {...register("qty", {
-                  required: "This field is required",
-                })}
-                onChange={(e) => {
-                  clearErrors(["qty"]);
+              <Autocomplete
+                disablePortal
+                size={"small"}
+                id="discountType"
+                options={discountType}
+                getOptionLabel={(option) => (option ? option?.id : "")}
+                onChange={(event, value) => {
+                  setSelectedDiscountType(value);
                 }}
                 sx={{
                   marginTop: 2,
@@ -306,13 +333,23 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                     },
                   },
                 }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Discount Type"
+                    {...register("discount_type", {
+                      required: "This field is required",
+                    })}
+                  />
+                )}
               />
-              {errors.qty && (
+              {errors.discount_type && (
                 <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.qty.message}
+                  {errors.discount_type.message}
                 </span>
               )}
             </div>
+
             <div>
               <TextField
                 variant="outlined"
@@ -356,6 +393,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                 </span>
               )}
             </div>
+
             <div>
               <TextField
                 variant="outlined"
@@ -368,6 +406,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                   required: "This field is required",
                 })}
                 onChange={(e) => {
+                  setSellingPrice(e.target.value);
                   clearErrors(["selling_price"]);
                 }}
                 sx={{
@@ -399,49 +438,101 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                 </span>
               )}
             </div>
-            <div>
-              <TextField
-                variant="outlined"
-                fullWidth
-                autoComplete="off"
-                size="small"
-                type={"number"}
-                label={"Total discount"}
-                {...register("total_discount", {
-                  required: "This field is required",
-                })}
-                onChange={(e) => {
-                  clearErrors(["total_discount"]);
-                }}
-                sx={{
-                  marginTop: 2,
-                  "& .MuiFormLabel-root": {
-                    fontWeight: 400,
-                    fontSize: 12,
-                  },
-                  "& label": {
-                    fontSize: 12,
-                  },
-                  "& label.Mui-focused": {
-                    color: "#1c2437",
-                    fontSize: 16,
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    height: 35,
-                    backgroundColor: "white",
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#979797",
-                      borderWidth: "1px",
-                    },
-                  },
-                }}
-              />
-              {errors.total_discount && (
-                <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.total_discount.message}
-                </span>
-              )}
-            </div>
+
+            {selectedDiscountType?.label == "Percent" && (
+              <>
+                <div>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"number"}
+                    label={"Discount Percent"}
+                    {...register("discount_percent", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      setDiscountPercent(e.target.value);
+                      clearErrors(["discount_percent"]);
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                  />
+                  {errors.discount_percent && (
+                    <span style={{ fontSize: "10px", color: "red" }}>
+                      {errors.discount_percent.message}
+                    </span>
+                  )}
+                </div>
+
+                <div>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    disabled
+                    size="small"
+                    type={"number"}
+                    label={"Discount Value"}
+                    // {...register("discount_value", {
+                    //   required: "This field is required",
+                    // })}
+                    value={discountValue}
+                    onChange={(e) => {
+                      clearErrors(["discount_value"]);
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                  />
+                  {/* {errors.discount_value && (
+  <span style={{ fontSize: "10px", color: "red" }}>
+    {errors.discount_value.message}
+  </span>
+)} */}
+                </div>
+              </>
+            )}
           </div>
 
           <div className="d-flex justify-content-center align-items-center mt-3">
@@ -458,4 +549,4 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   );
 };
 
-export default AddOpeningStock;
+export default AddProductDiscount;
