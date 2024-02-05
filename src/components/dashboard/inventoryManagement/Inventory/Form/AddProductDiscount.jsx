@@ -41,7 +41,7 @@ const AddProductDiscount = ({
 
   //   console.log("sellingPrice----", sellingPrice);
   //   console.log("discountPercent----", discountPercent);
-  //   console.log("discountValue----", discountValue);
+  // console.log("discountValue----", discountValue);
 
   const {
     register,
@@ -82,10 +82,10 @@ const AddProductDiscount = ({
     data.date = date;
     data.batch_no = batchNo;
     data.sku_id = sku.id;
-    data.discount_value = discountValue;
+    data.discount_value = discountValue ? discountValue : 0;
     data.approve_status = "Approved";
 
-    console.log("datda----", data);
+ 
 
     axios
       .post("/inventory-management/product/discount/add", data)
@@ -106,6 +106,10 @@ const AddProductDiscount = ({
           setBatchNo(batchNo);
           allProductDiscountReFetch();
           setDiscountType("");
+          setSelectedBranch({});
+          setDiscountType([]);
+          setDiscountValue(0);
+          setSelectedDiscountType("");
           setShowFromForAdd(false);
           // const uniqueId = generateSkuCode(8);
           // setUniqueKey(uniqueId);
@@ -193,6 +197,7 @@ const AddProductDiscount = ({
               </span>
             )}
           </div>
+
           <div>
             <Autocomplete
               disablePortal
@@ -297,50 +302,6 @@ const AddProductDiscount = ({
             </div>
 
             <div>
-              <TextField
-                variant="outlined"
-                fullWidth
-                autoComplete="off"
-                size="small"
-                type={"number"}
-                label={"Purchase price"}
-                {...register("purchase_price", {
-                  required: "This field is required",
-                })}
-                onChange={(e) => {
-                  clearErrors(["purchase_price"]);
-                }}
-                sx={{
-                  marginTop: 2,
-                  "& .MuiFormLabel-root": {
-                    fontWeight: 400,
-                    fontSize: 12,
-                  },
-                  "& label": {
-                    fontSize: 12,
-                  },
-                  "& label.Mui-focused": {
-                    color: "#1c2437",
-                    fontSize: 16,
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    height: 35,
-                    backgroundColor: "white",
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#979797",
-                      borderWidth: "1px",
-                    },
-                  },
-                }}
-              />
-              {errors.purchase_price && (
-                <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.purchase_price.message}
-                </span>
-              )}
-            </div>
-
-            <div>
               <Autocomplete
                 disablePortal
                 size={"small"}
@@ -396,6 +357,50 @@ const AddProductDiscount = ({
                 autoComplete="off"
                 size="small"
                 type={"number"}
+                label={"Purchase price"}
+                {...register("purchase_price", {
+                  required: "This field is required",
+                })}
+                onChange={(e) => {
+                  clearErrors(["purchase_price"]);
+                }}
+                sx={{
+                  marginTop: 2,
+                  "& .MuiFormLabel-root": {
+                    fontWeight: 400,
+                    fontSize: 12,
+                  },
+                  "& label": {
+                    fontSize: 12,
+                  },
+                  "& label.Mui-focused": {
+                    color: "#1c2437",
+                    fontSize: 16,
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    height: 35,
+                    backgroundColor: "white",
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#979797",
+                      borderWidth: "1px",
+                    },
+                  },
+                }}
+              />
+              {errors.purchase_price && (
+                <span style={{ fontSize: "10px", color: "red" }}>
+                  {errors.purchase_price.message}
+                </span>
+              )}
+            </div>
+
+            <div>
+              <TextField
+                variant="outlined"
+                fullWidth
+                autoComplete="off"
+                size="small"
+                type={"number"}
                 label={"Selling price"}
                 {...register("selling_price", {
                   required: "This field is required",
@@ -435,96 +440,99 @@ const AddProductDiscount = ({
             </div>
 
             {selectedDiscountType?.label == "Percent" && (
-              <div>
-                <TextField
-                  variant="outlined"
-                  fullWidth
-                  autoComplete="off"
-                  size="small"
-                  type={"number"}
-                  label={"Discount Percent"}
-                  {...register("discount_percent", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => {
-                    setDiscountPercent(e.target.value);
-                    clearErrors(["discount_percent"]);
-                  }}
-                  sx={{
-                    marginTop: 2,
-                    "& .MuiFormLabel-root": {
-                      fontWeight: 400,
-                      fontSize: 12,
-                    },
-                    "& label": {
-                      fontSize: 12,
-                    },
-                    "& label.Mui-focused": {
-                      color: "#1c2437",
-                      fontSize: 16,
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      height: 35,
-                      backgroundColor: "white",
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#979797",
-                        borderWidth: "1px",
+              <>
+                <div>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"number"}
+                    label={"Discount Percent"}
+                    {...register("discount_percent", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      setDiscountPercent(e.target.value);
+                      clearErrors(["discount_percent"]);
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
                       },
-                    },
-                  }}
-                />
-                {errors.discount_percent && (
-                  <span style={{ fontSize: "10px", color: "red" }}>
-                    {errors.discount_percent.message}
-                  </span>
-                )}
-              </div>
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                  />
+                  {errors.discount_percent && (
+                    <span style={{ fontSize: "10px", color: "red" }}>
+                      {errors.discount_percent.message}
+                    </span>
+                  )}
+                </div>
+
+                <div>
+                  <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    disabled
+                    size="small"
+                    type={"number"}
+                    label={"Discount Value"}
+                    // {...register("discount_value", {
+                    //   required: "This field is required",
+                    // })}
+                    value={discountValue}
+                    onChange={(e) => {
+                      clearErrors(["discount_value"]);
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                  />
+                  {/* {errors.discount_value && (
+  <span style={{ fontSize: "10px", color: "red" }}>
+    {errors.discount_value.message}
+  </span>
+)} */}
+                </div>
+              </>
             )}
-            <div>
-              <TextField
-                variant="outlined"
-                fullWidth
-                autoComplete="off"
-                disabled
-                size="small"
-                type={"number"}
-                label={"Discount Value"}
-                // {...register("discount_value", {
-                //   required: "This field is required",
-                // })}
-                value={discountValue}
-                onChange={(e) => {
-                  clearErrors(["discount_value"]);
-                }}
-                sx={{
-                  marginTop: 2,
-                  "& .MuiFormLabel-root": {
-                    fontWeight: 400,
-                    fontSize: 12,
-                  },
-                  "& label": {
-                    fontSize: 12,
-                  },
-                  "& label.Mui-focused": {
-                    color: "#1c2437",
-                    fontSize: 16,
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    height: 35,
-                    backgroundColor: "white",
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#979797",
-                      borderWidth: "1px",
-                    },
-                  },
-                }}
-              />
-              {/* {errors.discount_value && (
-                <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.discount_value.message}
-                </span>
-              )} */}
-            </div>
           </div>
 
           <div className="d-flex justify-content-center align-items-center mt-3">
