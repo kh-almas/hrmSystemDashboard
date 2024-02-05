@@ -14,7 +14,7 @@ import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
 import BaseModal from "../../../../common/modal/BaseModal";
 
-const EditProductDiscount = ({
+const EditPurchaseProducts = ({
   modal,
   toggle,
   reFetch,
@@ -620,4 +620,4 @@ const EditProductDiscount = ({
   );
 };
 
-export default EditProductDiscount;
+export default EditPurchaseProducts;

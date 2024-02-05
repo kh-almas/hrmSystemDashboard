@@ -541,10 +541,16 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/inventory-management/inventory/product/reconciliation",
           },
+          
           {
             title: "Product Discount",
             type: "link",
             path: "/dashboard/inventory-management/inventory/product/discount",
+          },
+          {
+            title: "Purchase Products",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/product/purchase",
           },
           {
             title: "Receive Your Product",
