@@ -3,39 +3,39 @@ import { Button } from "react-bootstrap";
 import { Card, Collapse } from "reactstrap";
 import Swal from "sweetalert2";
 import axios from "../../../../axios";
-import GetAllProductDiscount from "../../../common/Query/inventory/GetAllProductDiscount";
+import GetAllPurchaseProducts from "../../../common/Query/inventory/GetAllPurchaseProducts";
 import Breadcrumb from "../../../common/breadcrumb";
 import DataTable from "../../../common/component/DataTable";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
-import AddProductDiscount from "./Form/AddProductDiscount";
-import EditProductDiscount from "./Form/EditProductDiscount";
+import AddPurchaseProducts from "./Form/AddPurchaseProducts";
+import EditPurchaseProducts from "./Form/EditPurchaseProducts";
 
-const ProductDiscount = () => {
+const PurchaseProducts = () => {
   const [showFromForAdd, setShowFromForAdd] = useState(false);
-  const [allProductDiscount, setAllProductDiscount] = useState([]);
+  const [allPurchaseProducts, setAllPurchaseProducts] = useState([]);
   const [isChange, setIsChange] = useState(false);
   const [valueForEdit, setValueForEdit] = useState({});
   const [editModal, setEditModal] = useState(false);
   const [
-    allProductDiscountStatus,
-    allProductDiscountReFetch,
-    allProductDiscountData,
-    allProductDiscountError,
-  ] = GetAllProductDiscount();
+    allPurchaseProductsStatus,
+    allPurchaseProductsReFetch,
+    allPurchaseProductsData,
+    allPurchaseProductsError,
+  ] = GetAllPurchaseProducts();
 
   const isDarty = () => {
     setIsChange(!isChange);
   };
 
   useEffect(() => {
-    setAllProductDiscount(allProductDiscountData?.data?.body?.data);
-  }, [allProductDiscountData]);
+    setAllPurchaseProducts(allPurchaseProductsData?.data?.body?.data);
+  }, [allPurchaseProductsData]);
 
   const updateToggle = () => {
     setEditModal(!editModal);
   };
 
-  // console.log('allProductDiscountData',allProductDiscount)
+  // console.log('allPurchaseProductsData',allPurchaseProducts)
 
   const handleDelete = (primary_id) => {
     Swal.fire({
@@ -60,7 +60,7 @@ const ProductDiscount = () => {
                 timer: 1500,
               });
             }
-            allProductDiscountReFetch();
+            allPurchaseProductsReFetch();
           })
           .catch((e) => {
             if (e?.response?.data?.body?.message?.sqlState === "23000") {
@@ -77,21 +77,21 @@ const ProductDiscount = () => {
 
   return (
     <>
-      <Breadcrumb parent="Inventory management" title="Product Discount" />
+      <Breadcrumb parent="Inventory management" title="Purchase Products" />
 
       <Button
         className="mt-3 btn btn-pill btn-info btn-air-info btn-air-info"
         onClick={() => setShowFromForAdd(!showFromForAdd)}
       >
-        Add Product Discount
+        Add Purchase Products
       </Button>
 
       <Card className="mt-2">
         <Collapse isOpen={showFromForAdd}>
-          <AddProductDiscount
+          <AddPurchaseProducts
             setShowFromForAdd={setShowFromForAdd}
-            allProductDiscountReFetch={allProductDiscountReFetch}
-          ></AddProductDiscount>
+            allPurchaseProductsReFetch={allPurchaseProductsReFetch}
+          ></AddPurchaseProducts>
         </Collapse>
       </Card>
 
@@ -110,7 +110,7 @@ const ProductDiscount = () => {
             <div className="card" style={{ padding: "20px" }}>
               <DataTable
                 baseForDelete={"primary_id"}
-                getAllData={allProductDiscount}
+                getAllData={allPurchaseProducts}
                 handleDelete={handleDelete}
                 toggleUpdateModal={updateToggle}
                 setValueForEdit={setValueForEdit}
@@ -119,16 +119,16 @@ const ProductDiscount = () => {
           </div>
         </div>
       </div>
-      <EditProductDiscount
+      <EditPurchaseProducts
         modal={editModal}
         toggle={updateToggle}
         reFetch={isDarty}
         valueForEdit={valueForEdit?.original}
         setValueForEdit={setValueForEdit}
-        allProductDiscountReFetch={allProductDiscountReFetch}
-      ></EditProductDiscount>
+        allPurchaseProductsReFetch={allPurchaseProductsReFetch}
+      ></EditPurchaseProducts>
     </>
   );
 };
 
-export default ProductDiscount;
+export default PurchaseProducts;
