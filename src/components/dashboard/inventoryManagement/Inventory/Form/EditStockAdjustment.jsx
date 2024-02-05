@@ -104,14 +104,7 @@ const EditStockAdjustment = ({
     // setIsLoading(false);
   }, [allBranch, valueForEdit, allSku, purpose]);
 
-  // useEffect(() => {
-  //   const selectPurpose = purpose?.find(
-  //     (item) => item?.id == valueForEdit?.purpose_type_s
-  //   );
-  //   setSelectedPurpose(selectPurpose);
 
-  //   // console.log("valueForEdit?.purpose_type_s", selectPurpose);
-  // }, [purpose, valueForEdit?.purpose_type_s]);
 
   const onSubmit = async (data) => {
     data.branch_id = selectedBranch?.id;
