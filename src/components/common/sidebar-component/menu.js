@@ -198,6 +198,11 @@ export const MENUITEMS = [
         path: "/dashboard/table",
       },
       {
+        title: "Editable Table",
+        type: "link",
+        path: "/dashboard/editable-table",
+      },
+      {
         title: "Single Select",
         type: "link",
         path: "/dashboard/single/select",
@@ -541,7 +546,7 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/inventory-management/inventory/product/reconciliation",
           },
-          
+
           {
             title: "Product Discount",
             type: "link",
