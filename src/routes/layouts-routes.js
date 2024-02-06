@@ -167,6 +167,8 @@ import ProductSelect from "../components/common/component/CustomeSingleSelect/Pr
 import ProductReconciliation from "../components/dashboard/inventoryManagement/Inventory/ProductReconciliation";
 import ProductDiscount from "../components/dashboard/inventoryManagement/Inventory/ProductDiscount";
 import PurchaseProducts from "../components/dashboard/inventoryManagement/Inventory/PurchaseProducts";
+import EditableTable from "../components/common/component/EditableTable/EditableTable";
+
 
 export const routes = [
   {
@@ -429,6 +431,9 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/table`,
     Component: <MaterialReactTableExample />,
+  },  {
+    path: `${process.env.PUBLIC_URL}/dashboard/editable-table`,
+    Component: <EditableTable />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/single/select`,
