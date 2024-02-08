@@ -17,7 +17,6 @@ import getInventoryModel from "../../../../common/Query/inventory/getInventoryMo
 import SelectProductInCreateProductForm from "../../../../common/component/form/inventory/product/selectProductInCreateProductForm";
 import axios from "../../../../../axios";
 import TextField from '@mui/material/TextField';
-import SelectComboVariant from "../AddProduct/SelectComboVariant";
 import Swal from "sweetalert2";
 import AddProductOptionModal from "../../../../common/component/form/inventory/productOption/AddProductOptionModal";
 import {Container, Card, CardHeader, CardBody, Collapse} from 'reactstrap'
@@ -89,6 +88,18 @@ const EditProduct = () => {
     const [addRowInVariant, setAddRowInVariant] = useState([0]);
     const [selectedProductPhotos, setSelectedProductPhotos] = useState([]);
     const [deletedProductPhotos, setDeletedProductPhotos] = useState([]);
+    const [hasSerialValue, setHasSerialValue] = useState([{value: "1", label: "No serial key"}, {value: "2", label: "Has serial key"}, {value: "3", label: "Has serial key by manufacture"}]);
+    const [hasSerial, setHasSerial] = useState({});
+    const [warrantyTypeValue, setWarrantyTypeValue] = useState([{value: "1", label: "Warranty by purchase"}, {value: "2", label: "Warranty By manufacture"}]);
+    const [warrantyType, setWarrantyType] = useState({});
+
+    const handleChangeHasSerial = (selected) => {
+        setHasSerial(selected);
+    }
+
+    const handleChangeWarrantyType = (selected) => {
+        setWarrantyType(selected);
+    }
     
 
     const [isOpen, setIsOpen] = useState('');
@@ -131,17 +142,27 @@ const EditProduct = () => {
                 const response = await axios.get(`/inventory-management/products/single/sku/${params?.id}`);
                 const data = response?.data?.body?.data?.[0]
                 setSingleProductData(data);
-
             } catch (error) {
                 console.error(error);
             }
-
         };
         fetchData()
     }, []);
 
 
     useEffect(() => {
+        console.log('previous data', singleProductData);
+
+        if(singleProductData?.hasSerialKey){
+            const filteredSerialKey = hasSerialValue?.find(singleItem => singleItem?.value == singleProductData?.hasSerialKey)
+            setHasSerial(filteredSerialKey);
+        }
+
+        if(singleProductData?.warrantyBy){
+            const filteredWarrantyBy = warrantyTypeValue?.find(singleItem => singleItem?.value == singleProductData?.warrantyBy)
+            setWarrantyType(filteredWarrantyBy);
+        }
+
         if(singleProductData?.productType) {
             setTypeChange({value: singleProductData?.productType, label: singleProductData?.productType});
             setType(singleProductData?.productType);
@@ -181,7 +202,6 @@ const EditProduct = () => {
         }
 
         setNote(singleProductData?.note);
-
         setValue('p_height', singleProductData?.productHeight);
         setValue('p_width', singleProductData?.productWidth);
         setValue('p_length', singleProductData?.productLength);
@@ -190,34 +210,29 @@ const EditProduct = () => {
         setValue('package_width', singleProductData?.packageWidth);
         setValue('package_length', singleProductData?.packageLength);
         setValue('package_weight', singleProductData?.packageWeight);
-
         setValue('name', singleProductData?.productName);
         setValue('hsn', singleProductData?.hsn);
-
         setValue('alert_quantity', singleProductData?.alertQuantity);
         setValue('opening_stock_quantity', singleProductData?.openingStockQuantity);
         setValue('purchase_price', singleProductData?.purchasePrice);
         setValue('selling_price', singleProductData?.sellingPrice);
         setValue('min_selling_price', singleProductData?.minSellingPrice);
         setValue('tax', singleProductData?.tax);
+        setValue('serial_key_by_manufacture', singleProductData?.serialKeyByManufacture);
         setIsRowMaterialValue(singleProductData?.isRawMaterial)
-        
         // product image
         const productImage = singleProductData?.productImage;
         if(productImage){
-        
             productImage?.map(singleImage => {
                 let id;
                 do {
                     id = Math.floor((Math.random() * 5000));
                 } while (usedIdsForImage.has(id));
                 usedIdsForImage.add(id);
-
                 const makeImageOBJ = {
                     id,
                     image: `http://localhost:5000/product/image/${singleImage?.name}`,
                 }
-
                 setPhotos(prev => [...prev, makeImageOBJ])
             })
         }
@@ -256,18 +271,15 @@ const EditProduct = () => {
                 if(findOption){
                     setMakeProductOptions(prev => [...prev, findOption]);
                 }
-
                 if(!addRowInOption.hasOwnProperty(singleItem)){
                     addRowInOption[singleItem] = [];
                 }
-
 
                 const filterOptions =  allProductOptions?.filter(singleOPItem => singleOPItem?.option_id == singleItem );
                 filterOptions?.map(singleFilterOption => {
                     let makeField = addRowInOption[singleItem];
                     makeField.push(makeField?.length);
                     addRowInOption[singleItem] = makeField;
-
 
                     const newObj = {
                         option_id: singleFilterOption?.option_id,
@@ -328,10 +340,7 @@ const EditProduct = () => {
         setIsLoading(false);
     }, [setValue, singleProductData, allUnitType, allBrand, allModel, barcodeTypeData, taxTypeData]);
 
-
     // end editing
-
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -450,11 +459,9 @@ const EditProduct = () => {
         setUnitType(selected);
     };
 
-
     const handleChangeForUpdateBarcodeType = (selected) => {
         setBarcodeType(selected);
     };
-
 
     const handleChangeForUpdateMeasurementUnit = (selected) => {
         setMeasurementUnit(selected);
@@ -471,7 +478,6 @@ const EditProduct = () => {
     const handleChangeForUpdateBrandValue = (selected) => {
         setBrandValue(selected);
     };
-
 
     const isUnitTypeDirty = () => {
         setIsUnitTypeChange(!isUnitTypeChange);
@@ -722,8 +728,6 @@ const EditProduct = () => {
 
             addRowInOptionValue[singleOptions][singleRowData] = remainingItem;
             delete addRowInOptionValue[singleOptions][singleRowData];
-         
-            console.log('check1', addRowInOptionValue);
             setComponentRender(prevState => !prevState);
         }
     };
@@ -811,7 +815,7 @@ const EditProduct = () => {
             return formData;
         } 
         const formData = createFormData(data);
-        console.log('data', data);
+        // console.log('data', data);
         
         axios.put(`/inventory-management/products/update/${singleProductData?.productID}/${singleProductData.id}`, formData)
             .then(info => {
@@ -2123,15 +2127,49 @@ const EditProduct = () => {
                                                                         ) : ("")}
 
                                                                         {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                                            <div
-                                                                                className="checkbox checkbox-dark ms-2">
-                                                                                <input
-                                                                                    checked={singleProductData?.hasSerialKey}
-                                                                                    id="inline-1"
-                                                                                    type="checkbox" {...register("has_serial_key")}/>
-                                                                                <label htmlFor=" inline-1"
-                                                                                       style={{color: "gray"}}>Has
-                                                                                    Serial Key</label>
+                                                                            <div style={{marginTop: '15px'}}>
+                                                                                <Select
+                                                                                    placeholder={"Serial keys"}
+                                                                                    previous={hasSerial}
+                                                                                    // labelName={' '}
+                                                                                    options={hasSerialValue}
+                                                                                    setValue={setHasSerial}
+                                                                                    cngFn={handleChangeHasSerial}
+                                                                                />
+                                                                            </div>
+                                                                        ) : ( "" )}
+
+                                                                        {
+                                                                            hasSerial?.value == 3 ?
+                                                                                <div>
+                                                                                    <Input
+                                                                                        labelName={"serial key by manufacture"}
+                                                                                        inputName={"serial_key_by_manufacture"}
+                                                                                        inputType={"text"}
+                                                                                        // placeholder={"serial key by manufacture"}
+                                                                                        // defaultValue={0}
+                                                                                        validation={{
+                                                                                            ...register('serial_key_by_manufacture', {
+                                                                                                required: 'This field is required',
+                                                                                            })
+                                                                                        }}
+                                                                                        performOnValue={(e) => clearErrors(["serial_key_by_manufacture"])}
+                                                                                        error={errors.p_height}
+                                                                                    />
+                                                                                    {errors.serial_key_by_manufacture && <span style={{fontSize: '10px'}}>{errors.serial_key_by_manufacture.message}</span>}
+                                                                                </div> : ''
+                                                                        }
+
+                                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
+                                                                            <div style={{marginTop: '15px'}}>
+                                                                                <Select
+                                                                                    placeholder={"Serial keys"}
+                                                                                    previous={warrantyType}
+                                                                                    // labelName={' '}
+                                                                                    options={warrantyTypeValue}
+                                                                                    setValue={setWarrantyType}
+                                                                                    cngFn={handleChangeWarrantyType}
+                                                                                />
                                                                             </div>
                                                                         ) : ("")}
                                                                     </div>
