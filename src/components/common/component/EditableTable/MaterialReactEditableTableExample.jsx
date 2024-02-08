@@ -176,12 +176,6 @@ const MaterialReactEditableTableExample = () => {
       },
 
       {
-        accessorKey: "id",
-        header: "Id",
-        enableEditing: false,
-        size: 80,
-      },
-      {
         accessorKey: "branch_id",
         header: "Branch",
         muiEditTextFieldProps: {
@@ -255,7 +249,6 @@ const MaterialReactEditableTableExample = () => {
         },
       },
 
-      
       {
         accessorKey: "discount_percent_s",
         header: "Discount Percent",
@@ -290,6 +283,8 @@ const MaterialReactEditableTableExample = () => {
     ],
     [validationErrors]
   );
+
+  const groupingItem = { accessorKey: "date_s_g" };
 
   //call CREATE hook
   const { mutateAsync: createUser, isPending: isCreatingUser } =
@@ -343,6 +338,8 @@ const MaterialReactEditableTableExample = () => {
   const table = useMaterialReactTable({
     columns,
     data: fetchedUsers,
+    enableGrouping:true,
+    
     createDisplayMode: "row", // ('modal', and 'custom' are also available)
     editDisplayMode: "row", // ('modal', 'cell', 'table', and 'custom' are also available)
     enableColumnPinning: true,
@@ -428,9 +425,17 @@ const MaterialReactEditableTableExample = () => {
         Create New User
       </Button>
     ),
+    // initialState={{
+    //   density: "compact",
+    //   expanded: true, //expand all groups by default
+    //   grouping: ['date_s_g'], 
+    //   pagination: { pageIndex: 0, pageSize: 10 },//an array of columns to group by default (can be multiple)
+    //   // sorting: [{ id: 'state', desc: false }], //sort by state by default
+    // }},
     initialState: {
       columnPinning: { left: ["mrt-row-actions"], right: [] },
       expanded: true,
+      grouping: ['date_s_g'], 
       pagination: { pageSize: 20, pageIndex: 0 },
     },
     state: {
