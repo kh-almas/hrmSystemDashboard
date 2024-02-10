@@ -6,9 +6,6 @@ import GetAllProductDiscount from "../../../common/Query/inventory/GetAllProduct
 import Breadcrumb from "../../../common/breadcrumb";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import AddProductDiscount from "./Form/AddProductDiscount";
-
-// ///////////////////////////////////
-// MaterialReactEditableTableExample.jsx
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import {
@@ -22,14 +19,12 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   MaterialReactTable,
-  // createRow,
   useMaterialReactTable,
 } from "material-react-table";
 import { useMemo } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import GetAllBranch from "../../../common/Query/hrm/GetAllBranch";
 import GetAllSKUForSelect from "../../../common/Query/inventory/GetAllSKUForSelect";
-// -----------------------------------------
 
 const ProductDiscount = () => {
   const [showFromForAdd, setShowFromForAdd] = useState(false);
@@ -49,8 +44,7 @@ const ProductDiscount = () => {
   const [data, setData] = React.useState([]);
   const [branch, setBranch] = useState([]);
   const [date, setDate] = useState("");
-  const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] =
-    GetAllBranch();
+  const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = GetAllBranch();
   const [allSkuStatus, allSkuReFetch, allSku, allSkuError] =
     GetAllSKUForSelect();
 
@@ -151,7 +145,7 @@ const ProductDiscount = () => {
   };
 
 
-  function findUserInTree(managerId, users) {
+  const findUserInTree = (managerId, users) => {
     for (let i = 0; i < users.length; i++) {
       if (users[i].id === managerId) {
         return users[i];
@@ -165,7 +159,7 @@ const ProductDiscount = () => {
   }
   const validateRequired = (value) => !!value.length;
 
-  function validateUser(user) {
+  const validateUser = (user) => {
     return {
       branch_id: !validateRequired(user.branch_id) ? "Branch is Required" : "",
       product_s: !validateRequired(user.product_s) ? "Product is Required" : "",
@@ -173,7 +167,7 @@ const ProductDiscount = () => {
   }
 
   //CREATE hook (post new user to api)
-  function useCreateUser() {
+  const useCreateUser = () =>  {
     const queryClient = useQueryClient();
     return useMutation({
       mutationFn: async (user) => {
@@ -212,7 +206,7 @@ const ProductDiscount = () => {
   }
 
   //READ hook (get users from api)
-  function useGetUsers() {
+  const useGetUsers = () => {
     return useQuery({
       queryKey: ["users"],
       queryFn: async () => {
@@ -239,7 +233,7 @@ const ProductDiscount = () => {
     });
   }
   //UPDATE hook (put user in api)
-  function useUpdateUser() {
+  const useUpdateUser =() => {
     const queryClient = useQueryClient();
     return useMutation({
       mutationFn: async (user) => {
@@ -261,7 +255,7 @@ const ProductDiscount = () => {
   }
 
   //DELETE hook (delete user in api)
-  function useDeleteUser() {
+  const useDeleteUser = () => {
     const queryClient = useQueryClient();
     return useMutation({
       mutationFn: async (userId) => {
@@ -311,38 +305,6 @@ const ProductDiscount = () => {
             }),
         },
       },
-
-
-
-      // {
-      //   accessorKey: "branch_id",
-      //   header: "Branch",
-      //   muiEditTextFieldProps: {
-      //     required: true,
-      //     error: !!validationErrors?.branch_id,
-      //     helperText: validationErrors?.branch_id,
-      //     //remove any previous validation errors when user focuses on the input
-      //     onFocus: () =>
-      //       setValidationErrors({
-      //         ...validationErrors,
-      //         branch_id: undefined,
-      //       }),
-      //     //optionally add validation checking for onBlur or onChange
-      //   },
-      // },
-
-      // {
-      //   accessorKey: "branch_id",
-      //   header: "Branch",
-      //   editVariant: "select",
-      //   editSelectOptions: branch,
-      //   muiEditTextFieldProps: {
-      //     select: true,
-      //     error: !!validationErrors?.branch_id,
-      //     helperText: validationErrors?.branch_id,
-      //   },
-      // },
-
       {
         accessorKey: "name_s",
         header: "Branch",
@@ -354,7 +316,6 @@ const ProductDiscount = () => {
           helperText: validationErrors?.branch_id,
         },
       },
-
       {
         accessorKey: "product_s",
         header: "Product",
@@ -367,24 +328,6 @@ const ProductDiscount = () => {
           defaultValue: "product_s", 
         },
       },
-      
-
-      // {
-      //   accessorKey: "product_s",
-      //   header: "Product",
-      //   muiEditTextFieldProps: {
-      //     required: true,
-      //     error: !!validationErrors?.product_s,
-      //     helperText: validationErrors?.product_s,
-      //     //remove any previous validation errors when user focuses on the input
-      //     onFocus: () =>
-      //       setValidationErrors({
-      //         ...validationErrors,
-      //         product_s: undefined,
-      //       }),
-      //   },
-      // },
-
       {
         accessorKey: "purchase_price_s",
         header: "Purchase Price",
@@ -400,7 +343,6 @@ const ProductDiscount = () => {
             }),
         },
       },
-
       {
         accessorKey: "selling_price_s",
         header: "Selling Price",
@@ -484,6 +426,7 @@ const ProductDiscount = () => {
 
   //CREATE action
   const handleCreateUser = async ({ values, row, table }) => {
+    console.log('sjkdhfksdajfhlka', values, row, table);
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some((error) => error)) {
       setValidationErrors(newValidationErrors);
