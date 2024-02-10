@@ -54,11 +54,10 @@ const ProductDiscount = () => {
   const [allSkuStatus, allSkuReFetch, allSku, allSkuError] =
     GetAllSKUForSelect();
 
-
-    const [creatingRowIndex, setCreatingRowIndex] = useState();
-    const [validationErrors, setValidationErrors] = useState({});
+  const [creatingRowIndex, setCreatingRowIndex] = useState();
+  const [validationErrors, setValidationErrors] = useState({});
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [defaultBranch, setDefaultBranch] = useState(new Date());
+  // const [defaultBranch, setDefaultBranch] = useState('');
 
   const isDarty = () => {
     setIsChange(!isChange);
@@ -112,9 +111,6 @@ const ProductDiscount = () => {
     });
   };
 
-
-
-
   useEffect(() => {
     setBranch(allBranch?.data?.body?.data?.data);
   }, [allBranch]);
@@ -134,18 +130,27 @@ const ProductDiscount = () => {
     setData(finalArray);
   }, [allSku]);
 
-
-
-
   //---------------------------------
 
   // Assuming `branch` is an array of objects with `id` and `name` properties
+  // const mapBranchOptions = (branch) => {
+  //   return branch?.map((item) => ({
+  //     label: item?.name,
+  //     value: item?.id,
+  //   }));
+  // };
+
   const mapBranchOptions = (branch) => {
-    return branch?.map((item) => ({
-      label: item?.name,
-      value: item?.id,
-    }));
+    return branch?.map((item) => {
+      console.log(item); // Add this line to log each item
+      return {
+        label: item?.name,
+        value: item?.id,
+      };
+    });
   };
+
+  
 
   const mapProductsOptions = (data) => {
     return data?.map((item) => ({
@@ -153,7 +158,6 @@ const ProductDiscount = () => {
       value: item?.id,
     }));
   };
-
 
   function findUserInTree(managerId, users) {
     for (let i = 0; i < users.length; i++) {
@@ -243,29 +247,60 @@ const ProductDiscount = () => {
     });
   }
 
-
-
-  //UPDATE hook (put user in api)
   function useUpdateUser() {
     const queryClient = useQueryClient();
+  
     return useMutation({
       mutationFn: async (user) => {
-        console.log("update user", user);
-        //send api update request here
-        await new Promise((resolve) => setTimeout(resolve, 1000)); //fake api call
-        return Promise.resolve();
+        // Send API update request to update user data
+        const response = await axios.put(`/api/users/${user.id}`, user);
+  
+        if (!response.ok) {
+          throw new Error('Failed to update user');
+        }
+  
+        // Return the updated user data if needed
+        return response.data;
       },
-      //client side optimistic update
       onMutate: (newUserInfo) => {
+        // Perform optimistic update on the client side
         queryClient.setQueryData(["users"], (prevUsers) => {
           let user = findUserInTree(newUserInfo.id, prevUsers);
           user = { ...user, ...newUserInfo };
           return [...prevUsers];
         });
       },
-      // onSettled: () => queryClient.invalidateQueries({ queryKey: ['users'] }), //refetch users after mutation, disabled for demo
+      onSettled: () => {
+        // Refetch user data after the mutation is settled
+        queryClient.invalidateQueries(["users"]);
+      },
     });
   }
+  
+
+
+
+  // //UPDATE hook (put user in api)
+  // function useUpdateUser() {
+  //   const queryClient = useQueryClient();
+  //   return useMutation({
+  //     mutationFn: async (user) => {
+  //       console.log("update user", user);
+  //       //send api update request here
+  //       await new Promise((resolve) => setTimeout(resolve, 1000)); //fake api call
+  //       return Promise.resolve();
+  //     },
+  //     //client side optimistic update
+  //     onMutate: (newUserInfo) => {
+  //       queryClient.setQueryData(["users"], (prevUsers) => {
+  //         let user = findUserInTree(newUserInfo.id, prevUsers);
+  //         user = { ...user, ...newUserInfo };
+  //         return [...prevUsers];
+  //       });
+  //     },
+  //     // onSettled: () => queryClient.invalidateQueries({ queryKey: ['users'] }), //refetch users after mutation, disabled for demo
+  //   });
+  // }
 
   //DELETE hook (delete user in api)
   function useDeleteUser() {
@@ -299,15 +334,25 @@ const ProductDiscount = () => {
       // onSettled: () => queryClient.invalidateQueries({ queryKey: ['users'] }), //refetch users after mutation, disabled for demo
     });
   }
+  const handleEdit = (row) => {
+    setValueForEdit(row.original); // Set valueForEdit with the values of the selected row
+    // Any other logic for editing...
+  };
+  const defaultBranchValue = valueForEdit?.name_s || "bijoy";
+  console.log("Value for Edit:", valueForEdit);
+  console.log("Branch Options:", mapBranchOptions(branch));
+  console.log("Default Branch Value:", defaultBranchValue);
+
+  
 
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'date_s_g',
-        header: 'Date',
+        accessorKey: "date_s_g",
+        header: "Date",
         muiEditTextFieldProps: {
           // You can add any props specific to date editing here
-          type: 'date', // This will render a date picker
+          type: "date", // This will render a date picker
           required: true,
           error: !!validationErrors?.date_s_g,
           helperText: validationErrors?.date_s_g,
@@ -319,18 +364,31 @@ const ProductDiscount = () => {
         },
       },
 
+      // {
+      //   accessorKey: "name_s",
+      //   header: "Branch",
+      //   editVariant: "select",
+      //   // editSelectOptions: mapBranchOptions(branch),
+      //   editSelectOptions: ["abdc", "tttttt"],
+      //   muiEditTextFieldProps: {
+      //     select: true,
+      //     error: !!validationErrors?.name_s,
+      //     helperText: validationErrors?.name_s,
+      //   },
+      // },
 
-      {
-        accessorKey: "name_s",
-        header: "Branch",
-        editVariant: "select",
-        editSelectOptions: mapBranchOptions(branch), // Map branch data to options
-        muiEditTextFieldProps: {
-          select: true,
-          error: !!validationErrors?.branch_id,
-          helperText: validationErrors?.branch_id,
-        },
+ {
+      accessorKey: "name_s",
+      header: "Branch",
+      editVariant: "select",
+      editSelectOptions: mapBranchOptions(branch),
+      muiEditTextFieldProps: {
+        select: true,
+        error: !!validationErrors?.name_s,
+        helperText: validationErrors?.name_s,
       },
+      defaultValue: defaultBranchValue,
+    },
 
       // {
       //   accessorKey: "product_s",
@@ -341,10 +399,9 @@ const ProductDiscount = () => {
       //     select: true,
       //     error: !!validationErrors?.product_s,
       //     helperText: validationErrors?.product_s,
-      //     defaultValue: "product_s", 
+      //     defaultValue: "product_s",
       //   },
       // },
-      
 
       {
         accessorKey: "product_s",
@@ -355,10 +412,8 @@ const ProductDiscount = () => {
           select: true,
           error: !!validationErrors?.product_s,
           helperText: validationErrors?.product_s,
-          value: (row) => row.original.product_s, // Add this line to get the current value
         },
       },
-
       {
         accessorKey: "purchase_price_s",
         header: "Purchase Price",
@@ -435,7 +490,7 @@ const ProductDiscount = () => {
         },
       },
     ],
-    [branch, validationErrors, mapProductsOptions, data]
+    [validationErrors, branch, defaultBranchValue, data]
   );
 
   //call CREATE hook
@@ -443,7 +498,7 @@ const ProductDiscount = () => {
     useCreateUser();
   //call READ hook
   const {
-    data: fetchedUsers = [],
+    data: fetchedDiscountProducts = [],
     isError: isLoadingUsersError,
     isFetching: isFetchingUsers,
     isLoading: isLoadingUsers,
@@ -488,7 +543,7 @@ const ProductDiscount = () => {
   };
   const table = useMaterialReactTable({
     columns,
-    data: fetchedUsers,
+    data: fetchedDiscountProducts,
     // enableGrouping: true,
     createDisplayMode: "row",
     editDisplayMode: "row",
@@ -523,7 +578,7 @@ const ProductDiscount = () => {
     renderRowActions: ({ row, staticRowIndex, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          <IconButton onClick={() => table.setEditingRow(row)}>
+          <IconButton onClick={() => {table.setEditingRow(row); handleEdit(row) }}>
             <EditIcon />
           </IconButton>
         </Tooltip>
@@ -533,7 +588,7 @@ const ProductDiscount = () => {
           </IconButton>
         </Tooltip>
 
-         <Tooltip title="Add Subordinate">
+        <Tooltip title="Add Subordinate">
           <IconButton
             onClick={() => {
               setCreatingRowIndex((staticRowIndex || 0) + 1);
@@ -560,7 +615,7 @@ const ProductDiscount = () => {
           >
             {/* <PersonAddAltIcon /> */}
           </IconButton>
-        </Tooltip> 
+        </Tooltip>
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
@@ -580,7 +635,6 @@ const ProductDiscount = () => {
       // columnPinning: { left: ["mrt-row-actions"], right: [] },
       expanded: true,
       pagination: { pageSize: 20, pageIndex: 0 },
-
     },
     state: {
       isLoading: isLoadingUsers,

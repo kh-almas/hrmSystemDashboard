@@ -88,10 +88,6 @@ const AddProductReconciliation = ({
     data.audit_by = employeeInfo?.value;
     data.approve_status = false;
 
-
-
-    console.log("data=====---", data);
-
     axios
       .post("inventory-management/stock/reconciliation/add", data)
       .then((info) => {
