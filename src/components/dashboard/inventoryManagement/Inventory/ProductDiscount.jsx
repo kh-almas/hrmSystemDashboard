@@ -22,7 +22,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   MaterialReactTable,
-  // createRow,
+  createRow,
   useMaterialReactTable,
 } from "material-react-table";
 import { useMemo } from "react";
@@ -58,6 +58,7 @@ const ProductDiscount = () => {
     const [creatingRowIndex, setCreatingRowIndex] = useState();
     const [validationErrors, setValidationErrors] = useState({});
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [defaultBranch, setDefaultBranch] = useState(new Date());
 
   const isDarty = () => {
     setIsChange(!isChange);
@@ -133,6 +134,9 @@ const ProductDiscount = () => {
     setData(finalArray);
   }, [allSku]);
 
+
+
+
   //---------------------------------
 
   // Assuming `branch` is an array of objects with `id` and `name` properties
@@ -143,7 +147,7 @@ const ProductDiscount = () => {
     }));
   };
 
-  const mapProductsOptions = (product) => {
+  const mapProductsOptions = (data) => {
     return data?.map((item) => ({
       label: item?.label,
       value: item?.id,
@@ -238,12 +242,15 @@ const ProductDiscount = () => {
       refetchOnWindowFocus: false,
     });
   }
+
+
+
   //UPDATE hook (put user in api)
   function useUpdateUser() {
     const queryClient = useQueryClient();
     return useMutation({
       mutationFn: async (user) => {
-        console.info("update user", user);
+        console.log("update user", user);
         //send api update request here
         await new Promise((resolve) => setTimeout(resolve, 1000)); //fake api call
         return Promise.resolve();
@@ -313,36 +320,6 @@ const ProductDiscount = () => {
       },
 
 
-
-      // {
-      //   accessorKey: "branch_id",
-      //   header: "Branch",
-      //   muiEditTextFieldProps: {
-      //     required: true,
-      //     error: !!validationErrors?.branch_id,
-      //     helperText: validationErrors?.branch_id,
-      //     //remove any previous validation errors when user focuses on the input
-      //     onFocus: () =>
-      //       setValidationErrors({
-      //         ...validationErrors,
-      //         branch_id: undefined,
-      //       }),
-      //     //optionally add validation checking for onBlur or onChange
-      //   },
-      // },
-
-      // {
-      //   accessorKey: "branch_id",
-      //   header: "Branch",
-      //   editVariant: "select",
-      //   editSelectOptions: branch,
-      //   muiEditTextFieldProps: {
-      //     select: true,
-      //     error: !!validationErrors?.branch_id,
-      //     helperText: validationErrors?.branch_id,
-      //   },
-      // },
-
       {
         accessorKey: "name_s",
         header: "Branch",
@@ -355,35 +332,32 @@ const ProductDiscount = () => {
         },
       },
 
+      // {
+      //   accessorKey: "product_s",
+      //   header: "Product",
+      //   editVariant: "select",
+      //   editSelectOptions: mapProductsOptions(data), // Map branch data to options
+      //   muiEditTextFieldProps: {
+      //     select: true,
+      //     error: !!validationErrors?.product_s,
+      //     helperText: validationErrors?.product_s,
+      //     defaultValue: "product_s", 
+      //   },
+      // },
+      
+
       {
         accessorKey: "product_s",
         header: "Product",
         editVariant: "select",
-        editSelectOptions: mapProductsOptions(data), // Map branch data to options
+        editSelectOptions: mapProductsOptions(data),
         muiEditTextFieldProps: {
           select: true,
           error: !!validationErrors?.product_s,
           helperText: validationErrors?.product_s,
-          defaultValue: "product_s", 
+          value: (row) => row.original.product_s, // Add this line to get the current value
         },
       },
-      
-
-      // {
-      //   accessorKey: "product_s",
-      //   header: "Product",
-      //   muiEditTextFieldProps: {
-      //     required: true,
-      //     error: !!validationErrors?.product_s,
-      //     helperText: validationErrors?.product_s,
-      //     //remove any previous validation errors when user focuses on the input
-      //     onFocus: () =>
-      //       setValidationErrors({
-      //         ...validationErrors,
-      //         product_s: undefined,
-      //       }),
-      //   },
-      // },
 
       {
         accessorKey: "purchase_price_s",
@@ -559,7 +533,7 @@ const ProductDiscount = () => {
           </IconButton>
         </Tooltip>
 
-        {/* <Tooltip title="Add Subordinate">
+         <Tooltip title="Add Subordinate">
           <IconButton
             onClick={() => {
               setCreatingRowIndex((staticRowIndex || 0) + 1);
@@ -584,9 +558,9 @@ const ProductDiscount = () => {
               );
             }}
           >
-            <PersonAddAltIcon />
+            {/* <PersonAddAltIcon /> */}
           </IconButton>
-        </Tooltip> */}
+        </Tooltip> 
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
@@ -606,6 +580,7 @@ const ProductDiscount = () => {
       // columnPinning: { left: ["mrt-row-actions"], right: [] },
       expanded: true,
       pagination: { pageSize: 20, pageIndex: 0 },
+
     },
     state: {
       isLoading: isLoadingUsers,
