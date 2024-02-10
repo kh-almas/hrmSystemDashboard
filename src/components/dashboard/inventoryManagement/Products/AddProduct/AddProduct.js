@@ -9,7 +9,6 @@ import AddUnitTypeModal from "../../../../common/component/form/inventory/unitTy
 import AddCategoryModal from "../../../../common/component/form/inventory/Category/AddCategoryModal";
 import AddBrandModal from "../../../../common/component/form/inventory/brand/AddBrandModal";
 import AddModelModal from "../../../../common/component/form/inventory/model/AddModelModal";
-import DropdownTreeSelect from "react-dropdown-tree-select";
 import getInventoryCategory from "../../../../common/Query/inventory/getInventoryCategory";
 import getInventoryUnitType from "../../../../common/Query/inventory/getInventoryUnitType";
 import getInventoryBrand from "../../../../common/Query/inventory/getInventoryBrand";
@@ -25,6 +24,7 @@ import { Accordion } from 'react-bootstrap';
 import ProductImage from "./ProductImage";
 import {Trash2} from "react-feather";
 import { useNavigate } from 'react-router-dom';
+import DropdownTreeSelect from "react-dropdown-tree-select";
 
 const AddProduct = () => {
     const navigate = useNavigate();
@@ -42,6 +42,8 @@ const AddProduct = () => {
     const [selectedProductForCombo, setSelectedProductForCombo] = useState([]);
     const [note, setNote] = useState('');
     const [taxType, setTaxType] = useState({value: "percent", label: "Percent"});
+    const [hasSerial, setHasSerial] = useState({value: "1", label: "No serial key"});
+    const [warrantyType, setWarrantyType] = useState({value: "1", label: "Warranty by purchase"});
     const [priceType, setPriceType] = useState({value: "percent", label: "Percent"});
     const [variantFormValue, setVariantFormValue] = useState({});
     const [previousSKU, setPreviousSKU] = useState([]);
@@ -90,6 +92,14 @@ const AddProduct = () => {
 
     const handleChangeTaxType = (selected) => {
         setTaxType(selected);
+    }
+
+    const handleChangeHasSerial = (selected) => {
+        setHasSerial(selected);
+    }
+
+    const handleChangeWarrantyType = (selected) => {
+        setWarrantyType(selected);
     }
 
 
@@ -467,8 +477,6 @@ const AddProduct = () => {
         }
     };
 
-
-
     const submitAddProductForm = (data) => {
         let files = [];
 
@@ -495,7 +503,9 @@ const AddProduct = () => {
         data.selling_price = allStoredValue.selling_price;
         data.min_selling_price = allStoredValue.min_selling_price;
         data.tax = allStoredValue.tax;
-        data.has_serial_key = data?.has_serial_key === true ? 1 : 0;
+
+        data.has_serial_key = hasSerial?.value;
+        data.warranty_by = warrantyType?.value;
         data.photos = JSON.stringify(photos);
         data.sku = baseProductSKU;
 
@@ -525,6 +535,7 @@ const AddProduct = () => {
         }
         const formData = createFormData(data);
 
+        // console.log('data', data);
         axios.post('/inventory-management/products/add', formData)
             .then(info => {
                 Swal.fire({
@@ -539,7 +550,7 @@ const AddProduct = () => {
                 }else{
                     navigate('/dashboard/inventory-management/products');
                 }
-                
+
             })
             .catch(e => {
                 console.log('error', e);
@@ -1537,11 +1548,11 @@ const AddProduct = () => {
                                                         ) : ( "" )}
 
                                                         {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                        <div>
+                                                        <div style={{marginTop: '15px'}}>
                                                             <Select
                                                                 placeholder={"Tax Type"}
                                                                 // previous={taxType}
-                                                                labelName={' '}
+                                                                // labelName={' '}
                                                                 options={[{value: "percent", label: "Percent"}, {value: "value", label: "Value"}]}
                                                                 setValue={setTaxType}
                                                                 cngFn={handleChangeTaxType}
@@ -1550,11 +1561,55 @@ const AddProduct = () => {
                                                         ) : ( "" )}
 
                                                         {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                            <div class="checkbox checkbox-dark ms-2">
-                                                                <input id="inline-1" type="checkbox" {...register("has_serial_key")}/>
-                                                                <label for="inline-1" style={{color: "gray"}}>Has Serial Key</label>
+                                                            <div style={{marginTop: '15px'}}>
+                                                                <Select
+                                                                    placeholder={"Serial keys"}
+                                                                    previous={hasSerial}
+                                                                    // labelName={' '}
+                                                                    options={[{value: "1", label: "No serial key"}, {value: "2", label: "Has serial key"}, {value: "3", label: "Has serial key by manufacture"}]}
+                                                                    setValue={setHasSerial}
+                                                                    cngFn={handleChangeHasSerial}
+                                                                />
+                                                                {console.log('hasSerial', hasSerial?.value)}
                                                             </div>
                                                         ) : ( "" )}
+
+                                                        {
+                                                            hasSerial?.value == 3 ?
+                                                                <div>
+                                                                    <Input
+                                                                        labelName={"serial key by manufacture"}
+                                                                        inputName={"serial_key_by_manufacture"}
+                                                                        inputType={"text"}
+                                                                        // placeholder={"serial key by manufacture"}
+                                                                        // defaultValue={0}
+                                                                        validation={{
+                                                                            ...register('serial_key_by_manufacture', {
+                                                                                required: 'This field is required',
+                                                                            })
+                                                                        }}
+                                                                        performOnValue={(e) => clearErrors(["serial_key_by_manufacture"])}
+                                                                        error={errors.p_height}
+                                                                    />
+                                                                    {errors.serial_key_by_manufacture && <span style={{fontSize: '10px'}}>{errors.serial_key_by_manufacture.message}</span>}
+                                                                </div> : ''
+                                                        }
+
+                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
+                                                            <div style={{marginTop: '15px'}}>
+                                                                <Select
+                                                                    placeholder={"Serial keys"}
+                                                                    previous={warrantyType}
+                                                                    // labelName={' '}
+                                                                    options={[{
+                                                                        value: "1",
+                                                                        label: "Warranty by purchase"
+                                                                    }, {value: "2", label: "Warranty By manufacture"}]}
+                                                                    setValue={setWarrantyType}
+                                                                    cngFn={handleChangeWarrantyType}
+                                                                />
+                                                            </div>
+                                                        ) : ("")}
                                                     </div>
                                                 </div>
                                             </div>
@@ -1571,38 +1626,43 @@ const AddProduct = () => {
                             </div>
                         </div>
                         {type == "Combo" ? (
-                        <div className="">
-                            <div className="card">
-                                <div className="card-header">
-                                    <h4 className="card-title mb-0">Choose Product</h4>
-                                </div>
+                            <div className="">
+                                <div className="card">
+                                    <div className="card-header">
+                                        <h4 className="card-title mb-0">Choose Product</h4>
+                                    </div>
 
-                                <div className="px-3 w-100">
-                                    <SelectProductInCreateProductForm data={allDataForDropdown} selectedDataKey={selectedDataKeyForProductList} show={showProductList} setShow={setShowProductList} getSelectedData={getSelectedData} columns={columns}></SelectProductInCreateProductForm>
-                                </div>
+                                    <div className="px-3 w-100">
+                                        <SelectProductInCreateProductForm data={allDataForDropdown}
+                                                                          selectedDataKey={selectedDataKeyForProductList}
+                                                                          show={showProductList}
+                                                                          setShow={setShowProductList}
+                                                                          getSelectedData={getSelectedData}
+                                                                          columns={columns}></SelectProductInCreateProductForm>
+                                    </div>
 
 
-                                <div className="table-responsive mt-4">
-                                    {selectedProductForCombo?.length > 0 ?
-                                        <table className="table card-table text-nowrap">
-                                            <thead className="table-border">
-                                            <tr>
-                                                <th>Product Name</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Tax</th>
-                                                <th>Action</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {
-                                                selectedProductForCombo?.map((singleData, index) =>
-                                                    <tr key={index}>
-                                                        <td>
-                                                            <div>
-                                                                <TextField
-                                                                    disabled
-                                                                    id="outlined-size-small"
+                                    <div className="table-responsive mt-4">
+                                        {selectedProductForCombo?.length > 0 ?
+                                            <table className="table card-table text-nowrap">
+                                                <thead className="table-border">
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <th>Quantity</th>
+                                                    <th>Price</th>
+                                                    <th>Tax</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {
+                                                    selectedProductForCombo?.map((singleData, index) =>
+                                                        <tr key={index}>
+                                                            <td>
+                                                                <div>
+                                                                    <TextField
+                                                                        disabled
+                                                                        id="outlined-size-small"
                                                                     value={singleData?.name}
                                                                     size="small"
                                                                     validation={{...register(`product_id_${index}`,{ value: singleData?.id })}}
