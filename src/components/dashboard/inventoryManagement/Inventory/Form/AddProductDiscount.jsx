@@ -85,7 +85,6 @@ const AddProductDiscount = ({
     data.discount_value = discountValue ? discountValue : 0;
     data.approve_status = "Approved";
 
- 
 
     axios
       .post("/inventory-management/product/discount/add", data)

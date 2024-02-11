@@ -61,6 +61,8 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   }, []);
 
   const onSubmit = (data) => {
+    console.log("dateeeeee-------",data);
+    console.log("dateeeeee-------",date);
     data.branch_id = selectedBranch?.id;
     data.date = date;
     data.batch_no = batchNo;
