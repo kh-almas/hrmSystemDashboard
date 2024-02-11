@@ -1,11 +1,3 @@
-import React, { useEffect, useState } from "react";
-import { Card, Collapse } from "reactstrap";
-import Swal from "sweetalert2";
-import axios from "../../../../axios";
-import GetAllProductDiscount from "../../../common/Query/inventory/GetAllProductDiscount";
-import Breadcrumb from "../../../common/breadcrumb";
-import FilesComponent from "../../../common/filesComponent/FilesComponent";
-import AddProductDiscount from "./Form/AddProductDiscount";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import {
@@ -19,12 +11,20 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   MaterialReactTable,
+  createRow,
   useMaterialReactTable,
 } from "material-react-table";
-import { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import { Card, Collapse } from "reactstrap";
+import Swal from "sweetalert2";
+import axios from "../../../../axios";
 import GetAllBranch from "../../../common/Query/hrm/GetAllBranch";
+import GetAllProductDiscount from "../../../common/Query/inventory/GetAllProductDiscount";
 import GetAllSKUForSelect from "../../../common/Query/inventory/GetAllSKUForSelect";
+import Breadcrumb from "../../../common/breadcrumb";
+import FilesComponent from "../../../common/filesComponent/FilesComponent";
+import AddProductDiscount from "./Form/AddProductDiscount";
 
 const ProductDiscount = () => {
   const [showFromForAdd, setShowFromForAdd] = useState(false);
@@ -44,14 +44,15 @@ const ProductDiscount = () => {
   const [data, setData] = React.useState([]);
   const [branch, setBranch] = useState([]);
   const [date, setDate] = useState("");
-  const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] = GetAllBranch();
+  const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] =
+    GetAllBranch();
   const [allSkuStatus, allSkuReFetch, allSku, allSkuError] =
     GetAllSKUForSelect();
 
-
-    const [creatingRowIndex, setCreatingRowIndex] = useState();
-    const [validationErrors, setValidationErrors] = useState({});
+  const [creatingRowIndex, setCreatingRowIndex] = useState();
+  const [validationErrors, setValidationErrors] = useState({});
   const [selectedDate, setSelectedDate] = useState(new Date());
+  // const [defaultBranch, setDefaultBranch] = useState('');
 
   const isDarty = () => {
     setIsChange(!isChange);
@@ -105,9 +106,6 @@ const ProductDiscount = () => {
     });
   };
 
-
-
-
   useEffect(() => {
     setBranch(allBranch?.data?.body?.data?.data);
   }, [allBranch]);
@@ -130,20 +128,29 @@ const ProductDiscount = () => {
   //---------------------------------
 
   // Assuming `branch` is an array of objects with `id` and `name` properties
+  // const mapBranchOptions = (branch) => {
+  //   return branch?.map((item) => ({
+  //     label: item?.name,
+  //     value: item?.id,
+  //   }));
+  // };
+
   const mapBranchOptions = (branch) => {
-    return branch?.map((item) => ({
-      label: item?.name,
-      value: item?.id,
-    }));
+    return branch?.map((item) => {
+      // console.log(item); // Add this line to log each item
+      return {
+        label: item?.name,
+        value: item?.id,
+      };
+    });
   };
 
-  const mapProductsOptions = (product) => {
+  const mapProductsOptions = (data) => {
     return data?.map((item) => ({
       label: item?.label,
       value: item?.id,
     }));
   };
-
 
   const findUserInTree = (managerId, users) => {
     for (let i = 0; i < users.length; i++) {
@@ -156,18 +163,18 @@ const ProductDiscount = () => {
       }
     }
     return null;
-  }
-  const validateRequired = (value) => !!value.length;
+  };
+  const validateRequired = (value) => !!value?.length;
 
   const validateUser = (user) => {
     return {
       branch_id: !validateRequired(user.branch_id) ? "Branch is Required" : "",
       product_s: !validateRequired(user.product_s) ? "Product is Required" : "",
     };
-  }
+  };
 
   //CREATE hook (post new user to api)
-  const useCreateUser = () =>  {
+  const useCreateUser = () => {
     const queryClient = useQueryClient();
     return useMutation({
       mutationFn: async (user) => {
@@ -178,6 +185,7 @@ const ProductDiscount = () => {
       },
       //client side optimistic update
       onMutate: (newUserInfo) => {
+        console.log('newUserInfo',newUserInfo)
         queryClient.setQueryData(["users"], (_prevUsers) => {
           const prevUsers = JSON.parse(JSON.stringify(_prevUsers));
           newUserInfo.subRows = [];
@@ -203,7 +211,7 @@ const ProductDiscount = () => {
       },
       // onSettled: () => queryClient.invalidateQueries({ queryKey: ['users'] }), //refetch users after mutation, disabled for demo
     });
-  }
+  };
 
   //READ hook (get users from api)
   const useGetUsers = () => {
@@ -231,13 +239,14 @@ const ProductDiscount = () => {
       },
       refetchOnWindowFocus: false,
     });
-  }
+  };
+
   //UPDATE hook (put user in api)
-  const useUpdateUser =() => {
+  function useUpdateUser() {
     const queryClient = useQueryClient();
     return useMutation({
       mutationFn: async (user) => {
-        console.info("update user", user);
+        console.log("update user", user);
         //send api update request here
         await new Promise((resolve) => setTimeout(resolve, 1000)); //fake api call
         return Promise.resolve();
@@ -285,16 +294,24 @@ const ProductDiscount = () => {
       },
       // onSettled: () => queryClient.invalidateQueries({ queryKey: ['users'] }), //refetch users after mutation, disabled for demo
     });
-  }
+  };
+  const handleEdit = (row) => {
+    setValueForEdit(row.original); // Set valueForEdit with the values of the selected row
+    // Any other logic for editing...
+  };
+  const defaultBranchValue = valueForEdit?.name_s || "bijoy";
+  // console.log("Value for Edit:", valueForEdit);
+  // console.log("Branch Options:", mapBranchOptions(branch));
+  // console.log("Default Branch Value:", defaultBranchValue);
 
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'date_s_g',
-        header: 'Date',
+        accessorKey: "date_s_g",
+        header: "Date",
         muiEditTextFieldProps: {
           // You can add any props specific to date editing here
-          type: 'date', // This will render a date picker
+          type: "date", // This will render a date picker
           required: true,
           error: !!validationErrors?.date_s_g,
           helperText: validationErrors?.date_s_g,
@@ -305,6 +322,36 @@ const ProductDiscount = () => {
             }),
         },
       },
+
+      // {
+      //   accessorKey: "branch_id",
+      //   header: "Branch",
+      //   muiEditTextFieldProps: {
+      //     required: true,
+      //     error: !!validationErrors?.branch_id,
+      //     helperText: validationErrors?.branch_id,
+      //     //remove any previous validation errors when user focuses on the input
+      //     onFocus: () =>
+      //       setValidationErrors({
+      //         ...validationErrors,
+      //         branch_id: undefined,
+      //       }),
+      //     //optionally add validation checking for onBlur or onChange
+      //   },
+      // },
+
+      // {
+      //   accessorKey: "branch_id",
+      //   header: "Branch",
+      //   editVariant: "select",
+      //   editSelectOptions: branch,
+      //   muiEditTextFieldProps: {
+      //     select: true,
+      //     error: !!validationErrors?.branch_id,
+      //     helperText: validationErrors?.branch_id,
+      //   },
+      // },
+
       {
         accessorKey: "name_s",
         header: "Branch",
@@ -316,16 +363,16 @@ const ProductDiscount = () => {
           helperText: validationErrors?.branch_id,
         },
       },
+
       {
         accessorKey: "product_s",
         header: "Product",
         editVariant: "select",
-        editSelectOptions: mapProductsOptions(data), // Map branch data to options
+        editSelectOptions: mapProductsOptions(data),
         muiEditTextFieldProps: {
           select: true,
           error: !!validationErrors?.product_s,
           helperText: validationErrors?.product_s,
-          defaultValue: "product_s", 
         },
       },
       {
@@ -366,8 +413,8 @@ const ProductDiscount = () => {
         editSelectOptions: ["Percent", "Fixed"],
         muiEditTextFieldProps: {
           select: true,
-          error: !!validationErrors?.state,
-          helperText: validationErrors?.state,
+          error: !!validationErrors?.discount_type_s,
+          helperText: validationErrors?.discount_type_s,
         },
       },
 
@@ -403,7 +450,7 @@ const ProductDiscount = () => {
         },
       },
     ],
-    [branch, validationErrors, mapProductsOptions, data]
+    [validationErrors, branch, data]
   );
 
   //call CREATE hook
@@ -411,7 +458,7 @@ const ProductDiscount = () => {
     useCreateUser();
   //call READ hook
   const {
-    data: fetchedUsers = [],
+    data: fetchedDiscountProducts = [],
     isError: isLoadingUsersError,
     isFetching: isFetchingUsers,
     isLoading: isLoadingUsers,
@@ -426,7 +473,7 @@ const ProductDiscount = () => {
 
   //CREATE action
   const handleCreateUser = async ({ values, row, table }) => {
-    console.log('sjkdhfksdajfhlka', values, row, table);
+    // console.log("sjkdhfksdajfhlka", values, row, table);
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some((error) => error)) {
       setValidationErrors(newValidationErrors);
@@ -439,6 +486,7 @@ const ProductDiscount = () => {
 
   //UPDATE action
   const handleSaveUser = async ({ values, table }) => {
+    console.log('updtaevalues',values)
     const newValidationErrors = validateUser(values);
     if (Object.values(newValidationErrors).some((error) => error)) {
       setValidationErrors(newValidationErrors);
@@ -457,7 +505,7 @@ const ProductDiscount = () => {
   };
   const table = useMaterialReactTable({
     columns,
-    data: fetchedUsers,
+    data: fetchedDiscountProducts,
     // enableGrouping: true,
     createDisplayMode: "row",
     editDisplayMode: "row",
@@ -492,7 +540,12 @@ const ProductDiscount = () => {
     renderRowActions: ({ row, staticRowIndex, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          <IconButton onClick={() => table.setEditingRow(row)}>
+          <IconButton
+            onClick={() => {
+              table.setEditingRow(row);
+              handleEdit(row);
+            }}
+          >
             <EditIcon />
           </IconButton>
         </Tooltip>
@@ -502,7 +555,7 @@ const ProductDiscount = () => {
           </IconButton>
         </Tooltip>
 
-        {/* <Tooltip title="Add Subordinate">
+        <Tooltip title="Add Subordinate">
           <IconButton
             onClick={() => {
               setCreatingRowIndex((staticRowIndex || 0) + 1);
@@ -527,9 +580,9 @@ const ProductDiscount = () => {
               );
             }}
           >
-            <PersonAddAltIcon />
+            {/* <PersonAddAltIcon /> */}
           </IconButton>
-        </Tooltip> */}
+        </Tooltip>
       </Box>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
