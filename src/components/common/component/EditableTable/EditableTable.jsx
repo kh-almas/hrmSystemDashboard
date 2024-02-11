@@ -18,67 +18,9 @@ import axios from "../../../../axios";
 import GetAllBranch from "../../Query/hrm/GetAllBranch";
 import GetAllSKUForSelect from "../../Query/inventory/GetAllSKUForSelect";
 
-//50 us states array
-// const usStates = [
-//   "Alabama",
-//   "Alaska",
-//   "Arizona",
-//   "Arkansas",
-//   "California",
-//   "Colorado",
-//   "Connecticut",
-//   "Delaware",
-//   "Florida",
-//   "Georgia",
-//   "Hawaii",
-//   "Idaho",
-//   "Illinois",
-//   "Indiana",
-//   "Iowa",
-//   "Kansas",
-//   "Kentucky",
-//   "Louisiana",
-//   "Maine",
-//   "Maryland",
-//   "Massachusetts",
-//   "Michigan",
-//   "Minnesota",
-//   "Mississippi",
-//   "Missouri",
-//   "Montana",
-//   "Nebraska",
-//   "Nevada",
-//   "New Hampshire",
-//   "New Jersey",
-//   "New Mexico",
-//   "New York",
-//   "North Carolina",
-//   "North Dakota",
-//   "Ohio",
-//   "Oklahoma",
-//   "Oregon",
-//   "Pennsylvania",
-//   "Rhode Island",
-//   "South Carolina",
-//   "South Dakota",
-//   "Tennessee",
-//   "Texas",
-//   "Utah",
-//   "Vermont",
-//   "Virginia",
-//   "Washington",
-//   "West Virginia",
-//   "Wisconsin",
-//   "Wyoming",
-//   "Puerto Rico",
-//   "Western Australia",
-//   "Northern Territory",
-//   "South Australia",
-//   "Queensland",
-// ];
-
 const EditableTable = () => {
   const queryClient = useQueryClient();
+  const [isEditing, setIsEditing] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [data, setData] = useState([]);
   const [branch, setBranch] = useState([]);
@@ -88,13 +30,11 @@ const EditableTable = () => {
   const [discountPercent, setDiscountPercent] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
 
+
   useEffect(() => {
     const discountAmount = (sellingPrice * discountPercent) / 100;
-
     setDiscountValue(discountAmount);
   }, [discountPercent, sellingPrice]);
-
-  console.log("discountValue---", discountValue);
 
   const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] =
     GetAllBranch();
@@ -182,11 +122,11 @@ const EditableTable = () => {
         accessorKey: "branch_name",
         header: "Branch",
         editVariant: "select",
-        editSelectOptions: branches, // Map branch data to options
+        editSelectOptions: branches,
         muiEditTextFieldProps: {
           select: true,
-          error: !!validationErrors?.branch_id,
-          helperText: validationErrors?.branch_id,
+          error: !!validationErrors?.branch_name,
+          helperText: validationErrors?.branch_name,
         },
       },
 
@@ -194,13 +134,16 @@ const EditableTable = () => {
         accessorKey: "product_name",
         header: "Product",
         editVariant: "select",
+        enableEditing: !isEditing,
         editSelectOptions: allProducts,
         muiEditTextFieldProps: {
           select: true,
-          error: !!validationErrors?.product_s,
-          helperText: validationErrors?.product_s,
+          error: !!validationErrors?.product_name,
+          helperText: validationErrors?.product_name,
+          // Disable when editing a row
         },
       },
+
       {
         accessorKey: "purchase_price",
         header: "Purchase Price",
@@ -249,38 +192,6 @@ const EditableTable = () => {
             }),
         },
       },
-
-      // {
-      //   accessorKey: "discount_type",
-      //   header: "Discount Type",
-      //   editVariant: "select",
-      //   editSelectOptions: [
-      //     { id: "Percent", label: "Percent" },
-      //     { id: "Fixed", label: "Fixed" },
-      //   ],
-      //   muiEditTextFieldProps: {
-      //     select: true,
-      //     error: !!validationErrors?.discount_type_s,
-      //     helperText: validationErrors?.discount_type_s,
-      //   },
-      // },
-
-      // {
-      //   accessorKey: "discount_percent",
-      //   header: "Discount Percent",
-      //   muiEditTextFieldProps: {
-      //     required: true,
-      //     error: !!validationErrors?.discount_percent_s,
-      //     helperText: validationErrors?.discount_percent_s,
-      //     //remove any previous validation errors when user focuses on the input
-      //     onFocus: () =>
-      //       setValidationErrors({
-      //         ...validationErrors,
-      //         discount_percent_s: undefined,
-      //       }),
-      //   },
-      // },
-
       {
         accessorKey: "discount_percent",
         header: "Discount Percent",
@@ -294,7 +205,7 @@ const EditableTable = () => {
               ...validationErrors,
               discount_percent_s: undefined,
             }),
-          disabled: discountType === "Fixed", // Disable input if discountType is "Fixed"
+          disabled: discountType === "Fixed",
         },
       },
 
@@ -307,7 +218,7 @@ const EditableTable = () => {
           helperText: validationErrors?.discount_value_s,
           value: discountValue,
           onChange: (e) => setDiscountValue(e.target.value),
-
+          disabled: discountType === "Percent",
           //remove any previous validation errors when user focuses on the input
           onFocus: () =>
             setValidationErrors({
@@ -317,7 +228,14 @@ const EditableTable = () => {
         },
       },
     ],
-    [allProducts, branches, discountType, discountValue, validationErrors]
+    [
+      allProducts,
+      branches,
+      discountType,
+      discountValue,
+      isEditing,
+      validationErrors,
+    ]
   );
   const {
     data: fetchedDiscountData = [],
@@ -351,24 +269,24 @@ const EditableTable = () => {
 
   //UPDATE action
   const handleSaveDiscount = async ({ values, table }) => {
-    // console.log("object", values);
-    const newValidationErrors = validateUser(values);
-    if (Object.values(newValidationErrors).some((error) => error)) {
-      setValidationErrors(newValidationErrors);
-      return;
-    }
 
+   
+    // const newValidationErrors = validateUser(values);
+    // if (Object.values(newValidationErrors).some((error) => error)) {
+    //   setValidationErrors(newValidationErrors);
+    //   return;
+    // }
+    console.log(', table', table)
+    console.log('values,',values)
+    
     setValidationErrors({});
     await updateUser(values);
-    table.setEditingRow(null); //exit editing mode
+    table.setEditingRow(null); // Exit editing mode
   };
+  
 
   //DELETE action
   const openDeleteConfirmModal = (row) => {
-    // if (window.confirm("Are you sure you want to delete this user?")) {
-    //   console.log('row.original',row.original)
-    //   deleteUser(row.original.primary_id);
-    // }
     deleteUser(row.original.primary_id);
   };
 
@@ -398,7 +316,12 @@ const EditableTable = () => {
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", gap: "1rem" }}>
         <Tooltip title="Edit">
-          <IconButton onClick={() => table.setEditingRow(row)}>
+          <IconButton
+            onClick={() => {
+              table.setEditingRow(row);
+              setIsEditing(true);
+            }}
+          >
             <EditIcon />
           </IconButton>
         </Tooltip>
@@ -414,6 +337,7 @@ const EditableTable = () => {
         variant="contained"
         onClick={() => {
           table.setCreatingRow(true);
+          setIsEditing(false);
         }}
       >
         Create New Discount
@@ -473,6 +397,7 @@ function useCreateDiscount(dataD) {
     },
   });
 }
+
 function useGetDiscountData() {
   return useQuery({
     queryKey: ["discount"],
@@ -503,24 +428,39 @@ function useGetDiscountData() {
 function useUpdateDiscount() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (user) => {
+    mutationFn: async (editData) => {
+      console.log("edit----", editData);
+      // try {
+      //   const response = await axios.put(
+      //     `inventory-management/product/discount/update/[primaryId]`,
+      //     editData
+      //   );
+      //   if (response?.status == 200) {
+      //     Swal.fire({
+      //       position: "top-end",
+      //       icon: "success",
+      //       title: "Your work has been saved",
+      //       showConfirmButton: false,
+      //       timer: 1500,
+      //     });
+      //     queryClient.invalidateQueries("discountData");
+      //   }
+
+      //   // // Simulate delay with setTimeout
+      //   // await new Promise((resolve) => setTimeout(resolve, 1000));
+      //   // // Return the user data
+      //   // return response?.data;
+      // } catch (error) {
+      //   // Handle errors here (e.g., logging, error states, etc.)
+      //   console.error("Error create:", error);
+      //   throw new Error("Failed to fetch discountData");
+      // }
+
       //send api update request here
-
-
-
-      
       // await new Promise((resolve) => setTimeout(resolve, 1000)); //fake api call
       // return Promise.resolve();
     },
-    // //client side optimistic update
-    // onMutate: (newUserInfo) => {
-    //   queryClient.setQueryData(["users"], (prevData) =>
-    //     prevData?.map((data) =>
-    //       data.id === newUserInfo.id ? newUserInfo : data
-    //     )
-    //   );
-    // },
-    // // onSettled: () => queryClient.invalidateQueries({ queryKey: ['users'] }), //refetch users after mutation, disabled for demo
+  
   });
 }
 
