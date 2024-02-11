@@ -20,7 +20,7 @@ import TextField from '@mui/material/TextField';
 import Swal from "sweetalert2";
 import AddProductOptionModal from "../../../../common/component/form/inventory/productOption/AddProductOptionModal";
 import {Container, Card, CardHeader, CardBody, Collapse} from 'reactstrap'
-import { Accordion } from 'react-bootstrap';
+import { Accordion, Button } from 'react-bootstrap';
 import ProductImage from "../AddProduct/ProductImage";
 import {Trash2} from "react-feather";
 import {useParams} from "react-router-dom";
@@ -149,10 +149,58 @@ const EditProduct = () => {
         fetchData()
     }, []);
 
+    const [isValueOfVariantUpdate, setIsValueOfVariantUpdate]= useState(false);
+    const [allDataForVariantValueDropdown, setAllDataForVariantValueDropdown] = useState([]);
+    const [allDataForVariantValueDropdownForCheck, setAllDataForVariantValueDropdownForCheck] = useState([]);
+    const [allDataForVariantDropdown, setAllDataForVariantDropdown] = useState([]);
+    const [selectedDataKeyForVariantList, setSelectedDataKeyForVariantList] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setAllDataForVariantValueDropdownForCheck([])
+                const response = await axios.get(`/inventory-management/variant/all`);
+                setAllDataForVariantDropdown(response?.data?.body?.data);
+                response?.data?.body?.data?.map(item => {
+                    const set_data = {
+                        value: item.id,
+                        label: item.name_s,
+                        branch_name: item.branch_name_s,
+                        company_name: item.company_name_s,
+
+                    }
+                    setAllDataForVariantValueDropdownForCheck(prev => [...prev, set_data]);
+                })
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData()
+    }, [isValueOfVariantUpdate]);
 
     useEffect(() => {
-        console.log('previous data', singleProductData);
+        const fetchData = async () => {
+            try {
+                setAllDataForVariantValueDropdown([])
+                const response = await axios.get(`/inventory-management/variant/value`);
+                response?.data?.body?.data?.map(item => {
+                    const set_data = {
+                        value: item.id,
+                        label: item.value,
+                        variant_id: item.variant_id,
+                        variant_name: item.variant_name
+                    }
+                    setAllDataForVariantValueDropdown(prev => [...prev, set_data]);
+                })
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData()
+    }, [isValueOfVariantUpdate]);
 
+
+
+    useEffect(() => {
         if(singleProductData?.hasSerialKey){
             const filteredSerialKey = hasSerialValue?.find(singleItem => singleItem?.value == singleProductData?.hasSerialKey)
             setHasSerial(filteredSerialKey);
@@ -304,19 +352,37 @@ const EditProduct = () => {
         }
 
         const productVariant = singleProductData?.productVariant;
-
         if (productVariant){
-            const forSelectVariant = [];
-            const variant = {}
-            productVariant.map(singleItem => {
-                forSelectVariant.push({value: singleItem?.variantId, label:singleItem?.variantName})
-                const singleVariant = {
-                    value: singleItem?.variantValueId,
-                    label: singleItem?.variantValue,
-                    variant_id: singleItem?.variantId,
-                    variant_name: singleItem?.variantName,
+            const variantValue = {}
+            // productVariant.map(singleItem => {
+            //     forSelectVariant.push({value: singleItem?.variantId, label:singleItem?.variantName})
+            //     const singleVariant = {
+            //         value: singleItem?.variantValueId,
+            //         label: singleItem?.variantValue,
+            //         variant_id: singleItem?.variantId,
+            //         variant_name: singleItem?.variantName,
+            //     }
+            //     variant[singleItem?.variantId] = singleVariant;
+            // })
+
+            const previousVariant = JSON.parse(singleProductData?.productVariant?.[0]?.variant);
+            setSelectedVariantForVariant([]);
+            setSelectedDataKeyForVariantList([]);
+
+            previousVariant?.map(singleItem => {
+                setSelectedDataKeyForVariantList(prev => [...prev, singleItem?.variant_id]);
+
+                const findData = allDataForVariantDropdown?.find(singleVariantForFilter => singleVariantForFilter?.id == singleItem?.variant_id);
+                const processData = {
+                    value: findData?.id,
+                    label: findData?.name_s,
+                    branch_name: findData?.branch_name_s,
+                    company_name: findData?.company_name_s
                 }
-                variant[singleItem?.variantId] = singleVariant;
+                setSelectedVariantForVariant(prev => [...prev, processData]);
+
+                const findValueData = allDataForVariantValueDropdown?.find(singleVariantValueForFilter => singleVariantValueForFilter?.value == singleItem?.variation_value_id);
+                variantValue[findData?.id] = findValueData;
             })
 
             const skuImage = singleProductData?.skuImg?.split(',')
@@ -328,17 +394,15 @@ const EditProduct = () => {
                     selling_price: singleProductData?.sellingPrice,
                     sku: singleProductData?.productSku,
                     tax: singleProductData?.tax,
-                    variant: variant,
+                    variant: variantValue,
                     variantImg: skuImage,
                 }
             }
 
             setVariantFormValue(finalVariantData);
-            setSelectedVariantForVariant(forSelectVariant)
         }
-
         setIsLoading(false);
-    }, [setValue, singleProductData, allUnitType, allBrand, allModel, barcodeTypeData, taxTypeData]);
+    }, [setValue, singleProductData, allUnitType, allBrand, allModel, barcodeTypeData, taxTypeData, allDataForVariantValueDropdown]);
 
     // end editing
     useEffect(() => {
@@ -769,7 +833,7 @@ const EditProduct = () => {
         data.unit_id = unitType?.value;
         data.barcode_type = barcodeType?.value;
         data.brand_id = brandValue?.value;
-        data.category_id = parentCategory?.id;
+        data.category_id = parentCategory?.id ? parentCategory?.id : 12;
         data.model_id = singleModel?.value;
         data.note = note;
         data.tax_type = taxType?.value;
@@ -783,11 +847,16 @@ const EditProduct = () => {
         data.selling_price = allStoredValue.selling_price ? allStoredValue.selling_price : data.selling_price;
         data.min_selling_price = allStoredValue.min_selling_price ? allStoredValue.min_selling_price : data.min_selling_price;
         data.tax = allStoredValue.tax ? allStoredValue.tax : data.tax;
-        data.has_serial_key = data?.has_serial_key === true ? 1 : 0;
         data.photos = JSON.stringify(photos);
         data.sku = baseProductSKU;
         data.is_raw_material = isRowMaterialValue;
         data.deletedProductPhotos = JSON.stringify(deletedProductPhotos);
+
+        data.has_serial_key = hasSerial?.value;
+        data.warranty_by = warrantyType?.value;
+        if(parseInt(hasSerial?.value) !== 3){
+            data.serial_key_by_manufacture = null
+        }
         
         if (data.product_type === 'Variant'){
             data.variant_sku = JSON.stringify(variantFormValue);
@@ -815,7 +884,6 @@ const EditProduct = () => {
             return formData;
         } 
         const formData = createFormData(data);
-        // console.log('data', data);
         
         axios.put(`/inventory-management/products/update/${singleProductData?.productID}/${singleProductData.id}`, formData)
             .then(info => {
@@ -852,15 +920,16 @@ const EditProduct = () => {
                                         <div className="card">
                                             <div className="card-body">
                                                 <div className="">
-                                                    <div className="pb-2 d-flex align-items-center justify-content-center">
+                                                    <div
+                                                        className="pb-2 d-flex align-items-center justify-content-center">
                                                         <div
                                                             className="form-check form-check-inline align-items-center">
                                                             <input
-                                                                   className="form-check-input" type="radio"
-                                                                   name="inlineRadioOptions" id="inlineRadio1"
-                                                                   checked={isRowMaterialValue == 1 ? true : false}
-                                                                   onClick={() => setIsRowMaterialValue(1)}
-                                                                   />
+                                                                className="form-check-input" type="radio"
+                                                                name="inlineRadioOptions" id="inlineRadio1"
+                                                                checked={isRowMaterialValue == 1 ? true : false}
+                                                                onClick={() => setIsRowMaterialValue(1)}
+                                                            />
                                                             <label className="form-check-label" htmlFor="inlineRadio1">
                                                                 Raw Material
                                                             </label>
@@ -870,7 +939,7 @@ const EditProduct = () => {
                                                                    name="inlineRadioOptions" id="inlineRadio2"
                                                                    checked={isRowMaterialValue == 0 ? true : false}
                                                                    onClick={() => setIsRowMaterialValue(0)}
-                                                                   />
+                                                            />
                                                             <label className="form-check-label" htmlFor="inlineRadio2">
                                                                 Finish Product
                                                             </label>
@@ -939,12 +1008,15 @@ const EditProduct = () => {
                                                                     previous={weightUnit}
                                                                     options={[
                                                                         {value: "Gram (g)", label: "Gram (g)"},
-                                                                        {value: "Kilogram (kg)", label: "Kilogram (kg)"}]}
+                                                                        {
+                                                                            value: "Kilogram (kg)",
+                                                                            label: "Kilogram (kg)"
+                                                                        }]}
                                                                     setValue={setWeightUnit}
                                                                     cngFn={handleChangeForUpdateWeightUnit}
                                                                 />
                                                             </div>
-                                                        ) : ( "")}
+                                                        ) : ("")}
                                                     </div>
                                                     <div>
                                                         <h6 className="mb-0">Product size</h6>
@@ -990,10 +1062,11 @@ const EditProduct = () => {
                                                                                     borderWidth: '1px'
                                                                                 },
                                                                             },
-                                                                        }} />
-                                                                    {errors.p_height && <span style={{fontSize: '10px'}}>{errors.p_height.message}</span>}
+                                                                        }}/>
+                                                                    {errors.p_height && <span
+                                                                        style={{fontSize: '10px'}}>{errors.p_height.message}</span>}
                                                                 </div>
-                                                            ) : ( "" )}
+                                                            ) : ("")}
                                                             {type == "Single" || type == "Combo" || type === "Variant" ? (
                                                                 <div className={'mt-3'}>
                                                                     <TextField
@@ -1034,10 +1107,11 @@ const EditProduct = () => {
                                                                                     borderWidth: '1px'
                                                                                 },
                                                                             },
-                                                                        }} />
-                                                                    {errors.p_width && <span style={{fontSize: '10px'}}>{errors.p_width.message}</span>}
+                                                                        }}/>
+                                                                    {errors.p_width && <span
+                                                                        style={{fontSize: '10px'}}>{errors.p_width.message}</span>}
                                                                 </div>
-                                                            ) : ( "" )}
+                                                            ) : ("")}
                                                             {type == "Single" || type == "Combo" || type === "Variant" ? (
                                                                 <div className={'mt-3'}>
                                                                     <TextField
@@ -1078,8 +1152,9 @@ const EditProduct = () => {
                                                                                     borderWidth: '1px'
                                                                                 },
                                                                             },
-                                                                        }} />
-                                                                    {errors.p_length && <span style={{fontSize: '10px'}}>{errors.p_length.message}</span>}
+                                                                        }}/>
+                                                                    {errors.p_length && <span
+                                                                        style={{fontSize: '10px'}}>{errors.p_length.message}</span>}
                                                                 </div>
                                                             ) : ('')}
                                                             {type == "Single" || type == "Combo" || type === "Variant" ? (
@@ -1122,8 +1197,9 @@ const EditProduct = () => {
                                                                                     borderWidth: '1px'
                                                                                 },
                                                                             },
-                                                                        }} />
-                                                                    {errors.p_weight && <span style={{fontSize: '10px'}}>{errors.p_weight.message}</span>}
+                                                                        }}/>
+                                                                    {errors.p_weight && <span
+                                                                        style={{fontSize: '10px'}}>{errors.p_weight.message}</span>}
                                                                 </div>
                                                             ) : ('')}
                                                         </div>
@@ -1171,10 +1247,11 @@ const EditProduct = () => {
                                                                                     borderWidth: '1px'
                                                                                 },
                                                                             },
-                                                                        }} />
-                                                                    {errors.package_height && <span style={{fontSize: '10px'}}>{errors.package_height.message}</span>}
+                                                                        }}/>
+                                                                    {errors.package_height && <span
+                                                                        style={{fontSize: '10px'}}>{errors.package_height.message}</span>}
                                                                 </div>
-                                                            ) : ( "" )}
+                                                            ) : ("")}
                                                             {type == "Single" || type == "Combo" || type === "Variant" ? (
                                                                 <div className={'mt-3'}>
                                                                     <TextField
@@ -1215,10 +1292,11 @@ const EditProduct = () => {
                                                                                     borderWidth: '1px'
                                                                                 },
                                                                             },
-                                                                        }} />
-                                                                    {errors.package_width && <span style={{fontSize: '10px'}}>{errors.package_width.message}</span>}
+                                                                        }}/>
+                                                                    {errors.package_width && <span
+                                                                        style={{fontSize: '10px'}}>{errors.package_width.message}</span>}
                                                                 </div>
-                                                            ) : ( "" )}
+                                                            ) : ("")}
                                                             {type == "Single" || type == "Combo" || type === "Variant" ? (
                                                                 <div className={'mt-3'}>
                                                                     <TextField
@@ -1259,8 +1337,9 @@ const EditProduct = () => {
                                                                                     borderWidth: '1px'
                                                                                 },
                                                                             },
-                                                                        }} />
-                                                                    {errors.package_length && <span style={{fontSize: '10px'}}>{errors.package_length.message}</span>}
+                                                                        }}/>
+                                                                    {errors.package_length && <span
+                                                                        style={{fontSize: '10px'}}>{errors.package_length.message}</span>}
                                                                 </div>
                                                             ) : ('')}
                                                             {type == "Single" || type == "Combo" || type === "Variant" ? (
@@ -1303,15 +1382,16 @@ const EditProduct = () => {
                                                                                     borderWidth: '1px'
                                                                                 },
                                                                             },
-                                                                        }} />
-                                                                    {errors.package_weight && <span style={{fontSize: '10px'}}>{errors.package_weight.message}</span>}
+                                                                        }}/>
+                                                                    {errors.package_weight && <span
+                                                                        style={{fontSize: '10px'}}>{errors.package_weight.message}</span>}
                                                                 </div>
                                                             ) : ('')}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                         :  "" :
+                                            : "" :
                                         <div style={{height: "100vh"}}>
                                             <div className="d-flex align-items-center justify-content-center">
                                                 <div className="loader-box">
@@ -1326,7 +1406,10 @@ const EditProduct = () => {
                                         </div>
                                 }
                                 <div>
-                                    <EditProductImage photos={photos} selectedProductPhotos={selectedProductPhotos} setSelectedProductPhotos={setSelectedProductPhotos} setPhotos={setPhotos} usedIdsForImage={usedIdsForImage} handleDeletedProductPhotos={handleDeletedProductPhotos}></EditProductImage>
+                                    <EditProductImage photos={photos} selectedProductPhotos={selectedProductPhotos}
+                                                      setSelectedProductPhotos={setSelectedProductPhotos}
+                                                      setPhotos={setPhotos} usedIdsForImage={usedIdsForImage}
+                                                      handleDeletedProductPhotos={handleDeletedProductPhotos}></EditProductImage>
                                 </div>
                                 {/*<div>*/}
                                 {/*    {singleProductData?.productImage &&*/}
@@ -1476,7 +1559,8 @@ const EditProduct = () => {
                                                                         },
                                                                     }}/>
 
-                                                                {errors.hsn && <span style={{fontSize: '10px'}}>{errors.hsn.message}</span>}
+                                                                {errors.hsn && <span
+                                                                    style={{fontSize: '10px'}}>{errors.hsn.message}</span>}
                                                             </div>
                                                         ) : ("")}
                                                     </div>
@@ -1699,7 +1783,8 @@ const EditProduct = () => {
                                                                                             },
                                                                                         },
                                                                                     }}/>
-                                                                                {errors.alert_quantity && <span style={{fontSize: '10px'}}>{errors.alert_quantity.message}</span>}
+                                                                                {errors.alert_quantity && <span
+                                                                                    style={{fontSize: '10px'}}>{errors.alert_quantity.message}</span>}
                                                                             </div>
                                                                         ) : ("")}
 
@@ -1749,7 +1834,8 @@ const EditProduct = () => {
                                                                                             },
                                                                                         },
                                                                                     }}/>
-                                                                                {errors.opening_stock_quantity && <span style={{fontSize: '10px'}}>{errors.opening_stock_quantity.message}</span>}
+                                                                                {errors.opening_stock_quantity && <span
+                                                                                    style={{fontSize: '10px'}}>{errors.opening_stock_quantity.message}</span>}
                                                                             </div>
                                                                         ) : ("")}
 
@@ -1798,7 +1884,8 @@ const EditProduct = () => {
                                                                                             },
                                                                                         },
                                                                                     }}/>
-                                                                                {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
+                                                                                {errors.purchase_price && <span
+                                                                                    style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
                                                                             </div>
                                                                         ) : ("")}
 
@@ -1849,7 +1936,8 @@ const EditProduct = () => {
                                                                                             },
                                                                                         },
                                                                                     }}/>
-                                                                                {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
+                                                                                {errors.purchase_price && <span
+                                                                                    style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
                                                                             </div>
                                                                         ) : ("")}
                                                                     </div>
@@ -2137,7 +2225,7 @@ const EditProduct = () => {
                                                                                     cngFn={handleChangeHasSerial}
                                                                                 />
                                                                             </div>
-                                                                        ) : ( "" )}
+                                                                        ) : ("")}
 
                                                                         {
                                                                             hasSerial?.value == 3 ?
@@ -2156,7 +2244,9 @@ const EditProduct = () => {
                                                                                         performOnValue={(e) => clearErrors(["serial_key_by_manufacture"])}
                                                                                         error={errors.p_height}
                                                                                     />
-                                                                                    {errors.serial_key_by_manufacture && <span style={{fontSize: '10px'}}>{errors.serial_key_by_manufacture.message}</span>}
+                                                                                    {errors.serial_key_by_manufacture &&
+                                                                                        <span
+                                                                                            style={{fontSize: '10px'}}>{errors.serial_key_by_manufacture.message}</span>}
                                                                                 </div> : ''
                                                                         }
 
@@ -2178,7 +2268,8 @@ const EditProduct = () => {
                                                         </div>
                                                     </div> :
                                                     <div style={{height: "100vh"}}>
-                                                        <div className="d-flex align-items-center justify-content-center">
+                                                        <div
+                                                            className="d-flex align-items-center justify-content-center">
                                                             <div className="loader-box">
                                                                 <div className="loader">
                                                                     <div className="line bg-primary"></div>
@@ -2194,7 +2285,8 @@ const EditProduct = () => {
                                             <div className="col-12">
                                                 <div className="card">
                                                     <div className="card-body">
-                                                        <CkEditorComponent label={"Note"} setContent={setNote} content={note}/>
+                                                        <CkEditorComponent label={"Note"} setContent={setNote}
+                                                                           content={note}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2223,7 +2315,12 @@ const EditProduct = () => {
                                     </div>
 
                                     <div className="px-3 w-100">
-                                        <SelectProductInCreateProductForm data={allDataForDropdown} selectedDataKey={selectedDataKeyForProductList} show={showProductList} setShow={setShowProductList} getSelectedData={getSelectedData} columns={columns}></SelectProductInCreateProductForm>
+                                        <SelectProductInCreateProductForm data={allDataForDropdown}
+                                                                          selectedDataKey={selectedDataKeyForProductList}
+                                                                          show={showProductList}
+                                                                          setShow={setShowProductList}
+                                                                          getSelectedData={getSelectedData}
+                                                                          columns={columns}></SelectProductInCreateProductForm>
                                     </div>
 
 
@@ -2282,7 +2379,8 @@ const EditProduct = () => {
                                                                         }}
                                                                         error={errors?.[`quantity_${index}`]}
                                                                     />
-                                                                    {errors?.[`quantity_${index}`] && <span style={{fontSize: '10px'}}>{errors?.[`quantity_${index}`]?.message}</span>}
+                                                                    {errors?.[`quantity_${index}`] && <span
+                                                                        style={{fontSize: '10px'}}>{errors?.[`quantity_${index}`]?.message}</span>}
                                                                 </div>
                                                             </td>
                                                             <td>
@@ -2290,7 +2388,7 @@ const EditProduct = () => {
                                                                     <TextField
                                                                         disabled
                                                                         id="outlined-size-small"
-                                                                        value={quantityWisePrice[index] ? quantityWisePrice[index] * singleData?.price : !singleData?.quantity ? 0 :  singleData?.quantity * singleData?.price}
+                                                                        value={quantityWisePrice[index] ? quantityWisePrice[index] * singleData?.price : !singleData?.quantity ? 0 : singleData?.quantity * singleData?.price}
                                                                         size="small"
                                                                         {
                                                                             ...register(`price_${index}`, {
@@ -2336,7 +2434,13 @@ const EditProduct = () => {
                                                                 justifyContent: "center",
                                                                 alignItems: 'center'
                                                             }}>
-                                                                <div style={{border: 'none', backgroundColor: 'white', marginTop: '22px', marginBottom: '6px', cursor: "pointer"}}
+                                                                <div style={{
+                                                                    border: 'none',
+                                                                    backgroundColor: 'white',
+                                                                    marginTop: '22px',
+                                                                    marginBottom: '6px',
+                                                                    cursor: "pointer"
+                                                                }}
                                                                      onClick={() => removeItemFromProductList(singleData?.id, index)}>
                                                                     <Trash2 size={17} style={{color: 'red'}}></Trash2>
                                                                 </div>
@@ -2355,15 +2459,29 @@ const EditProduct = () => {
                         ) : ("")}
 
                         {type === "Variant" ? (
-                            <SelectComboVariantForEdit previousSKU={previousSKU} setPreviousSKU={setPreviousSKU}
-                                                addRowInVariant={addRowInVariant}
-                                                setAddRowInVariant={setAddRowInVariant}
-                                                selectedVariantForVariant={selectedVariantForVariant}
-                                                setSelectedVariantForVariant={setSelectedVariantForVariant}
-                                                variantFormValue={variantFormValue}
-                                                setVariantFormValue={setVariantFormValue}
-                                                allStoredValue={allStoredValue} register={register}
-                                                unregister={unregister}></SelectComboVariantForEdit>
+                            <SelectComboVariantForEdit
+                                previousSKU={previousSKU}
+                                setPreviousSKU={setPreviousSKU}
+                                addRowInVariant={addRowInVariant}
+                                setAddRowInVariant={setAddRowInVariant}
+                                selectedVariantForVariant={selectedVariantForVariant}
+                                setSelectedVariantForVariant={setSelectedVariantForVariant}
+                                variantFormValue={variantFormValue}
+                                setVariantFormValue={setVariantFormValue}
+                                allStoredValue={allStoredValue}
+                                register={register}
+                                unregister={unregister}
+                                isValueOfVariantUpdate={isValueOfVariantUpdate}
+                                setIsValueOfVariantUpdate={setIsValueOfVariantUpdate}
+                                allDataForVariantValueDropdown={allDataForVariantValueDropdown}
+                                setAllDataForVariantValueDropdown={setAllDataForVariantValueDropdown}
+                                allDataForVariantValueDropdownForCheck={allDataForVariantValueDropdownForCheck}
+                                setAllDataForVariantValueDropdownForCheck={setAllDataForVariantValueDropdownForCheck}
+                                allDataForVariantDropdown={allDataForVariantDropdown}
+                                setAllDataForVariantDropdown={setAllDataForVariantDropdown}
+                                selectedDataKeyForProductList={selectedDataKeyForVariantList}
+                                setSelectedDataKeyForProductList={setSelectedDataKeyForVariantList}
+                            ></SelectComboVariantForEdit>
                         ) : ("")}
                     </div>
                     <div className="card">
@@ -2389,8 +2507,6 @@ const EditProduct = () => {
                                                             </p>
 
 
-
-
                                                             <div style={{
                                                                 border: 'none',
                                                                 backgroundColor: 'white',
@@ -2405,8 +2521,6 @@ const EditProduct = () => {
                                                             </div>
 
 
-
-
                                                         </div>
                                                     </CardHeader>
                                                     <Collapse
@@ -2416,10 +2530,25 @@ const EditProduct = () => {
                                                                 addRowInOption[singleOptions?.value]?.length > 0 ?
                                                                     <>
                                                                         <div className="d-flex justify-content-between">
-                                                                            <p className="w-100 text-center m-2" style={{ fontWeight: 'bold', fontSize: '13px'}}>Label</p>
-                                                                            <p className="w-100 text-center m-2" style={{ fontWeight: 'bold', fontSize: '13px'}}>Price</p>
-                                                                            <p className="w-100 text-center m-2" style={{fontWeight: 'bold',fontSize: '13px'}}>Price Type</p>
-                                                                            <p className="w-25 text-center m-2" style={{ fontWeight: 'bold', fontSize: '13px'}}>Action</p>
+                                                                            <p className="w-100 text-center m-2"
+                                                                               style={{
+                                                                                   fontWeight: 'bold',
+                                                                                   fontSize: '13px'
+                                                                               }}>Label</p>
+                                                                            <p className="w-100 text-center m-2"
+                                                                               style={{
+                                                                                   fontWeight: 'bold',
+                                                                                   fontSize: '13px'
+                                                                               }}>Price</p>
+                                                                            <p className="w-100 text-center m-2"
+                                                                               style={{
+                                                                                   fontWeight: 'bold',
+                                                                                   fontSize: '13px'
+                                                                               }}>Price Type</p>
+                                                                            <p className="w-25 text-center m-2" style={{
+                                                                                fontWeight: 'bold',
+                                                                                fontSize: '13px'
+                                                                            }}>Action</p>
                                                                         </div>
                                                                         <div>
                                                                             {
@@ -2510,11 +2639,11 @@ const EditProduct = () => {
                                                                                             />
                                                                                         </div>
                                                                                         <div className="w-25 mx-2"
-                                                                                                style={{
-                                                                                                    display: "flex",
-                                                                                                    justifyContent: "center",
-                                                                                                    alignItems: 'center'
-                                                                                                }}>
+                                                                                             style={{
+                                                                                                 display: "flex",
+                                                                                                 justifyContent: "center",
+                                                                                                 alignItems: 'center'
+                                                                                             }}>
                                                                                             <div
                                                                                                 onClick={() => removeItemFromVariantList(singleOptions?.value, singleRowData)}
                                                                                                 style={{
@@ -2522,7 +2651,8 @@ const EditProduct = () => {
                                                                                                     backgroundColor: 'white',
                                                                                                     cursor: "pointer"
                                                                                                 }}>
-                                                                                                <Trash2 size={17}></Trash2>
+                                                                                                <Trash2
+                                                                                                    size={17}></Trash2>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -2547,7 +2677,9 @@ const EditProduct = () => {
                                     </div>
                                 </Accordion>
                                 <div className="d-flex justify-content-between align-items-center mb-2 mt-3">
-                                    <button onClick={() => toggle()} className="btn btn-secondary btn-sm" type="button">Add new option</button>
+                                    <button onClick={() => toggle()} className="btn btn-secondary btn-sm"
+                                            type="button">Add new option
+                                    </button>
                                     <div className="d-flex gap-2">
                                         <div style={{width: '200px', marginBottom: 0, paddingBottom: 0}}>
                                             <Select
@@ -2559,14 +2691,30 @@ const EditProduct = () => {
                                                 cngFn={handleChangeForProductType}
                                             />
                                         </div>
-                                        <button onClick={() => globalOptions()} className="btn btn-secondary btn-sm" type="button">Add global options
+                                        <button onClick={() => globalOptions()} className="btn btn-secondary btn-sm"
+                                                type="button">Add global options
                                         </button>
                                     </div>
                                 </div>
                             </Container>
                         </div>
                     </div>
-                    <Submitbtn name={"Add Product"}/>
+                    <div style={{
+                        position: 'fixed',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        textAlign: 'center',
+                        marginBottom: '10px'
+                    }}>
+                        <div className="d-flex justify-content-center align-items-center mt-3">
+                            <Button type="submit"
+                                    className="me-2 btn btn-pill btn-info btn-air-info btn-info-gradien px-4">
+                                Update Product
+                            </Button>
+                        </div>
+                    </div>
+
                 </form>
             </div>
 

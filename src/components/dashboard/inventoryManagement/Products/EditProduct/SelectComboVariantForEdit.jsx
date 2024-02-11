@@ -12,15 +12,36 @@ import { HiPlus, HiOutlineMinusSm } from "react-icons/hi";
 import MultipleSelectWithReactSelectForEdit from "../../../../common/modal/MultipleSelectWithReactSelectForEdit";
 import EditVariantImage from "./EditVariantImage";
 
-const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVariantForVariant, previousSKU, setPreviousSKU, addRowInVariant, setAddRowInVariant, variantFormValue, setVariantFormValue}) => {
-    const [isValueOfVariantUpdate, setIsValueOfVariantUpdate]= useState(false);
+const SelectComboVariantForEdit = (
+    {
+       selectedVariantForVariant,
+       setSelectedVariantForVariant,
+       previousSKU,
+       setPreviousSKU,
+       addRowInVariant,
+       setAddRowInVariant,
+       variantFormValue,
+       setVariantFormValue,
+       isValueOfVariantUpdate,
+       setIsValueOfVariantUpdate,
+        allDataForVariantValueDropdown,
+        setAllDataForVariantValueDropdown,
+        allDataForVariantValueDropdownForCheck,
+        setAllDataForVariantValueDropdownForCheck,
+        allDataForVariantDropdown,
+        setAllDataForVariantDropdown,
+        selectedDataKeyForProductList,
+        setSelectedDataKeyForProductList,
+
+    }) => {
+
     const [componentRender, setComponentRender] = useState(false);
     const [rowImage, setRowImage] = useState({});
     const [deletedImage, setDeletedImage] = useState([]);
     const [photos, setPhotos] = useState([]);
     const [checkDiff, setCheckDiff] =useState(false);
-    const [allDataForVariantDropdown, setAllDataForVariantDropdown] = useState([]);
-    const [allDataForVariantValueDropdown, setAllDataForVariantValueDropdown] = useState([]);
+
+
     const [formatAllDataForVariantValueDropdown, setFormatAllDataForVariantValueDropdown] = useState({});
     const [variantSKu, setVariantSku] = useState({})
     const [isOpen, setIsOpen] = useState(0);
@@ -226,6 +247,7 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
             updatedVariantFormValue[rowIndex]['variant'] = {};
         }
         updatedVariantFormValue[rowIndex]['variant'][variantId] = selected || {};
+        console.log('updatedVariantFormValue', updatedVariantFormValue)
         setVariantFormValue(updatedVariantFormValue);
         setCheckDiff(!checkDiff);
     };
@@ -240,54 +262,6 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
         setCheckDiff(!checkDiff);
     };
 
-    const [allDataForVariantValueDropdownForCheck, setAllDataForVariantValueDropdownForCheck] = useState()
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setAllDataForVariantValueDropdownForCheck([])
-                const response = await axios.get(`/inventory-management/variant/all`);
-                setAllDataForVariantDropdown(response?.data?.body?.data);
-                response?.data?.body?.data?.map(item => {
-                    const set_data = {
-                        value: item.id,
-                        label: item.name_s,
-                        branch_name: item.branch_name_s,
-                        company_name: item.company_name_s,
-
-                    }
-                    setAllDataForVariantValueDropdownForCheck(prev => [...prev, set_data]);
-                })
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchData()
-    }, [isValueOfVariantUpdate]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setAllDataForVariantValueDropdown([])
-                const response = await axios.get(`/inventory-management/variant/value`);
-                response?.data?.body?.data?.map(item => {
-                    const set_data = {
-                        value: item.id,
-                        label: item.value,
-                        variant_id: item.variant_id,
-                        variant_name: item.variant_name
-                    }
-                    setAllDataForVariantValueDropdown(prev => [...prev, set_data]);
-                })
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchData()
-    }, [isValueOfVariantUpdate]);
-
-
-
     useEffect(() => {
         allDataForVariantDropdown?.map(singleData => {
             // const filterData = allDataForVariantValueDropdown?.filter(item => parseInt(singleData?.id) === parseInt(item?.value));
@@ -297,7 +271,7 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
         })
     }, [isValueOfVariantUpdate ,selectedVariantForVariant, allDataForVariantValueDropdown, allDataForVariantValueDropdownForCheck]);
 
-    const [selectedDataKeyForProductList, setSelectedDataKeyForProductList] = useState([]);
+
 
 
 
@@ -428,7 +402,7 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
                                                                             isDisabled={isLoading}
                                                                             isLoading={isLoading}
                                                                             onChange={(selected) => {
-                                                                                handleSelectChange(selected, singleRowData, singleVariantData?.value)
+                                                                                handleSelectChange(selected, singleRowData, singleVariantData?.value);
                                                                             }}
                                                                             onCreateOption={(inputValue)=>handleCreate(inputValue, singleRowData, singleVariantData)}
                                                                             options={formatAllDataForVariantValueDropdown[singleVariantData?.value]}
@@ -439,6 +413,7 @@ const SelectComboVariantForEdit = ({selectedVariantForVariant, setSelectedVarian
                                                             }
 
                                                             <div className="w-100 mx-2">
+                                                                {console.log('variantFormValue', variantFormValue)}
                                                                 <TextField
                                                                     disabled={true}
                                                                     variant='outlined'
