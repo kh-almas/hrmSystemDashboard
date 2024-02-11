@@ -66,7 +66,7 @@ const MultipleSelectWithReactSelectForEdit = ({allOptions, setKey, setValue, sel
                     Option: InputOption
                 }}
             />
-            {/*<pre>{JSON.stringify({ selected: selectedOptions }, null, 2)}</pre>*/}
+            {/*<pre>{JSON.stringify({ select ed: selectedVariantForVariant }, null, 2)}</pre>*/}
         </div>
     );
 };

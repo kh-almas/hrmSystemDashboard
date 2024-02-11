@@ -149,6 +149,56 @@ const EditProduct = () => {
         fetchData()
     }, []);
 
+    const [isValueOfVariantUpdate, setIsValueOfVariantUpdate]= useState(false);
+    const [allDataForVariantValueDropdown, setAllDataForVariantValueDropdown] = useState([]);
+    const [allDataForVariantValueDropdownForCheck, setAllDataForVariantValueDropdownForCheck] = useState([]);
+    const [allDataForVariantDropdown, setAllDataForVariantDropdown] = useState([]);
+    const [selectedDataKeyForVariantList, setSelectedDataKeyForVariantList] = useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setAllDataForVariantValueDropdownForCheck([])
+                const response = await axios.get(`/inventory-management/variant/all`);
+                setAllDataForVariantDropdown(response?.data?.body?.data);
+                response?.data?.body?.data?.map(item => {
+                    const set_data = {
+                        value: item.id,
+                        label: item.name_s,
+                        branch_name: item.branch_name_s,
+                        company_name: item.company_name_s,
+
+                    }
+                    setAllDataForVariantValueDropdownForCheck(prev => [...prev, set_data]);
+                })
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData()
+    }, [isValueOfVariantUpdate]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setAllDataForVariantValueDropdown([])
+                const response = await axios.get(`/inventory-management/variant/value`);
+                response?.data?.body?.data?.map(item => {
+                    const set_data = {
+                        value: item.id,
+                        label: item.value,
+                        variant_id: item.variant_id,
+                        variant_name: item.variant_name
+                    }
+                    setAllDataForVariantValueDropdown(prev => [...prev, set_data]);
+                })
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData()
+    }, [isValueOfVariantUpdate]);
+
+
 
     useEffect(() => {
         if(singleProductData?.hasSerialKey){
@@ -302,19 +352,37 @@ const EditProduct = () => {
         }
 
         const productVariant = singleProductData?.productVariant;
-
         if (productVariant){
-            const forSelectVariant = [];
-            const variant = {}
-            productVariant.map(singleItem => {
-                forSelectVariant.push({value: singleItem?.variantId, label:singleItem?.variantName})
-                const singleVariant = {
-                    value: singleItem?.variantValueId,
-                    label: singleItem?.variantValue,
-                    variant_id: singleItem?.variantId,
-                    variant_name: singleItem?.variantName,
+            const variantValue = {}
+            // productVariant.map(singleItem => {
+            //     forSelectVariant.push({value: singleItem?.variantId, label:singleItem?.variantName})
+            //     const singleVariant = {
+            //         value: singleItem?.variantValueId,
+            //         label: singleItem?.variantValue,
+            //         variant_id: singleItem?.variantId,
+            //         variant_name: singleItem?.variantName,
+            //     }
+            //     variant[singleItem?.variantId] = singleVariant;
+            // })
+
+            const previousVariant = JSON.parse(singleProductData?.productVariant?.[0]?.variant);
+            setSelectedVariantForVariant([]);
+            setSelectedDataKeyForVariantList([]);
+
+            previousVariant?.map(singleItem => {
+                setSelectedDataKeyForVariantList(prev => [...prev, singleItem?.variant_id]);
+
+                const findData = allDataForVariantDropdown?.find(singleVariantForFilter => singleVariantForFilter?.id == singleItem?.variant_id);
+                const processData = {
+                    value: findData?.id,
+                    label: findData?.name_s,
+                    branch_name: findData?.branch_name_s,
+                    company_name: findData?.company_name_s
                 }
-                variant[singleItem?.variantId] = singleVariant;
+                setSelectedVariantForVariant(prev => [...prev, processData]);
+
+                const findValueData = allDataForVariantValueDropdown?.find(singleVariantValueForFilter => singleVariantValueForFilter?.value == singleItem?.variation_value_id);
+                variantValue[findData?.id] = findValueData;
             })
 
             const skuImage = singleProductData?.skuImg?.split(',')
@@ -326,17 +394,15 @@ const EditProduct = () => {
                     selling_price: singleProductData?.sellingPrice,
                     sku: singleProductData?.productSku,
                     tax: singleProductData?.tax,
-                    variant: variant,
+                    variant: variantValue,
                     variantImg: skuImage,
                 }
             }
 
             setVariantFormValue(finalVariantData);
-            setSelectedVariantForVariant(forSelectVariant)
         }
-
         setIsLoading(false);
-    }, [setValue, singleProductData, allUnitType, allBrand, allModel, barcodeTypeData, taxTypeData]);
+    }, [setValue, singleProductData, allUnitType, allBrand, allModel, barcodeTypeData, taxTypeData, allDataForVariantValueDropdown]);
 
     // end editing
     useEffect(() => {
@@ -818,7 +884,6 @@ const EditProduct = () => {
             return formData;
         } 
         const formData = createFormData(data);
-        // console.log('data', data);
         
         axios.put(`/inventory-management/products/update/${singleProductData?.productID}/${singleProductData.id}`, formData)
             .then(info => {
@@ -832,7 +897,6 @@ const EditProduct = () => {
                 })
             })
             .catch(e => {
-                console.log('e', e)
                 if(e?.response?.data?.body?.message?.errno == 1062){
                     Swal.fire({
                         icon: 'error',
@@ -2395,15 +2459,29 @@ const EditProduct = () => {
                         ) : ("")}
 
                         {type === "Variant" ? (
-                            <SelectComboVariantForEdit previousSKU={previousSKU} setPreviousSKU={setPreviousSKU}
-                                                       addRowInVariant={addRowInVariant}
-                                                       setAddRowInVariant={setAddRowInVariant}
-                                                       selectedVariantForVariant={selectedVariantForVariant}
-                                                       setSelectedVariantForVariant={setSelectedVariantForVariant}
-                                                       variantFormValue={variantFormValue}
-                                                       setVariantFormValue={setVariantFormValue}
-                                                       allStoredValue={allStoredValue} register={register}
-                                                       unregister={unregister}></SelectComboVariantForEdit>
+                            <SelectComboVariantForEdit
+                                previousSKU={previousSKU}
+                                setPreviousSKU={setPreviousSKU}
+                                addRowInVariant={addRowInVariant}
+                                setAddRowInVariant={setAddRowInVariant}
+                                selectedVariantForVariant={selectedVariantForVariant}
+                                setSelectedVariantForVariant={setSelectedVariantForVariant}
+                                variantFormValue={variantFormValue}
+                                setVariantFormValue={setVariantFormValue}
+                                allStoredValue={allStoredValue}
+                                register={register}
+                                unregister={unregister}
+                                isValueOfVariantUpdate={isValueOfVariantUpdate}
+                                setIsValueOfVariantUpdate={setIsValueOfVariantUpdate}
+                                allDataForVariantValueDropdown={allDataForVariantValueDropdown}
+                                setAllDataForVariantValueDropdown={setAllDataForVariantValueDropdown}
+                                allDataForVariantValueDropdownForCheck={allDataForVariantValueDropdownForCheck}
+                                setAllDataForVariantValueDropdownForCheck={setAllDataForVariantValueDropdownForCheck}
+                                allDataForVariantDropdown={allDataForVariantDropdown}
+                                setAllDataForVariantDropdown={setAllDataForVariantDropdown}
+                                selectedDataKeyForProductList={selectedDataKeyForVariantList}
+                                setSelectedDataKeyForProductList={setSelectedDataKeyForVariantList}
+                            ></SelectComboVariantForEdit>
                         ) : ("")}
                     </div>
                     <div className="card">
@@ -2640,8 +2718,7 @@ const EditProduct = () => {
                 </form>
             </div>
 
-            <AddProductOptionModal modal={productOptionsModal} toggle={toggle}
-                                   reFetch={isDarty}></AddProductOptionModal>
+            <AddProductOptionModal modal={productOptionsModal} toggle={toggle} reFetch={isDarty}></AddProductOptionModal>
             <AddUnitTypeModal modal={unit} toggle={unitToggle} reFetch={isUnitTypeDirty}></AddUnitTypeModal>
             <AddCategoryModal isChange={isChange} modal={category} toggle={categoryToggle} reFetch={isDarty}></AddCategoryModal>
             <AddBrandModal modal={brand} toggle={brandToggle} reFetch={isBranchDirty}></AddBrandModal>
