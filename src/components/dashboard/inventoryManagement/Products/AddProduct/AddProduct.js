@@ -535,7 +535,7 @@ const AddProduct = () => {
         }
         const formData = createFormData(data);
 
-        // console.log('data', data);
+        console.log('data', data);
         axios.post('/inventory-management/products/add', formData)
             .then(info => {
                 Swal.fire({
@@ -1570,7 +1570,6 @@ const AddProduct = () => {
                                                                     setValue={setHasSerial}
                                                                     cngFn={handleChangeHasSerial}
                                                                 />
-                                                                {console.log('hasSerial', hasSerial?.value)}
                                                             </div>
                                                         ) : ( "" )}
 
