@@ -30,7 +30,6 @@ const EditableTable = () => {
   const [discountPercent, setDiscountPercent] = useState(0);
   const [discountValue, setDiscountValue] = useState(0);
 
-
   useEffect(() => {
     const discountAmount = (sellingPrice * discountPercent) / 100;
     setDiscountValue(discountAmount);
@@ -140,7 +139,6 @@ const EditableTable = () => {
           select: true,
           error: !!validationErrors?.product_name,
           helperText: validationErrors?.product_name,
-          // Disable when editing a row
         },
       },
 
@@ -244,12 +242,17 @@ const EditableTable = () => {
     isLoading: isLoadingDiscount,
   } = useGetDiscountData();
 
-  const dataD = { batchNo, discountValue };
+  // const dataD = { batchNo, discountValue };
 
   const { mutateAsync: createDiscount, isPending: isCreatingDiscount } =
-    useCreateDiscount(dataD);
+    useCreateDiscount({
+      batchNo,
+      discountValue,
+      setDiscountValue,
+      setDiscountPercent,
+    });
   const { mutateAsync: updateUser, isPending: isUpdatingDiscount } =
-    useUpdateDiscount();
+    useUpdateDiscount({ discountValue, setDiscountValue, setDiscountPercent });
   const { mutateAsync: deleteUser, isPending: isDeletingDiscount } =
     useDeleteDiscount();
 
@@ -257,7 +260,7 @@ const EditableTable = () => {
 
   //CREATE action
   const handleCreateDiscount = async ({ values, table }) => {
-    // const newValidationErrors = validateUser(values);
+    // const newValidationErrors = validateDiscount(values);
     // if (Object.values(newValidationErrors).some((error) => error)) {
     //   setValidationErrors(newValidationErrors);
     //   return;
@@ -268,22 +271,28 @@ const EditableTable = () => {
   };
 
   //UPDATE action
-  const handleSaveDiscount = async ({ values, table }) => {
-
-   
-    // const newValidationErrors = validateUser(values);
+  const handleSaveDiscount = async ({ values, table, row }) => {
+    // const newValidationErrors = validateDiscount(values);
     // if (Object.values(newValidationErrors).some((error) => error)) {
     //   setValidationErrors(newValidationErrors);
     //   return;
     // }
-    console.log(', table', table)
-    console.log('values,',values)
-    
+
+    // console.log("row", row?.original?.primary_id);
+    // console.log(" row?.original", row?.original?.branch_id);
+    // console.log("values,", values);
+
+    const editData = {
+      values: values,
+      primaryId: row?.original?.primary_id,
+      skuId: row?.original?.sku_id,
+      batchNo: row?.original?.batch_no,
+      branchId: row?.original?.branch_id,
+    };
     setValidationErrors({});
-    await updateUser(values);
+    await updateUser(editData);
     table.setEditingRow(null); // Exit editing mode
   };
-  
 
   //DELETE action
   const openDeleteConfirmModal = (row) => {
@@ -354,14 +363,19 @@ const EditableTable = () => {
   return <MaterialReactTable table={table} />;
 };
 
-function useCreateDiscount(dataD) {
+function useCreateDiscount({
+  batchNo,
+  discountValue,
+  setDiscountValue,
+  setDiscountPercent,
+}) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (discountData) => {
       discountData.branch_id = discountData?.branch_name;
       discountData.sku_id = discountData?.product_name;
-      discountData.batch_no = dataD?.batchNo;
-      discountData.discount_value = dataD?.discountValue;
+      discountData.batch_no = batchNo;
+      discountData.discount_value = discountValue;
       discountData.approve_status = "Approved";
       if (!discountData?.discount_percent) {
         discountData.discount_percent = 0;
@@ -382,6 +396,8 @@ function useCreateDiscount(dataD) {
             showConfirmButton: false,
             timer: 1500,
           });
+          setDiscountValue(0);
+          setDiscountPercent(0);
           queryClient.invalidateQueries("discountData");
         }
 
@@ -408,8 +424,6 @@ function useGetDiscountData() {
         );
         // Extract data from the response
         const allProductDiscountData = response?.data?.body?.data;
-
-        console.log("allProductDiscountData", allProductDiscountData);
         // Simulate delay with setTimeout
         await new Promise((resolve) => setTimeout(resolve, 1000));
         // Return the user data
@@ -425,42 +439,49 @@ function useGetDiscountData() {
 }
 
 //UPDATE hook (put user in api)
-function useUpdateDiscount() {
+function useUpdateDiscount({
+  discountValue,
+  setDiscountValue,
+  setDiscountPercent,
+}) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (editData) => {
-      console.log("edit----", editData);
-      // try {
-      //   const response = await axios.put(
-      //     `inventory-management/product/discount/update/[primaryId]`,
-      //     editData
-      //   );
-      //   if (response?.status == 200) {
-      //     Swal.fire({
-      //       position: "top-end",
-      //       icon: "success",
-      //       title: "Your work has been saved",
-      //       showConfirmButton: false,
-      //       timer: 1500,
-      //     });
-      //     queryClient.invalidateQueries("discountData");
-      //   }
-
-      //   // // Simulate delay with setTimeout
-      //   // await new Promise((resolve) => setTimeout(resolve, 1000));
-      //   // // Return the user data
-      //   // return response?.data;
-      // } catch (error) {
-      //   // Handle errors here (e.g., logging, error states, etc.)
-      //   console.error("Error create:", error);
-      //   throw new Error("Failed to fetch discountData");
-      // }
-
-      //send api update request here
-      // await new Promise((resolve) => setTimeout(resolve, 1000)); //fake api call
-      // return Promise.resolve();
+    mutationFn: async ({ values, primaryId, skuId, batchNo, branchId }) => {
+      if (typeof values?.branch_name === "string") {
+        values.branch_id = branchId;
+      } else {
+        values.branch_id = values?.branch_name;
+      }
+      values.sku_id = skuId;
+      values.batch_no = batchNo;
+      values.approve_status = "Approved";
+      if (!values?.discount_percent) {
+        values.discount_percent = 0;
+      }
+      values.discount_value = discountValue;
+      try {
+        const response = await axios.put(
+          `inventory-management/product/discount/update/${primaryId}`,
+          values
+        );
+        if (response?.status == 200) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setDiscountValue(0);
+          setDiscountPercent(0);
+          queryClient.invalidateQueries("editData");
+        }
+      } catch (error) {
+        // Handle errors here (e.g., logging, error states, etc.)
+        console.error("Error create:", error);
+        throw new Error("Failed to fetch discountData");
+      }
     },
-  
   });
 }
 
@@ -517,7 +538,6 @@ function useDeleteDiscount() {
 const queryClient = new QueryClient();
 
 const ExampleWithProviders = () => (
-  //Put this with your other react-query providers near root of your app
   <QueryClientProvider client={queryClient}>
     <EditableTable />
   </QueryClientProvider>
@@ -534,12 +554,12 @@ const validateRequired = (value) => !!value?.length;
 //       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 //     );
 
-function validateUser(user) {
+function validateDiscount(discount) {
   return {
-    firstName: !validateRequired(user?.firstName)
+    firstName: !validateRequired(discount?.firstName)
       ? "First Name is Required"
       : "",
-    lastName: !validateRequired(user?.lastName) ? "Last Name is Required" : "",
+    lastName: !validateRequired(discount?.lastName) ? "Last Name is Required" : "",
     // email: !validateEmail(user.email) ? "Incorrect Email Format" : "",
   };
 }
