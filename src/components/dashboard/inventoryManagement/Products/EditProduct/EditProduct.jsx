@@ -92,6 +92,8 @@ const EditProduct = () => {
     const [hasSerial, setHasSerial] = useState({});
     const [warrantyTypeValue, setWarrantyTypeValue] = useState([{value: "1", label: "Warranty by purchase"}, {value: "2", label: "Warranty By manufacture"}]);
     const [warrantyType, setWarrantyType] = useState({});
+    const [stockOutSell, setStockOutSell] = useState({});
+    const [stockOutSellValue, setStockOutSellValue] = useState([{value: "0", label: "Stop sell if stock out"}, {value: "1", label: "Continue sell if stock out"}]);
 
     const handleChangeHasSerial = (selected) => {
         setHasSerial(selected);
@@ -100,7 +102,10 @@ const EditProduct = () => {
     const handleChangeWarrantyType = (selected) => {
         setWarrantyType(selected);
     }
-    
+
+    const handleChangeStockOutSell = (selected) => {
+        setStockOutSell(selected);
+    }
 
     const [isOpen, setIsOpen] = useState('');
 
@@ -211,6 +216,11 @@ const EditProduct = () => {
             setWarrantyType(filteredWarrantyBy);
         }
 
+        if(singleProductData?.stockoutSell){
+            const filteredStockoutSell = stockOutSellValue?.find(singleItem => singleItem?.value == singleProductData?.stockoutSell)
+            setStockOutSell(filteredStockoutSell);
+        }
+
         if(singleProductData?.productType) {
             setTypeChange({value: singleProductData?.productType, label: singleProductData?.productType});
             setType(singleProductData?.productType);
@@ -305,9 +315,6 @@ const EditProduct = () => {
         //     })
         // }
 
-
-
-
         //product options
         const allProductOptions = singleProductData?.productOptions;
         if (allProductOptions){
@@ -352,7 +359,7 @@ const EditProduct = () => {
         }
 
         const productVariant = singleProductData?.productVariant;
-        if (productVariant){
+        if (singleProductData?.productVariant?.[0]?.variant){
             const variantValue = {}
             // productVariant.map(singleItem => {
             //     forSelectVariant.push({value: singleItem?.variantId, label:singleItem?.variantName})
@@ -854,6 +861,7 @@ const EditProduct = () => {
 
         data.has_serial_key = hasSerial?.value;
         data.warranty_by = warrantyType?.value;
+        data.stockout_sell = stockOutSell?.value;
         if(parseInt(hasSerial?.value) !== 3){
             data.serial_key_by_manufacture = null
         }
@@ -2215,7 +2223,7 @@ const EditProduct = () => {
                                                                         ) : ("")}
 
                                                                         {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                                            <div style={{marginTop: '15px'}}>
+                                                                            <div style={{marginTop: '15px', marginBottom: '15px'}}>
                                                                                 <Select
                                                                                     placeholder={"Serial keys"}
                                                                                     previous={hasSerial}
@@ -2251,14 +2259,25 @@ const EditProduct = () => {
                                                                         }
 
                                                                         {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                                            <div style={{marginTop: '15px'}}>
+                                                                            <div style={{marginTop: '15px', marginBottom: '15px'}}>
                                                                                 <Select
-                                                                                    placeholder={"Serial keys"}
+                                                                                    placeholder={"Warranty type"}
                                                                                     previous={warrantyType}
                                                                                     // labelName={' '}
                                                                                     options={warrantyTypeValue}
                                                                                     setValue={setWarrantyType}
                                                                                     cngFn={handleChangeWarrantyType}
+                                                                                />
+                                                                            </div>
+                                                                        ) : ("")}
+
+                                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
+                                                                            <div style={{marginTop: '15px', marginBottom: '15px'}}>
+                                                                                <Select
+                                                                                    placeholder={"Stock out sell"}
+                                                                                    previous={stockOutSell}
+                                                                                    options={stockOutSellValue}
+                                                                                    cngFn={handleChangeStockOutSell}
                                                                                 />
                                                                             </div>
                                                                         ) : ("")}
@@ -2285,8 +2304,7 @@ const EditProduct = () => {
                                             <div className="col-12">
                                                 <div className="card">
                                                     <div className="card-body">
-                                                        <CkEditorComponent label={"Note"} setContent={setNote}
-                                                                           content={note}/>
+                                                        <CkEditorComponent label={"Note"} setContent={setNote} content={note}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2677,9 +2695,7 @@ const EditProduct = () => {
                                     </div>
                                 </Accordion>
                                 <div className="d-flex justify-content-between align-items-center mb-2 mt-3">
-                                    <button onClick={() => toggle()} className="btn btn-secondary btn-sm"
-                                            type="button">Add new option
-                                    </button>
+                                    <button onClick={() => toggle()} className="btn btn-secondary btn-sm" type="button">Add new option</button>
                                     <div className="d-flex gap-2">
                                         <div style={{width: '200px', marginBottom: 0, paddingBottom: 0}}>
                                             <Select

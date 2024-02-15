@@ -654,10 +654,10 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/customer`,
     Component: <Customer />,
   },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/settings`,
-    Component: <Settings />,
-  },
+  // {
+  //   path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/settings`,
+  //   Component: <Settings />,
+  // },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products`,
     Component: <Products />,

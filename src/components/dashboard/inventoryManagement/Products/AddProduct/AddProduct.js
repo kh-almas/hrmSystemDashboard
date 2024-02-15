@@ -25,6 +25,8 @@ import ProductImage from "./ProductImage";
 import {Trash2} from "react-feather";
 import { useNavigate } from 'react-router-dom';
 import DropdownTreeSelect from "react-dropdown-tree-select";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 
 const AddProduct = () => {
     const navigate = useNavigate();
@@ -38,16 +40,27 @@ const AddProduct = () => {
     const [brand, setBrand] = useState(false);
     const [category, setCategory] = useState(false);
     const [model, setModel] = useState(false);
-    const [typeChange, setTypeChange] = useState({value: "Single", label: "Single"});
+    const [typeChange, setTypeChange] = useState({value: "Single", label: "Standard"});
     const [selectedProductForCombo, setSelectedProductForCombo] = useState([]);
     const [note, setNote] = useState('');
     const [taxType, setTaxType] = useState({value: "percent", label: "Percent"});
-    const [hasSerial, setHasSerial] = useState({value: "1", label: "No serial key"});
-    const [warrantyType, setWarrantyType] = useState({value: "1", label: "Warranty by purchase"});
+    const [hasSerial, setHasSerial] = useState(0);
+    const [hasBatch, setHasBatch] = useState(0);
+    const [hasExpired, setHasExpired] = useState(0);
+    const [warrantyType, setWarrantyType] = useState(0);
+    const [stockOutSell, setStockOutSell] = useState(0);
+    const [disableEcommerce, setDisableEcommerce] = useState(0);
     const [priceType, setPriceType] = useState({value: "percent", label: "Percent"});
     const [variantFormValue, setVariantFormValue] = useState({});
     const [previousSKU, setPreviousSKU] = useState([]);
     const [baseProductSKU, setBaseProductSKU] = useState('');
+
+    console.log('hasSerial', hasSerial)
+    console.log('warrantyType', warrantyType)
+    console.log('stockOutSell', stockOutSell)
+    console.log('hasBatch', hasBatch)
+    console.log('hasExpired', hasExpired)
+    console.log('disableEcommerce', disableEcommerce)
 
     const {
         register,
@@ -100,6 +113,10 @@ const AddProduct = () => {
 
     const handleChangeWarrantyType = (selected) => {
         setWarrantyType(selected);
+    }
+
+    const handleChangeStockOutSell = (selected) => {
+        setStockOutSell(selected);
     }
 
 
@@ -504,8 +521,14 @@ const AddProduct = () => {
         data.min_selling_price = allStoredValue.min_selling_price;
         data.tax = allStoredValue.tax;
 
-        data.has_serial_key = hasSerial?.value;
-        data.warranty_by = warrantyType?.value;
+        data.has_serial_key = hasSerial;
+        data.warranty_by = warrantyType;
+        data.stockout_sell = stockOutSell;
+        data.has_batch = hasBatch;
+        data.has_expired = hasExpired;
+        data.disable_ecommerce = disableEcommerce;
+
+
         data.photos = JSON.stringify(photos);
         data.sku = baseProductSKU;
 
@@ -536,39 +559,40 @@ const AddProduct = () => {
         const formData = createFormData(data);
 
         console.log('data', data);
-        axios.post('/inventory-management/products/add', formData)
-            .then(info => {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Your work has been saved',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                if(type === "Service"){
-                    navigate('/dashboard/inventory-management/products/services');
-                }else{
-                    navigate('/dashboard/inventory-management/products');
-                }
 
-            })
-            .catch(e => {
-                console.log('error', e);
-                if(e?.response?.data?.body?.message?.errno == 1062){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: `Can not duplicate product sku`
-                    })
-                }
-                // else {
-                //     Swal.fire({
-                //         icon: 'error',
-                //         title: 'Oops...',
-                //         text: `${e?.response?.data?.body?.message?.details[0].message}`
-                //     })
-                // }
-            })
+        // axios.post('/inventory-management/products/add', formData)
+        //     .then(info => {
+        //         Swal.fire({
+        //             position: 'top-end',
+        //             icon: 'success',
+        //             title: 'Your work has been saved',
+        //             showConfirmButton: false,
+        //             timer: 1500
+        //         })
+        //         if(type === "Service"){
+        //             navigate('/dashboard/inventory-management/products/services');
+        //         }else{
+        //             navigate('/dashboard/inventory-management/products');
+        //         }
+        //
+        //     })
+        //     .catch(e => {
+        //         console.log('error', e);
+        //         if(e?.response?.data?.body?.message?.errno == 1062){
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Oops...',
+        //                 text: `Can not duplicate product sku`
+        //             })
+        //         }
+        //         // else {
+        //         //     Swal.fire({
+        //         //         icon: 'error',
+        //         //         title: 'Oops...',
+        //         //         text: `${e?.response?.data?.body?.message?.details[0].message}`
+        //         //     })
+        //         // }
+        //     })
     }
 
     return (
@@ -601,8 +625,7 @@ const AddProduct = () => {
                                                     labelName={"Product Type"}
                                                     // placeholder={"Select an option"}
                                                     options={[
-                                                        {value: "Single", label: "Single"},
-                                                        {value: "Variant", label: "Variant"},
+                                                        {value: "Single", label: "Standard"},
                                                         {value: "Combo", label: "Combo"},
                                                         {value: "Service", label: "Service"}]}
                                                     setValue={setTypeChange}
@@ -614,227 +637,129 @@ const AddProduct = () => {
                                     </div>
                                 </div>
 
-                                {type !== "Service" ? (
-                                <div className="card">
-                                    <div className="card-body">
-                                        <div className="row row-cols-md-2">
-                                            {type === "Single" || type === "Variant" || type === "Combo" ? (
-                                                <div className="pb-3">
-                                                    <Select
-                                                        name={"measurement_unit"}
-                                                        labelName={"Size unit"}
-                                                        // placeholder={"Select size unit"}
-                                                        previous={measurementUnit}
-                                                        options={[
-                                                            {value: "Inch", label: "Inch"},
-                                                            {value: "Cm", label: "Cm"},
-                                                        {value: "mm", label: "mm"}]}
-                                                    setValue={setMeasurementUnit}
-                                                    cngFn={handleChangeForUpdateMeasurementUnit}
-                                                    />
-                                                </div>
-                                            ) : ( "")}
+                                {/*{type !== "Service" ? (*/}
+                                {/*<div className="card">*/}
+                                {/*    <div className="card-body">*/}
 
-                                            {type === "Single" || type === "Variant" || type === "Combo" ? (
-                                                <div className="pb-3">
-                                                    <Select
-                                                        name={"weight_unit"}
-                                                        labelName={"Weight unit"}
-                                                        // placeholder={"Select size unit"}
-                                                        previous={weightUnit}
-                                                        options={[
-                                                            {value: "Gram (g)", label: "Gram (g)"},
-                                                            {value: "Kilogram (kg)", label: "Kilogram (kg)"}]}
-                                                    setValue={setWeightUnit}
-                                                    cngFn={handleChangeForUpdateWeightUnit}
-                                                    />
-                                                </div>
-                                            ) : ( "")}
-                                        </div>
-                                        <div>
-                                            <h6 className="mb-0">Product size</h6>
-                                            <div className='row row-cols-1 row-cols-md-2'>
-                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                    <div>
-                                                        <Input
-                                                            labelName={"Height"}
-                                                            inputName={"height"}
-                                                            inputType={"number"}
-                                                            placeholder={"height"}
-                                                            defaultValue={0}
-                                                            validation={{...register('p_height', {
-                                                                    required: 'This field is required',
-                                                                    pattern: {
-                                                                        value: /^[0-9]+$/,
-                                                                        message: 'Use only number',
-                                                                    },
-                                                                })}}
-                                                            performOnValue={(e) => clearErrors(["p_height"])}
-                                                            error={errors.p_height}
-                                                        />
-                                                        {errors.p_height && <span style={{fontSize: '10px'}}>{errors.p_height.message}</span>}
-                                                    </div>
-                                                ) : ( "" )}
-                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                    <div>
-                                                        <Input
-                                                            labelName={"Width"}
-                                                            inputName={"width"}
-                                                            inputType={"number"}
-                                                            defaultValue={0}
-                                                            placeholder={"width"}
-                                                            validation={{...register('p_width', {
-                                                                    required: 'This field is required',
-                                                                    pattern: {
-                                                                        value: /^[0-9]+$/,
-                                                                        message: 'Use only number',
-                                                                    },
-                                                                })}}
-                                                            performOnValue={(e) => clearErrors(["p_width"])}
-                                                            error={errors.p_width}
-                                                        />
-                                                        {errors.p_width && <span style={{fontSize: '10px'}}>{errors.p_width.message}</span>}
-                                                    </div>
-                                                ) : ( "" )}
-                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                    <div>
-                                                        <Input
-                                                            labelName={"Length"}
-                                                            inputName={"length"}
-                                                            defaultValue={0}
-                                                            inputType={"number"}
-                                                            placeholder={"Length"}
-                                                            validation={{...register('p_length', {
-                                                                    required: 'This field is required',
-                                                                    pattern: {
-                                                                        value: /^[0-9]+$/,
-                                                                        message: 'Use only number',
-                                                                    },
-                                                                })}}
-                                                            performOnValue={(e) => clearErrors(["p_length"])}
-                                                            error={errors.p_length}
-                                                        />
-                                                        {errors.p_length && <span style={{fontSize: '10px'}}>{errors.p_length.message}</span>}
-                                                    </div>
-                                                ) : ('')}
-                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                    <div>
-                                                        <Input
-                                                            labelName={"Weight"}
-                                                            inputName={"weight"}
-                                                            inputType={"number"}
-                                                            defaultValue={0}
-                                                            placeholder={"weight"}
-                                                            validation={{...register('p_weight', {
-                                                                    required: 'This field is required',
-                                                                    pattern: {
-                                                                        value: /^[0-9]+$/,
-                                                                        message: 'Use only number',
-                                                                    },
-                                                                })}}
-                                                            performOnValue={(e) => clearErrors(["p_weight"])}
-                                                            error={errors.p_weight}
-                                                        />
-                                                        {errors.p_weight && <span style={{fontSize: '10px'}}>{errors.p_weight.message}</span>}
-                                                    </div>
-                                                ) : ('')}
-                                            </div>
-                                        </div>
-                                        <div className="mt-3">
-                                            <h6 className="mb-0">Package size</h6>
-                                            <div className="row row-cols-1 row-cols-md-2">
-                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                    <div>
-                                                        <Input
-                                                            labelName={"Height"}
-                                                            inputName={"height"}
-                                                            inputType={"number"}
-                                                            defaultValue={0}
-                                                            placeholder={"height"}
-                                                            validation={{...register('package_height', {
-                                                                    required: 'This field is required',
-                                                                    pattern: {
-                                                                        value: /^[0-9]+$/,
-                                                                        message: 'Use only number',
-                                                                    },
-                                                                })}}
-                                                            performOnValue={(e) => clearErrors(["package_height"])}
-                                                            error={errors.package_height}
-                                                        />
-                                                        {errors.package_height && <span style={{fontSize: '10px'}}>{errors.package_height.message}</span>}
-                                                    </div>
-                                                ) : ( "" )}
-                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                    <div>
-                                                        <Input
-                                                            labelName={"Width"}
-                                                            inputName={"width"}
-                                                            inputType={"number"}
-                                                            defaultValue={0}
-                                                            placeholder={"width"}
-                                                            validation={{...register('package_width', {
-                                                                    required: 'This field is required',
-                                                                    pattern: {
-                                                                        value: /^[0-9]+$/,
-                                                                        message: 'Use only number',
-                                                                    },
-                                                                })}}
-                                                            performOnValue={(e) => clearErrors(["package_width"])}
-                                                            error={errors.package_width}
-                                                        />
-                                                        {errors.package_width && <span style={{fontSize: '10px'}}>{errors.package_width.message}</span>}
-                                                    </div>
-                                                ) : ( "" )}
-                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                    <div>
-                                                        <Input
-                                                            labelName={"Length"}
-                                                            inputName={"length"}
-                                                            inputType={"number"}
-                                                            defaultValue={0}
-                                                            placeholder={"Length"}
-                                                            validation={{...register('package_length', {
-                                                                    required: 'This field is required',
-                                                                    pattern: {
-                                                                        value: /^[0-9]+$/,
-                                                                        message: 'Use only number',
-                                                                    },
-                                                                })}}
-                                                            performOnValue={(e) => clearErrors(["package_length"])}
-                                                            error={errors.package_length}
-                                                        />
-                                                        {errors.package_length && <span style={{fontSize: '10px'}}>{errors.package_length.message}</span>}
-                                                    </div>
-                                                ) : ('')}
-                                                {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                    <div>
-                                                        <Input
-                                                            labelName={"Weight"}
-                                                            inputName={"weight"}
-                                                            inputType={"number"}
-                                                            defaultValue={0}
-                                                            placeholder={"weight"}
-                                                            validation={{...register('package_weight', {
-                                                                    required: 'This field is required',
-                                                                    pattern: {
-                                                                        value: /^[0-9]+$/,
-                                                                        message: 'Use only number',
-                                                                    },
-                                                                })}}
-                                                            performOnValue={(e) => clearErrors(["package_weight"])}
-                                                            error={errors.package_weight}
-                                                        />
-                                                        {errors.package_weight && <span style={{fontSize: '10px'}}>{errors.package_weight.message}</span>}
-                                                    </div>
-                                                ) : ('')}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                ) : ( "" )}
+                                {/*    </div>*/}
+                                {/*</div>*/}
+                                {/*) : ( "" )}*/}
 
                                 <div>
                                     <ProductImage photos={photos} setPhotos={setPhotos}></ProductImage>
+                                </div>
+                                <div className="card">
+                                    <div className="card-body">
+                                        <div className="">
+                                            <div className="pb-2">
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={hasBatch == 1}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setHasBatch(1) :
+                                                                    setHasBatch(0)
+                                                            }}
+                                                        />}
+                                                        label="Has Batch"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={hasExpired == 1}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setHasExpired(1) :
+                                                                    setHasExpired(0)
+                                                            }}
+                                                        />}
+                                                        label="Has Expired"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={disableEcommerce == 1}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setDisableEcommerce(1) :
+                                                                    setDisableEcommerce(0)
+                                                            }}
+                                                        />}
+                                                        label="Disable For Ecommerce"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={stockOutSell == 1}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setStockOutSell(1) :
+                                                                    setStockOutSell(0)
+                                                            }}
+                                                        />}
+                                                        label="Continue Sell If Stockout"/>
+
+                                                </div>
+                                                <hr/>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={hasSerial == 1}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setHasSerial(1) :
+                                                                    setHasSerial(0)
+                                                            }}
+                                                        />}
+                                                        label="Has Serial Key"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={hasSerial == 2}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setHasSerial(2) :
+                                                                    setHasSerial(0)
+                                                            }}
+                                                        />}
+                                                        label="Has Serial Key By Manufaceture"/>
+                                                </div>
+                                                <hr/>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={warrantyType == 1}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setWarrantyType(1) :
+                                                                    setWarrantyType(0)
+                                                            }}
+                                                        />}
+                                                        label="Warrenty By Purchase"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={warrantyType == 2}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setWarrantyType(2) :
+                                                                    setWarrantyType(0)
+                                                            }}
+                                                        />}
+                                                        label="Warrenty By Manufaceture"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div className="col-lg-8">
@@ -842,30 +767,33 @@ const AddProduct = () => {
                                     <div className="card">
                                         <div className="card-body">
 
-                                                <div className="row row-cols-3">
-                                                    {type == "Single" || type == "Combo" || type === "Variant" || type === "Service"? (
-                                                        <div>
-                                                            <Input
-                                                                clearErrors={clearErrors}
-                                                                labelName={"Product Name"}
-                                                                inputName={"product-name"}
-                                                                inputType={"text"}
-                                                                placeholder={"Product Name"}
-                                                                validation={{...register('name', {
-                                                                        required: 'This field is required',
-                                                                        pattern: {
-                                                                            value: /^[A-Za-z\s]+$/,
-                                                                            message: 'Use only alphabet',
-                                                                        },
-                                                                    })}}
-                                                                performOnValue={(e) => clearErrors(["name"])}
-                                                                error={errors.name}
+                                            <div className="row row-cols-3">
+                                                {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
+                                                    <div>
+                                                        <Input
+                                                            clearErrors={clearErrors}
+                                                            labelName={"Product Name"}
+                                                            inputName={"product-name"}
+                                                            inputType={"text"}
+                                                            placeholder={"Product Name"}
+                                                            validation={{
+                                                                ...register('name', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[A-Za-z\s]+$/,
+                                                                        message: 'Use only alphabet',
+                                                                    },
+                                                                })
+                                                            }}
+                                                            performOnValue={(e) => clearErrors(["name"])}
+                                                            error={errors.name}
 
-                                                            />
-                                                            {errors.name && <span style={{fontSize: '10px'}}>{errors.name.message}</span>}
-                                                        </div>
-                                                    ) : ( "" )}
-                                                    {type !== "Variant" ? (
+                                                        />
+                                                        {errors.name && <span
+                                                            style={{fontSize: '10px'}}>{errors.name.message}</span>}
+                                                    </div>
+                                                ) : ("")}
+                                                {type !== "Variant" ? (
                                                     <div className={"mt-3"}>
                                                         {/*<Input*/}
                                                         {/*    disabled={'disabled'}*/}
@@ -1048,10 +976,13 @@ const AddProduct = () => {
                                                             placeholder={"Select Barcode Type"}
                                                             previous={barcodeType}
                                                             options={[
-                                                                {value: "Single", label: "Single"},
-                                                                {value: "Variant", label: "Variant"},
-                                                                {value: "Combo", label: "Combo"},
-                                                                {value: "Service", label: "Service"}]}
+                                                                {value: "Code 128", label: "Code 128"},
+                                                                {value: "Code 39", label: "Code 39"},
+                                                                {value: "UPC-A", label: "UPC-A"},
+                                                                {value: "UPC-E", label: "UPC-E"},
+                                                                {value: "EAN-8", label: "EAN-8"},
+                                                                {value: "EAN-13", label: "EAN-13"}
+                                                            ]}
                                                             setValue={setBarcodeType}
                                                             cngFn={handleChangeForUpdateBarcodeType}
                                                         />
@@ -1093,9 +1024,207 @@ const AddProduct = () => {
                                     <div className="col-12">
                                         <div className="card">
                                             <div className="card-body">
-                                                <div>
-                                                    <div className="row row-cols-3">
-                                                        {type === "Single" || type === "Combo" || type === "Variant" ? (
+                                                <div className="row row-cols-2">
+                                                    {type === "Single" || type === "Combo" || type === "Variant" ? (
+                                                    <div className={"mt-3"}>
+                                                        <TextField
+                                                            variant='outlined'
+                                                            fullWidth
+                                                            autoComplete="off"
+                                                            size='small'
+                                                            type={'number'}
+                                                            defaultValue={0}
+                                                            label={'Alert Quantity'}
+                                                            {...register('alert_quantity', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}
+                                                            onChange={e => {
+                                                                allStoredValue.alert_quantity= e.target.value
+                                                                setAllStoredValue(allStoredValue)
+                                                                clearErrors(["alert_quantity"])
+                                                            }}
+                                                            sx={{
+                                                                '& .MuiFormLabel-root': {
+                                                                    fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                    fontWeight: 400,
+                                                                    // fontSize: ({ defaultValue }) => (defaultValue ? 12 : 12),
+                                                                },
+                                                                '& label': {
+                                                                    fontSize: 12
+                                                                },
+                                                                '& label.Mui-focused': {
+                                                                    color: '#1c2437',
+                                                                    fontSize: 16
+                                                                },
+                                                                '& .MuiOutlinedInput-root': {
+                                                                    // fontSize: { xs: 12, md: 14 },
+                                                                    height: 35,
+                                                                    backgroundColor: 'white',
+                                                                    '&.Mui-focused fieldset': {
+                                                                        borderColor: '#979797',
+                                                                        borderWidth: '1px'
+                                                                    },
+                                                                },
+                                                            }} />
+                                                        {errors.alert_quantity && <span style={{fontSize: '10px'}}>{errors.alert_quantity.message}</span>}
+                                                    </div>
+                                                    ) : ( "" )}
+
+                                                    {type == "Single" || type == "Combo" || type == "Variant" ? (
+                                                    <div className={"mt-3"}>
+                                                        <TextField
+                                                            variant='outlined'
+                                                            fullWidth
+                                                            autoComplete="off"
+                                                            size='small'
+                                                            type={'number'}
+                                                            defaultValue={0}
+                                                            {...register('opening_stock_quantity', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}
+                                                            label={'Opening stock quantity'}
+                                                            onChange={e => {
+                                                                allStoredValue.opening_stock_quantity= e.target.value
+                                                                setAllStoredValue(allStoredValue)
+                                                                clearErrors(["opening_stock_quantity"])
+                                                            }}
+
+                                                            sx={{
+                                                                '& .MuiFormLabel-root': {
+                                                                    // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                    fontWeight: 400,
+                                                                    fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
+                                                                },
+                                                                '& label': {
+                                                                    fontSize: 12
+                                                                },
+                                                                '& label.Mui-focused': {
+                                                                    color: '#1c2437',
+                                                                    fontSize: 16
+                                                                },
+                                                                '& .MuiOutlinedInput-root': {
+                                                                    // fontSize: { xs: 12, md: 14 },
+                                                                    height: 35,
+                                                                    backgroundColor: 'white',
+                                                                    '&.Mui-focused fieldset': {
+                                                                        borderColor: '#979797',
+                                                                        borderWidth: '1px'
+                                                                    },
+                                                                },
+                                                            }} />
+                                                        {errors.opening_stock_quantity && <span style={{fontSize: '10px'}}>{errors.opening_stock_quantity.message}</span>}
+                                                    </div>
+                                                    ) : ( "" )}
+
+                                                    {/*{type === "Single" || type === "Variant" || type === "Service" ? (*/}
+                                                    {/*<div className={"mt-3"}>*/}
+                                                    {/*    <TextField*/}
+                                                    {/*        variant='outlined'*/}
+                                                    {/*        fullWidth*/}
+                                                    {/*        autoComplete="off"*/}
+                                                    {/*        size='small'*/}
+                                                    {/*        type={'number'}*/}
+                                                    {/*        label={'Purchase Price'}*/}
+                                                    {/*        defaultValue={0}*/}
+                                                    {/*        {...register('purchase_price', {*/}
+                                                    {/*                required: 'This field is required',*/}
+                                                    {/*                pattern: {*/}
+                                                    {/*                    value: /^[0-9]+$/,*/}
+                                                    {/*                    message: 'Use only number',*/}
+                                                    {/*                },*/}
+                                                    {/*            })}*/}
+                                                    {/*        onChange={e => {*/}
+                                                    {/*            allStoredValue.purchase_price= e.target.value*/}
+                                                    {/*            setAllStoredValue(allStoredValue)*/}
+                                                    {/*            clearErrors(["purchase_price"])*/}
+                                                    {/*        }}*/}
+                                                    {/*        sx={{*/}
+                                                    {/*            '& .MuiFormLabel-root': {*/}
+                                                    {/*                // fontSize: { xs: '.7rem', md: '.8rem' },*/}
+                                                    {/*                fontWeight: 400,*/}
+                                                    {/*                fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),*/}
+                                                    {/*            },*/}
+                                                    {/*            '& label': {*/}
+                                                    {/*                fontSize: 12*/}
+                                                    {/*            },*/}
+                                                    {/*            '& label.Mui-focused': {*/}
+                                                    {/*                color: '#1c2437',*/}
+                                                    {/*                fontSize: 16*/}
+                                                    {/*            },*/}
+                                                    {/*            '& .MuiOutlinedInput-root': {*/}
+                                                    {/*                // fontSize: { xs: 12, md: 14 },*/}
+                                                    {/*                height: 35,*/}
+                                                    {/*                backgroundColor: 'white',*/}
+                                                    {/*                '&.Mui-focused fieldset': {*/}
+                                                    {/*                    borderColor: '#979797',*/}
+                                                    {/*                    borderWidth: '1px'*/}
+                                                    {/*                },*/}
+                                                    {/*            },*/}
+                                                    {/*        }} />*/}
+                                                    {/*    {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}*/}
+                                                    {/*</div>*/}
+                                                    {/*) : ( "" )}*/}
+
+                                                    {/*{type === 'Combo' ? (*/}
+                                                    {/*    <div className={"mt-3"}>*/}
+                                                    {/*        <TextField*/}
+                                                    {/*            readonly={true}*/}
+                                                    {/*            variant='outlined'*/}
+                                                    {/*            fullWidth*/}
+                                                    {/*            autoComplete="off"*/}
+                                                    {/*            size='small'*/}
+                                                    {/*            type={'number'}*/}
+                                                    {/*            label={'Purchase Price'}*/}
+                                                    {/*            value={totalComboPrice}*/}
+                                                    {/*            {...register('purchase_price', {*/}
+                                                    {/*                required: 'This field is required',*/}
+                                                    {/*                pattern: {*/}
+                                                    {/*                    value: /^[0-9]+$/,*/}
+                                                    {/*                    message: 'Use only number',*/}
+                                                    {/*                },*/}
+                                                    {/*            })}*/}
+                                                    {/*            onChange={e => {*/}
+                                                    {/*                allStoredValue.purchase_price= e.target.value*/}
+                                                    {/*                setAllStoredValue(allStoredValue)*/}
+                                                    {/*                clearErrors(["purchase_price"])*/}
+                                                    {/*            }}*/}
+                                                    {/*            sx={{*/}
+                                                    {/*                '& .MuiFormLabel-root': {*/}
+                                                    {/*                    // fontSize: { xs: '.7rem', md: '.8rem' },*/}
+                                                    {/*                    fontWeight: 400,*/}
+                                                    {/*                    fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),*/}
+                                                    {/*                },*/}
+                                                    {/*                '& label': {*/}
+                                                    {/*                    fontSize: 12*/}
+                                                    {/*                },*/}
+                                                    {/*                '& label.Mui-focused': {*/}
+                                                    {/*                    color: '#1c2437',*/}
+                                                    {/*                    fontSize: 16*/}
+                                                    {/*                },*/}
+                                                    {/*                '& .MuiOutlinedInput-root': {*/}
+                                                    {/*                    // fontSize: { xs: 12, md: 14 },*/}
+                                                    {/*                    height: 35,*/}
+                                                    {/*                    backgroundColor: 'white',*/}
+                                                    {/*                    '&.Mui-focused fieldset': {*/}
+                                                    {/*                        borderColor: '#979797',*/}
+                                                    {/*                        borderWidth: '1px'*/}
+                                                    {/*                    },*/}
+                                                    {/*                },*/}
+                                                    {/*            }} />*/}
+                                                    {/*        {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}*/}
+                                                    {/*    </div>*/}
+                                                    {/*) : ( "" )}*/}
+                                                </div>
+                                                <div className="row row-cols-2">
+                                                    { type == "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (
                                                         <div className={"mt-3"}>
                                                             <TextField
                                                                 variant='outlined'
@@ -1103,421 +1232,66 @@ const AddProduct = () => {
                                                                 autoComplete="off"
                                                                 size='small'
                                                                 type={'number'}
-                                                                defaultValue={0}
-                                                                label={'Alert Quantity'}
-                                                                {...register('alert_quantity', {
-                                                                        required: 'This field is required',
-                                                                        pattern: {
-                                                                            value: /^[0-9]+$/,
-                                                                            message: 'Use only number',
-                                                                        },
-                                                                    })}
-                                                                onChange={e => {
-                                                                    allStoredValue.alert_quantity= e.target.value
-                                                                    setAllStoredValue(allStoredValue)
-                                                                    clearErrors(["alert_quantity"])
-                                                                }}
-                                                                sx={{
-                                                                    '& .MuiFormLabel-root': {
-                                                                        fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                        fontWeight: 400,
-                                                                        // fontSize: ({ defaultValue }) => (defaultValue ? 12 : 12),
-                                                                    },
-                                                                    '& label': {
-                                                                        fontSize: 12
-                                                                    },
-                                                                    '& label.Mui-focused': {
-                                                                        color: '#1c2437',
-                                                                        fontSize: 16
-                                                                    },
-                                                                    '& .MuiOutlinedInput-root': {
-                                                                        // fontSize: { xs: 12, md: 14 },
-                                                                        height: 35,
-                                                                        backgroundColor: 'white',
-                                                                        '&.Mui-focused fieldset': {
-                                                                            borderColor: '#979797',
-                                                                            borderWidth: '1px'
-                                                                        },
-                                                                    },
-                                                                }} />
-                                                            {errors.alert_quantity && <span style={{fontSize: '10px'}}>{errors.alert_quantity.message}</span>}
-                                                        </div>
-                                                        ) : ( "" )}
-
-                                                        {type == "Single" || type == "Combo" || type == "Variant" ? (
-                                                        <div className={"mt-3"}>
-                                                            <TextField
-                                                                variant='outlined'
-                                                                fullWidth
-                                                                autoComplete="off"
-                                                                size='small'
-                                                                type={'number'}
-                                                                defaultValue={0}
-                                                                {...register('opening_stock_quantity', {
-                                                                        required: 'This field is required',
-                                                                        pattern: {
-                                                                            value: /^[0-9]+$/,
-                                                                            message: 'Use only number',
-                                                                        },
-                                                                    })}
-                                                                label={'Opening stock quantity'}
-                                                                onChange={e => {
-                                                                    allStoredValue.opening_stock_quantity= e.target.value
-                                                                    setAllStoredValue(allStoredValue)
-                                                                    clearErrors(["opening_stock_quantity"])
-                                                                }}
-
-                                                                sx={{
-                                                                    '& .MuiFormLabel-root': {
-                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                        fontWeight: 400,
-                                                                        fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
-                                                                    },
-                                                                    '& label': {
-                                                                        fontSize: 12
-                                                                    },
-                                                                    '& label.Mui-focused': {
-                                                                        color: '#1c2437',
-                                                                        fontSize: 16
-                                                                    },
-                                                                    '& .MuiOutlinedInput-root': {
-                                                                        // fontSize: { xs: 12, md: 14 },
-                                                                        height: 35,
-                                                                        backgroundColor: 'white',
-                                                                        '&.Mui-focused fieldset': {
-                                                                            borderColor: '#979797',
-                                                                            borderWidth: '1px'
-                                                                        },
-                                                                    },
-                                                                }} />
-                                                            {errors.opening_stock_quantity && <span style={{fontSize: '10px'}}>{errors.opening_stock_quantity.message}</span>}
-                                                        </div>
-                                                        ) : ( "" )}
-
-                                                        {type === "Single" || type === "Variant" || type === "Service" ? (
-                                                        <div className={"mt-3"}>
-                                                            <TextField
-                                                                variant='outlined'
-                                                                fullWidth
-                                                                autoComplete="off"
-                                                                size='small'
-                                                                type={'number'}
-                                                                label={'Purchase Price'}
-                                                                defaultValue={0}
-                                                                {...register('purchase_price', {
-                                                                        required: 'This field is required',
-                                                                        pattern: {
-                                                                            value: /^[0-9]+$/,
-                                                                            message: 'Use only number',
-                                                                        },
-                                                                    })}
-                                                                onChange={e => {
-                                                                    allStoredValue.purchase_price= e.target.value
-                                                                    setAllStoredValue(allStoredValue)
-                                                                    clearErrors(["purchase_price"])
-                                                                }}
-                                                                sx={{
-                                                                    '& .MuiFormLabel-root': {
-                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                        fontWeight: 400,
-                                                                        fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
-                                                                    },
-                                                                    '& label': {
-                                                                        fontSize: 12
-                                                                    },
-                                                                    '& label.Mui-focused': {
-                                                                        color: '#1c2437',
-                                                                        fontSize: 16
-                                                                    },
-                                                                    '& .MuiOutlinedInput-root': {
-                                                                        // fontSize: { xs: 12, md: 14 },
-                                                                        height: 35,
-                                                                        backgroundColor: 'white',
-                                                                        '&.Mui-focused fieldset': {
-                                                                            borderColor: '#979797',
-                                                                            borderWidth: '1px'
-                                                                        },
-                                                                    },
-                                                                }} />
-                                                            {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
-                                                        </div>
-                                                        ) : ( "" )}
-
-                                                        {type === 'Combo' ? (
-                                                            <div className={"mt-3"}>
-                                                                <TextField
-                                                                    readonly={true}
-                                                                    variant='outlined'
-                                                                    fullWidth
-                                                                    autoComplete="off"
-                                                                    size='small'
-                                                                    type={'number'}
-                                                                    label={'Purchase Price'}
-                                                                    value={totalComboPrice}
-                                                                    {...register('purchase_price', {
-                                                                        required: 'This field is required',
-                                                                        pattern: {
-                                                                            value: /^[0-9]+$/,
-                                                                            message: 'Use only number',
-                                                                        },
-                                                                    })}
-                                                                    onChange={e => {
-                                                                        allStoredValue.purchase_price= e.target.value
-                                                                        setAllStoredValue(allStoredValue)
-                                                                        clearErrors(["purchase_price"])
-                                                                    }}
-                                                                    sx={{
-                                                                        '& .MuiFormLabel-root': {
-                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                            fontWeight: 400,
-                                                                            fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
-                                                                        },
-                                                                        '& label': {
-                                                                            fontSize: 12
-                                                                        },
-                                                                        '& label.Mui-focused': {
-                                                                            color: '#1c2437',
-                                                                            fontSize: 16
-                                                                        },
-                                                                        '& .MuiOutlinedInput-root': {
-                                                                            // fontSize: { xs: 12, md: 14 },
-                                                                            height: 35,
-                                                                            backgroundColor: 'white',
-                                                                            '&.Mui-focused fieldset': {
-                                                                                borderColor: '#979797',
-                                                                                borderWidth: '1px'
-                                                                            },
-                                                                        },
-                                                                    }} />
-                                                                {errors.purchase_price && <span style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
-                                                            </div>
-                                                        ) : ( "" )}
-                                                    </div>
-                                                    <div className="row row-cols-2">
-                                                        { type == "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (
-                                                            <div className={"mt-3"}>
-                                                                <TextField
-                                                                    variant='outlined'
-                                                                    fullWidth
-                                                                    autoComplete="off"
-                                                                    size='small'
-                                                                    type={'number'}
-                                                                    label={'Margin on selling Price'}
-                                                                    defaultValue={0}
-                                                                    // placeholder={'placeholder'}
-                                                                    {...register('margin_on_selling_price', {
-                                                                        required: 'This field is required',
-                                                                        pattern: {
-                                                                            value: /^[0-9]+$/,
-                                                                            message: 'Use only number',
-                                                                        },
-                                                                    })}
-                                                                    onChange={e => {
-                                                                        clearErrors(["margin_on_selling_price"])
-                                                                    }}
-                                                                    sx={{
-                                                                        '& .MuiFormLabel-root': {
-                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                            fontWeight: 400,
-                                                                            fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
-                                                                        },
-                                                                        '& label': {
-                                                                            fontSize: 12
-                                                                        },
-                                                                        '& label.Mui-focused': {
-                                                                            color: '#1c2437',
-                                                                            fontSize: 16
-                                                                        },
-                                                                        '& .MuiOutlinedInput-root': {
-                                                                            // fontSize: { xs: 12, md: 14 },
-                                                                            height: 35,
-                                                                            backgroundColor: 'white',
-                                                                            '&.Mui-focused fieldset': {
-                                                                                borderColor: '#979797',
-                                                                                borderWidth: '1px'
-                                                                            },
-                                                                        },
-                                                                    }} />
-                                                                {errors.selling_price && <span style={{fontSize: '10px'}}>{errors.selling_price.message}</span>}
-                                                            </div>
-                                                        ) : ( "" )}
-
-                                                        { type == "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (
-                                                            <div className={"mt-3"}>
-                                                                <TextField
-                                                                    variant='outlined'
-                                                                    fullWidth
-                                                                    autoComplete="off"
-                                                                    size='small'
-                                                                    type={'number'}
-                                                                    label={'Selling Price'}
-                                                                    defaultValue={0}
-                                                                    // placeholder={'placeholder'}
-                                                                    {...register('selling_price', {
-                                                                        required: 'This field is required',
-                                                                        pattern: {
-                                                                            value: /^[0-9]+$/,
-                                                                            message: 'Use only number',
-                                                                        },
-                                                                    })}
-                                                                    onChange={e => {
-                                                                        allStoredValue.selling_price= e.target.value
-                                                                        setAllStoredValue(allStoredValue)
-                                                                        clearErrors(["selling_price"])
-                                                                    }}
-                                                                    sx={{
-                                                                        '& .MuiFormLabel-root': {
-                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                            fontWeight: 400,
-                                                                            fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
-                                                                        },
-                                                                        '& label': {
-                                                                            fontSize: 12
-                                                                        },
-                                                                        '& label.Mui-focused': {
-                                                                            color: '#1c2437',
-                                                                            fontSize: 16
-                                                                        },
-                                                                        '& .MuiOutlinedInput-root': {
-                                                                            // fontSize: { xs: 12, md: 14 },
-                                                                            height: 35,
-                                                                            backgroundColor: 'white',
-                                                                            '&.Mui-focused fieldset': {
-                                                                                borderColor: '#979797',
-                                                                                borderWidth: '1px'
-                                                                            },
-                                                                        },
-                                                                    }} />
-                                                                {errors.selling_price && <span style={{fontSize: '10px'}}>{errors.selling_price.message}</span>}
-                                                            </div>
-                                                        ) : ( "" )}
-                                                    </div>
-                                                    <div className="row row-cols-2">
-                                                        {type == "Single" || type == "Combo" || type == "Variant" ? (
-                                                            <div className={"mt-3"}>
-                                                                <TextField
-                                                                    variant='outlined'
-                                                                    fullWidth
-                                                                    autoComplete="off"
-                                                                    size='small'
-                                                                    type={'number'}
-                                                                    label={'Margin on min Selling Price'}
-                                                                    defaultValue={0}
-                                                                    // placeholder={'placeholder'}
-                                                                    {...register('margin_on_min_selling_price', {
-                                                                        required: 'This field is required',
-                                                                        pattern: {
-                                                                            value: /^[0-9]+$/,
-                                                                            message: 'Use only number',
-                                                                        },
-                                                                    })}
-                                                                    onChange={e => {
-                                                                        clearErrors(["margin_on_min_selling_price"])
-                                                                    }}
-
-                                                                    sx={{
-                                                                        '& .MuiFormLabel-root': {
-                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                            fontWeight: 400,
-                                                                            fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
-                                                                        },
-                                                                        '& label': {
-                                                                            fontSize: 12
-                                                                        },
-                                                                        '& label.Mui-focused': {
-                                                                            color: '#1c2437',
-                                                                            fontSize: 16
-                                                                        },
-                                                                        '& .MuiOutlinedInput-root': {
-                                                                            // fontSize: { xs: 12, md: 14 },
-                                                                            height: 35,
-                                                                            backgroundColor: 'white',
-                                                                            '&.Mui-focused fieldset': {
-                                                                                borderColor: '#979797',
-                                                                                borderWidth: '1px'
-                                                                            },
-                                                                        },
-                                                                    }} />
-                                                                {errors.min_selling_price && <span style={{fontSize: '10px'}}>{errors.min_selling_price.message}</span>}
-                                                            </div>
-                                                        ) : ( "" )}
-
-                                                        {type == "Single" || type == "Combo" || type == "Variant" ? (
-                                                            <div className={"mt-3"}>
-                                                                <TextField
-                                                                    variant='outlined'
-                                                                    fullWidth
-                                                                    autoComplete="off"
-                                                                    size='small'
-                                                                    type={'number'}
-                                                                    label={'Min Selling Price'}
-                                                                    defaultValue={0}
-                                                                    // placeholder={'placeholder'}
-                                                                    {...register('min_selling_price', {
-                                                                        required: 'This field is required',
-                                                                        pattern: {
-                                                                            value: /^[0-9]+$/,
-                                                                            message: 'Use only number',
-                                                                        },
-                                                                    })}
-                                                                    onChange={e => {
-                                                                        allStoredValue.min_selling_price= e.target.value
-                                                                        setAllStoredValue(allStoredValue)
-                                                                        clearErrors(["min_selling_price"])
-                                                                    }}
-
-                                                                    sx={{
-                                                                        '& .MuiFormLabel-root': {
-                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                            fontWeight: 400,
-                                                                            fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
-                                                                        },
-                                                                        '& label': {
-                                                                            fontSize: 12
-                                                                        },
-                                                                        '& label.Mui-focused': {
-                                                                            color: '#1c2437',
-                                                                            fontSize: 16
-                                                                        },
-                                                                        '& .MuiOutlinedInput-root': {
-                                                                            // fontSize: { xs: 12, md: 14 },
-                                                                            height: 35,
-                                                                            backgroundColor: 'white',
-                                                                            '&.Mui-focused fieldset': {
-                                                                                borderColor: '#979797',
-                                                                                borderWidth: '1px'
-                                                                            },
-                                                                        },
-                                                                    }} />
-                                                                {errors.min_selling_price && <span style={{fontSize: '10px'}}>{errors.min_selling_price.message}</span>}
-                                                            </div>
-                                                        ) : ( "" )}
-                                                    </div>
-                                                    <div className="row row-cols-2">
-                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                        <div className="mt-3">
-                                                            <TextField
-                                                                variant='outlined'
-                                                                fullWidth
-                                                                autoComplete="off"
-                                                                size='small'
-                                                                type={'number'}
-                                                                label={'Tax'}
-                                                                value={allStoredValue.tax}
+                                                                label={'Margin on selling Price'}
                                                                 defaultValue={0}
                                                                 // placeholder={'placeholder'}
-                                                                {...register('tax', {
-                                                                        required: 'This field is required',
-                                                                        pattern: {
-                                                                            value: /^[0-9]+$/,
-                                                                            message: 'Use only number',
-                                                                        },
-                                                                    })}
+                                                                {...register('margin_on_selling_price', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}
                                                                 onChange={e => {
-                                                                    allStoredValue.tax= e.target.value
-                                                                    setAllStoredValue(allStoredValue)
-                                                                    clearErrors(["tax"])
-                                                                    // setComponentRender(componentRender)
+                                                                    clearErrors(["margin_on_selling_price"])
+                                                                }}
+                                                                sx={{
+                                                                    '& .MuiFormLabel-root': {
+                                                                        // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                        fontWeight: 400,
+                                                                        fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
+                                                                    },
+                                                                    '& label': {
+                                                                        fontSize: 12
+                                                                    },
+                                                                    '& label.Mui-focused': {
+                                                                        color: '#1c2437',
+                                                                        fontSize: 16
+                                                                    },
+                                                                    '& .MuiOutlinedInput-root': {
+                                                                        // fontSize: { xs: 12, md: 14 },
+                                                                        height: 35,
+                                                                        backgroundColor: 'white',
+                                                                        '&.Mui-focused fieldset': {
+                                                                            borderColor: '#979797',
+                                                                            borderWidth: '1px'
+                                                                        },
+                                                                    },
+                                                                }} />
+                                                            {errors.selling_price && <span style={{fontSize: '10px'}}>{errors.selling_price.message}</span>}
+                                                        </div>
+                                                    ) : ( "" )}
+
+                                                    {type == "Single" || type == "Combo" || type == "Variant" ? (
+                                                        <div className={"mt-3"}>
+                                                            <TextField
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                autoComplete="off"
+                                                                size='small'
+                                                                type={'number'}
+                                                                label={'Margin on min Selling Price'}
+                                                                defaultValue={0}
+                                                                // placeholder={'placeholder'}
+                                                                {...register('margin_on_min_selling_price', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}
+                                                                onChange={e => {
+                                                                    clearErrors(["margin_on_min_selling_price"])
                                                                 }}
 
                                                                 sx={{
@@ -1543,77 +1317,429 @@ const AddProduct = () => {
                                                                         },
                                                                     },
                                                                 }} />
-                                                            {errors.tax && <span style={{fontSize: '10px'}}>{errors.tax.message}</span>}
+                                                            {errors.min_selling_price && <span style={{fontSize: '10px'}}>{errors.min_selling_price.message}</span>}
                                                         </div>
-                                                        ) : ( "" )}
+                                                    ) : ( "" )}
 
-                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                        <div style={{marginTop: '15px'}}>
+
+                                                </div>
+                                                {/*<div className="row row-cols-2">*/}
+
+                                                    {/*{ type == "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (*/}
+                                                    {/*    <div className={"mt-3"}>*/}
+                                                    {/*        <TextField*/}
+                                                    {/*            variant='outlined'*/}
+                                                    {/*            fullWidth*/}
+                                                    {/*            autoComplete="off"*/}
+                                                    {/*            size='small'*/}
+                                                    {/*            type={'number'}*/}
+                                                    {/*            label={'Selling Price'}*/}
+                                                    {/*            defaultValue={0}*/}
+                                                    {/*            // placeholder={'placeholder'}*/}
+                                                    {/*            {...register('selling_price', {*/}
+                                                    {/*                required: 'This field is required',*/}
+                                                    {/*                pattern: {*/}
+                                                    {/*                    value: /^[0-9]+$/,*/}
+                                                    {/*                    message: 'Use only number',*/}
+                                                    {/*                },*/}
+                                                    {/*            })}*/}
+                                                    {/*            onChange={e => {*/}
+                                                    {/*                allStoredValue.selling_price= e.target.value*/}
+                                                    {/*                setAllStoredValue(allStoredValue)*/}
+                                                    {/*                clearErrors(["selling_price"])*/}
+                                                    {/*            }}*/}
+                                                    {/*            sx={{*/}
+                                                    {/*                '& .MuiFormLabel-root': {*/}
+                                                    {/*                    // fontSize: { xs: '.7rem', md: '.8rem' },*/}
+                                                    {/*                    fontWeight: 400,*/}
+                                                    {/*                    fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),*/}
+                                                    {/*                },*/}
+                                                    {/*                '& label': {*/}
+                                                    {/*                    fontSize: 12*/}
+                                                    {/*                },*/}
+                                                    {/*                '& label.Mui-focused': {*/}
+                                                    {/*                    color: '#1c2437',*/}
+                                                    {/*                    fontSize: 16*/}
+                                                    {/*                },*/}
+                                                    {/*                '& .MuiOutlinedInput-root': {*/}
+                                                    {/*                    // fontSize: { xs: 12, md: 14 },*/}
+                                                    {/*                    height: 35,*/}
+                                                    {/*                    backgroundColor: 'white',*/}
+                                                    {/*                    '&.Mui-focused fieldset': {*/}
+                                                    {/*                        borderColor: '#979797',*/}
+                                                    {/*                        borderWidth: '1px'*/}
+                                                    {/*                    },*/}
+                                                    {/*                },*/}
+                                                    {/*            }} />*/}
+                                                    {/*        {errors.selling_price && <span style={{fontSize: '10px'}}>{errors.selling_price.message}</span>}*/}
+                                                    {/*    </div>*/}
+                                                    {/*) : ( "" )}*/}
+                                                    {/*{type == "Single" || type == "Combo" || type == "Variant" ? (*/}
+                                                    {/*    <div className={"mt-3"}>*/}
+                                                    {/*        <TextField*/}
+                                                    {/*            variant='outlined'*/}
+                                                    {/*            fullWidth*/}
+                                                    {/*            autoComplete="off"*/}
+                                                    {/*            size='small'*/}
+                                                    {/*            type={'number'}*/}
+                                                    {/*            label={'Min Selling Price'}*/}
+                                                    {/*            defaultValue={0}*/}
+                                                    {/*            // placeholder={'placeholder'}*/}
+                                                    {/*            {...register('min_selling_price', {*/}
+                                                    {/*                required: 'This field is required',*/}
+                                                    {/*                pattern: {*/}
+                                                    {/*                    value: /^[0-9]+$/,*/}
+                                                    {/*                    message: 'Use only number',*/}
+                                                    {/*                },*/}
+                                                    {/*            })}*/}
+                                                    {/*            onChange={e => {*/}
+                                                    {/*                allStoredValue.min_selling_price= e.target.value*/}
+                                                    {/*                setAllStoredValue(allStoredValue)*/}
+                                                    {/*                clearErrors(["min_selling_price"])*/}
+                                                    {/*            }}*/}
+
+                                                    {/*            sx={{*/}
+                                                    {/*                '& .MuiFormLabel-root': {*/}
+                                                    {/*                    // fontSize: { xs: '.7rem', md: '.8rem' },*/}
+                                                    {/*                    fontWeight: 400,*/}
+                                                    {/*                    fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),*/}
+                                                    {/*                },*/}
+                                                    {/*                '& label': {*/}
+                                                    {/*                    fontSize: 12*/}
+                                                    {/*                },*/}
+                                                    {/*                '& label.Mui-focused': {*/}
+                                                    {/*                    color: '#1c2437',*/}
+                                                    {/*                    fontSize: 16*/}
+                                                    {/*                },*/}
+                                                    {/*                '& .MuiOutlinedInput-root': {*/}
+                                                    {/*                    // fontSize: { xs: 12, md: 14 },*/}
+                                                    {/*                    height: 35,*/}
+                                                    {/*                    backgroundColor: 'white',*/}
+                                                    {/*                    '&.Mui-focused fieldset': {*/}
+                                                    {/*                        borderColor: '#979797',*/}
+                                                    {/*                        borderWidth: '1px'*/}
+                                                    {/*                    },*/}
+                                                    {/*                },*/}
+                                                    {/*            }} />*/}
+                                                    {/*        {errors.min_selling_price && <span style={{fontSize: '10px'}}>{errors.min_selling_price.message}</span>}*/}
+                                                    {/*    </div>*/}
+                                                    {/*) : ( "" )}*/}
+                                                {/*</div>*/}
+                                                <div className="row row-cols-2">
+                                                    {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
+                                                    <div className="mt-3">
+                                                        <TextField
+                                                            variant='outlined'
+                                                            fullWidth
+                                                            autoComplete="off"
+                                                            size='small'
+                                                            type={'number'}
+                                                            label={'Tax'}
+                                                            value={allStoredValue.tax}
+                                                            defaultValue={0}
+                                                            // placeholder={'placeholder'}
+                                                            {...register('tax', {
+                                                                    required: 'This field is required',
+                                                                    pattern: {
+                                                                        value: /^[0-9]+$/,
+                                                                        message: 'Use only number',
+                                                                    },
+                                                                })}
+                                                            onChange={e => {
+                                                                allStoredValue.tax= e.target.value
+                                                                setAllStoredValue(allStoredValue)
+                                                                clearErrors(["tax"])
+                                                                // setComponentRender(componentRender)
+                                                            }}
+
+                                                            sx={{
+                                                                '& .MuiFormLabel-root': {
+                                                                    // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                    fontWeight: 400,
+                                                                    fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
+                                                                },
+                                                                '& label': {
+                                                                    fontSize: 12
+                                                                },
+                                                                '& label.Mui-focused': {
+                                                                    color: '#1c2437',
+                                                                    fontSize: 16
+                                                                },
+                                                                '& .MuiOutlinedInput-root': {
+                                                                    // fontSize: { xs: 12, md: 14 },
+                                                                    height: 35,
+                                                                    backgroundColor: 'white',
+                                                                    '&.Mui-focused fieldset': {
+                                                                        borderColor: '#979797',
+                                                                        borderWidth: '1px'
+                                                                    },
+                                                                },
+                                                            }} />
+                                                        {errors.tax && <span style={{fontSize: '10px'}}>{errors.tax.message}</span>}
+                                                    </div>
+                                                    ) : ( "" )}
+
+                                                    {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
+                                                    <div style={{marginTop: '15px', marginBottom: '15px'}}>
+                                                        <Select
+                                                            placeholder={"Tax Type"}
+                                                            // previous={taxType}
+                                                            // labelName={' '}
+                                                            options={[{value: "percent", label: "Percent"}, {value: "value", label: "Value"}]}
+                                                            setValue={setTaxType}
+                                                            cngFn={handleChangeTaxType}
+                                                        />
+                                                    </div>
+                                                    ) : ( "" )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {type !== "Service" ? (
+                                    <div className="col-12">
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <div className="row row-cols-md-2">
+                                                    {type === "Single" || type === "Variant" || type === "Combo" ? (
+                                                        <div className="pb-3">
                                                             <Select
-                                                                placeholder={"Tax Type"}
-                                                                // previous={taxType}
-                                                                // labelName={' '}
-                                                                options={[{value: "percent", label: "Percent"}, {value: "value", label: "Value"}]}
-                                                                setValue={setTaxType}
-                                                                cngFn={handleChangeTaxType}
+                                                                name={"measurement_unit"}
+                                                                labelName={"Size unit"}
+                                                                // placeholder={"Select size unit"}
+                                                                previous={measurementUnit}
+                                                                options={[
+                                                                    {value: "Inch", label: "Inch"},
+                                                                    {value: "Cm", label: "Cm"},
+                                                                    {value: "mm", label: "mm"}]}
+                                                                setValue={setMeasurementUnit}
+                                                                cngFn={handleChangeForUpdateMeasurementUnit}
                                                             />
                                                         </div>
-                                                        ) : ( "" )}
+                                                    ) : ("")}
 
-                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                            <div style={{marginTop: '15px'}}>
-                                                                <Select
-                                                                    placeholder={"Serial keys"}
-                                                                    previous={hasSerial}
-                                                                    // labelName={' '}
-                                                                    options={[{value: "1", label: "No serial key"}, {value: "2", label: "Has serial key"}, {value: "3", label: "Has serial key by manufacture"}]}
-                                                                    setValue={setHasSerial}
-                                                                    cngFn={handleChangeHasSerial}
+                                                    {type === "Single" || type === "Variant" || type === "Combo" ? (
+                                                        <div className="pb-3">
+                                                            <Select
+                                                                name={"weight_unit"}
+                                                                labelName={"Weight unit"}
+                                                                // placeholder={"Select size unit"}
+                                                                previous={weightUnit}
+                                                                options={[
+                                                                    {value: "Gram (g)", label: "Gram (g)"},
+                                                                    {value: "Kilogram (kg)", label: "Kilogram (kg)"}]}
+                                                                setValue={setWeightUnit}
+                                                                cngFn={handleChangeForUpdateWeightUnit}
+                                                            />
+                                                        </div>
+                                                    ) : ("")}
+                                                </div>
+                                                <div>
+                                                    <h6 className="mb-0">Product size</h6>
+                                                    <div className='row row-cols-1 row-cols-md-2'>
+                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                            <div>
+                                                                <Input
+                                                                    labelName={"Height"}
+                                                                    inputName={"height"}
+                                                                    inputType={"number"}
+                                                                    placeholder={"height"}
+                                                                    defaultValue={0}
+                                                                    validation={{
+                                                                        ...register('p_height', {
+                                                                            required: 'This field is required',
+                                                                            pattern: {
+                                                                                value: /^[0-9]+$/,
+                                                                                message: 'Use only number',
+                                                                            },
+                                                                        })
+                                                                    }}
+                                                                    performOnValue={(e) => clearErrors(["p_height"])}
+                                                                    error={errors.p_height}
                                                                 />
-                                                            </div>
-                                                        ) : ( "" )}
-
-                                                        {
-                                                            hasSerial?.value == 3 ?
-                                                                <div>
-                                                                    <Input
-                                                                        labelName={"serial key by manufacture"}
-                                                                        inputName={"serial_key_by_manufacture"}
-                                                                        inputType={"text"}
-                                                                        // placeholder={"serial key by manufacture"}
-                                                                        // defaultValue={0}
-                                                                        validation={{
-                                                                            ...register('serial_key_by_manufacture', {
-                                                                                required: 'This field is required',
-                                                                            })
-                                                                        }}
-                                                                        performOnValue={(e) => clearErrors(["serial_key_by_manufacture"])}
-                                                                        error={errors.p_height}
-                                                                    />
-                                                                    {errors.serial_key_by_manufacture && <span style={{fontSize: '10px'}}>{errors.serial_key_by_manufacture.message}</span>}
-                                                                </div> : ''
-                                                        }
-
-                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                            <div style={{marginTop: '15px'}}>
-                                                                <Select
-                                                                    placeholder={"Serial keys"}
-                                                                    previous={warrantyType}
-                                                                    // labelName={' '}
-                                                                    options={[{
-                                                                        value: "1",
-                                                                        label: "Warranty by purchase"
-                                                                    }, {value: "2", label: "Warranty By manufacture"}]}
-                                                                    setValue={setWarrantyType}
-                                                                    cngFn={handleChangeWarrantyType}
-                                                                />
+                                                                {errors.p_height && <span
+                                                                    style={{fontSize: '10px'}}>{errors.p_height.message}</span>}
                                                             </div>
                                                         ) : ("")}
+                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                            <div>
+                                                                <Input
+                                                                    labelName={"Width"}
+                                                                    inputName={"width"}
+                                                                    inputType={"number"}
+                                                                    defaultValue={0}
+                                                                    placeholder={"width"}
+                                                                    validation={{
+                                                                        ...register('p_width', {
+                                                                            required: 'This field is required',
+                                                                            pattern: {
+                                                                                value: /^[0-9]+$/,
+                                                                                message: 'Use only number',
+                                                                            },
+                                                                        })
+                                                                    }}
+                                                                    performOnValue={(e) => clearErrors(["p_width"])}
+                                                                    error={errors.p_width}
+                                                                />
+                                                                {errors.p_width && <span
+                                                                    style={{fontSize: '10px'}}>{errors.p_width.message}</span>}
+                                                            </div>
+                                                        ) : ("")}
+                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                            <div>
+                                                                <Input
+                                                                    labelName={"Length"}
+                                                                    inputName={"length"}
+                                                                    defaultValue={0}
+                                                                    inputType={"number"}
+                                                                    placeholder={"Length"}
+                                                                    validation={{
+                                                                        ...register('p_length', {
+                                                                            required: 'This field is required',
+                                                                            pattern: {
+                                                                                value: /^[0-9]+$/,
+                                                                                message: 'Use only number',
+                                                                            },
+                                                                        })
+                                                                    }}
+                                                                    performOnValue={(e) => clearErrors(["p_length"])}
+                                                                    error={errors.p_length}
+                                                                />
+                                                                {errors.p_length && <span
+                                                                    style={{fontSize: '10px'}}>{errors.p_length.message}</span>}
+                                                            </div>
+                                                        ) : ('')}
+                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                            <div>
+                                                                <Input
+                                                                    labelName={"Weight"}
+                                                                    inputName={"weight"}
+                                                                    inputType={"number"}
+                                                                    defaultValue={0}
+                                                                    placeholder={"weight"}
+                                                                    validation={{
+                                                                        ...register('p_weight', {
+                                                                            required: 'This field is required',
+                                                                            pattern: {
+                                                                                value: /^[0-9]+$/,
+                                                                                message: 'Use only number',
+                                                                            },
+                                                                        })
+                                                                    }}
+                                                                    performOnValue={(e) => clearErrors(["p_weight"])}
+                                                                    error={errors.p_weight}
+                                                                />
+                                                                {errors.p_weight && <span
+                                                                    style={{fontSize: '10px'}}>{errors.p_weight.message}</span>}
+                                                            </div>
+                                                        ) : ('')}
+                                                    </div>
+                                                </div>
+                                                <div className="mt-3">
+                                                    <h6 className="mb-0">Package size</h6>
+                                                    <div className="row row-cols-1 row-cols-md-2">
+                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                            <div>
+                                                                <Input
+                                                                    labelName={"Height"}
+                                                                    inputName={"height"}
+                                                                    inputType={"number"}
+                                                                    defaultValue={0}
+                                                                    placeholder={"height"}
+                                                                    validation={{
+                                                                        ...register('package_height', {
+                                                                            required: 'This field is required',
+                                                                            pattern: {
+                                                                                value: /^[0-9]+$/,
+                                                                                message: 'Use only number',
+                                                                            },
+                                                                        })
+                                                                    }}
+                                                                    performOnValue={(e) => clearErrors(["package_height"])}
+                                                                    error={errors.package_height}
+                                                                />
+                                                                {errors.package_height && <span
+                                                                    style={{fontSize: '10px'}}>{errors.package_height.message}</span>}
+                                                            </div>
+                                                        ) : ("")}
+                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                            <div>
+                                                                <Input
+                                                                    labelName={"Width"}
+                                                                    inputName={"width"}
+                                                                    inputType={"number"}
+                                                                    defaultValue={0}
+                                                                    placeholder={"width"}
+                                                                    validation={{
+                                                                        ...register('package_width', {
+                                                                            required: 'This field is required',
+                                                                            pattern: {
+                                                                                value: /^[0-9]+$/,
+                                                                                message: 'Use only number',
+                                                                            },
+                                                                        })
+                                                                    }}
+                                                                    performOnValue={(e) => clearErrors(["package_width"])}
+                                                                    error={errors.package_width}
+                                                                />
+                                                                {errors.package_width && <span
+                                                                    style={{fontSize: '10px'}}>{errors.package_width.message}</span>}
+                                                            </div>
+                                                        ) : ("")}
+                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                            <div>
+                                                                <Input
+                                                                    labelName={"Length"}
+                                                                    inputName={"length"}
+                                                                    inputType={"number"}
+                                                                    defaultValue={0}
+                                                                    placeholder={"Length"}
+                                                                    validation={{
+                                                                        ...register('package_length', {
+                                                                            required: 'This field is required',
+                                                                            pattern: {
+                                                                                value: /^[0-9]+$/,
+                                                                                message: 'Use only number',
+                                                                            },
+                                                                        })
+                                                                    }}
+                                                                    performOnValue={(e) => clearErrors(["package_length"])}
+                                                                    error={errors.package_length}
+                                                                />
+                                                                {errors.package_length && <span
+                                                                    style={{fontSize: '10px'}}>{errors.package_length.message}</span>}
+                                                            </div>
+                                                        ) : ('')}
+                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                            <div>
+                                                                <Input
+                                                                    labelName={"Weight"}
+                                                                    inputName={"weight"}
+                                                                    inputType={"number"}
+                                                                    defaultValue={0}
+                                                                    placeholder={"weight"}
+                                                                    validation={{
+                                                                        ...register('package_weight', {
+                                                                            required: 'This field is required',
+                                                                            pattern: {
+                                                                                value: /^[0-9]+$/,
+                                                                                message: 'Use only number',
+                                                                            },
+                                                                        })
+                                                                    }}
+                                                                    performOnValue={(e) => clearErrors(["package_weight"])}
+                                                                    error={errors.package_weight}
+                                                                />
+                                                                {errors.package_weight && <span
+                                                                    style={{fontSize: '10px'}}>{errors.package_weight.message}</span>}
+                                                            </div>
+                                                        ) : ('')}
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    ) : ( "" )}
+
                                     <div className="col-12">
                                         <div className="card">
                                             <div className="card-body">
@@ -1648,8 +1774,8 @@ const AddProduct = () => {
                                                 <tr>
                                                     <th>Product Name</th>
                                                     <th>Quantity</th>
-                                                    <th>Price</th>
-                                                    <th>Tax</th>
+                                                    {/*<th>Price</th>*/}
+                                                    {/*<th>Tax</th>*/}
                                                     <th>Action</th>
                                                 </tr>
                                                 </thead>
@@ -1662,95 +1788,132 @@ const AddProduct = () => {
                                                                     <TextField
                                                                         disabled
                                                                         id="outlined-size-small"
-                                                                    value={singleData?.name}
-                                                                    size="small"
-                                                                    validation={{...register(`product_id_${index}`,{ value: singleData?.id })}}
-                                                                    sx={{
-                                                                        width: '100%',
-                                                                        marginTop: '16px'
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        </td>
+                                                                        value={singleData?.name}
+                                                                        size="small"
+                                                                        validation={{...register(`product_id_${index}`, {value: singleData?.id})}}
+                                                                        sx={{
+                                                                            width: '100%',
+                                                                            marginTop: '16px'
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                            </td>
 
-                                                        <td>
-                                                            <div>
-                                                                <Input
-                                                                    inputName={"quantity"}
-                                                                    inputType={"number"}
-                                                                    placeholder={"0"}
-                                                                    validation={{...register(`quantity_${index}`, {
-                                                                            required: 'This field is required',
-                                                                            pattern: {
-                                                                                value: /^[A-Za-z0-9`!@#$%^&*]+$/,
-                                                                                message: 'Use only alphabet, number and characters',
-                                                                            },
-                                                                        })}}
-                                                                    performOnValue={(e) => clearErrors([`quantity_${index}`])}
-                                                                    error={errors?.[`quantity_${index}`]}
-                                                                />
-                                                                {errors?.[`quantity_${index}`] && <span style={{fontSize: '10px'}}>{errors?.[`quantity_${index}`]?.message}</span>}
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <Input
-                                                                    inputName={"price"}
-                                                                    inputType={"number"}
-                                                                    placeholder={"0"}
-                                                                    validation={{...register(`price_${index}`, {
-                                                                            required: 'This field is required',
-                                                                            pattern: {
-                                                                                value: /^[A-Za-z0-9`!@#$%^&*]+$/,
-                                                                                message: 'Use only alphabet, number and characters',
-                                                                            },
-                                                                        })}}
-                                                                    performOnValue={(e) => clearErrors([`price_${index}`])}
-                                                                    error={errors?.[`price_${index}`]}
-                                                                />
-                                                                {errors?.[`price_${index}`] && <span style={{fontSize: '10px'}}>{errors?.[`price_${index}`]?.message}</span>}
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div>
-                                                                <Input
-                                                                    inputName={"tax"}
-                                                                    inputType={"number"}
-                                                                    placeholder={"0"}
-                                                                    validation={{...register(`tax_${index}`, {
-                                                                            required: 'This field is required',
-                                                                            pattern: {
-                                                                                value: /^[A-Za-z0-9`!@#$%^&*]+$/,
-                                                                                message: 'Use only alphabet, number and characters',
-                                                                            },
-                                                                        })}}
-                                                                    performOnValue={(e) => clearErrors([`tax_${index}`])}
-                                                                    error={errors?.[`tax_${index}`]}
-                                                                />
-                                                                {errors?.[`tax_${index}`] && <span style={{fontSize: '10px'}}>{errors?.[`tax_${index}`]?.message}</span>}
-                                                            </div>
-                                                        </td>
-                                                        <td className="text-end" style={{display: "flex", justifyContent: "center", alignItems: 'center'}}>
-                                                            <div style={{border: 'none', backgroundColor: 'white', marginTop: '22px', marginBottom: '6px', cursor: "pointer" }} onClick={() => removeItemFromProductList(singleData?.id, index)}>
-                                                                <Trash2 size={17} style={{color: 'red'}}></Trash2>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            }
-                                            </tbody>
-                                        </table>
-                                        : ''
-                                    }
-
+                                                            <td>
+                                                                <div>
+                                                                    <Input
+                                                                        inputName={"quantity"}
+                                                                        inputType={"number"}
+                                                                        placeholder={"0"}
+                                                                        validation={{
+                                                                            ...register(`quantity_${index}`, {
+                                                                                required: 'This field is required',
+                                                                                pattern: {
+                                                                                    value: /^[A-Za-z0-9`!@#$%^&*]+$/,
+                                                                                    message: 'Use only alphabet, number and characters',
+                                                                                },
+                                                                            })
+                                                                        }}
+                                                                        performOnValue={(e) => clearErrors([`quantity_${index}`])}
+                                                                        error={errors?.[`quantity_${index}`]}
+                                                                    />
+                                                                    {errors?.[`quantity_${index}`] && <span
+                                                                        style={{fontSize: '10px'}}>{errors?.[`quantity_${index}`]?.message}</span>}
+                                                                </div>
+                                                            </td>
+                                                            {/*<td>*/}
+                                                            {/*    <div>*/}
+                                                            {/*        <Input*/}
+                                                            {/*            inputName={"price"}*/}
+                                                            {/*            inputType={"number"}*/}
+                                                            {/*            placeholder={"0"}*/}
+                                                            {/*            validation={{...register(`price_${index}`, {*/}
+                                                            {/*                    required: 'This field is required',*/}
+                                                            {/*                    pattern: {*/}
+                                                            {/*                        value: /^[A-Za-z0-9`!@#$%^&*]+$/,*/}
+                                                            {/*                        message: 'Use only alphabet, number and characters',*/}
+                                                            {/*                    },*/}
+                                                            {/*                })}}*/}
+                                                            {/*            performOnValue={(e) => clearErrors([`price_${index}`])}*/}
+                                                            {/*            error={errors?.[`price_${index}`]}*/}
+                                                            {/*        />*/}
+                                                            {/*        {errors?.[`price_${index}`] && <span style={{fontSize: '10px'}}>{errors?.[`price_${index}`]?.message}</span>}*/}
+                                                            {/*    </div>*/}
+                                                            {/*</td>*/}
+                                                            {/*<td>*/}
+                                                            {/*    <div>*/}
+                                                            {/*        <Input*/}
+                                                            {/*            inputName={"tax"}*/}
+                                                            {/*            inputType={"number"}*/}
+                                                            {/*            placeholder={"0"}*/}
+                                                            {/*            validation={{...register(`tax_${index}`, {*/}
+                                                            {/*                    required: 'This field is required',*/}
+                                                            {/*                    pattern: {*/}
+                                                            {/*                        value: /^[A-Za-z0-9`!@#$%^&*]+$/,*/}
+                                                            {/*                        message: 'Use only alphabet, number and characters',*/}
+                                                            {/*                    },*/}
+                                                            {/*                })}}*/}
+                                                            {/*            performOnValue={(e) => clearErrors([`tax_${index}`])}*/}
+                                                            {/*            error={errors?.[`tax_${index}`]}*/}
+                                                            {/*        />*/}
+                                                            {/*        {errors?.[`tax_${index}`] && <span style={{fontSize: '10px'}}>{errors?.[`tax_${index}`]?.message}</span>}*/}
+                                                            {/*    </div>*/}
+                                                            {/*</td>*/}
+                                                            <td className="text-end" style={{
+                                                                display: "flex",
+                                                                justifyContent: "center",
+                                                                alignItems: 'center'
+                                                            }}>
+                                                                <div style={{
+                                                                    border: 'none',
+                                                                    backgroundColor: 'white',
+                                                                    marginTop: '22px',
+                                                                    marginBottom: '6px',
+                                                                    cursor: "pointer"
+                                                                }}
+                                                                     onClick={() => removeItemFromProductList(singleData?.id, index)}>
+                                                                    <Trash2 size={17} style={{color: 'red'}}></Trash2>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                }
+                                                </tbody>
+                                            </table>
+                                            : ''
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        ) : ( "")}
+                        ) : ("")}
 
-                        { type === "Variant" ? (
-                            <SelectComboVariant previousSKU={previousSKU} setPreviousSKU={setPreviousSKU} variantFormValue={variantFormValue} setVariantFormValue={setVariantFormValue} allStoredValue={allStoredValue} register={register} unregister={unregister}></SelectComboVariant>
-                        ) : ( "")}
+
+                            <div className="card">
+                                <div className="card-body">
+                                    <div>
+                                        <FormControlLabel
+                                            control={<Checkbox
+                                                checked={typeChange?.value == "Variant"}
+                                                onChange={(e) => {
+                                                    e.target.checked === true ?
+                                                        setTypeChange({value: "Variant", label: "Variant"}) :
+                                                        setTypeChange({value: "Single", label: "Standard"})
+                                                    setType(e.target.checked ? "Variant" : "Single");
+                                                }}
+                                            />}
+                                            label="Has Variant"
+                                        />
+                                    </div>
+                                    {type === "Variant" ? (
+                                        <SelectComboVariant previousSKU={previousSKU} setPreviousSKU={setPreviousSKU}
+                                                            variantFormValue={variantFormValue}
+                                                            setVariantFormValue={setVariantFormValue}
+                                                            allStoredValue={allStoredValue} register={register}
+                                                            unregister={unregister}></SelectComboVariant>
+
+                                    ) : ("")}
+                                </div>
+                            </div>
                     </div>
                     <div className="card">
                         <div>
@@ -1762,31 +1925,68 @@ const AddProduct = () => {
                                             makeProductOptions?.map(singleOptions =>
                                                 <>
                                                     <Card>
-                                                        <CardHeader as={Card.Header} onClick={() => accordionToggle(singleOptions?.value)} style={{cursor: 'pointer'}}>
-                                                            <div className="d-flex justify-content-between align-items-center">
-                                                                <p style={{marginBottom: 0, fontSize: "14px", fontWeight: "bold"}}>
+                                                        <CardHeader as={Card.Header}
+                                                                    onClick={() => accordionToggle(singleOptions?.value)}
+                                                                    style={{cursor: 'pointer'}}>
+                                                            <div
+                                                                className="d-flex justify-content-between align-items-center">
+                                                                <p style={{
+                                                                    marginBottom: 0,
+                                                                    fontSize: "14px",
+                                                                    fontWeight: "bold"
+                                                                }}>
                                                                     {singleOptions?.label}
                                                                 </p>
-                                                                <div style={{border: 'none', backgroundColor: 'white', marginTop: '22px', marginBottom: '6px', cursor: "pointer" }} onClick={() => removeOptions(singleOptions?.value)}>
-                                                                    <Trash2 style={{fontSize: '15px', color: 'red'}}></Trash2>
+                                                                <div style={{
+                                                                    border: 'none',
+                                                                    backgroundColor: 'white',
+                                                                    marginTop: '22px',
+                                                                    marginBottom: '6px',
+                                                                    cursor: "pointer"
+                                                                }} onClick={() => removeOptions(singleOptions?.value)}>
+                                                                    <Trash2 style={{
+                                                                        fontSize: '15px',
+                                                                        color: 'red'
+                                                                    }}></Trash2>
                                                                 </div>
                                                             </div>
                                                         </CardHeader>
-                                                        <Collapse isOpen={parseInt(isOpen) === parseInt(singleOptions?.value)}>
+                                                        <Collapse
+                                                            isOpen={parseInt(isOpen) === parseInt(singleOptions?.value)}>
                                                             <CardBody className="p-3">
                                                                 {
                                                                     addRowInOption[singleOptions?.value]?.length > 0 ?
                                                                         <>
-                                                                            <div className="d-flex justify-content-between">
-                                                                                <p className="w-100 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Label</p>
-                                                                                <p className="w-100 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Price</p>
-                                                                                <p className="w-100 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Price Type</p>
-                                                                                <p className="w-25 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Action</p>
+                                                                            <div
+                                                                                className="d-flex justify-content-between">
+                                                                                <p className="w-100 text-center m-2"
+                                                                                   style={{
+                                                                                       fontWeight: 'bold',
+                                                                                       fontSize: '13px'
+                                                                                   }}>Label</p>
+                                                                                <p className="w-100 text-center m-2"
+                                                                                   style={{
+                                                                                       fontWeight: 'bold',
+                                                                                       fontSize: '13px'
+                                                                                   }}>Price</p>
+                                                                                <p className="w-100 text-center m-2"
+                                                                                   style={{
+                                                                                       fontWeight: 'bold',
+                                                                                       fontSize: '13px'
+                                                                                   }}>Price Type</p>
+                                                                                <p className="w-25 text-center m-2"
+                                                                                   style={{
+                                                                                       fontWeight: 'bold',
+                                                                                       fontSize: '13px'
+                                                                                   }}>Action</p>
                                                                             </div>
                                                                             <div>
                                                                                 {
                                                                                     addRowInOption[singleOptions?.value]?.map((singleRowData, rowIndex) =>
-                                                                                        <div className="d-flex justify-content-between" key={rowIndex} style={{marginTop: "10px"}}>
+                                                                                        <div
+                                                                                            className="d-flex justify-content-between"
+                                                                                            key={rowIndex}
+                                                                                            style={{marginTop: "10px"}}>
                                                                                             <div className="w-100 mx-2">
                                                                                                 <TextField
                                                                                                     variant='outlined'
@@ -1891,8 +2091,7 @@ const AddProduct = () => {
                                         <div style={{width: '200px', marginBottom: 0, paddingBottom: 0}}>
                                             <Select
                                                 name={"option"}
-                                                // labelName={"Barcode Type"}
-                                                placeholder={"Select Barcode Type"}
+                                                previous={productOptions[0]}
                                                 options={productOptions}
                                                 setValue={setSelectedProductOptions}
                                                 cngFn={handleChangeForProductType}
