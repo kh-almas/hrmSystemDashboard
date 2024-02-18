@@ -6,10 +6,8 @@ import axios from "../../../../../axios";
 import Swal from "sweetalert2";
 import Autocomplete from "@mui/material/Autocomplete";
 import {Checkbox} from "@mui/material";
-import * as PropTypes from "prop-types";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-
 const ProductSettings = () => {
     const [data, setData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
@@ -100,8 +98,6 @@ const ProductSettings = () => {
     }
 
     const setBarcodeValueFN = (selected) => {
-        // const mergedArray = barcodeValue.concat(selected);
-        // const uniqueArray = removeDuplicatesByProperty(mergedArray, 'value');
         setBarcodeValue(selected);
     }
 

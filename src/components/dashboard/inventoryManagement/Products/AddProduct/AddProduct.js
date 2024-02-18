@@ -27,6 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import GetAllTax from "../../../../common/Query/inventory/GetAllTax";
 
 const AddProduct = () => {
     const navigate = useNavigate();
@@ -56,6 +57,9 @@ const AddProduct = () => {
     const [previousSKU, setPreviousSKU] = useState([]);
     const [baseProductSKU, setBaseProductSKU] = useState('');
 
+    const [allTaxStatus, allTaxReFetch, allTaxData, allTaxError] = GetAllTax();
+    const [taxData, setTaxData] = useState([]);
+    const [tax, setTax] = useState({});
 
     const {
         register,
@@ -72,6 +76,24 @@ const AddProduct = () => {
             return selectedProductForCombo;
         }, [selectedProductForCombo])
     });
+
+
+
+    useEffect(() => {
+        console.log('allTaxData', allTaxData?.data?.body?.data);
+        const allTax = allTaxData?.data?.body?.data;
+        let finalArray = [];
+        allTax?.map((item) => {
+            let initialObj = {
+                id: item.id,
+                label: `${item.name_s}@${item.tax_s}`,
+            };
+
+            finalArray.push(initialObj);
+        });
+
+        setTaxData(finalArray);
+    }, [allTaxData]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -100,6 +122,10 @@ const AddProduct = () => {
 
     const handleChangeTaxType = (selected) => {
         setTaxType(selected);
+    }
+
+    const handleChangeTax = (selected) => {
+        setTax(selected);
     }
 
     const handleChangeHasSerial = (selected) => {
@@ -514,7 +540,7 @@ const AddProduct = () => {
         data.purchase_price = allStoredValue.purchase_price;
         data.selling_price = allStoredValue.selling_price;
         data.min_selling_price = allStoredValue.min_selling_price;
-        data.tax = allStoredValue.tax;
+        data.tax = tax?.id;
 
         data.has_serial_key = hasSerial;
         data.warranty_by = warrantyType;
@@ -589,6 +615,24 @@ const AddProduct = () => {
                 // }
             })
     }
+
+    const [settings, setSettings] = useState([]);
+
+    console.log('settings',settings);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`/inventory-management/products/settings/`);
+                const parseData =response?.data?.body?.data?.[0]
+                setSettings(parseData);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData()
+    }, []);
+
 
     return (
         <div>
@@ -1421,56 +1465,67 @@ const AddProduct = () => {
                                                     {/*) : ( "" )}*/}
                                                 {/*</div>*/}
                                                 <div className="row row-cols-2">
-                                                    {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                    <div className="mt-3">
-                                                        <TextField
-                                                            variant='outlined'
-                                                            fullWidth
-                                                            autoComplete="off"
-                                                            size='small'
-                                                            type={'number'}
-                                                            label={'Tax'}
-                                                            value={allStoredValue.tax}
-                                                            defaultValue={0}
-                                                            // placeholder={'placeholder'}
-                                                            {...register('tax', {
-                                                                    required: 'This field is required',
-                                                                    pattern: {
-                                                                        value: /^[0-9]+$/,
-                                                                        message: 'Use only number',
-                                                                    },
-                                                                })}
-                                                            onChange={e => {
-                                                                allStoredValue.tax= e.target.value
-                                                                setAllStoredValue(allStoredValue)
-                                                                clearErrors(["tax"])
-                                                                // setComponentRender(componentRender)
-                                                            }}
+                                                    {/*{type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (*/}
+                                                    {/*<div className="mt-3">*/}
+                                                    {/*    <TextField*/}
+                                                    {/*        variant='outlined'*/}
+                                                    {/*        fullWidth*/}
+                                                    {/*        autoComplete="off"*/}
+                                                    {/*        size='small'*/}
+                                                    {/*        type={'number'}*/}
+                                                    {/*        label={'Tax'}*/}
+                                                    {/*        value={allStoredValue.tax}*/}
+                                                    {/*        defaultValue={0}*/}
+                                                    {/*        // placeholder={'placeholder'}*/}
+                                                    {/*        {...register('tax', {*/}
+                                                    {/*                required: 'This field is required',*/}
+                                                    {/*                pattern: {*/}
+                                                    {/*                    value: /^[0-9]+$/,*/}
+                                                    {/*                    message: 'Use only number',*/}
+                                                    {/*                },*/}
+                                                    {/*            })}*/}
+                                                    {/*        onChange={e => {*/}
+                                                    {/*            allStoredValue.tax= e.target.value*/}
+                                                    {/*            setAllStoredValue(allStoredValue)*/}
+                                                    {/*            clearErrors(["tax"])*/}
+                                                    {/*            // setComponentRender(componentRender)*/}
+                                                    {/*        }}*/}
 
-                                                            sx={{
-                                                                '& .MuiFormLabel-root': {
-                                                                    // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                    fontWeight: 400,
-                                                                    fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),
-                                                                },
-                                                                '& label': {
-                                                                    fontSize: 12
-                                                                },
-                                                                '& label.Mui-focused': {
-                                                                    color: '#1c2437',
-                                                                    fontSize: 16
-                                                                },
-                                                                '& .MuiOutlinedInput-root': {
-                                                                    // fontSize: { xs: 12, md: 14 },
-                                                                    height: 35,
-                                                                    backgroundColor: 'white',
-                                                                    '&.Mui-focused fieldset': {
-                                                                        borderColor: '#979797',
-                                                                        borderWidth: '1px'
-                                                                    },
-                                                                },
-                                                            }} />
-                                                        {errors.tax && <span style={{fontSize: '10px'}}>{errors.tax.message}</span>}
+                                                    {/*        sx={{*/}
+                                                    {/*            '& .MuiFormLabel-root': {*/}
+                                                    {/*                // fontSize: { xs: '.7rem', md: '.8rem' },*/}
+                                                    {/*                fontWeight: 400,*/}
+                                                    {/*                fontSize: ({ defaultValue }) => (defaultValue ? 12 : 16),*/}
+                                                    {/*            },*/}
+                                                    {/*            '& label': {*/}
+                                                    {/*                fontSize: 12*/}
+                                                    {/*            },*/}
+                                                    {/*            '& label.Mui-focused': {*/}
+                                                    {/*                color: '#1c2437',*/}
+                                                    {/*                fontSize: 16*/}
+                                                    {/*            },*/}
+                                                    {/*            '& .MuiOutlinedInput-root': {*/}
+                                                    {/*                // fontSize: { xs: 12, md: 14 },*/}
+                                                    {/*                height: 35,*/}
+                                                    {/*                backgroundColor: 'white',*/}
+                                                    {/*                '&.Mui-focused fieldset': {*/}
+                                                    {/*                    borderColor: '#979797',*/}
+                                                    {/*                    borderWidth: '1px'*/}
+                                                    {/*                },*/}
+                                                    {/*            },*/}
+                                                    {/*        }} />*/}
+                                                    {/*    {errors.tax && <span style={{fontSize: '10px'}}>{errors.tax.message}</span>}*/}
+                                                    {/*</div>*/}
+                                                    {/*) : ( "" )}*/}
+
+                                                    {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
+                                                    <div style={{marginTop: '15px', marginBottom: '15px'}}>
+                                                        <Select
+                                                            placeholder={"Tax"}
+                                                            options={taxData}
+                                                            setValue={setTax}
+                                                            cngFn={handleChangeTax}
+                                                        />
                                                     </div>
                                                     ) : ( "" )}
 
@@ -1478,8 +1533,6 @@ const AddProduct = () => {
                                                     <div style={{marginTop: '15px', marginBottom: '15px'}}>
                                                         <Select
                                                             placeholder={"Tax Methode"}
-                                                            // previous={taxType}
-                                                            // labelName={' '}
                                                             options={[{value: "Exclusive", label: "Exclusive"}, {value: "Inclusive", label: "Inclusive"}]}
                                                             setValue={setTaxType}
                                                             cngFn={handleChangeTaxType}

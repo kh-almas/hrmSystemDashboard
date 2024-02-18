@@ -6,10 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="b70791c6-b211-48c4-89c4-e4ed209f8fc5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/component/DataTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/DataTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/AddProduct.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/AddProduct.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/SelectComboVariant.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/SelectComboVariant.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/SelectComboVariantForEdit.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductSettings/ProductSettings.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductSettings/ProductSettings.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/layouts-routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/layouts-routes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,25 +29,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;alu&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/portfolo_client/client&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2023.3.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "alu",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/xampp/htdocs/wasa",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2023.3.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\component\form\inventory\Tax" />
+      <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Products" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\dashboard\inventoryManagement\Inventory" />
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\Query\inventory" />
     </key>
@@ -87,7 +91,7 @@
       <workItem from="1707973457547" duration="598000" />
       <workItem from="1707974802586" duration="9656000" />
       <workItem from="1708152687759" duration="9994000" />
-      <workItem from="1708234992575" duration="1266000" />
+      <workItem from="1708234992575" duration="14739000" />
     </task>
     <servers />
   </component>
