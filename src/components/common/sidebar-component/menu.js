@@ -515,6 +515,11 @@ export const MENUITEMS = [
             path: "/dashboard/inventory-management/products/variant",
           },
           {
+            title: "Tax",
+            type: "link",
+            path: "/dashboard/inventory-management/products/tax",
+          },
+          {
             title: "Settings",
             type: "link",
             path: "/dashboard/inventory-management/products/setting",

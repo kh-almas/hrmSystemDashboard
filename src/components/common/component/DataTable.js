@@ -181,6 +181,7 @@ const DataTable = ({
               <IconButton
                 color="error"
                 onClick={() => {
+                  console.log('row?.original?.primary_id', row?.original)
                   handleDelete(
                     !baseForDelete
                       ? row?.original?.primary_id

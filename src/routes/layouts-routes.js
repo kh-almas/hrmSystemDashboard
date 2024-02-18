@@ -168,6 +168,7 @@ import ProductReconciliation from "../components/dashboard/inventoryManagement/I
 import ProductDiscount from "../components/dashboard/inventoryManagement/Inventory/ProductDiscount";
 import PurchaseProducts from "../components/dashboard/inventoryManagement/Inventory/PurchaseProducts";
 import EditableTable from "../components/common/component/EditableTable/EditableTable";
+import Tax from "../components/dashboard/inventoryManagement/Products/Tax/Tax";
 
 
 export const routes = [
@@ -654,10 +655,10 @@ export const routes = [
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/customer`,
     Component: <Customer />,
   },
-  {
-    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/settings`,
-    Component: <Settings />,
-  },
+  // {
+  //   path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/contacts/settings`,
+  //   Component: <Settings />,
+  // },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products`,
     Component: <Products />,
@@ -693,6 +694,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/variant`,
     Component: <Variant />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/tax`,
+    Component: <Tax />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/products/setting`,

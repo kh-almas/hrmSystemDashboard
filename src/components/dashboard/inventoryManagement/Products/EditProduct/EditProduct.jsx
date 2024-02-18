@@ -27,6 +27,9 @@ import {useParams} from "react-router-dom";
 import SelectComboVariantForEdit from "./SelectComboVariantForEdit";
 import EditProductImage from "./EditProductImage";
 import { useNavigate } from 'react-router-dom';
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import GetAllTax from "../../../../common/Query/inventory/GetAllTax";
 
 // remove sku functionality
 
@@ -51,7 +54,7 @@ const EditProduct = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [singleProductData, setSingleProductData] = useState('');
     const [type, setType] = useState("Single");
-    const [typeChange, setTypeChange] = useState({value: "Single", label: "Single"});
+    const [typeChange, setTypeChange] = useState({value: "Single", label: "Standard"});
     const [measurementUnit, setMeasurementUnit] = useState({value: "Inch", label: "Inch"});
     const [weightUnit, setWeightUnit] = useState({value: "Gram (g)", label: "Gram (g)"});
     const [allUnitType, setAllUnitType] = useState([]);
@@ -88,10 +91,35 @@ const EditProduct = () => {
     const [addRowInVariant, setAddRowInVariant] = useState([0]);
     const [selectedProductPhotos, setSelectedProductPhotos] = useState([]);
     const [deletedProductPhotos, setDeletedProductPhotos] = useState([]);
-    const [hasSerialValue, setHasSerialValue] = useState([{value: "1", label: "No serial key"}, {value: "2", label: "Has serial key"}, {value: "3", label: "Has serial key by manufacture"}]);
-    const [hasSerial, setHasSerial] = useState({});
-    const [warrantyTypeValue, setWarrantyTypeValue] = useState([{value: "1", label: "Warranty by purchase"}, {value: "2", label: "Warranty By manufacture"}]);
-    const [warrantyType, setWarrantyType] = useState({});
+
+    const [hasSerial, setHasSerial] = useState(0);
+    const [hasBatch, setHasBatch] = useState(0);
+    const [hasExpired, setHasExpired] = useState(0);
+    const [warrantyType, setWarrantyType] = useState(0);
+    const [stockOutSell, setStockOutSell] = useState(0);
+    const [disableEcommerce, setDisableEcommerce] = useState(0);
+
+    const [allTaxStatus, allTaxReFetch, allTaxData, allTaxError] = GetAllTax();
+    const [taxData, setTaxData] = useState([]);
+    const [tax, setTax] = useState({});
+
+    console.log('taxData', taxData)
+
+    useEffect(() => {
+        console.log('allTaxData', allTaxData?.data?.body?.data);
+        const allTax = allTaxData?.data?.body?.data;
+        let finalArray = [];
+        allTax?.map((item) => {
+            let initialObj = {
+                id: item.id,
+                label: `${item.name_s}@${item.tax_s}`,
+            };
+
+            finalArray.push(initialObj);
+        });
+
+        setTaxData(finalArray);
+    }, [allTaxData]);
 
     const handleChangeHasSerial = (selected) => {
         setHasSerial(selected);
@@ -100,7 +128,10 @@ const EditProduct = () => {
     const handleChangeWarrantyType = (selected) => {
         setWarrantyType(selected);
     }
-    
+
+    const handleChangeStockOutSell = (selected) => {
+        setStockOutSell(selected);
+    }
 
     const [isOpen, setIsOpen] = useState('');
 
@@ -132,7 +163,7 @@ const EditProduct = () => {
         { value: "Service", label: "Service" }
     ]);
 
-    const [taxTypeData, setTaxTypeData] = useState([{value: "percent", label: "Percent"}, {value: "value", label: "Value"}])
+    const [taxTypeData, setTaxTypeData] = useState([{value: "Exclusive", label: "Exclusive"}, {value: "Inclusive", label: "Inclusive"}])
 
     useEffect(() => {
         setIsLoading(true);
@@ -201,19 +232,35 @@ const EditProduct = () => {
 
 
     useEffect(() => {
+        console.log('singleProductData', singleProductData)
+
+        if(singleProductData?.hasBatch){
+            setHasBatch(singleProductData?.hasBatch)
+        }
+
+        if(singleProductData?.tax){
+            const filteredTax = taxData?.find(singleItem => singleItem?.id == singleProductData?.tax)
+            setTax(filteredTax);
+        }
+
+        if(singleProductData?.hasExpired){
+            setHasExpired(singleProductData?.hasExpired)
+        }
+
+        if(singleProductData?.disableEcommerce){
+            setDisableEcommerce(singleProductData?.disableEcommerce)
+        }
+
+        if(singleProductData?.stockoutSell){
+            setStockOutSell(singleProductData?.stockoutSell)
+        }
+
         if(singleProductData?.hasSerialKey){
-            const filteredSerialKey = hasSerialValue?.find(singleItem => singleItem?.value == singleProductData?.hasSerialKey)
-            setHasSerial(filteredSerialKey);
+            setHasSerial(singleProductData?.hasSerialKey)
         }
 
         if(singleProductData?.warrantyBy){
-            const filteredWarrantyBy = warrantyTypeValue?.find(singleItem => singleItem?.value == singleProductData?.warrantyBy)
-            setWarrantyType(filteredWarrantyBy);
-        }
-
-        if(singleProductData?.productType) {
-            setTypeChange({value: singleProductData?.productType, label: singleProductData?.productType});
-            setType(singleProductData?.productType);
+            setWarrantyType(singleProductData?.warrantyBy)
         }
 
         if(singleProductData?.measurementUnit) {
@@ -265,7 +312,6 @@ const EditProduct = () => {
         setValue('purchase_price', singleProductData?.purchasePrice);
         setValue('selling_price', singleProductData?.sellingPrice);
         setValue('min_selling_price', singleProductData?.minSellingPrice);
-        setValue('tax', singleProductData?.tax);
         setValue('serial_key_by_manufacture', singleProductData?.serialKeyByManufacture);
         setIsRowMaterialValue(singleProductData?.isRawMaterial)
         // product image
@@ -304,9 +350,6 @@ const EditProduct = () => {
         //         setPhotos(prev => [...prev, makeImageOBJ])
         //     })
         // }
-
-
-
 
         //product options
         const allProductOptions = singleProductData?.productOptions;
@@ -352,7 +395,7 @@ const EditProduct = () => {
         }
 
         const productVariant = singleProductData?.productVariant;
-        if (productVariant){
+        if (singleProductData?.productVariant?.[0]?.variant){
             const variantValue = {}
             // productVariant.map(singleItem => {
             //     forSelectVariant.push({value: singleItem?.variantId, label:singleItem?.variantName})
@@ -434,6 +477,9 @@ const EditProduct = () => {
         setTaxType(selected);
     }
 
+    const handleChangeTax = (selected) => {
+        setTax(selected);
+    }
 
     const [isChange, setIsChange] = useState(false);
     const isDarty = () => {
@@ -846,21 +892,23 @@ const EditProduct = () => {
         data.purchase_price = allStoredValue.purchase_price ? allStoredValue.purchase_price : data.purchase_price;
         data.selling_price = allStoredValue.selling_price ? allStoredValue.selling_price : data.selling_price;
         data.min_selling_price = allStoredValue.min_selling_price ? allStoredValue.min_selling_price : data.min_selling_price;
-        data.tax = allStoredValue.tax ? allStoredValue.tax : data.tax;
+        data.tax = tax?.id;
         data.photos = JSON.stringify(photos);
         data.sku = baseProductSKU;
         data.is_raw_material = isRowMaterialValue;
         data.deletedProductPhotos = JSON.stringify(deletedProductPhotos);
 
-        data.has_serial_key = hasSerial?.value;
-        data.warranty_by = warrantyType?.value;
-        if(parseInt(hasSerial?.value) !== 3){
-            data.serial_key_by_manufacture = null
-        }
         
         if (data.product_type === 'Variant'){
             data.variant_sku = JSON.stringify(variantFormValue);
         }
+
+        data.has_serial_key = hasSerial;
+        data.warranty_by = warrantyType;
+        data.stockout_sell = stockOutSell;
+        data.has_batch = hasBatch;
+        data.has_expired = hasExpired;
+        data.disable_ecommerce = disableEcommerce;
 
         function createFormData(data) {
             const formData = new FormData();
@@ -950,8 +998,7 @@ const EditProduct = () => {
                                                             labelName={"Product Type"}
                                                             // placeholder={"Select an option"}
                                                             options={[
-                                                                {value: "Single", label: "Single"},
-                                                                {value: "Variant", label: "Variant"},
+                                                                {value: "Single", label: "Standard"},
                                                                 {value: "Combo", label: "Combo"},
                                                                 {value: "Service", label: "Service"}]}
                                                             setValue={setTypeChange}
@@ -976,440 +1023,125 @@ const EditProduct = () => {
                                         </div>
                                 }
 
-                                {
-                                    isLoading !== true ?
-                                        type !== "Service" ?
-                                            <div className="card">
-                                                <div className="card-body">
-                                                    <div className="row row-cols-md-2">
-                                                        {type === "Single" || type === "Variant" || type === "Combo" ? (
-                                                            <div className="pb-3">
-                                                                <Select
-                                                                    name={"measurement_unit"}
-                                                                    labelName={"Size unit"}
-                                                                    // placeholder={"Select size unit"}
-                                                                    previous={measurementUnit}
-                                                                    options={[
-                                                                        {value: "Inch", label: "Inch"},
-                                                                        {value: "Cm", label: "Cm"},
-                                                                        {value: "mm", label: "mm"}]}
-                                                                    setValue={setMeasurementUnit}
-                                                                    cngFn={handleChangeForUpdateMeasurementUnit}
-                                                                />
-                                                            </div>
-                                                        ) : ("")}
-
-                                                        {type === "Single" || type === "Variant" || type === "Combo" ? (
-                                                            <div className="pb-3">
-                                                                <Select
-                                                                    name={"weight_unit"}
-                                                                    labelName={"Weight unit"}
-                                                                    // placeholder={"Select size unit"}
-                                                                    previous={weightUnit}
-                                                                    options={[
-                                                                        {value: "Gram (g)", label: "Gram (g)"},
-                                                                        {
-                                                                            value: "Kilogram (kg)",
-                                                                            label: "Kilogram (kg)"
-                                                                        }]}
-                                                                    setValue={setWeightUnit}
-                                                                    cngFn={handleChangeForUpdateWeightUnit}
-                                                                />
-                                                            </div>
-                                                        ) : ("")}
-                                                    </div>
-                                                    <div>
-                                                        <h6 className="mb-0">Product size</h6>
-                                                        <div className='row row-cols-1 row-cols-md-2'>
-                                                            {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                                <div className={"mt-3"}>
-
-                                                                    <TextField
-                                                                        variant='outlined'
-                                                                        fullWidth
-                                                                        focused
-                                                                        autoComplete="off"
-                                                                        size='small'
-                                                                        type={'number'}
-                                                                        label={'Height'}
-                                                                        {...register('p_height', {
-                                                                            required: 'This field is required',
-                                                                            pattern: {
-                                                                                value: /^[0-9]+$/,
-                                                                                message: 'Use only number',
-                                                                            },
-                                                                        })}
-
-                                                                        sx={{
-                                                                            '& .MuiFormLabel-root': {
-                                                                                // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                fontWeight: 400,
-                                                                                fontSize: 12,
-                                                                            },
-                                                                            '& label': {
-                                                                                fontSize: 12
-                                                                            },
-                                                                            '& label.Mui-focused': {
-                                                                                color: '#1c2437',
-                                                                                fontSize: 16
-                                                                            },
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                // fontSize: { xs: 12, md: 14 },
-                                                                                height: 35,
-                                                                                backgroundColor: 'white',
-                                                                                '&.Mui-focused fieldset': {
-                                                                                    borderColor: '#979797',
-                                                                                    borderWidth: '1px'
-                                                                                },
-                                                                            },
-                                                                        }}/>
-                                                                    {errors.p_height && <span
-                                                                        style={{fontSize: '10px'}}>{errors.p_height.message}</span>}
-                                                                </div>
-                                                            ) : ("")}
-                                                            {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                                <div className={'mt-3'}>
-                                                                    <TextField
-                                                                        variant='outlined'
-                                                                        fullWidth
-                                                                        focused
-                                                                        autoComplete="off"
-                                                                        size='small'
-                                                                        type={'number'}
-                                                                        label={'Width'}
-                                                                        {...register('p_width', {
-                                                                            required: 'This field is required',
-                                                                            pattern: {
-                                                                                value: /^[0-9]+$/,
-                                                                                message: 'Use only number',
-                                                                            },
-                                                                        })}
-
-                                                                        sx={{
-                                                                            '& .MuiFormLabel-root': {
-                                                                                // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                fontWeight: 400,
-                                                                                fontSize: 12,
-                                                                            },
-                                                                            '& label': {
-                                                                                fontSize: 12
-                                                                            },
-                                                                            '& label.Mui-focused': {
-                                                                                color: '#1c2437',
-                                                                                fontSize: 16
-                                                                            },
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                // fontSize: { xs: 12, md: 14 },
-                                                                                height: 35,
-                                                                                backgroundColor: 'white',
-                                                                                '&.Mui-focused fieldset': {
-                                                                                    borderColor: '#979797',
-                                                                                    borderWidth: '1px'
-                                                                                },
-                                                                            },
-                                                                        }}/>
-                                                                    {errors.p_width && <span
-                                                                        style={{fontSize: '10px'}}>{errors.p_width.message}</span>}
-                                                                </div>
-                                                            ) : ("")}
-                                                            {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                                <div className={'mt-3'}>
-                                                                    <TextField
-                                                                        variant='outlined'
-                                                                        fullWidth
-                                                                        focused
-                                                                        autoComplete="off"
-                                                                        size='small'
-                                                                        type={'number'}
-                                                                        label={'Length'}
-                                                                        {...register('p_length', {
-                                                                            required: 'This field is required',
-                                                                            pattern: {
-                                                                                value: /^[0-9]+$/,
-                                                                                message: 'Use only number',
-                                                                            },
-                                                                        })}
-
-                                                                        sx={{
-                                                                            '& .MuiFormLabel-root': {
-                                                                                // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                fontWeight: 400,
-                                                                                fontSize: 12,
-                                                                            },
-                                                                            '& label': {
-                                                                                fontSize: 12
-                                                                            },
-                                                                            '& label.Mui-focused': {
-                                                                                color: '#1c2437',
-                                                                                fontSize: 16
-                                                                            },
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                // fontSize: { xs: 12, md: 14 },
-                                                                                height: 35,
-                                                                                backgroundColor: 'white',
-                                                                                '&.Mui-focused fieldset': {
-                                                                                    borderColor: '#979797',
-                                                                                    borderWidth: '1px'
-                                                                                },
-                                                                            },
-                                                                        }}/>
-                                                                    {errors.p_length && <span
-                                                                        style={{fontSize: '10px'}}>{errors.p_length.message}</span>}
-                                                                </div>
-                                                            ) : ('')}
-                                                            {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                                <div className={'mt-3'}>
-                                                                    <TextField
-                                                                        variant='outlined'
-                                                                        fullWidth
-                                                                        focused
-                                                                        autoComplete="off"
-                                                                        size='small'
-                                                                        type={'number'}
-                                                                        label={'Weight'}
-                                                                        {...register('p_weight', {
-                                                                            required: 'This field is required',
-                                                                            pattern: {
-                                                                                value: /^[0-9]+$/,
-                                                                                message: 'Use only number',
-                                                                            },
-                                                                        })}
-
-                                                                        sx={{
-                                                                            '& .MuiFormLabel-root': {
-                                                                                // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                fontWeight: 400,
-                                                                                fontSize: 12,
-                                                                            },
-                                                                            '& label': {
-                                                                                fontSize: 12
-                                                                            },
-                                                                            '& label.Mui-focused': {
-                                                                                color: '#1c2437',
-                                                                                fontSize: 16
-                                                                            },
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                // fontSize: { xs: 12, md: 14 },
-                                                                                height: 35,
-                                                                                backgroundColor: 'white',
-                                                                                '&.Mui-focused fieldset': {
-                                                                                    borderColor: '#979797',
-                                                                                    borderWidth: '1px'
-                                                                                },
-                                                                            },
-                                                                        }}/>
-                                                                    {errors.p_weight && <span
-                                                                        style={{fontSize: '10px'}}>{errors.p_weight.message}</span>}
-                                                                </div>
-                                                            ) : ('')}
-                                                        </div>
-                                                    </div>
-                                                    <div className="mt-3">
-                                                        <h6 className="mb-0">Package size</h6>
-                                                        <div className="row row-cols-1 row-cols-md-2">
-                                                            {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                                <div className={'mt-3'}>
-                                                                    <TextField
-                                                                        variant='outlined'
-                                                                        fullWidth
-                                                                        focused
-                                                                        autoComplete="off"
-                                                                        size='small'
-                                                                        type={'number'}
-                                                                        label={'Height'}
-                                                                        {...register('package_height', {
-                                                                            required: 'This field is required',
-                                                                            pattern: {
-                                                                                value: /^[0-9]+$/,
-                                                                                message: 'Use only number',
-                                                                            },
-                                                                        })}
-
-                                                                        sx={{
-                                                                            '& .MuiFormLabel-root': {
-                                                                                // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                fontWeight: 400,
-                                                                                fontSize: 12,
-                                                                            },
-                                                                            '& label': {
-                                                                                fontSize: 12
-                                                                            },
-                                                                            '& label.Mui-focused': {
-                                                                                color: '#1c2437',
-                                                                                fontSize: 16
-                                                                            },
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                // fontSize: { xs: 12, md: 14 },
-                                                                                height: 35,
-                                                                                backgroundColor: 'white',
-                                                                                '&.Mui-focused fieldset': {
-                                                                                    borderColor: '#979797',
-                                                                                    borderWidth: '1px'
-                                                                                },
-                                                                            },
-                                                                        }}/>
-                                                                    {errors.package_height && <span
-                                                                        style={{fontSize: '10px'}}>{errors.package_height.message}</span>}
-                                                                </div>
-                                                            ) : ("")}
-                                                            {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                                <div className={'mt-3'}>
-                                                                    <TextField
-                                                                        variant='outlined'
-                                                                        fullWidth
-                                                                        focused
-                                                                        autoComplete="off"
-                                                                        size='small'
-                                                                        type={'number'}
-                                                                        label={'Width'}
-                                                                        {...register('package_width', {
-                                                                            required: 'This field is required',
-                                                                            pattern: {
-                                                                                value: /^[0-9]+$/,
-                                                                                message: 'Use only number',
-                                                                            },
-                                                                        })}
-
-                                                                        sx={{
-                                                                            '& .MuiFormLabel-root': {
-                                                                                // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                fontWeight: 400,
-                                                                                fontSize: 12,
-                                                                            },
-                                                                            '& label': {
-                                                                                fontSize: 12
-                                                                            },
-                                                                            '& label.Mui-focused': {
-                                                                                color: '#1c2437',
-                                                                                fontSize: 16
-                                                                            },
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                // fontSize: { xs: 12, md: 14 },
-                                                                                height: 35,
-                                                                                backgroundColor: 'white',
-                                                                                '&.Mui-focused fieldset': {
-                                                                                    borderColor: '#979797',
-                                                                                    borderWidth: '1px'
-                                                                                },
-                                                                            },
-                                                                        }}/>
-                                                                    {errors.package_width && <span
-                                                                        style={{fontSize: '10px'}}>{errors.package_width.message}</span>}
-                                                                </div>
-                                                            ) : ("")}
-                                                            {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                                <div className={'mt-3'}>
-                                                                    <TextField
-                                                                        variant='outlined'
-                                                                        fullWidth
-                                                                        focused
-                                                                        autoComplete="off"
-                                                                        size='small'
-                                                                        type={'number'}
-                                                                        label={'Length'}
-                                                                        {...register('package_length', {
-                                                                            required: 'This field is required',
-                                                                            pattern: {
-                                                                                value: /^[0-9]+$/,
-                                                                                message: 'Use only number',
-                                                                            },
-                                                                        })}
-
-                                                                        sx={{
-                                                                            '& .MuiFormLabel-root': {
-                                                                                // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                fontWeight: 400,
-                                                                                fontSize: 12,
-                                                                            },
-                                                                            '& label': {
-                                                                                fontSize: 12
-                                                                            },
-                                                                            '& label.Mui-focused': {
-                                                                                color: '#1c2437',
-                                                                                fontSize: 16
-                                                                            },
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                // fontSize: { xs: 12, md: 14 },
-                                                                                height: 35,
-                                                                                backgroundColor: 'white',
-                                                                                '&.Mui-focused fieldset': {
-                                                                                    borderColor: '#979797',
-                                                                                    borderWidth: '1px'
-                                                                                },
-                                                                            },
-                                                                        }}/>
-                                                                    {errors.package_length && <span
-                                                                        style={{fontSize: '10px'}}>{errors.package_length.message}</span>}
-                                                                </div>
-                                                            ) : ('')}
-                                                            {type == "Single" || type == "Combo" || type === "Variant" ? (
-                                                                <div className={'mt-3'}>
-                                                                    <TextField
-                                                                        variant='outlined'
-                                                                        fullWidth
-                                                                        focused
-                                                                        autoComplete="off"
-                                                                        size='small'
-                                                                        type={'number'}
-                                                                        label={'Weight'}
-                                                                        {...register('package_weight', {
-                                                                            required: 'This field is required',
-                                                                            pattern: {
-                                                                                value: /^[0-9]+$/,
-                                                                                message: 'Use only number',
-                                                                            },
-                                                                        })}
-
-                                                                        sx={{
-                                                                            '& .MuiFormLabel-root': {
-                                                                                // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                fontWeight: 400,
-                                                                                fontSize: 12,
-                                                                            },
-                                                                            '& label': {
-                                                                                fontSize: 12
-                                                                            },
-                                                                            '& label.Mui-focused': {
-                                                                                color: '#1c2437',
-                                                                                fontSize: 16
-                                                                            },
-                                                                            '& .MuiOutlinedInput-root': {
-                                                                                // fontSize: { xs: 12, md: 14 },
-                                                                                height: 35,
-                                                                                backgroundColor: 'white',
-                                                                                '&.Mui-focused fieldset': {
-                                                                                    borderColor: '#979797',
-                                                                                    borderWidth: '1px'
-                                                                                },
-                                                                            },
-                                                                        }}/>
-                                                                    {errors.package_weight && <span
-                                                                        style={{fontSize: '10px'}}>{errors.package_weight.message}</span>}
-                                                                </div>
-                                                            ) : ('')}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            : "" :
-                                        <div style={{height: "100vh"}}>
-                                            <div className="d-flex align-items-center justify-content-center">
-                                                <div className="loader-box">
-                                                    <div className="loader">
-                                                        <div className="line bg-primary"></div>
-                                                        <div className="line bg-primary"></div>
-                                                        <div className="line bg-primary"></div>
-                                                        <div className="line bg-primary"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                }
                                 <div>
                                     <EditProductImage photos={photos} selectedProductPhotos={selectedProductPhotos}
                                                       setSelectedProductPhotos={setSelectedProductPhotos}
                                                       setPhotos={setPhotos} usedIdsForImage={usedIdsForImage}
                                                       handleDeletedProductPhotos={handleDeletedProductPhotos}></EditProductImage>
+                                </div>
+
+                                <div className="card">
+                                    <div className="card-body">
+                                        <div className="">
+                                            <div className="pb-2">
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={hasBatch == 1}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setHasBatch(1) :
+                                                                    setHasBatch(0)
+                                                            }}
+                                                        />}
+                                                        label="Has Batch"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={hasExpired == 1}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setHasExpired(1) :
+                                                                    setHasExpired(0)
+                                                            }}
+                                                        />}
+                                                        label="Has Expired"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={disableEcommerce == 1}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setDisableEcommerce(1) :
+                                                                    setDisableEcommerce(0)
+                                                            }}
+                                                        />}
+                                                        label="Disable For Ecommerce"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={stockOutSell == 1}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setStockOutSell(1) :
+                                                                    setStockOutSell(0)
+                                                            }}
+                                                        />}
+                                                        label="Continue Sell If Stockout"/>
+
+                                                </div>
+                                                <hr/>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={hasSerial == 1}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setHasSerial(1) :
+                                                                    setHasSerial(0)
+                                                            }}
+                                                        />}
+                                                        label="Has Serial Key"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={hasSerial == 2}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setHasSerial(2) :
+                                                                    setHasSerial(0)
+                                                            }}
+                                                        />}
+                                                        label="Has Serial Key By Manufaceture"/>
+                                                </div>
+                                                <hr/>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={warrantyType == 1}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setWarrantyType(1) :
+                                                                    setWarrantyType(0)
+                                                            }}
+                                                        />}
+                                                        label="Warrenty By Purchase"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <FormControlLabel
+                                                        control={<Checkbox
+                                                            checked={warrantyType == 2}
+                                                            onChange={(e) => {
+                                                                e.target.checked === true ?
+                                                                    setWarrantyType(2) :
+                                                                    setWarrantyType(0)
+                                                            }}
+                                                        />}
+                                                        label="Warrenty By Manufaceture"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 {/*<div>*/}
                                 {/*    {singleProductData?.productImage &&*/}
@@ -1737,7 +1469,7 @@ const EditProduct = () => {
                                                         <div className="card">
                                                             <div className="card-body">
                                                                 <div>
-                                                                    <div className="row row-cols-3">
+                                                                    <div className="row row-cols-2">
                                                                         {type === "Single" || type === "Combo" || type === "Variant" ? (
                                                                             <div className={"mt-3"}>
                                                                                 <TextField
@@ -1839,107 +1571,107 @@ const EditProduct = () => {
                                                                             </div>
                                                                         ) : ("")}
 
-                                                                        {type === "Single" || type === "Variant" || type === "Service" ? (
-                                                                            <div className={"mt-3"}>
-                                                                                <TextField
-                                                                                    variant='outlined'
-                                                                                    fullWidth
-                                                                                    focused
-                                                                                    autoComplete="off"
-                                                                                    size='small'
-                                                                                    type={'number'}
-                                                                                    label={'Purchase Price'}
-                                                                                    {...register('purchase_price', {
-                                                                                        required: 'This field is required',
-                                                                                        pattern: {
-                                                                                            value: /^[0-9]+$/,
-                                                                                            message: 'Use only number',
-                                                                                        },
-                                                                                    })}
-                                                                                    onChange={e => {
-                                                                                        allStoredValue.purchase_price = e.target.value
-                                                                                        setAllStoredValue(allStoredValue)
-                                                                                        clearErrors(["purchase_price"])
-                                                                                    }}
-                                                                                    sx={{
-                                                                                        '& .MuiFormLabel-root': {
-                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                            fontWeight: 400,
-                                                                                            fontSize: 12,
-                                                                                        },
-                                                                                        '& label': {
-                                                                                            fontSize: 12
-                                                                                        },
-                                                                                        '& label.Mui-focused': {
-                                                                                            color: '#1c2437',
-                                                                                            fontSize: 16
-                                                                                        },
-                                                                                        '& .MuiOutlinedInput-root': {
-                                                                                            // fontSize: { xs: 12, md: 14 },
-                                                                                            height: 35,
-                                                                                            backgroundColor: 'white',
-                                                                                            '&.Mui-focused fieldset': {
-                                                                                                borderColor: '#979797',
-                                                                                                borderWidth: '1px'
-                                                                                            },
-                                                                                        },
-                                                                                    }}/>
-                                                                                {errors.purchase_price && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
-                                                                            </div>
-                                                                        ) : ("")}
+                                                                        {/*{type === "Single" || type === "Variant" || type === "Service" ? (*/}
+                                                                        {/*    <div className={"mt-3"}>*/}
+                                                                        {/*        <TextField*/}
+                                                                        {/*            variant='outlined'*/}
+                                                                        {/*            fullWidth*/}
+                                                                        {/*            focused*/}
+                                                                        {/*            autoComplete="off"*/}
+                                                                        {/*            size='small'*/}
+                                                                        {/*            type={'number'}*/}
+                                                                        {/*            label={'Purchase Price'}*/}
+                                                                        {/*            {...register('purchase_price', {*/}
+                                                                        {/*                required: 'This field is required',*/}
+                                                                        {/*                pattern: {*/}
+                                                                        {/*                    value: /^[0-9]+$/,*/}
+                                                                        {/*                    message: 'Use only number',*/}
+                                                                        {/*                },*/}
+                                                                        {/*            })}*/}
+                                                                        {/*            onChange={e => {*/}
+                                                                        {/*                allStoredValue.purchase_price = e.target.value*/}
+                                                                        {/*                setAllStoredValue(allStoredValue)*/}
+                                                                        {/*                clearErrors(["purchase_price"])*/}
+                                                                        {/*            }}*/}
+                                                                        {/*            sx={{*/}
+                                                                        {/*                '& .MuiFormLabel-root': {*/}
+                                                                        {/*                    // fontSize: { xs: '.7rem', md: '.8rem' },*/}
+                                                                        {/*                    fontWeight: 400,*/}
+                                                                        {/*                    fontSize: 12,*/}
+                                                                        {/*                },*/}
+                                                                        {/*                '& label': {*/}
+                                                                        {/*                    fontSize: 12*/}
+                                                                        {/*                },*/}
+                                                                        {/*                '& label.Mui-focused': {*/}
+                                                                        {/*                    color: '#1c2437',*/}
+                                                                        {/*                    fontSize: 16*/}
+                                                                        {/*                },*/}
+                                                                        {/*                '& .MuiOutlinedInput-root': {*/}
+                                                                        {/*                    // fontSize: { xs: 12, md: 14 },*/}
+                                                                        {/*                    height: 35,*/}
+                                                                        {/*                    backgroundColor: 'white',*/}
+                                                                        {/*                    '&.Mui-focused fieldset': {*/}
+                                                                        {/*                        borderColor: '#979797',*/}
+                                                                        {/*                        borderWidth: '1px'*/}
+                                                                        {/*                    },*/}
+                                                                        {/*                },*/}
+                                                                        {/*            }}/>*/}
+                                                                        {/*        {errors.purchase_price && <span*/}
+                                                                        {/*            style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}*/}
+                                                                        {/*    </div>*/}
+                                                                        {/*) : ("")}*/}
 
-                                                                        {type === 'Combo' ? (
-                                                                            <div className={"mt-3"}>
-                                                                                <TextField
-                                                                                    readonly={true}
-                                                                                    variant='outlined'
-                                                                                    fullWidth
-                                                                                    focused
-                                                                                    autoComplete="off"
-                                                                                    size='small'
-                                                                                    type={'number'}
-                                                                                    label={'Purchase Price'}
-                                                                                    value={totalComboPrice}
-                                                                                    {...register('purchase_price', {
-                                                                                        required: 'This field is required',
-                                                                                        pattern: {
-                                                                                            value: /^[0-9]+$/,
-                                                                                            message: 'Use only number',
-                                                                                        },
-                                                                                    })}
-                                                                                    onChange={e => {
-                                                                                        allStoredValue.purchase_price = e.target.value
-                                                                                        setAllStoredValue(allStoredValue)
-                                                                                        clearErrors(["purchase_price"])
-                                                                                    }}
-                                                                                    sx={{
-                                                                                        '& .MuiFormLabel-root': {
-                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                            fontWeight: 400,
-                                                                                            fontSize: 12,
-                                                                                        },
-                                                                                        '& label': {
-                                                                                            fontSize: 12
-                                                                                        },
-                                                                                        '& label.Mui-focused': {
-                                                                                            color: '#1c2437',
-                                                                                            fontSize: 16
-                                                                                        },
-                                                                                        '& .MuiOutlinedInput-root': {
-                                                                                            // fontSize: { xs: 12, md: 14 },
-                                                                                            height: 35,
-                                                                                            backgroundColor: 'white',
-                                                                                            '&.Mui-focused fieldset': {
-                                                                                                borderColor: '#979797',
-                                                                                                borderWidth: '1px'
-                                                                                            },
-                                                                                        },
-                                                                                    }}/>
-                                                                                {errors.purchase_price && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}
-                                                                            </div>
-                                                                        ) : ("")}
+                                                                        {/*{type === 'Combo' ? (*/}
+                                                                        {/*    <div className={"mt-3"}>*/}
+                                                                        {/*        <TextField*/}
+                                                                        {/*            readonly={true}*/}
+                                                                        {/*            variant='outlined'*/}
+                                                                        {/*            fullWidth*/}
+                                                                        {/*            focused*/}
+                                                                        {/*            autoComplete="off"*/}
+                                                                        {/*            size='small'*/}
+                                                                        {/*            type={'number'}*/}
+                                                                        {/*            label={'Purchase Price'}*/}
+                                                                        {/*            value={totalComboPrice}*/}
+                                                                        {/*            {...register('purchase_price', {*/}
+                                                                        {/*                required: 'This field is required',*/}
+                                                                        {/*                pattern: {*/}
+                                                                        {/*                    value: /^[0-9]+$/,*/}
+                                                                        {/*                    message: 'Use only number',*/}
+                                                                        {/*                },*/}
+                                                                        {/*            })}*/}
+                                                                        {/*            onChange={e => {*/}
+                                                                        {/*                allStoredValue.purchase_price = e.target.value*/}
+                                                                        {/*                setAllStoredValue(allStoredValue)*/}
+                                                                        {/*                clearErrors(["purchase_price"])*/}
+                                                                        {/*            }}*/}
+                                                                        {/*            sx={{*/}
+                                                                        {/*                '& .MuiFormLabel-root': {*/}
+                                                                        {/*                    // fontSize: { xs: '.7rem', md: '.8rem' },*/}
+                                                                        {/*                    fontWeight: 400,*/}
+                                                                        {/*                    fontSize: 12,*/}
+                                                                        {/*                },*/}
+                                                                        {/*                '& label': {*/}
+                                                                        {/*                    fontSize: 12*/}
+                                                                        {/*                },*/}
+                                                                        {/*                '& label.Mui-focused': {*/}
+                                                                        {/*                    color: '#1c2437',*/}
+                                                                        {/*                    fontSize: 16*/}
+                                                                        {/*                },*/}
+                                                                        {/*                '& .MuiOutlinedInput-root': {*/}
+                                                                        {/*                    // fontSize: { xs: 12, md: 14 },*/}
+                                                                        {/*                    height: 35,*/}
+                                                                        {/*                    backgroundColor: 'white',*/}
+                                                                        {/*                    '&.Mui-focused fieldset': {*/}
+                                                                        {/*                        borderColor: '#979797',*/}
+                                                                        {/*                        borderWidth: '1px'*/}
+                                                                        {/*                    },*/}
+                                                                        {/*                },*/}
+                                                                        {/*            }}/>*/}
+                                                                        {/*        {errors.purchase_price && <span*/}
+                                                                        {/*            style={{fontSize: '10px'}}>{errors.purchase_price.message}</span>}*/}
+                                                                        {/*    </div>*/}
+                                                                        {/*) : ("")}*/}
                                                                     </div>
                                                                     <div className="row row-cols-2">
                                                                         {type == "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (
@@ -1992,58 +1724,6 @@ const EditProduct = () => {
                                                                             </div>
                                                                         ) : ("")}
 
-                                                                        {type == "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (
-                                                                            <div className={"mt-3"}>
-                                                                                <TextField
-                                                                                    variant='outlined'
-                                                                                    fullWidth
-                                                                                    focused
-                                                                                    autoComplete="off"
-                                                                                    size='small'
-                                                                                    type={'number'}
-                                                                                    label={'Selling Price'}
-                                                                                    // placeholder={'placeholder'}
-                                                                                    {...register('selling_price', {
-                                                                                        required: 'This field is required',
-                                                                                        pattern: {
-                                                                                            value: /^[0-9]+$/,
-                                                                                            message: 'Use only number',
-                                                                                        },
-                                                                                    })}
-                                                                                    onChange={e => {
-                                                                                        allStoredValue.selling_price = e.target.value
-                                                                                        setAllStoredValue(allStoredValue)
-                                                                                        clearErrors(["selling_price"])
-                                                                                    }}
-                                                                                    sx={{
-                                                                                        '& .MuiFormLabel-root': {
-                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                            fontWeight: 400,
-                                                                                            fontSize: 12,
-                                                                                        },
-                                                                                        '& label': {
-                                                                                            fontSize: 12
-                                                                                        },
-                                                                                        '& label.Mui-focused': {
-                                                                                            color: '#1c2437',
-                                                                                            fontSize: 16
-                                                                                        },
-                                                                                        '& .MuiOutlinedInput-root': {
-                                                                                            // fontSize: { xs: 12, md: 14 },
-                                                                                            height: 35,
-                                                                                            backgroundColor: 'white',
-                                                                                            '&.Mui-focused fieldset': {
-                                                                                                borderColor: '#979797',
-                                                                                                borderWidth: '1px'
-                                                                                            },
-                                                                                        },
-                                                                                    }}/>
-                                                                                {errors.selling_price && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.selling_price.message}</span>}
-                                                                            </div>
-                                                                        ) : ("")}
-                                                                    </div>
-                                                                    <div className="row row-cols-2">
                                                                         {type == "Single" || type == "Combo" || type == "Variant" ? (
                                                                             <div className={"mt-3"}>
                                                                                 <TextField
@@ -2095,170 +1775,186 @@ const EditProduct = () => {
                                                                             </div>
                                                                         ) : ("")}
 
-                                                                        {type == "Single" || type == "Combo" || type == "Variant" ? (
-                                                                            <div className={"mt-3"}>
-                                                                                <TextField
-                                                                                    variant='outlined'
-                                                                                    fullWidth
-                                                                                    focused
-                                                                                    autoComplete="off"
-                                                                                    size='small'
-                                                                                    type={'number'}
-                                                                                    label={'Min Selling Price'}
-                                                                                    {...register('min_selling_price', {
-                                                                                        required: 'This field is required',
-                                                                                        pattern: {
-                                                                                            value: /^[0-9]+$/,
-                                                                                            message: 'Use only number',
-                                                                                        },
-                                                                                    })}
-                                                                                    onChange={e => {
-                                                                                        allStoredValue.min_selling_price = e.target.value
-                                                                                        setAllStoredValue(allStoredValue)
-                                                                                        clearErrors(["min_selling_price"])
-                                                                                    }}
-
-                                                                                    sx={{
-                                                                                        '& .MuiFormLabel-root': {
-                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                            fontWeight: 400,
-                                                                                            fontSize: 12,
-                                                                                        },
-                                                                                        '& label': {
-                                                                                            fontSize: 12
-                                                                                        },
-                                                                                        '& label.Mui-focused': {
-                                                                                            color: '#1c2437',
-                                                                                            fontSize: 16
-                                                                                        },
-                                                                                        '& .MuiOutlinedInput-root': {
-                                                                                            // fontSize: { xs: 12, md: 14 },
-                                                                                            height: 35,
-                                                                                            backgroundColor: 'white',
-                                                                                            '&.Mui-focused fieldset': {
-                                                                                                borderColor: '#979797',
-                                                                                                borderWidth: '1px'
-                                                                                            },
-                                                                                        },
-                                                                                    }}/>
-                                                                                {errors.min_selling_price && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.min_selling_price.message}</span>}
-                                                                            </div>
-                                                                        ) : ("")}
+                                                                        {/*{type == "Single" || type === "Combo" || type === "Variant" || type === "Service" ? (*/}
+                                                                        {/*    <div className={"mt-3"}>*/}
+                                                                        {/*        <TextField*/}
+                                                                        {/*            variant='outlined'*/}
+                                                                        {/*            fullWidth*/}
+                                                                        {/*            focused*/}
+                                                                        {/*            autoComplete="off"*/}
+                                                                        {/*            size='small'*/}
+                                                                        {/*            type={'number'}*/}
+                                                                        {/*            label={'Selling Price'}*/}
+                                                                        {/*            // placeholder={'placeholder'}*/}
+                                                                        {/*            {...register('selling_price', {*/}
+                                                                        {/*                required: 'This field is required',*/}
+                                                                        {/*                pattern: {*/}
+                                                                        {/*                    value: /^[0-9]+$/,*/}
+                                                                        {/*                    message: 'Use only number',*/}
+                                                                        {/*                },*/}
+                                                                        {/*            })}*/}
+                                                                        {/*            onChange={e => {*/}
+                                                                        {/*                allStoredValue.selling_price = e.target.value*/}
+                                                                        {/*                setAllStoredValue(allStoredValue)*/}
+                                                                        {/*                clearErrors(["selling_price"])*/}
+                                                                        {/*            }}*/}
+                                                                        {/*            sx={{*/}
+                                                                        {/*                '& .MuiFormLabel-root': {*/}
+                                                                        {/*                    // fontSize: { xs: '.7rem', md: '.8rem' },*/}
+                                                                        {/*                    fontWeight: 400,*/}
+                                                                        {/*                    fontSize: 12,*/}
+                                                                        {/*                },*/}
+                                                                        {/*                '& label': {*/}
+                                                                        {/*                    fontSize: 12*/}
+                                                                        {/*                },*/}
+                                                                        {/*                '& label.Mui-focused': {*/}
+                                                                        {/*                    color: '#1c2437',*/}
+                                                                        {/*                    fontSize: 16*/}
+                                                                        {/*                },*/}
+                                                                        {/*                '& .MuiOutlinedInput-root': {*/}
+                                                                        {/*                    // fontSize: { xs: 12, md: 14 },*/}
+                                                                        {/*                    height: 35,*/}
+                                                                        {/*                    backgroundColor: 'white',*/}
+                                                                        {/*                    '&.Mui-focused fieldset': {*/}
+                                                                        {/*                        borderColor: '#979797',*/}
+                                                                        {/*                        borderWidth: '1px'*/}
+                                                                        {/*                    },*/}
+                                                                        {/*                },*/}
+                                                                        {/*            }}/>*/}
+                                                                        {/*        {errors.selling_price && <span*/}
+                                                                        {/*            style={{fontSize: '10px'}}>{errors.selling_price.message}</span>}*/}
+                                                                        {/*    </div>*/}
+                                                                        {/*) : ("")}*/}
                                                                     </div>
+                                                                    {/*<div className="row row-cols-2">*/}
+
+                                                                    {/*    {type == "Single" || type == "Combo" || type == "Variant" ? (*/}
+                                                                    {/*        <div className={"mt-3"}>*/}
+                                                                    {/*            <TextField*/}
+                                                                    {/*                variant='outlined'*/}
+                                                                    {/*                fullWidth*/}
+                                                                    {/*                focused*/}
+                                                                    {/*                autoComplete="off"*/}
+                                                                    {/*                size='small'*/}
+                                                                    {/*                type={'number'}*/}
+                                                                    {/*                label={'Min Selling Price'}*/}
+                                                                    {/*                {...register('min_selling_price', {*/}
+                                                                    {/*                    required: 'This field is required',*/}
+                                                                    {/*                    pattern: {*/}
+                                                                    {/*                        value: /^[0-9]+$/,*/}
+                                                                    {/*                        message: 'Use only number',*/}
+                                                                    {/*                    },*/}
+                                                                    {/*                })}*/}
+                                                                    {/*                onChange={e => {*/}
+                                                                    {/*                    allStoredValue.min_selling_price = e.target.value*/}
+                                                                    {/*                    setAllStoredValue(allStoredValue)*/}
+                                                                    {/*                    clearErrors(["min_selling_price"])*/}
+                                                                    {/*                }}*/}
+
+                                                                    {/*                sx={{*/}
+                                                                    {/*                    '& .MuiFormLabel-root': {*/}
+                                                                    {/*                        // fontSize: { xs: '.7rem', md: '.8rem' },*/}
+                                                                    {/*                        fontWeight: 400,*/}
+                                                                    {/*                        fontSize: 12,*/}
+                                                                    {/*                    },*/}
+                                                                    {/*                    '& label': {*/}
+                                                                    {/*                        fontSize: 12*/}
+                                                                    {/*                    },*/}
+                                                                    {/*                    '& label.Mui-focused': {*/}
+                                                                    {/*                        color: '#1c2437',*/}
+                                                                    {/*                        fontSize: 16*/}
+                                                                    {/*                    },*/}
+                                                                    {/*                    '& .MuiOutlinedInput-root': {*/}
+                                                                    {/*                        // fontSize: { xs: 12, md: 14 },*/}
+                                                                    {/*                        height: 35,*/}
+                                                                    {/*                        backgroundColor: 'white',*/}
+                                                                    {/*                        '&.Mui-focused fieldset': {*/}
+                                                                    {/*                            borderColor: '#979797',*/}
+                                                                    {/*                            borderWidth: '1px'*/}
+                                                                    {/*                        },*/}
+                                                                    {/*                    },*/}
+                                                                    {/*                }}/>*/}
+                                                                    {/*            {errors.min_selling_price && <span*/}
+                                                                    {/*                style={{fontSize: '10px'}}>{errors.min_selling_price.message}</span>}*/}
+                                                                    {/*        </div>*/}
+                                                                    {/*    ) : ("")}*/}
+                                                                    {/*</div>*/}
                                                                     <div className="row row-cols-2">
-                                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                                            <div className="mt-3">
-                                                                                <TextField
-                                                                                    variant='outlined'
-                                                                                    fullWidth
-                                                                                    focused
-                                                                                    autoComplete="off"
-                                                                                    size='small'
-                                                                                    type={'number'}
-                                                                                    label={'Tax'}
-                                                                                    // value={allStoredValue.tax}
-                                                                                    // placeholder={'placeholder'}
-                                                                                    {...register('tax', {
-                                                                                        required: 'This field is required',
-                                                                                        pattern: {
-                                                                                            value: /^[0-9]+$/,
-                                                                                            message: 'Use only number',
-                                                                                        },
-                                                                                    })}
-                                                                                    onChange={e => {
-                                                                                        allStoredValue.tax = e.target.value
-                                                                                        setAllStoredValue(allStoredValue)
-                                                                                        clearErrors(["tax"])
-                                                                                        // setComponentRender(componentRender)
-                                                                                    }}
+                                                                        {/*{type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (*/}
+                                                                        {/*    <div className="mt-3">*/}
+                                                                        {/*        <TextField*/}
+                                                                        {/*            variant='outlined'*/}
+                                                                        {/*            fullWidth*/}
+                                                                        {/*            focused*/}
+                                                                        {/*            autoComplete="off"*/}
+                                                                        {/*            size='small'*/}
+                                                                        {/*            type={'number'}*/}
+                                                                        {/*            label={'Tax'}*/}
+                                                                        {/*            // value={allStoredValue.tax}*/}
+                                                                        {/*            // placeholder={'placeholder'}*/}
+                                                                        {/*            {...register('tax', {*/}
+                                                                        {/*                required: 'This field is required',*/}
+                                                                        {/*                pattern: {*/}
+                                                                        {/*                    value: /^[0-9]+$/,*/}
+                                                                        {/*                    message: 'Use only number',*/}
+                                                                        {/*                },*/}
+                                                                        {/*            })}*/}
+                                                                        {/*            onChange={e => {*/}
+                                                                        {/*                allStoredValue.tax = e.target.value*/}
+                                                                        {/*                setAllStoredValue(allStoredValue)*/}
+                                                                        {/*                clearErrors(["tax"])*/}
+                                                                        {/*                // setComponentRender(componentRender)*/}
+                                                                        {/*            }}*/}
 
-                                                                                    sx={{
-                                                                                        '& .MuiFormLabel-root': {
-                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
-                                                                                            fontWeight: 400,
-                                                                                            fontSize: 12,
-                                                                                        },
-                                                                                        '& label': {
-                                                                                            fontSize: 12
-                                                                                        },
-                                                                                        '& label.Mui-focused': {
-                                                                                            color: '#1c2437',
-                                                                                            fontSize: 16
-                                                                                        },
-                                                                                        '& .MuiOutlinedInput-root': {
-                                                                                            // fontSize: { xs: 12, md: 14 },
-                                                                                            height: 35,
-                                                                                            backgroundColor: 'white',
-                                                                                            '&.Mui-focused fieldset': {
-                                                                                                borderColor: '#979797',
-                                                                                                borderWidth: '1px'
-                                                                                            },
-                                                                                        },
-                                                                                    }}/>
-                                                                                {errors.tax && <span
-                                                                                    style={{fontSize: '10px'}}>{errors.tax.message}</span>}
+                                                                        {/*            sx={{*/}
+                                                                        {/*                '& .MuiFormLabel-root': {*/}
+                                                                        {/*                    // fontSize: { xs: '.7rem', md: '.8rem' },*/}
+                                                                        {/*                    fontWeight: 400,*/}
+                                                                        {/*                    fontSize: 12,*/}
+                                                                        {/*                },*/}
+                                                                        {/*                '& label': {*/}
+                                                                        {/*                    fontSize: 12*/}
+                                                                        {/*                },*/}
+                                                                        {/*                '& label.Mui-focused': {*/}
+                                                                        {/*                    color: '#1c2437',*/}
+                                                                        {/*                    fontSize: 16*/}
+                                                                        {/*                },*/}
+                                                                        {/*                '& .MuiOutlinedInput-root': {*/}
+                                                                        {/*                    // fontSize: { xs: 12, md: 14 },*/}
+                                                                        {/*                    height: 35,*/}
+                                                                        {/*                    backgroundColor: 'white',*/}
+                                                                        {/*                    '&.Mui-focused fieldset': {*/}
+                                                                        {/*                        borderColor: '#979797',*/}
+                                                                        {/*                        borderWidth: '1px'*/}
+                                                                        {/*                    },*/}
+                                                                        {/*                },*/}
+                                                                        {/*            }}/>*/}
+                                                                        {/*        {errors.tax && <span*/}
+                                                                        {/*            style={{fontSize: '10px'}}>{errors.tax.message}</span>}*/}
+                                                                        {/*    </div>*/}
+                                                                        {/*) : ("")}*/}
+
+                                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
+                                                                            <div style={{marginTop: '15px', marginBottom: '15px'}}>
+                                                                                <Select
+                                                                                    placeholder={"Tax"}
+                                                                                    previous={tax}
+                                                                                    options={taxData}
+                                                                                    setValue={setTax}
+                                                                                    cngFn={handleChangeTax}
+                                                                                />
                                                                             </div>
-                                                                        ) : ("")}
+                                                                        ) : ( "" )}
 
                                                                         {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                                            <div>
+                                                                            <div style={{marginTop: '15px', marginBottom: '15px'}}>
                                                                                 <Select
                                                                                     placeholder={"Tax Type"}
-                                                                                    labelName={' '}
+                                                                                    // labelName={' '}
                                                                                     previous={taxType}
                                                                                     options={taxTypeData}
                                                                                     setValue={setTaxType}
                                                                                     cngFn={handleChangeTaxType}
-                                                                                />
-                                                                            </div>
-                                                                        ) : ("")}
-
-                                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                                            <div style={{marginTop: '15px'}}>
-                                                                                <Select
-                                                                                    placeholder={"Serial keys"}
-                                                                                    previous={hasSerial}
-                                                                                    // labelName={' '}
-                                                                                    options={hasSerialValue}
-                                                                                    setValue={setHasSerial}
-                                                                                    cngFn={handleChangeHasSerial}
-                                                                                />
-                                                                            </div>
-                                                                        ) : ("")}
-
-                                                                        {
-                                                                            hasSerial?.value == 3 ?
-                                                                                <div>
-                                                                                    <Input
-                                                                                        labelName={"serial key by manufacture"}
-                                                                                        inputName={"serial_key_by_manufacture"}
-                                                                                        inputType={"text"}
-                                                                                        // placeholder={"serial key by manufacture"}
-                                                                                        // defaultValue={0}
-                                                                                        validation={{
-                                                                                            ...register('serial_key_by_manufacture', {
-                                                                                                required: 'This field is required',
-                                                                                            })
-                                                                                        }}
-                                                                                        performOnValue={(e) => clearErrors(["serial_key_by_manufacture"])}
-                                                                                        error={errors.p_height}
-                                                                                    />
-                                                                                    {errors.serial_key_by_manufacture &&
-                                                                                        <span
-                                                                                            style={{fontSize: '10px'}}>{errors.serial_key_by_manufacture.message}</span>}
-                                                                                </div> : ''
-                                                                        }
-
-                                                                        {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
-                                                                            <div style={{marginTop: '15px'}}>
-                                                                                <Select
-                                                                                    placeholder={"Serial keys"}
-                                                                                    previous={warrantyType}
-                                                                                    // labelName={' '}
-                                                                                    options={warrantyTypeValue}
-                                                                                    setValue={setWarrantyType}
-                                                                                    cngFn={handleChangeWarrantyType}
                                                                                 />
                                                                             </div>
                                                                         ) : ("")}
@@ -2270,6 +1966,436 @@ const EditProduct = () => {
                                                     <div style={{height: "100vh"}}>
                                                         <div
                                                             className="d-flex align-items-center justify-content-center">
+                                                            <div className="loader-box">
+                                                                <div className="loader">
+                                                                    <div className="line bg-primary"></div>
+                                                                    <div className="line bg-primary"></div>
+                                                                    <div className="line bg-primary"></div>
+                                                                    <div className="line bg-primary"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            }
+
+                                            {
+                                                isLoading !== true ?
+                                                    type !== "Service" ?
+                                                        <div className="card">
+                                                            <div className="card-body">
+                                                                <div className="row row-cols-md-2">
+                                                                    {type === "Single" || type === "Variant" || type === "Combo" ? (
+                                                                        <div className="pb-3">
+                                                                            <Select
+                                                                                name={"measurement_unit"}
+                                                                                labelName={"Size unit"}
+                                                                                // placeholder={"Select size unit"}
+                                                                                previous={measurementUnit}
+                                                                                options={[
+                                                                                    {value: "Inch", label: "Inch"},
+                                                                                    {value: "Cm", label: "Cm"},
+                                                                                    {value: "mm", label: "mm"}]}
+                                                                                setValue={setMeasurementUnit}
+                                                                                cngFn={handleChangeForUpdateMeasurementUnit}
+                                                                            />
+                                                                        </div>
+                                                                    ) : ("")}
+
+                                                                    {type === "Single" || type === "Variant" || type === "Combo" ? (
+                                                                        <div className="pb-3">
+                                                                            <Select
+                                                                                name={"weight_unit"}
+                                                                                labelName={"Weight unit"}
+                                                                                // placeholder={"Select size unit"}
+                                                                                previous={weightUnit}
+                                                                                options={[
+                                                                                    {value: "Gram (g)", label: "Gram (g)"},
+                                                                                    {
+                                                                                        value: "Kilogram (kg)",
+                                                                                        label: "Kilogram (kg)"
+                                                                                    }]}
+                                                                                setValue={setWeightUnit}
+                                                                                cngFn={handleChangeForUpdateWeightUnit}
+                                                                            />
+                                                                        </div>
+                                                                    ) : ("")}
+                                                                </div>
+                                                                <div>
+                                                                    <h6 className="mb-0">Product size</h6>
+                                                                    <div className='row row-cols-1 row-cols-md-2'>
+                                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                                            <div className={"mt-3"}>
+
+                                                                                <TextField
+                                                                                    variant='outlined'
+                                                                                    fullWidth
+                                                                                    focused
+                                                                                    autoComplete="off"
+                                                                                    size='small'
+                                                                                    type={'number'}
+                                                                                    label={'Height'}
+                                                                                    {...register('p_height', {
+                                                                                        required: 'This field is required',
+                                                                                        pattern: {
+                                                                                            value: /^[0-9]+$/,
+                                                                                            message: 'Use only number',
+                                                                                        },
+                                                                                    })}
+
+                                                                                    sx={{
+                                                                                        '& .MuiFormLabel-root': {
+                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                                            fontWeight: 400,
+                                                                                            fontSize: 12,
+                                                                                        },
+                                                                                        '& label': {
+                                                                                            fontSize: 12
+                                                                                        },
+                                                                                        '& label.Mui-focused': {
+                                                                                            color: '#1c2437',
+                                                                                            fontSize: 16
+                                                                                        },
+                                                                                        '& .MuiOutlinedInput-root': {
+                                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                                            height: 35,
+                                                                                            backgroundColor: 'white',
+                                                                                            '&.Mui-focused fieldset': {
+                                                                                                borderColor: '#979797',
+                                                                                                borderWidth: '1px'
+                                                                                            },
+                                                                                        },
+                                                                                    }}/>
+                                                                                {errors.p_height && <span
+                                                                                    style={{fontSize: '10px'}}>{errors.p_height.message}</span>}
+                                                                            </div>
+                                                                        ) : ("")}
+                                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                                            <div className={'mt-3'}>
+                                                                                <TextField
+                                                                                    variant='outlined'
+                                                                                    fullWidth
+                                                                                    focused
+                                                                                    autoComplete="off"
+                                                                                    size='small'
+                                                                                    type={'number'}
+                                                                                    label={'Width'}
+                                                                                    {...register('p_width', {
+                                                                                        required: 'This field is required',
+                                                                                        pattern: {
+                                                                                            value: /^[0-9]+$/,
+                                                                                            message: 'Use only number',
+                                                                                        },
+                                                                                    })}
+
+                                                                                    sx={{
+                                                                                        '& .MuiFormLabel-root': {
+                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                                            fontWeight: 400,
+                                                                                            fontSize: 12,
+                                                                                        },
+                                                                                        '& label': {
+                                                                                            fontSize: 12
+                                                                                        },
+                                                                                        '& label.Mui-focused': {
+                                                                                            color: '#1c2437',
+                                                                                            fontSize: 16
+                                                                                        },
+                                                                                        '& .MuiOutlinedInput-root': {
+                                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                                            height: 35,
+                                                                                            backgroundColor: 'white',
+                                                                                            '&.Mui-focused fieldset': {
+                                                                                                borderColor: '#979797',
+                                                                                                borderWidth: '1px'
+                                                                                            },
+                                                                                        },
+                                                                                    }}/>
+                                                                                {errors.p_width && <span
+                                                                                    style={{fontSize: '10px'}}>{errors.p_width.message}</span>}
+                                                                            </div>
+                                                                        ) : ("")}
+                                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                                            <div className={'mt-3'}>
+                                                                                <TextField
+                                                                                    variant='outlined'
+                                                                                    fullWidth
+                                                                                    focused
+                                                                                    autoComplete="off"
+                                                                                    size='small'
+                                                                                    type={'number'}
+                                                                                    label={'Length'}
+                                                                                    {...register('p_length', {
+                                                                                        required: 'This field is required',
+                                                                                        pattern: {
+                                                                                            value: /^[0-9]+$/,
+                                                                                            message: 'Use only number',
+                                                                                        },
+                                                                                    })}
+
+                                                                                    sx={{
+                                                                                        '& .MuiFormLabel-root': {
+                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                                            fontWeight: 400,
+                                                                                            fontSize: 12,
+                                                                                        },
+                                                                                        '& label': {
+                                                                                            fontSize: 12
+                                                                                        },
+                                                                                        '& label.Mui-focused': {
+                                                                                            color: '#1c2437',
+                                                                                            fontSize: 16
+                                                                                        },
+                                                                                        '& .MuiOutlinedInput-root': {
+                                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                                            height: 35,
+                                                                                            backgroundColor: 'white',
+                                                                                            '&.Mui-focused fieldset': {
+                                                                                                borderColor: '#979797',
+                                                                                                borderWidth: '1px'
+                                                                                            },
+                                                                                        },
+                                                                                    }}/>
+                                                                                {errors.p_length && <span
+                                                                                    style={{fontSize: '10px'}}>{errors.p_length.message}</span>}
+                                                                            </div>
+                                                                        ) : ('')}
+                                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                                            <div className={'mt-3'}>
+                                                                                <TextField
+                                                                                    variant='outlined'
+                                                                                    fullWidth
+                                                                                    focused
+                                                                                    autoComplete="off"
+                                                                                    size='small'
+                                                                                    type={'number'}
+                                                                                    label={'Weight'}
+                                                                                    {...register('p_weight', {
+                                                                                        required: 'This field is required',
+                                                                                        pattern: {
+                                                                                            value: /^[0-9]+$/,
+                                                                                            message: 'Use only number',
+                                                                                        },
+                                                                                    })}
+
+                                                                                    sx={{
+                                                                                        '& .MuiFormLabel-root': {
+                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                                            fontWeight: 400,
+                                                                                            fontSize: 12,
+                                                                                        },
+                                                                                        '& label': {
+                                                                                            fontSize: 12
+                                                                                        },
+                                                                                        '& label.Mui-focused': {
+                                                                                            color: '#1c2437',
+                                                                                            fontSize: 16
+                                                                                        },
+                                                                                        '& .MuiOutlinedInput-root': {
+                                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                                            height: 35,
+                                                                                            backgroundColor: 'white',
+                                                                                            '&.Mui-focused fieldset': {
+                                                                                                borderColor: '#979797',
+                                                                                                borderWidth: '1px'
+                                                                                            },
+                                                                                        },
+                                                                                    }}/>
+                                                                                {errors.p_weight && <span
+                                                                                    style={{fontSize: '10px'}}>{errors.p_weight.message}</span>}
+                                                                            </div>
+                                                                        ) : ('')}
+                                                                    </div>
+                                                                </div>
+                                                                <div className="mt-3">
+                                                                    <h6 className="mb-0">Package size</h6>
+                                                                    <div className="row row-cols-1 row-cols-md-2">
+                                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                                            <div className={'mt-3'}>
+                                                                                <TextField
+                                                                                    variant='outlined'
+                                                                                    fullWidth
+                                                                                    focused
+                                                                                    autoComplete="off"
+                                                                                    size='small'
+                                                                                    type={'number'}
+                                                                                    label={'Height'}
+                                                                                    {...register('package_height', {
+                                                                                        required: 'This field is required',
+                                                                                        pattern: {
+                                                                                            value: /^[0-9]+$/,
+                                                                                            message: 'Use only number',
+                                                                                        },
+                                                                                    })}
+
+                                                                                    sx={{
+                                                                                        '& .MuiFormLabel-root': {
+                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                                            fontWeight: 400,
+                                                                                            fontSize: 12,
+                                                                                        },
+                                                                                        '& label': {
+                                                                                            fontSize: 12
+                                                                                        },
+                                                                                        '& label.Mui-focused': {
+                                                                                            color: '#1c2437',
+                                                                                            fontSize: 16
+                                                                                        },
+                                                                                        '& .MuiOutlinedInput-root': {
+                                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                                            height: 35,
+                                                                                            backgroundColor: 'white',
+                                                                                            '&.Mui-focused fieldset': {
+                                                                                                borderColor: '#979797',
+                                                                                                borderWidth: '1px'
+                                                                                            },
+                                                                                        },
+                                                                                    }}/>
+                                                                                {errors.package_height && <span
+                                                                                    style={{fontSize: '10px'}}>{errors.package_height.message}</span>}
+                                                                            </div>
+                                                                        ) : ("")}
+                                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                                            <div className={'mt-3'}>
+                                                                                <TextField
+                                                                                    variant='outlined'
+                                                                                    fullWidth
+                                                                                    focused
+                                                                                    autoComplete="off"
+                                                                                    size='small'
+                                                                                    type={'number'}
+                                                                                    label={'Width'}
+                                                                                    {...register('package_width', {
+                                                                                        required: 'This field is required',
+                                                                                        pattern: {
+                                                                                            value: /^[0-9]+$/,
+                                                                                            message: 'Use only number',
+                                                                                        },
+                                                                                    })}
+
+                                                                                    sx={{
+                                                                                        '& .MuiFormLabel-root': {
+                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                                            fontWeight: 400,
+                                                                                            fontSize: 12,
+                                                                                        },
+                                                                                        '& label': {
+                                                                                            fontSize: 12
+                                                                                        },
+                                                                                        '& label.Mui-focused': {
+                                                                                            color: '#1c2437',
+                                                                                            fontSize: 16
+                                                                                        },
+                                                                                        '& .MuiOutlinedInput-root': {
+                                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                                            height: 35,
+                                                                                            backgroundColor: 'white',
+                                                                                            '&.Mui-focused fieldset': {
+                                                                                                borderColor: '#979797',
+                                                                                                borderWidth: '1px'
+                                                                                            },
+                                                                                        },
+                                                                                    }}/>
+                                                                                {errors.package_width && <span
+                                                                                    style={{fontSize: '10px'}}>{errors.package_width.message}</span>}
+                                                                            </div>
+                                                                        ) : ("")}
+                                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                                            <div className={'mt-3'}>
+                                                                                <TextField
+                                                                                    variant='outlined'
+                                                                                    fullWidth
+                                                                                    focused
+                                                                                    autoComplete="off"
+                                                                                    size='small'
+                                                                                    type={'number'}
+                                                                                    label={'Length'}
+                                                                                    {...register('package_length', {
+                                                                                        required: 'This field is required',
+                                                                                        pattern: {
+                                                                                            value: /^[0-9]+$/,
+                                                                                            message: 'Use only number',
+                                                                                        },
+                                                                                    })}
+
+                                                                                    sx={{
+                                                                                        '& .MuiFormLabel-root': {
+                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                                            fontWeight: 400,
+                                                                                            fontSize: 12,
+                                                                                        },
+                                                                                        '& label': {
+                                                                                            fontSize: 12
+                                                                                        },
+                                                                                        '& label.Mui-focused': {
+                                                                                            color: '#1c2437',
+                                                                                            fontSize: 16
+                                                                                        },
+                                                                                        '& .MuiOutlinedInput-root': {
+                                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                                            height: 35,
+                                                                                            backgroundColor: 'white',
+                                                                                            '&.Mui-focused fieldset': {
+                                                                                                borderColor: '#979797',
+                                                                                                borderWidth: '1px'
+                                                                                            },
+                                                                                        },
+                                                                                    }}/>
+                                                                                {errors.package_length && <span
+                                                                                    style={{fontSize: '10px'}}>{errors.package_length.message}</span>}
+                                                                            </div>
+                                                                        ) : ('')}
+                                                                        {type == "Single" || type == "Combo" || type === "Variant" ? (
+                                                                            <div className={'mt-3'}>
+                                                                                <TextField
+                                                                                    variant='outlined'
+                                                                                    fullWidth
+                                                                                    focused
+                                                                                    autoComplete="off"
+                                                                                    size='small'
+                                                                                    type={'number'}
+                                                                                    label={'Weight'}
+                                                                                    {...register('package_weight', {
+                                                                                        required: 'This field is required',
+                                                                                        pattern: {
+                                                                                            value: /^[0-9]+$/,
+                                                                                            message: 'Use only number',
+                                                                                        },
+                                                                                    })}
+
+                                                                                    sx={{
+                                                                                        '& .MuiFormLabel-root': {
+                                                                                            // fontSize: { xs: '.7rem', md: '.8rem' },
+                                                                                            fontWeight: 400,
+                                                                                            fontSize: 12,
+                                                                                        },
+                                                                                        '& label': {
+                                                                                            fontSize: 12
+                                                                                        },
+                                                                                        '& label.Mui-focused': {
+                                                                                            color: '#1c2437',
+                                                                                            fontSize: 16
+                                                                                        },
+                                                                                        '& .MuiOutlinedInput-root': {
+                                                                                            // fontSize: { xs: 12, md: 14 },
+                                                                                            height: 35,
+                                                                                            backgroundColor: 'white',
+                                                                                            '&.Mui-focused fieldset': {
+                                                                                                borderColor: '#979797',
+                                                                                                borderWidth: '1px'
+                                                                                            },
+                                                                                        },
+                                                                                    }}/>
+                                                                                {errors.package_weight && <span
+                                                                                    style={{fontSize: '10px'}}>{errors.package_weight.message}</span>}
+                                                                            </div>
+                                                                        ) : ('')}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        : "" :
+                                                    <div style={{height: "100vh"}}>
+                                                        <div className="d-flex align-items-center justify-content-center">
                                                             <div className="loader-box">
                                                                 <div className="loader">
                                                                     <div className="line bg-primary"></div>
@@ -2295,7 +2421,7 @@ const EditProduct = () => {
                                             <div className="d-flex align-items-center justify-content-center">
                                                 <div className="loader-box">
                                                     <div className="loader">
-                                                        <div className="line bg-primary"></div>
+                                                    <div className="line bg-primary"></div>
                                                         <div className="line bg-primary"></div>
                                                         <div className="line bg-primary"></div>
                                                         <div className="line bg-primary"></div>
@@ -2331,8 +2457,8 @@ const EditProduct = () => {
                                                 <tr>
                                                     <th>Product Name</th>
                                                     <th>Quantity</th>
-                                                    <th>Price</th>
-                                                    <th>Tax</th>
+                                                    {/*<th>Price</th>*/}
+                                                    {/*<th>Tax</th>*/}
                                                     <th>Action</th>
                                                 </tr>
                                                 </thead>
@@ -2383,52 +2509,52 @@ const EditProduct = () => {
                                                                         style={{fontSize: '10px'}}>{errors?.[`quantity_${index}`]?.message}</span>}
                                                                 </div>
                                                             </td>
-                                                            <td>
-                                                                <div>
-                                                                    <TextField
-                                                                        disabled
-                                                                        id="outlined-size-small"
-                                                                        value={quantityWisePrice[index] ? quantityWisePrice[index] * singleData?.price : !singleData?.quantity ? 0 : singleData?.quantity * singleData?.price}
-                                                                        size="small"
-                                                                        {
-                                                                            ...register(`price_${index}`, {
-                                                                                required: 'This field is required',
-                                                                                pattern: {
-                                                                                    value: /^[A-Za-z0-9`!@#$%^&*]+$/,
-                                                                                    message: 'Use only alphabet, number and characters',
-                                                                                },
-                                                                            })
-                                                                        }
-                                                                        sx={{
-                                                                            width: '100%',
-                                                                            marginTop: '16px'
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div>
-                                                                    <TextField
-                                                                        disabled
-                                                                        id="outlined-size-small"
-                                                                        value={quantityWisePrice[index] ? quantityWisePrice[index] * singleData?.tax : !singleData?.quantity ? 0 : singleData?.quantity * singleData?.tax}
-                                                                        size="small"
-                                                                        {
-                                                                            ...register(`tax_${index}`, {
-                                                                                required: 'This field is required',
-                                                                                pattern: {
-                                                                                    value: /^[0-9]+$/,
-                                                                                    message: 'Use only alphabet, number and characters',
-                                                                                },
-                                                                            })
-                                                                        }
-                                                                        sx={{
-                                                                            width: '100%',
-                                                                            marginTop: '16px'
-                                                                        }}
-                                                                    />
-                                                                </div>
-                                                            </td>
+                                                            {/*<td>*/}
+                                                            {/*    <div>*/}
+                                                            {/*        <TextField*/}
+                                                            {/*            disabled*/}
+                                                            {/*            id="outlined-size-small"*/}
+                                                            {/*            value={quantityWisePrice[index] ? quantityWisePrice[index] * singleData?.price : !singleData?.quantity ? 0 : singleData?.quantity * singleData?.price}*/}
+                                                            {/*            size="small"*/}
+                                                            {/*            {*/}
+                                                            {/*                ...register(`price_${index}`, {*/}
+                                                            {/*                    required: 'This field is required',*/}
+                                                            {/*                    pattern: {*/}
+                                                            {/*                        value: /^[A-Za-z0-9`!@#$%^&*]+$/,*/}
+                                                            {/*                        message: 'Use only alphabet, number and characters',*/}
+                                                            {/*                    },*/}
+                                                            {/*                })*/}
+                                                            {/*            }*/}
+                                                            {/*            sx={{*/}
+                                                            {/*                width: '100%',*/}
+                                                            {/*                marginTop: '16px'*/}
+                                                            {/*            }}*/}
+                                                            {/*        />*/}
+                                                            {/*    </div>*/}
+                                                            {/*</td>*/}
+                                                            {/*<td>*/}
+                                                            {/*    <div>*/}
+                                                            {/*        <TextField*/}
+                                                            {/*            disabled*/}
+                                                            {/*            id="outlined-size-small"*/}
+                                                            {/*            value={quantityWisePrice[index] ? quantityWisePrice[index] * singleData?.tax : !singleData?.quantity ? 0 : singleData?.quantity * singleData?.tax}*/}
+                                                            {/*            size="small"*/}
+                                                            {/*            {*/}
+                                                            {/*                ...register(`tax_${index}`, {*/}
+                                                            {/*                    required: 'This field is required',*/}
+                                                            {/*                    pattern: {*/}
+                                                            {/*                        value: /^[0-9]+$/,*/}
+                                                            {/*                        message: 'Use only alphabet, number and characters',*/}
+                                                            {/*                    },*/}
+                                                            {/*                })*/}
+                                                            {/*            }*/}
+                                                            {/*            sx={{*/}
+                                                            {/*                width: '100%',*/}
+                                                            {/*                marginTop: '16px'*/}
+                                                            {/*            }}*/}
+                                                            {/*        />*/}
+                                                            {/*    </div>*/}
+                                                            {/*</td>*/}
                                                             <td className="text-end" style={{
                                                                 display: "flex",
                                                                 justifyContent: "center",
@@ -2458,31 +2584,49 @@ const EditProduct = () => {
                             </div>
                         ) : ("")}
 
-                        {type === "Variant" ? (
-                            <SelectComboVariantForEdit
-                                previousSKU={previousSKU}
-                                setPreviousSKU={setPreviousSKU}
-                                addRowInVariant={addRowInVariant}
-                                setAddRowInVariant={setAddRowInVariant}
-                                selectedVariantForVariant={selectedVariantForVariant}
-                                setSelectedVariantForVariant={setSelectedVariantForVariant}
-                                variantFormValue={variantFormValue}
-                                setVariantFormValue={setVariantFormValue}
-                                allStoredValue={allStoredValue}
-                                register={register}
-                                unregister={unregister}
-                                isValueOfVariantUpdate={isValueOfVariantUpdate}
-                                setIsValueOfVariantUpdate={setIsValueOfVariantUpdate}
-                                allDataForVariantValueDropdown={allDataForVariantValueDropdown}
-                                setAllDataForVariantValueDropdown={setAllDataForVariantValueDropdown}
-                                allDataForVariantValueDropdownForCheck={allDataForVariantValueDropdownForCheck}
-                                setAllDataForVariantValueDropdownForCheck={setAllDataForVariantValueDropdownForCheck}
-                                allDataForVariantDropdown={allDataForVariantDropdown}
-                                setAllDataForVariantDropdown={setAllDataForVariantDropdown}
-                                selectedDataKeyForProductList={selectedDataKeyForVariantList}
-                                setSelectedDataKeyForProductList={setSelectedDataKeyForVariantList}
-                            ></SelectComboVariantForEdit>
-                        ) : ("")}
+                        <div className="card">
+                            <div className="card-body">
+                                <div>
+                                    <FormControlLabel
+                                        control={<Checkbox
+                                            checked={typeChange?.value == "Variant"}
+                                            onChange={(e) => {
+                                                e.target.checked === true ?
+                                                    setTypeChange({value: "Variant", label: "Variant"}) :
+                                                    setTypeChange({value: "Single", label: "Standard"})
+                                                setType(e.target.checked ? "Variant" : "Single");
+                                            }}
+                                        />}
+                                        label="Has Variant"
+                                    />
+                                </div>
+                                {type === "Variant" ? (
+                                    <SelectComboVariantForEdit
+                                        previousSKU={previousSKU}
+                                        setPreviousSKU={setPreviousSKU}
+                                        addRowInVariant={addRowInVariant}
+                                        setAddRowInVariant={setAddRowInVariant}
+                                        selectedVariantForVariant={selectedVariantForVariant}
+                                        setSelectedVariantForVariant={setSelectedVariantForVariant}
+                                        variantFormValue={variantFormValue}
+                                        setVariantFormValue={setVariantFormValue}
+                                        allStoredValue={allStoredValue}
+                                        register={register}
+                                        unregister={unregister}
+                                        isValueOfVariantUpdate={isValueOfVariantUpdate}
+                                        setIsValueOfVariantUpdate={setIsValueOfVariantUpdate}
+                                        allDataForVariantValueDropdown={allDataForVariantValueDropdown}
+                                        setAllDataForVariantValueDropdown={setAllDataForVariantValueDropdown}
+                                        allDataForVariantValueDropdownForCheck={allDataForVariantValueDropdownForCheck}
+                                        setAllDataForVariantValueDropdownForCheck={setAllDataForVariantValueDropdownForCheck}
+                                        allDataForVariantDropdown={allDataForVariantDropdown}
+                                        setAllDataForVariantDropdown={setAllDataForVariantDropdown}
+                                        selectedDataKeyForProductList={selectedDataKeyForVariantList}
+                                        setSelectedDataKeyForProductList={setSelectedDataKeyForVariantList}
+                                    ></SelectComboVariantForEdit>
+                                ) : ("")}
+                            </div>
+                        </div>
                     </div>
                     <div className="card">
                         <div>
@@ -2677,9 +2821,7 @@ const EditProduct = () => {
                                     </div>
                                 </Accordion>
                                 <div className="d-flex justify-content-between align-items-center mb-2 mt-3">
-                                    <button onClick={() => toggle()} className="btn btn-secondary btn-sm"
-                                            type="button">Add new option
-                                    </button>
+                                    <button onClick={() => toggle()} className="btn btn-secondary btn-sm" type="button">Add new option</button>
                                     <div className="d-flex gap-2">
                                         <div style={{width: '200px', marginBottom: 0, paddingBottom: 0}}>
                                             <Select
