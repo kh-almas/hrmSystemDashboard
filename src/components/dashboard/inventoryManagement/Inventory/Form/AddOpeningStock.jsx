@@ -151,7 +151,9 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     const allProduct = allSku?.data?.body?.data;
     let finalArray = [];
     allProduct?.map((item) => {
+      console.log('item---',item)
       let initialObj = {
+
         id: item.id,
         label: `${item.name} > ${item.sku} > ${item.category_name} > ${item.brand_name} > ${item.model_name}`,
       };
