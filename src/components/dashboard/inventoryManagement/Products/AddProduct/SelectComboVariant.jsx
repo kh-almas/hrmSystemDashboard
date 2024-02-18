@@ -367,7 +367,7 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
                 </div>
 
                 <div>
-                    <div className="">
+                    <div>
                         <MultipleSelectWithReactSelect allOptions={allDataForVariantValueDropdownForCheck} setKey={setSelectedDataKeyForProductList} setValue={setSelectedVariantForVariant}></MultipleSelectWithReactSelect>
                     </div>
                     <div className="mt-2">
@@ -386,7 +386,7 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
                                         <p className="w-100 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Quantity</p>
                                         {/*<p className="w-100 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Purchase Price</p>*/}
                                         {/*<p className="w-100 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Selling Price</p>*/}
-                                        <p className="w-100 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Tax</p>
+                                        {/*<p className="w-100 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Tax</p>*/}
                                         <p className="w-25 text-center m-2" style={{fontWeight: 'bold', fontSize: '13px'}}>Action</p>
                                     </div>
                                     <div>
@@ -658,18 +658,3 @@ const SelectComboVariant = ({previousSKU, setPreviousSKU, allStoredValue, regist
 };
 
 export default SelectComboVariant;
-
-
-
-
-//
-//
-// <Modal isOpen={modal[rowIndex]} toggle={toggleOn[rowIndex]} className="modal-body" centered={true}>
-//     <ModalHeader toggle={toggleOn[rowIndex]}>`ModalTitle_${rowIndex}`</ModalHeader>
-//     <ModalBody>
-//
-//     </ModalBody>
-//     <ModalFooter>
-//         <Button color="secondary"  onClick={() => toggleOff(rowIndex)}>Close</Button>
-//     </ModalFooter>
-// </Modal>

@@ -50,17 +50,12 @@ const AddProduct = () => {
     const [warrantyType, setWarrantyType] = useState(0);
     const [stockOutSell, setStockOutSell] = useState(0);
     const [disableEcommerce, setDisableEcommerce] = useState(0);
+
     const [priceType, setPriceType] = useState({value: "percent", label: "Percent"});
     const [variantFormValue, setVariantFormValue] = useState({});
     const [previousSKU, setPreviousSKU] = useState([]);
     const [baseProductSKU, setBaseProductSKU] = useState('');
 
-    console.log('hasSerial', hasSerial)
-    console.log('warrantyType', warrantyType)
-    console.log('stockOutSell', stockOutSell)
-    console.log('hasBatch', hasBatch)
-    console.log('hasExpired', hasExpired)
-    console.log('disableEcommerce', disableEcommerce)
 
     const {
         register,
@@ -560,39 +555,39 @@ const AddProduct = () => {
 
         console.log('data', data);
 
-        // axios.post('/inventory-management/products/add', formData)
-        //     .then(info => {
-        //         Swal.fire({
-        //             position: 'top-end',
-        //             icon: 'success',
-        //             title: 'Your work has been saved',
-        //             showConfirmButton: false,
-        //             timer: 1500
-        //         })
-        //         if(type === "Service"){
-        //             navigate('/dashboard/inventory-management/products/services');
-        //         }else{
-        //             navigate('/dashboard/inventory-management/products');
-        //         }
-        //
-        //     })
-        //     .catch(e => {
-        //         console.log('error', e);
-        //         if(e?.response?.data?.body?.message?.errno == 1062){
-        //             Swal.fire({
-        //                 icon: 'error',
-        //                 title: 'Oops...',
-        //                 text: `Can not duplicate product sku`
-        //             })
-        //         }
-        //         // else {
-        //         //     Swal.fire({
-        //         //         icon: 'error',
-        //         //         title: 'Oops...',
-        //         //         text: `${e?.response?.data?.body?.message?.details[0].message}`
-        //         //     })
-        //         // }
-        //     })
+        axios.post('/inventory-management/products/add', formData)
+            .then(info => {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                if(type === "Service"){
+                    navigate('/dashboard/inventory-management/products/services');
+                }else{
+                    navigate('/dashboard/inventory-management/products');
+                }
+
+            })
+            .catch(e => {
+                console.log('error', e);
+                if(e?.response?.data?.body?.message?.errno == 1062){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: `Can not duplicate product sku`
+                    })
+                }
+                // else {
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Oops...',
+                //         text: `${e?.response?.data?.body?.message?.details[0].message}`
+                //     })
+                // }
+            })
     }
 
     return (
@@ -1482,10 +1477,10 @@ const AddProduct = () => {
                                                     {type == "Single" || type == "Combo" || type === "Variant" || type === "Service" ? (
                                                     <div style={{marginTop: '15px', marginBottom: '15px'}}>
                                                         <Select
-                                                            placeholder={"Tax Type"}
+                                                            placeholder={"Tax Methode"}
                                                             // previous={taxType}
                                                             // labelName={' '}
-                                                            options={[{value: "percent", label: "Percent"}, {value: "value", label: "Value"}]}
+                                                            options={[{value: "Exclusive", label: "Exclusive"}, {value: "Inclusive", label: "Inclusive"}]}
                                                             setValue={setTaxType}
                                                             cngFn={handleChangeTaxType}
                                                         />
