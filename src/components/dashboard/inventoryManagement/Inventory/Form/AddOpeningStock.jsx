@@ -1,22 +1,17 @@
-import React, { useEffect, useState } from "react";
-import Select from "../../../../common/modal/Select";
-import { Box } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Input from "../../../../common/modal/Input";
-import TextField from "@mui/material/TextField";
-import Submitbtn from "../../../../common/button/Submitbtn";
-import { useForm } from "react-hook-form";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 import axios from "../../../../../axios";
 import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
-import dayjs from "dayjs";
-import moment from "moment";
-import Swal from "sweetalert2";
 
 const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   const [selectedBranch, setSelectedBranch] = useState({});
@@ -24,8 +19,39 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   const [uniqueKey, setUniqueKey] = useState("");
   const [data, setData] = React.useState([]);
   const [branch, setBranch] = useState([]);
+  const [warehouse, setWarehouse] = useState([
+    { name: "warehouse1", id: "warehouse1" },
+    { name: "warehouse2", id: "warehouse2" },
+  ]);
+  const [supplier, setSupplier] = useState([
+    { name: "supplier1", id: "supplier1" },
+    { name: "supplier2", id: "supplier2" },
+  ]);
+
+  const [purchaseStatus, setPurchaseStatus] = useState([
+    { name: "Received", id: "Received" },
+    { name: "Partial", id: "Partial" },
+    { name: "Pending", id: "Pending" },
+    { name: "Ordered", id: "Ordered" },
+  ]);
   const [sku, setSku] = useState({});
   const [date, setDate] = useState("");
+  const [formData, setFormData] = useState({
+    date: "",
+    branch_id: "",
+    warehouse_id: "",
+    supplier_id: "",
+    sku_id: "",
+    qty: "",
+    purchase_status: "",
+    purchase_price: "",
+    selling_price: "",
+    total_discount: "",
+    file: null,
+  });
+
+  console.log("formData-=--", formData);
+
   const {
     register,
     handleSubmit,
@@ -37,6 +63,8 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     getAllBranch();
   const [allSkuStatus, allSkuReFetch, allSku, allSkuError] =
     getAllSKUForSelect();
+
+  console.log("allSku0---", allSku);
 
   function generateSkuCode(count) {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -61,12 +89,15 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   }, []);
 
   const onSubmit = (data) => {
-    console.log("dateeeeee-------",data);
-    console.log("dateeeeee-------",date);
-    data.branch_id = selectedBranch?.id;
-    data.date = date;
-    data.batch_no = batchNo;
-    data.sku_id = sku.id;
+    // console.log("dateeeeee-------",data);
+    // console.log("dateeeeee-------",date);
+    // data.branch_id = selectedBranch?.id;
+    // data.date = date;
+    // data.batch_no = batchNo;
+    // data.sku_id = sku.id;
+
+    // setFormData(data);
+
     axios
       .post("/inventory-management/stock/opening/add", data)
       .then((info) => {
@@ -144,6 +175,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
               getOptionLabel={(option) => (option ? option?.name : "")}
               onChange={(event, value) => {
                 setSelectedBranch(value);
+                setFormData({ ...formData, branch_id: value.id });
               }}
               sx={{
                 width: "100%",
@@ -180,6 +212,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
               // getOptionLabel={(option) => option ? option?.name : ''}
               onChange={(event, value) => {
                 setSku(value);
+                setFormData({ ...formData, sku_id: value.id });
               }}
               sx={{
                 width: "100%",
@@ -242,7 +275,153 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                 }}
               />
             </div>
-
+            <div>
+              <Autocomplete
+                disablePortal
+                size={"small"}
+                id="warehouse"
+                options={warehouse}
+                getOptionLabel={(option) => (option ? option?.name : "")}
+                onChange={(event, value) => {
+                  // setSelectedBranch(value);
+                  setFormData({ ...formData, warehouse_id: value.id });
+                }}
+                sx={{
+                  marginTop: 2,
+                  "& .MuiFormLabel-root": {
+                    fontWeight: 400,
+                    fontSize: 12,
+                  },
+                  "& label": {
+                    fontSize: 12,
+                  },
+                  "& label.Mui-focused": {
+                    color: "#1c2437",
+                    fontSize: 16,
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    height: 35,
+                    backgroundColor: "white",
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#979797",
+                      borderWidth: "1px",
+                    },
+                  },
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Warehouse"
+                    {...register("warehouse", {
+                      required: "This field is required",
+                    })}
+                  />
+                )}
+              />
+              {errors.warehouse && (
+                <span style={{ fontSize: "10px", color: "red" }}>
+                  {errors.warehouse.message}
+                </span>
+              )}
+            </div>
+            <div>
+              <Autocomplete
+                disablePortal
+                size={"small"}
+                id="warehouse"
+                options={supplier}
+                getOptionLabel={(option) => (option ? option?.name : "")}
+                onChange={(event, value) => {
+                  // setSelectedBranch(value);
+                  setFormData({ ...formData, supplier_id: value.id });
+                }}
+                sx={{
+                  marginTop: 2,
+                  "& .MuiFormLabel-root": {
+                    fontWeight: 400,
+                    fontSize: 12,
+                  },
+                  "& label": {
+                    fontSize: 12,
+                  },
+                  "& label.Mui-focused": {
+                    color: "#1c2437",
+                    fontSize: 16,
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    height: 35,
+                    backgroundColor: "white",
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#979797",
+                      borderWidth: "1px",
+                    },
+                  },
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Supplier"
+                    {...register("supplier", {
+                      required: "This field is required",
+                    })}
+                  />
+                )}
+              />
+              {errors.supplier && (
+                <span style={{ fontSize: "10px", color: "red" }}>
+                  {errors.supplier.message}
+                </span>
+              )}
+            </div>
+            <div>
+              <Autocomplete
+                disablePortal
+                size={"small"}
+                id="purchase_status"
+                options={purchaseStatus}
+                getOptionLabel={(option) => (option ? option?.name : "")}
+                onChange={(event, value) => {
+                  // setSelectedBranch(value);
+                  setFormData({ ...formData, purchase_status: value.id });
+                }}
+                sx={{
+                  marginTop: 2,
+                  "& .MuiFormLabel-root": {
+                    fontWeight: 400,
+                    fontSize: 12,
+                  },
+                  "& label": {
+                    fontSize: 12,
+                  },
+                  "& label.Mui-focused": {
+                    color: "#1c2437",
+                    fontSize: 16,
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    height: 35,
+                    backgroundColor: "white",
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#979797",
+                      borderWidth: "1px",
+                    },
+                  },
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Purchase Status"
+                    {...register("purchase_status", {
+                      required: "This field is required",
+                    })}
+                  />
+                )}
+              />
+              {errors.purchase_status && (
+                <span style={{ fontSize: "10px", color: "red" }}>
+                  {errors.purchase_status.message}
+                </span>
+              )}
+            </div>
             <div>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 {/*<DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />*/}
@@ -252,6 +431,10 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                   value={dayjs(date)}
                   onChange={(newValue) => {
                     setDate(moment(newValue.$d).format("YYYY-MM-DD"));
+                    setFormData({
+                      ...formData,
+                      date: moment(newValue.$d).format("YYYY-MM-DD"),
+                    });
                   }}
                   sx={{
                     width: "100%",
@@ -284,6 +467,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                   required: "This field is required",
                 })}
                 onChange={(e) => {
+                  setFormData({ ...formData, qty: e.target.value });
                   clearErrors(["qty"]);
                 }}
                 sx={{
@@ -327,6 +511,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                   required: "This field is required",
                 })}
                 onChange={(e) => {
+                  setFormData({ ...formData, purchase_price: e.target.value });
                   clearErrors(["purchase_price"]);
                 }}
                 sx={{
@@ -370,6 +555,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                   required: "This field is required",
                 })}
                 onChange={(e) => {
+                  setFormData({ ...formData, selling_price: e.target.value });
                   clearErrors(["selling_price"]);
                 }}
                 sx={{
@@ -413,6 +599,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                   required: "This field is required",
                 })}
                 onChange={(e) => {
+                  setFormData({ ...formData, total_discount: e.target.value });
                   clearErrors(["total_discount"]);
                 }}
                 sx={{
@@ -443,6 +630,75 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                   {errors.total_discount.message}
                 </span>
               )}
+            </div>
+
+            <div>
+              {/* <TextField
+                variant="outlined"
+                fullWidth
+                autoComplete="off"
+                size="small"
+                type={"file"}
+                // label={"Attached Documents"}
+                {...register("file", {
+                  required: "This field is required",
+                })}
+                onChange={(e) => {
+                  setFormData({ ...formData, file: e.target.files[0] });
+                  clearErrors(["file"]);
+                }}
+                sx={{
+                  marginTop: 2,
+                  "& .MuiFormLabel-root": {
+                    fontWeight: 400,
+                    fontSize: 12,
+                  },
+                  "& label": {
+                    fontSize: 12,
+                  },
+                  "& label.Mui-focused": {
+                    color: "#1c2437",
+                    fontSize: 16,
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    height: 35,
+                    backgroundColor: "white",
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#979797",
+                      borderWidth: "1px",
+                    },
+                  },
+                }}
+              />
+              {errors.file && (
+                <span style={{ fontSize: "10px", color: "red" }}>
+                  {errors.file.message}
+                </span>
+              )} */}
+              <label
+                htmlFor="file-upload"
+                
+                // style={{
+                //   border: "1px solid #ccc",
+                //   borderRadius: "4px",
+                // }}
+              >
+            
+              
+              </label>
+              <input
+                id="file-upload"
+                accept="image/*"
+                type="file"
+                onChange={(e) =>
+                  setFormData({ ...formData, file: e.target.files[0] })
+                }
+               className=" mt-3 w-100 border py-2 px-2"
+                style={{
+                  border: "1px solid #ccc",
+                  borderRadius: "3px",
+                }}
+              />
             </div>
           </div>
 
