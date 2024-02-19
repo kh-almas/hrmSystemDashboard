@@ -12,8 +12,10 @@ import Swal from "sweetalert2";
 import axios from "../../../../../axios";
 import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
+import OpeningStockModal from "./OpeningStockModal";
 
 const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
+  const [modal, setModal] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState({});
   const [batchNo, setBatchNo] = useState("");
   const [uniqueKey, setUniqueKey] = useState("");
@@ -38,6 +40,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   const [date, setDate] = useState("");
   const [formData, setFormData] = useState({
     date: "",
+    hasSerialKey:"",
     branch_id: "",
     warehouse_id: "",
     supplier_id: "",
@@ -49,8 +52,6 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     total_discount: "",
     file: null,
   });
-
-  console.log("formData-=--", formData);
 
   const {
     register,
@@ -64,7 +65,9 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   const [allSkuStatus, allSkuReFetch, allSku, allSkuError] =
     getAllSKUForSelect();
 
-  console.log("allSku0---", allSku);
+  // useEffect(() => {
+  //   console.log("allSku0---", allSku);
+  // }, [allSku])
 
   function generateSkuCode(count) {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -152,8 +155,11 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     let finalArray = [];
     allProduct?.map((item) => {
       let initialObj = {
+        hasSerialKey: item?.hasSerialKey,
+        hasExpired: item?.hasExpired,
+        hasBatch: item?.hasBatch,
         id: item.id,
-        label: `${item.name} > ${item.sku} > ${item.category_name} > ${item.brand_name} > ${item.model_name}`,
+        label: `${item?.name} > ${item?.sku} > ${item?.category_name} > ${item?.brand_name} > ${item?.model_name}`,
       };
 
       finalArray.push(initialObj);
@@ -161,6 +167,19 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
 
     setData(finalArray);
   }, [allSku]);
+
+
+
+
+  useEffect(() => {
+    if (sku?.hasSerialKey == 1) {
+      setModal(true)
+    }
+  }, [sku?.hasSerialKey]);
+
+  const updateToggle = () => {
+    setModal(!modal);
+  };
 
   return (
     <>
@@ -212,8 +231,9 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
               // getOptionLabel={(option) => option ? option?.name : ''}
               onChange={(event, value) => {
                 setSku(value);
-                setFormData({ ...formData, sku_id: value.id });
+                setFormData({ ...formData, sku_id: value?.id });
               }}
+              value={sku?.label}
               sx={{
                 width: "100%",
                 marginTop: 3,
@@ -677,15 +697,12 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
               )} */}
               <label
                 htmlFor="file-upload"
-                
+
                 // style={{
                 //   border: "1px solid #ccc",
                 //   borderRadius: "4px",
                 // }}
-              >
-            
-              
-              </label>
+              ></label>
               <input
                 id="file-upload"
                 accept="image/*"
@@ -693,7 +710,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                 onChange={(e) =>
                   setFormData({ ...formData, file: e.target.files[0] })
                 }
-               className=" mt-3 w-100 border py-2 px-2"
+                className=" mt-3 w-100 border py-2 px-2"
                 style={{
                   border: "1px solid #ccc",
                   borderRadius: "3px",
@@ -712,6 +729,17 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
           </div>
         </form>
       </div>
+
+      {modal && (
+        <OpeningStockModal
+          modal={modal}
+          setModal={setModal}
+          toggle={updateToggle}
+          sku={sku}
+          setFormData={setFormData}
+          formData={formData}
+        />
+      )}
     </>
   );
 };
