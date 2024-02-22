@@ -12,11 +12,14 @@ import Swal from "sweetalert2";
 import axios from "../../../../../axios";
 import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
+import OpeningStockModal from "./OpeningStockModal";
 
 const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
+  const [modal, setModal] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState({});
   const [batchNo, setBatchNo] = useState("");
   const [uniqueKey, setUniqueKey] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [data, setData] = React.useState([]);
   const [branch, setBranch] = useState([]);
   const [warehouse, setWarehouse] = useState([
@@ -38,6 +41,9 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   const [date, setDate] = useState("");
   const [formData, setFormData] = useState({
     date: "",
+    hasSerialKey: [],
+    manufactureDate: "",
+    expireDate: "",
     branch_id: "",
     warehouse_id: "",
     supplier_id: "",
@@ -49,8 +55,6 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     total_discount: "",
     file: null,
   });
-
-  console.log("formData-=--", formData);
 
   const {
     register,
@@ -64,7 +68,9 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   const [allSkuStatus, allSkuReFetch, allSku, allSkuError] =
     getAllSKUForSelect();
 
-  console.log("allSku0---", allSku);
+  // useEffect(() => {
+  //   console.log("allSku0---", allSku);
+  // }, [allSku])
 
   function generateSkuCode(count) {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -151,9 +157,13 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     const allProduct = allSku?.data?.body?.data;
     let finalArray = [];
     allProduct?.map((item) => {
+      // console.log("item", item);
       let initialObj = {
+        hasSerialKey: item?.hasSerialKey,
+        hasExpired: item?.hasExpired,
+        hasBatch: item?.hasBatch,
         id: item.id,
-        label: `${item.name} > ${item.sku} > ${item.category_name} > ${item.brand_name} > ${item.model_name}`,
+        label: `${item?.name} > ${item?.sku} > ${item?.category_name} > ${item?.brand_name} > ${item?.model_name}`,
       };
 
       finalArray.push(initialObj);
@@ -161,6 +171,25 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
 
     setData(finalArray);
   }, [allSku]);
+
+  useEffect(() => {
+    if (
+      (sku?.hasSerialKey == 1 ||
+        sku?.hasSerialKey == 2 ||
+        sku?.hasSerialKey == 0) &&
+      formData?.qty
+    ) {
+      setModal(true);
+    }
+  }, [formData?.qty, sku?.hasSerialKey]);
+
+
+
+  const updateToggle = () => {
+    setModal(!modal);
+  };
+
+  console.log("formData", formData);
 
   return (
     <>
@@ -204,6 +233,52 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
             )}
           </div>
           <div>
+            <TextField
+              variant="outlined"
+              fullWidth
+              autoComplete="off"
+              size="small"
+              type={"number"}
+              label={"Quantity"}
+              value={quantity}
+              {...register("qty", {
+                required: "This field is required",
+              })}
+              onChange={(e) => {
+                setQuantity(e.target.value);
+                setFormData({ ...formData, qty: e.target.value });
+                clearErrors(["qty"]);
+              }}
+              sx={{
+                marginTop: 2,
+                "& .MuiFormLabel-root": {
+                  fontWeight: 400,
+                  fontSize: 12,
+                },
+                "& label": {
+                  fontSize: 12,
+                },
+                "& label.Mui-focused": {
+                  color: "#1c2437",
+                  fontSize: 16,
+                },
+                "& .MuiOutlinedInput-root": {
+                  height: 35,
+                  backgroundColor: "white",
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#979797",
+                    borderWidth: "1px",
+                  },
+                },
+              }}
+            />
+            {errors.qty && (
+              <span style={{ fontSize: "10px", color: "red" }}>
+                {errors.qty.message}
+              </span>
+            )}
+          </div>
+          <div>
             <Autocomplete
               disablePortal
               size={"small"}
@@ -212,8 +287,9 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
               // getOptionLabel={(option) => option ? option?.name : ''}
               onChange={(event, value) => {
                 setSku(value);
-                setFormData({ ...formData, sku_id: value.id });
+                setFormData({ ...formData, sku_id: value?.id });
               }}
+              value={sku?.label}
               sx={{
                 width: "100%",
                 marginTop: 3,
@@ -241,7 +317,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
             )}
           </div>
           <div className="row row-cols-1 row-cols-lg-2">
-            <div>
+            {/* <div>
               <TextField
                 readOnly
                 variant="outlined"
@@ -274,6 +350,40 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                   },
                 }}
               />
+            </div> */}
+
+            <div>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                {/*<DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />*/}
+                <DatePicker
+                  label="Date"
+                  slotProps={{ textField: { size: "small" } }}
+                  value={dayjs(date)}
+                  onChange={(newValue) => {
+                    setDate(moment(newValue.$d).format("YYYY-MM-DD"));
+                    setFormData({
+                      ...formData,
+                      date: moment(newValue.$d).format("YYYY-MM-DD"),
+                    });
+                  }}
+                  sx={{
+                    width: "100%",
+                    marginTop: 2,
+                    "& label": {
+                      fontSize: 12,
+                    },
+                    "& label.Mui-focused": {
+                      fontSize: 16,
+                    },
+                  }}
+                />
+              </LocalizationProvider>
+
+              {errors.date && (
+                <span style={{ fontSize: "10px", color: "red" }}>
+                  {errors.date.message}
+                </span>
+              )}
             </div>
             <div>
               <Autocomplete
@@ -422,83 +532,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                 </span>
               )}
             </div>
-            <div>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                {/*<DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />*/}
-                <DatePicker
-                  label="Date"
-                  slotProps={{ textField: { size: "small" } }}
-                  value={dayjs(date)}
-                  onChange={(newValue) => {
-                    setDate(moment(newValue.$d).format("YYYY-MM-DD"));
-                    setFormData({
-                      ...formData,
-                      date: moment(newValue.$d).format("YYYY-MM-DD"),
-                    });
-                  }}
-                  sx={{
-                    width: "100%",
-                    marginTop: 2,
-                    "& label": {
-                      fontSize: 12,
-                    },
-                    "& label.Mui-focused": {
-                      fontSize: 16,
-                    },
-                  }}
-                />
-              </LocalizationProvider>
 
-              {errors.date && (
-                <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.date.message}
-                </span>
-              )}
-            </div>
-            <div>
-              <TextField
-                variant="outlined"
-                fullWidth
-                autoComplete="off"
-                size="small"
-                type={"number"}
-                label={"Quantity"}
-                {...register("qty", {
-                  required: "This field is required",
-                })}
-                onChange={(e) => {
-                  setFormData({ ...formData, qty: e.target.value });
-                  clearErrors(["qty"]);
-                }}
-                sx={{
-                  marginTop: 2,
-                  "& .MuiFormLabel-root": {
-                    fontWeight: 400,
-                    fontSize: 12,
-                  },
-                  "& label": {
-                    fontSize: 12,
-                  },
-                  "& label.Mui-focused": {
-                    color: "#1c2437",
-                    fontSize: 16,
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    height: 35,
-                    backgroundColor: "white",
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#979797",
-                      borderWidth: "1px",
-                    },
-                  },
-                }}
-              />
-              {errors.qty && (
-                <span style={{ fontSize: "10px", color: "red" }}>
-                  {errors.qty.message}
-                </span>
-              )}
-            </div>
             <div>
               <TextField
                 variant="outlined"
@@ -677,15 +711,12 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
               )} */}
               <label
                 htmlFor="file-upload"
-                
+
                 // style={{
                 //   border: "1px solid #ccc",
                 //   borderRadius: "4px",
                 // }}
-              >
-            
-              
-              </label>
+              ></label>
               <input
                 id="file-upload"
                 accept="image/*"
@@ -693,7 +724,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
                 onChange={(e) =>
                   setFormData({ ...formData, file: e.target.files[0] })
                 }
-               className=" mt-3 w-100 border py-2 px-2"
+                className=" mt-3 w-100 border py-2 px-2"
                 style={{
                   border: "1px solid #ccc",
                   borderRadius: "3px",
@@ -712,6 +743,19 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
           </div>
         </form>
       </div>
+
+      {modal && (
+        <OpeningStockModal
+          modal={modal}
+          setModal={setModal}
+          toggle={updateToggle}
+          sku={sku}
+          setQuantity={setQuantity}
+          quantity={quantity}
+          setFormData={setFormData}
+          formData={formData}
+        />
+      )}
     </>
   );
 };

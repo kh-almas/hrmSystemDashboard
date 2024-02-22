@@ -25,6 +25,7 @@ const EditableTable = () => {
   const [data, setData] = useState([]);
   const [branch, setBranch] = useState([]);
   const [batchNo, setBatchNo] = useState("");
+
   const [discountType, setDiscountType] = useState("");
   const [sellingPrice, setSellingPrice] = useState(0);
   const [discountPercent, setDiscountPercent] = useState(0);
