@@ -38,8 +38,6 @@ const ProductInitialization = () => {
   const [render, setRender] = useState(false);
   const [search, setSearch] = useState("");
   const [searchBranch, setSearchBranch] = useState("");
-  const [visibleData, setVisibleData] = useState([]);
-  const [visibleBranchData, setVisibleBranchData] = useState([]);
 
   useEffect(() => {
     const getDataFn = async () => {
@@ -63,8 +61,6 @@ const ProductInitialization = () => {
           `/inventory-management/products/list/combo/select`
         );
         setData(response?.data?.body?.data);
-        setVisibleData(response?.data?.body?.data);
-        console.log("response?.data?.body?.data", response?.data?.body?.data);
       } catch (error) {
         console.error(error);
       }
@@ -78,7 +74,6 @@ const ProductInitialization = () => {
         const setData = [];
         let allData = [];
         setBranchSkuData([]);
-        setVisibleBranchData([]);
         const getData = await axios.get(
           `/inventory-management/branch/products/initialization/${selectedBranch?.value}`
         );
@@ -90,26 +85,20 @@ const ProductInitialization = () => {
         setSelectedDataKeyForProductList(setData);
 
         data?.forEach((dt, i) => {
-          // console.log("dt?.id == setData[i]", dt?.id, setData[i]);
           setData?.includes(dt?.id) &&
             setBranchSkuData((prev) => [...prev, dt]);
-          setVisibleBranchData((prev) => [...prev, dt]);
         });
       }
     };
     getDataFn();
   }, [selectedBranch, render]);
-  console.log("setBranchSkuData", branchSkuData, visibleBranchData);
-
-  // console.log("selectedBranch", selectedBranch);
 
   const handleChangeForSelectedBranch = (selected) => {
     setSelectedBranch(selected);
+    setSelectedProduct([]);
   };
-  console.log("setSelectedProduct", selectedProduct);
 
   const submitInitializationForm = () => {
-    console.log("selectedProduct", selectedProduct);
     axios
       .put(
         `/inventory-management/branch/products/initialization/update/${selectedBranch?.value}`,
@@ -160,8 +149,6 @@ const ProductInitialization = () => {
       return; // Exit early if no products are selected
     }
 
-    console.log("id", id);
-
     Promise.all(
       id.map((productId) =>
         axios.delete(
@@ -170,7 +157,6 @@ const ProductInitialization = () => {
       )
     )
       .then((responses) => {
-        console.log("responses", responses);
         // Check if all responses are successful (status code 200)
         const allSuccess = responses.every(
           (response) => response.status === 200
@@ -212,7 +198,6 @@ const ProductInitialization = () => {
         }
       });
   };
-
 
   const filteredData = data?.filter((dt) => {
     if (!search) {
@@ -264,7 +249,7 @@ const ProductInitialization = () => {
           <div className="row">
             <div class="col-md-6">
               <div class="mt-4 card p-2 w-100">
-                <h4 className="text-center py-2">All SKU</h4>
+                <h4 className="text-center py-2">All Product</h4>
                 <div className="py-2 d-flex gap-3">
                   <input
                     type="search"
@@ -275,12 +260,12 @@ const ProductInitialization = () => {
                       setSearch(e.target.value);
                     }}
                   />
-                  <div
+                  <Button
                     onClick={submitInitializationForm}
                     className="form-control w-25 bg-primary d-flex justify-content-center align-items-center"
                   >
                     <FaArrowRight size={19} />
-                  </div>
+                  </Button>
                 </div>
                 <div
                   className="overflow-x-scroll"
@@ -341,12 +326,12 @@ const ProductInitialization = () => {
                   {selectedBranch?.label} Branch SKU
                 </h4>
                 <div className="py-2 d-flex gap-3">
-                  <div
+                  <Button
                     onClick={deleteSkuFromBranch}
                     className="form-control w-25 bg-primary d-flex justify-content-center align-items-center"
                   >
                     <FaArrowLeft size={19} />
-                  </div>
+                  </Button>
                   <input
                     type="search"
                     className="form-control w-75"
