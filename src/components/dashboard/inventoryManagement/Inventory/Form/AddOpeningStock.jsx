@@ -56,6 +56,8 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     file: null,
   });
 
+  
+
   const {
     register,
     handleSubmit,

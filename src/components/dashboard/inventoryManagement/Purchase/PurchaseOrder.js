@@ -38,7 +38,7 @@ const PurchaseOrder = () => {
                 <table className="table">
                   <thead className=" table-border">
                     <tr className="">
-                      <th scope="col">{"No"}</th>
+                      <th scope="col">{"No"}</th> 
                       <th scope="col">{"Date"}</th>
                       <th scope="col">{"Supplier Name"}</th>
                       <th scope="col">{"Invoice No"}</th>
