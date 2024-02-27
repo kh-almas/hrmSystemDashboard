@@ -169,7 +169,9 @@ import ProductDiscount from "../components/dashboard/inventoryManagement/Invento
 import PurchaseProducts from "../components/dashboard/inventoryManagement/Inventory/PurchaseProducts";
 import EditableTable from "../components/common/component/EditableTable/EditableTable";
 import Tax from "../components/dashboard/inventoryManagement/Products/Tax/Tax";
-
+import UpdateOpeningStock from "../components/dashboard/inventoryManagement/Inventory/Form/UpdateOpeningStock";
+import EditStockTransfer from "../components/dashboard/inventoryManagement/Inventory/Form/EditStockTransfer";
+import StockReceived from "../components/dashboard/inventoryManagement/Inventory/StockReceived";
 
 export const routes = [
   {
@@ -260,8 +262,7 @@ export const routes = [
     Component: <SetSalary />,
   },
 
-
-    //employee
+  //employee
   {
     path: `${process.env.PUBLIC_URL}/dashboard/hrm/employee`,
     Component: <EmployeSetup />,
@@ -432,7 +433,8 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/table`,
     Component: <MaterialReactTableExample />,
-  },  {
+  },
+  {
     path: `${process.env.PUBLIC_URL}/dashboard/editable-table`,
     Component: <EditableTable />,
   },
@@ -713,6 +715,11 @@ export const routes = [
     Component: <OpeningStock />,
   },
   {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/opening-stock/update/:id`,
+    Component: <UpdateOpeningStock />,
+  },
+
+  {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product/reconciliation`,
     Component: <ProductReconciliation />,
   },
@@ -735,6 +742,14 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-transfer`,
     Component: <StockTransfer />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-received`,
+    Component: <StockReceived />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-transfer/update/:id`,
+    Component: <EditStockTransfer />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-list`,

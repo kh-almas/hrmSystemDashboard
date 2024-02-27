@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import BaseModal from "../../../../common/modal/BaseModal";
 
-const OpeningStockModal = ({
+const StockTransferModal = ({
   modal,
   setModal,
   toggle,
@@ -692,4 +692,4 @@ const OpeningStockModal = ({
   );
 };
 
-export default OpeningStockModal;
+export default StockTransferModal;

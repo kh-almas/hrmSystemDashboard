@@ -578,6 +578,11 @@ export const MENUITEMS = [
             path: "/dashboard/inventory-management/inventory/stock-transfer",
           },
           {
+            title: "Stock Receive",
+            type: "link",
+            path: "/dashboard/inventory-management/inventory/stock-received",
+          },
+          {
             title: "Stock List",
             type: "link",
             path: "/dashboard/inventory-management/inventory/stock-list",
