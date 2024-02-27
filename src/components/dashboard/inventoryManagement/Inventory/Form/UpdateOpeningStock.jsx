@@ -1,11 +1,11 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import React, { useEffect, useMemo, useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -14,8 +14,9 @@ import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
 import OpeningStockModal from "./OpeningStockModal";
 
-const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
+const UpdateOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   const [modal, setModal] = useState(false);
+  const [valueForEdit, setValueForEdit] = useState({});
   const [selectedBranch, setSelectedBranch] = useState({});
   const [batchNo, setBatchNo] = useState("");
   const [uniqueKey, setUniqueKey] = useState("");
@@ -56,15 +57,21 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     file: null,
   });
 
-  
-
   const {
     register,
     handleSubmit,
-    formState: { errors },
     clearErrors,
+    setError,
+    formState: { errors },
     reset,
-  } = useForm();
+  } = useForm({
+    defaultValues: useMemo(() => {
+      return valueForEdit;
+    }, [valueForEdit]),
+  });
+
+  console.log("valueForEdit--", valueForEdit);
+
   const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] =
     getAllBranch();
   const [allSkuStatus, allSkuReFetch, allSku, allSkuError] =
@@ -106,51 +113,51 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
 
     // setFormData(data);
 
-    console.log('formddadaddaad',formData)
+    console.log("formddadaddaad", formData);
 
-    // axios
-    //   .post("/inventory-management/stock/opening/add", formData)
-    //   .then((info) => {
-    //     if (info?.status == 200) {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "success",
-    //         title: "Your work has been saved",
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //       // allOpeningStockReFetch();
-    //       // reset();
-    //       // // setSelectedBranch({});
-    //       // setDate(moment(new Date()).format('YYYY-MM-DD'));
-    //       const batchNo = generateSkuCode(12);
-    //       setBatchNo(batchNo);
-    //       allOpeningStockReFetch();
-    //       setShowFromForAdd(false);
-    //       // const uniqueId = generateSkuCode(8);
-    //       // setUniqueKey(uniqueId);
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     if (e?.response?.data?.body?.message?.errno == 1062) {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "error",
-    //         title: "Can not duplicate variant name",
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     } else {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "error",
-    //         // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
-    //         title: `Something is wrong`,
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     }
-    //   });
+    axios
+      .post("/inventory-management/stock/opening/add", formData)
+      .then((info) => {
+        if (info?.status == 200) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          // allOpeningStockReFetch();
+          // reset();
+          // // setSelectedBranch({});
+          // setDate(moment(new Date()).format('YYYY-MM-DD'));
+          const batchNo = generateSkuCode(12);
+          setBatchNo(batchNo);
+          allOpeningStockReFetch();
+          setShowFromForAdd(false);
+          // const uniqueId = generateSkuCode(8);
+          // setUniqueKey(uniqueId);
+        }
+      })
+      .catch((e) => {
+        if (e?.response?.data?.body?.message?.errno == 1062) {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Can not duplicate variant name",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
+            title: `Something is wrong`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
   };
 
   useEffect(() => {
@@ -763,4 +770,4 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   );
 };
 
-export default AddOpeningStock;
+export default UpdateOpeningStock;
