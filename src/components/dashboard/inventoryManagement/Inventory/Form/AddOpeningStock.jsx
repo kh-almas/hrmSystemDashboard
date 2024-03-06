@@ -61,8 +61,6 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   }, []);
 
   const onSubmit = (data) => {
-    console.log("dateeeeee-------",data);
-    console.log("dateeeeee-------",date);
     data.branch_id = selectedBranch?.id;
     data.date = date;
     data.batch_no = batchNo;
@@ -117,9 +115,10 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   }, [allBranch]);
 
   useEffect(() => {
-    const allProduct = allSku?.data?.body?.data;
+    const allSkuData = allSku?.data?.body?.data;
+    console.log('allSku', allSkuData);
     let finalArray = [];
-    allProduct?.map((item) => {
+    allSkuData?.map((item) => {
       let initialObj = {
         id: item.id,
         label: `${item.name} > ${item.sku} > ${item.category_name} > ${item.brand_name} > ${item.model_name}`,

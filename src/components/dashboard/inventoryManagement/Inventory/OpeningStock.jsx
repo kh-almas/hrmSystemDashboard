@@ -69,8 +69,6 @@ const OpeningStock = () => {
           }
       })
   };
-  
-
 
   return (
     <>
