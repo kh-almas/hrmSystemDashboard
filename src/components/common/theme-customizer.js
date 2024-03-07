@@ -81,11 +81,11 @@ const ThemeCustomizer = () => {
             })
         }
 
-        if (sidebar_type === 'compact-wrapper' || configDB.settings.sidebar.wrapper === 'compact-wrapper') {
-            document.querySelector(".compactLogo").className = 'compactLogo show';
-        } else {
-            document.querySelector(".compactLogo").className = 'compactLogo hide';
-        }
+        // if (sidebar_type === 'compact-wrapper' || configDB.settings.sidebar.wrapper === 'compact-wrapper') {
+        //     document.querySelector(".compactLogo").className = 'compactLogo show';
+        // } else {
+        //     document.querySelector(".compactLogo").className = 'compactLogo hide';
+        // }
     });
 
     const toggle = () => {

@@ -1,17 +1,18 @@
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import Swal from "sweetalert2";
 import axios from "../../../../axios";
+import Swal from "sweetalert2";
 
-const GetAllSKUForSelect = () => {
+const GetAllSupplier = () => {
   const {
-    status: allSkuStatus = "",
-    refetch: allSkuReFetch,
-    data: allSku = [],
-    error: allSkuError,
+    status: allSupplierStatus = "",
+    refetch: allSupplierReFetch,
+    data: AllSupplier,
+    error: allSupplierError,
   } = useQuery({
-    queryKey: ["GetAllSKUForSelecttttttttttttt"],
+    queryKey: ["allSupplierhhhh"],
     queryFn: async () => {
-      return axios.get("/inventory-management/products/list/combo/select");
+      return axios.get("/inventory-management/contacts/all/supplier");
     },
   });
 
@@ -19,7 +20,10 @@ const GetAllSKUForSelect = () => {
   //     return <span>Loading...</span>
   // }
 
-  if (allSkuStatus === "error") {
+  const allSupplier = AllSupplier?.data?.body?.data?.data;
+  console.log("allSupplier", AllSupplier);
+
+  if (allSupplierStatus === "error") {
     return Swal.fire({
       title: "Something is wrong.",
       width: 600,
@@ -35,7 +39,7 @@ const GetAllSKUForSelect = () => {
     });
   }
 
-  return [allSkuStatus, allSkuReFetch, allSku, allSkuError];
+  return [allSupplier, allSupplierReFetch];
 };
 
-export default GetAllSKUForSelect;
+export default GetAllSupplier;

@@ -77,8 +77,6 @@ const DropdownTable = () => {
         setData(allData);
     }, [])
 
-
-
     function searchAndSort(input) {
         // console.log('input', input);
         const lowerCaseInput = input.toLowerCase();

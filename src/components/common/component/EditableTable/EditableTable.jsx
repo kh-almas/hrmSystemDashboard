@@ -25,6 +25,7 @@ const EditableTable = () => {
   const [data, setData] = useState([]);
   const [branch, setBranch] = useState([]);
   const [batchNo, setBatchNo] = useState("");
+
   const [discountType, setDiscountType] = useState("");
   const [sellingPrice, setSellingPrice] = useState(0);
   const [discountPercent, setDiscountPercent] = useState(0);
@@ -91,28 +92,20 @@ const EditableTable = () => {
     });
   });
 
-  // const mapProductsOptions = (data) => {
-  //   return data?.map((item) => ({
-  //     label: item?.label,
-  //     value: item?.id,
-  //   }));
-  // };
-
   const columns = useMemo(
     () => [
       {
         accessorKey: "date",
         header: "Date",
         muiEditTextFieldProps: {
-          // You can add any props specific to date editing here
-          type: "date", // This will render a date picker
+          type: "date",
           required: true,
-          error: !!validationErrors?.date_s_g,
-          helperText: validationErrors?.date_s_g,
+          error: !!validationErrors?.date,
+          helperText: validationErrors?.date,
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
-              date_s_g: undefined,
+              date: undefined,
             }),
         },
       },
@@ -126,6 +119,11 @@ const EditableTable = () => {
           select: true,
           error: !!validationErrors?.branch_name,
           helperText: validationErrors?.branch_name,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              branch_name: undefined,
+            }),
         },
       },
 
@@ -139,6 +137,11 @@ const EditableTable = () => {
           select: true,
           error: !!validationErrors?.product_name,
           helperText: validationErrors?.product_name,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              product_name: undefined,
+            }),
         },
       },
 
@@ -147,9 +150,8 @@ const EditableTable = () => {
         header: "Purchase Price",
         muiEditTextFieldProps: {
           required: true,
-          error: !!validationErrors?.purchase_price_s,
-          helperText: validationErrors?.purchase_price_s,
-          //remove any previous validation errors when user focuses on the input
+          error: !!validationErrors?.purchase_price,
+          helperText: validationErrors?.purchase_price,
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
@@ -168,8 +170,13 @@ const EditableTable = () => {
         ],
         muiEditTextFieldProps: {
           select: true,
-          error: !!validationErrors?.discount_type_s,
-          helperText: validationErrors?.discount_type_s,
+          error: !!validationErrors?.discount_type,
+          helperText: validationErrors?.discount_type,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              discount_type: undefined,
+            }),
           onChange: (e) => setDiscountType(e.target.value),
         },
       },
@@ -179,8 +186,8 @@ const EditableTable = () => {
         header: "Selling Price",
         muiEditTextFieldProps: {
           required: true,
-          error: !!validationErrors?.selling_price_s,
-          helperText: validationErrors?.selling_price_s,
+          error: !!validationErrors?.selling_price,
+          helperText: validationErrors?.selling_price,
           onChange: (e) => setSellingPrice(e.target.value),
           //remove any previous validation errors when user focuses on the input
           onFocus: () =>
@@ -195,8 +202,8 @@ const EditableTable = () => {
         header: "Discount Percent",
         muiEditTextFieldProps: {
           required: true,
-          error: !!validationErrors?.discount_percent_s,
-          helperText: validationErrors?.discount_percent_s,
+          error: !!validationErrors?.discount_percent,
+          helperText: validationErrors?.discount_percent,
           onChange: (e) => setDiscountPercent(e.target.value),
           onFocus: () =>
             setValidationErrors({
@@ -212,8 +219,8 @@ const EditableTable = () => {
         header: "Discount Value",
         muiEditTextFieldProps: {
           required: true,
-          error: !!validationErrors?.discount_value_s,
-          helperText: validationErrors?.discount_value_s,
+          error: !!validationErrors?.discount_value,
+          helperText: validationErrors?.discount_value,
           value: discountValue,
           onChange: (e) => setDiscountValue(e.target.value),
           disabled: discountType === "Percent",
@@ -242,8 +249,6 @@ const EditableTable = () => {
     isLoading: isLoadingDiscount,
   } = useGetDiscountData();
 
-  // const dataD = { batchNo, discountValue };
-
   const { mutateAsync: createDiscount, isPending: isCreatingDiscount } =
     useCreateDiscount({
       batchNo,
@@ -256,15 +261,19 @@ const EditableTable = () => {
   const { mutateAsync: deleteUser, isPending: isDeletingDiscount } =
     useDeleteDiscount();
 
-  //call UPDATE hook
-
   //CREATE action
   const handleCreateDiscount = async ({ values, table }) => {
-    // const newValidationErrors = validateDiscount(values);
-    // if (Object.values(newValidationErrors).some((error) => error)) {
-    //   setValidationErrors(newValidationErrors);
-    //   return;
-    // }
+    console.log("values--create", values);
+    const branchName = values.branch_name;
+    const productName = values.product_name;
+    values.branch_name = branchName.toString();
+    values.product_name = productName.toString();
+    const newValidationErrors = validateDiscount(values);
+    console.log("newValidationErrors", newValidationErrors);
+    if (Object.values(newValidationErrors).some((error) => error)) {
+      setValidationErrors(newValidationErrors);
+      return;
+    }
     setValidationErrors({});
     await createDiscount(values);
     table.setCreatingRow(null); //exit creating mode
@@ -272,16 +281,6 @@ const EditableTable = () => {
 
   //UPDATE action
   const handleSaveDiscount = async ({ values, table, row }) => {
-    // const newValidationErrors = validateDiscount(values);
-    // if (Object.values(newValidationErrors).some((error) => error)) {
-    //   setValidationErrors(newValidationErrors);
-    //   return;
-    // }
-
-    // console.log("row", row?.original?.primary_id);
-    // console.log(" row?.original", row?.original?.branch_id);
-    // console.log("values,", values);
-
     const editData = {
       values: values,
       primaryId: row?.original?.primary_id,
@@ -372,8 +371,8 @@ function useCreateDiscount({
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (discountData) => {
-      discountData.branch_id = discountData?.branch_name;
-      discountData.sku_id = discountData?.product_name;
+      discountData.branch_id = Number(discountData?.branch_name);
+      discountData.sku_id = Number(discountData?.product_name);
       discountData.batch_no = batchNo;
       discountData.discount_value = discountValue;
       discountData.approve_status = "Approved";
@@ -414,6 +413,7 @@ function useCreateDiscount({
   });
 }
 
+//GET hook (get Discount in api)
 function useGetDiscountData() {
   return useQuery({
     queryKey: ["discount"],
@@ -438,7 +438,7 @@ function useGetDiscountData() {
   });
 }
 
-//UPDATE hook (put user in api)
+//UPDATE hook (put Discount in api)
 function useUpdateDiscount({
   discountValue,
   setDiscountValue,
@@ -485,7 +485,7 @@ function useUpdateDiscount({
   });
 }
 
-//DELETE hook (delete user in api)
+//DELETE hook (delete Discount in api)
 function useDeleteDiscount() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -546,20 +546,26 @@ const ExampleWithProviders = () => (
 export default ExampleWithProviders;
 
 const validateRequired = (value) => !!value?.length;
-// const validateEmail = (email) =>
-//   !!email?.length &&
-//   email
-//     .toLowerCase()
-//     .match(
-//       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-//     );
-
 function validateDiscount(discount) {
   return {
-    firstName: !validateRequired(discount?.firstName)
-      ? "First Name is Required"
+    date: !validateRequired(discount?.date) ? "Date Name is Required" : "",
+    branch_name: !validateRequired(discount?.branch_name)
+      ? "branch Name is Required"
       : "",
-    lastName: !validateRequired(discount?.lastName) ? "Last Name is Required" : "",
-    // email: !validateEmail(user.email) ? "Incorrect Email Format" : "",
+    product_name: !validateRequired(discount?.product_name)
+      ? "product Name is Required"
+      : "",
+
+    purchase_price: !validateRequired(discount?.purchase_price)
+      ? "purchase_price is Required"
+      : "",
+
+    discount_type: !validateRequired(discount?.discount_type)
+      ? "discount_type is Required"
+      : "",
+
+    selling_price: !validateRequired(discount?.selling_price)
+      ? "selling_price is Required"
+      : "",
   };
 }

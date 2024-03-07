@@ -1,262 +1,442 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import Breadcrumb from "../../../common/breadcrumb";
 import getAllBranch from "../../../common/Query/hrm/GetAllBranch";
 import getCompanyBranchAPI from "../../../common/Query/hrm/forSort/getCompanyBranchAPI";
 import axios from "../../../../axios";
 import Select from "../../../common/modal/Select";
-import SelectProductInCreateProductForm
-    from "../../../common/component/form/inventory/product/selectProductInCreateProductForm";
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import {flexRender, MRT_TableBodyCellValue, useMaterialReactTable} from "material-react-table";
-import {Button} from "reactstrap";
+import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
+
+import SelectProductInCreateProductForm from "../../../common/component/form/inventory/product/selectProductInCreateProductForm";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import {
+  flexRender,
+  MRT_TableBodyCellValue,
+  useMaterialReactTable,
+} from "material-react-table";
+import { Button } from "reactstrap";
 import Swal from "sweetalert2";
 
 const ProductInitialization = () => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [allBranch, setAllBranch] = useState([]);
-    const [data, setData] = useState([]);
-    const [selectedBranch, setSelectedBranch] = useState({});
-    const [selectedDataKeyForProductList, setSelectedDataKeyForProductList] = useState([]);
-    const [allDataForDropdown, setAllDataForDropdown] = useState([]);
-    const [selectedProduct, setSelectedProduct] = useState([]);
-    const [rowSelection, setRowSelection] = useState([]);
-    const [selectedProductIdFromDB, setSelectedProductIdFromDB] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [allBranch, setAllBranch] = useState([]);
+  const [data, setData] = useState([]);
+  const [selectedBranch, setSelectedBranch] = useState({});
+  const [selectedDataKeyForProductList, setSelectedDataKeyForProductList] =
+    useState([]);
+  const [allDataForDropdown, setAllDataForDropdown] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState([]);
+  const [rowSelection, setRowSelection] = useState([]);
+  const [selectedProductIdFromDB, setSelectedProductIdFromDB] = useState([]);
+  const [branchSkuData, setBranchSkuData] = useState([]);
+  const [render, setRender] = useState(false);
+  const [search, setSearch] = useState("");
+  const [searchBranch, setSearchBranch] = useState("");
 
-    useEffect(() => {
-        const getDataFn = async () => {
-            setAllBranch([])
-            const getData = await axios.get('/hrm-system/branch/')
-            getData?.data?.body?.data?.data?.map(item => {
-                const set_data = {
-                    value: item.id,
-                    label: item.name
-                }
-                setAllBranch(prevBrand => [...prevBrand, set_data]);
-            })
-        }
-        getDataFn();
-    }, [])
-
-    useEffect(() => {
-        const getDataFn = async () => {
-            if (selectedBranch.value){
-                const setData = []
-                const getData = await axios.get(`/inventory-management/branch/products/initialization/${selectedBranch?.value}`);
-                const allData = getData?.data?.body?.data;
-                allData?.map(singleData => {
-                    setData.push(singleData.product_id);
-                })
-                setSelectedDataKeyForProductList(setData);
-            }
-
-        }
-        getDataFn();
-    }, [selectedBranch])
-
-    const handleChangeForSelectedBranch = (selected) => {
-        setSelectedBranch(selected);
-    }
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`/inventory-management/products/list/combo/select`);
-                setData(response?.data?.body?.data);
-            } catch (error) {
-                console.error(error);
-            }
+  useEffect(() => {
+    const getDataFn = async () => {
+      setAllBranch((prev) => []);
+      const getData = await axios.get("/hrm-system/branch/");
+      getData?.data?.body?.data?.data?.map((item) => {
+        const set_data = {
+          value: item.id,
+          label: item.name,
         };
-        fetchData()
-    }, []);
+        setAllBranch((prevBranch) => [...prevBranch, set_data]);
+      });
+    };
+    getDataFn();
+  }, []);
 
-    const getSelectedData = (data) => {
-        if(!selectedDataKeyForProductList.includes(data.id)){
-            selectedDataKeyForProductList.push(data.id);
-            setSelectedProduct(prev => [...prev, data]);
-        }else{
-            const updatedDataKeyList = selectedDataKeyForProductList.filter(
-                (id) => id !== data.id
-            )
-            setSelectedProduct((prev) =>
-                prev.filter((item) => item.id !== data.id)
-            );
-            setSelectedDataKeyForProductList(updatedDataKeyList);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `/inventory-management/products/list/combo/select`
+        );
+        setData(response?.data?.body?.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const getDataFn = async () => {
+      if (selectedBranch.value) {
+        const setData = [];
+        let allData = [];
+        setBranchSkuData([]);
+        const getData = await axios.get(
+          `/inventory-management/branch/products/initialization/${selectedBranch?.value}`
+        );
+        allData = getData?.data?.body?.data;
+        console.log("allData", allData);
+        allData?.forEach((singleData) => {
+          setData.push(singleData.product_id);
+        });
+        setSelectedDataKeyForProductList(setData);
+
+        data?.forEach((dt, i) => {
+          setData?.includes(dt?.id) &&
+            setBranchSkuData((prev) => [...prev, dt]);
+        });
+      }
+    };
+    getDataFn();
+  }, [selectedBranch, render]);
+
+  const handleChangeForSelectedBranch = (selected) => {
+    setSelectedBranch(selected);
+    setSelectedProduct([]);
+  };
+
+  const submitInitializationForm = () => {
+    axios
+      .put(
+        `/inventory-management/branch/products/initialization/update/${selectedBranch?.value}`,
+        selectedProduct
+      )
+      .then((info) => {
+        setRender(!render);
+        setSelectedProduct([]);
+        if (info?.status == 200) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          // toggle();
+          // reset();
         }
+        // reFetch();
+      })
+      .catch((e) => {
+        if (e?.response?.data?.body?.message?.errno == 1062) {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Can not duplicate variant name",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: `${e?.response?.data?.body?.message?.details[0].message}`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+  };
+
+  const deleteSkuFromBranch = () => {
+    const id = selectedProduct?.map((pd) => pd?.id);
+
+    if (!id || id.length === 0) {
+      console.error("No products selected for deletion");
+      return; // Exit early if no products are selected
     }
 
-    const columns = [
-        {
-            accessorKey: 'name',
-            header: 'Name',
-        },
-        {
-            accessorKey: 'sku',
-            header: 'SKU',
-        },
-        {
-            accessorKey: 'category_name',
-            header: 'Category',
-        },
-        {
-            accessorKey: 'brand_name',
-            header: 'Brand',
-        },
-        {
-            accessorKey: 'model_name',
-            header: 'Model',
-        },
-    ];
+    Promise.all(
+      id.map((productId) =>
+        axios.delete(
+          `/inventory-management/branch/products/initialization/delete/${productId}`
+        )
+      )
+    )
+      .then((responses) => {
+        // Check if all responses are successful (status code 200)
+        const allSuccess = responses.every(
+          (response) => response.status === 200
+        );
 
-    const table = useMaterialReactTable({
-        columns,
-        data,
-        getRowId: (row) => row.id,
-        muiTableBodyRowProps: ({ row }) => ({
-            onClick: () => setRowSelection((prev) => ({ ...prev, [row.id]: !prev[row.id] })),
-            selected: rowSelection[row.id],
-            sx: {
-                cursor: 'pointer',
-            },
-        }),
-        enableBottomToolbar: false,
-        initialState: {
-            showGlobalFilter: true,
-        },
-        onRowSelectionChange: setRowSelection,
-        enablePagination: false,
-        state: {
-            rowSelection
-        },
-    });
+        if (allSuccess) {
+          setRender(!render);
+          setSelectedProduct([]);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
+          console.error("Failed to delete one or more products");
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Failed to delete one or more products",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting products:", error);
+        if (error?.response?.data?.body?.message?.sqlState === "23000") {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Cannot delete product if there are any related records",
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "An unexpected error occurred while deleting products",
+          });
+        }
+      });
+  };
 
-    const submitInitializationForm = () => {
-        axios.put(`/inventory-management/branch/products/initialization/update/${selectedBranch?.value}`, selectedProduct)
-            .then(info => {
-                if(info?.status == 200)
-                {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    // toggle();
-                    // reset();
-                }
-                // reFetch();
-            })
-            .catch(e => {
-                if(e?.response?.data?.body?.message?.errno == 1062){
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: 'Can not duplicate variant name',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }else {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'error',
-                        title: `${e?.response?.data?.body?.message?.details[0].message}`,
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                }
-            })
+  const filteredData = data?.filter((dt) => {
+    if (!search) {
+      return true;
     }
+    return dt.sku.trim().toLowerCase().includes(search.trim().toLowerCase());
+  });
+  const filteredBranchData = branchSkuData?.filter((dt) => {
+    if (!searchBranch) {
+      return true;
+    }
+    return dt.sku
+      .trim()
+      .toLowerCase()
+      .includes(searchBranch.trim().toLowerCase());
+  });
 
-    return (
+  const scrollbarStyle = {
+    overflowY: "auto",
+    // "::-webkit-scrollbar": {
+    //   width: "0", // Remove scrollbar width
+    // },
+    // "::-webkit-scrollbar-vertical": {
+    //   display: "none", // Hide vertical scrollbar
+    // },
+  };
+
+
+  // search from all field functionality
+  // useEffect(() => {
+  //   searchAndSort(search)
+  // }, [search]);
+
+
+  // function searchAndSort(input) {
+  //   // console.log('input', input);
+  //   const lowerCaseInput = input.toLowerCase();
+  //
+  //   const filteredAndSortedArray = allData
+  //       .filter(obj => {
+  //         return Object.values(obj).some(value => {
+  //           if (typeof value === 'string' || typeof value === 'number') {
+  //             const stringValue = typeof value === 'number' ? value.toString() : value;
+  //             return stringValue.toLowerCase().includes(lowerCaseInput);
+  //           }
+  //           return false;
+  //         });
+  //       })
+  //       .sort((a, b) => {
+  //         const valueA = Object.values(a).join('').toLowerCase();
+  //         const valueB = Object.values(b).join('').toLowerCase();
+  //         return valueA.localeCompare(valueB);
+  //       });
+  //
+  //   setData(filteredAndSortedArray);
+  //   // console.log('filteredAndSortedArray', filteredAndSortedArray);
+  // }
+
+  return (
+    <>
+      {!isLoading ? (
         <>
-            {
-                !isLoading ?
-                    <>
-                        <Breadcrumb parent="Inventory management" title="Product initialization in branch"/>
-                        <div className="row">
-                            <div className="col-md-3">
-                                <div className="mt-4 card p-3">
-                                    <Select
-                                        labelName={"Select branch"}
-                                        placeholder={"Select an option"}
-                                        options={allBranch}
-                                        setValue={setSelectedBranch}
-                                        cngFn={handleChangeForSelectedBranch}
-                                    />
-                                </div>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="mt-4">
-
-                                    <div style={{backgroundColor: 'white', boxShadow: 'rgb(115, 115, 115) 4px 5px 25px -25px', borderRadius: '7px'}}>
-                                        <TableContainer className="hideSidebar" style={{borderRadius: '7px'}}>
-                                            <Table>
-                                                <TableHead style={{
-                                                    position: 'sticky',
-                                                    top: 0,
-                                                    zIndex: 100,
-                                                    backgroundColor: 'white'
-                                                }}>
-                                                    {table.getHeaderGroups().map((headerGroup) => (
-                                                        <TableRow key={headerGroup.id}>
-                                                            {headerGroup.headers.map((header) => (
-                                                                <TableCell align="center" variant="head"
-                                                                           key={header.id}>
-                                                                    {header.isPlaceholder
-                                                                        ? null
-                                                                        : flexRender(
-                                                                            header.column.columnDef.Header ??
-                                                                            header.column.columnDef.header,
-                                                                            header.getContext(),
-                                                                        )}
-                                                                </TableCell>
-                                                            ))}
-                                                        </TableRow>
-                                                    ))}
-                                                </TableHead>
-                                                <TableBody>
-                                                    {table.getRowModel().rows.map((row) => (
-                                                        <TableRow style={{
-                                                            cursor: 'pointer',
-                                                            backgroundColor: selectedDataKeyForProductList.includes(row?.id) ? '#eaebf3' : 'white'
-                                                        }} key={row.id} selected={row.getIsSelected()}
-                                                                  onClick={() => getSelectedData(row?.original)}>
-                                                            {row.getVisibleCells().map((cell) => (
-                                                                <TableCell align="center" variant="body" key={cell.id}>
-                                                                    <MRT_TableBodyCellValue cell={cell} table={table}/>
-                                                                </TableCell>
-                                                            ))}
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <Button color="primary mt-3 mb-4 d-flex mx-auto" onClick={() => submitInitializationForm()}>
-                                    Update
-                                </Button>
-                            </div>
-                        </div>
-                    </>
-                    :
-                    <div style={{height: "100vh"}}>
-                        <div className="d-flex align-items-center justify-content-center">
-                            <div className="loader-box">
-                                <div className="loader">
-                                    <div className="line bg-primary"></div>
-                                    <div className="line bg-primary"></div>
-                                    <div className="line bg-primary"></div>
-                                    <div className="line bg-primary"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            }
+          <Breadcrumb
+            parent="Inventory management"
+            title="Product initialization in branch"
+          />
+          <div className="row">
+            <div className="col-md-6">
+              <div className="mt-4 card p-3">
+                <Select
+                  labelName={"Select branch"}
+                  placeholder={"Select an option"}
+                  options={allBranch}
+                  setValue={setSelectedBranch}
+                  cngFn={handleChangeForSelectedBranch}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div class="col-md-6">
+              <div class="mt-4 card p-2 w-100">
+                <h4 className="text-center py-2">All Product</h4>
+                <div className="py-2 d-flex gap-3">
+                  <input
+                    type="search"
+                    className="form-control w-75"
+                    placeholder="Search sku..."
+                    value={search}
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                    }}
+                  />
+                  <Button
+                    onClick={submitInitializationForm}
+                    className="form-control w-25 bg-primary d-flex justify-content-center align-items-center"
+                  >
+                    <FaArrowRight size={19} />
+                  </Button>
+                </div>
+                <div
+                  className="overflow-x-scroll"
+                  style={{ height: "500px", ...scrollbarStyle }}
+                >
+                  <table className="table table-responsive">
+                    <thead>
+                      <tr className="text-dark">
+                        <th className="text-center text-dark">Select</th>
+                        <th className="text-center text-dark">Name</th>
+                        <th className="text-center text-dark">SKU</th>
+                        <th className="text-center text-dark">Category</th>
+                        <th className="text-center text-dark">Brand</th>
+                        <th className="text-center text-dark">Model</th>
+                      </tr>
+                    </thead>
+                    <tbody className="table-hover">
+                      {filteredData
+                        ?.filter(
+                          (dt) =>
+                            !selectedDataKeyForProductList?.includes(dt?.id)
+                        )
+                        ?.map((dt, i) => (
+                          <tr key={i}>
+                            <td className="text-nowrap">
+                              <input
+                                type="checkbox"
+                                checked={selectedProduct?.find(
+                                  (pd) => pd?.id === dt?.id
+                                )}
+                                onChange={(e) => {
+                                  const isChecked = e.target.checked;
+                                  if (isChecked) {
+                                    setSelectedProduct((prev) => [...prev, dt]);
+                                  } else {
+                                    setSelectedProduct((prev) =>
+                                      prev.filter((item) => item.id !== dt.id)
+                                    );
+                                  }
+                                }}
+                              />{" "}
+                            </td>
+                            <td className="text-nowrap">{dt?.name}</td>
+                            <td className="text-nowrap">{dt?.sku}</td>
+                            <td className="text-nowrap">{dt?.category_name}</td>
+                            <td className="text-nowrap">{dt?.brand_name}</td>
+                            <td className="text-nowrap">{dt?.model_name}</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mt-4 card p-2 w-100">
+                <h4 className="text-center py-2">
+                  {selectedBranch?.label} Branch SKU
+                </h4>
+                <div className="py-2 d-flex gap-3">
+                  <Button
+                    onClick={deleteSkuFromBranch}
+                    className="form-control w-25 bg-primary d-flex justify-content-center align-items-center"
+                  >
+                    <FaArrowLeft size={19} />
+                  </Button>
+                  <input
+                    type="search"
+                    className="form-control w-75"
+                    placeholder="Search sku..."
+                    value={searchBranch}
+                    onChange={(e) => setSearchBranch(e.target.value)}
+                  />
+                </div>
+                <div
+                  className="overflow-x-scroll"
+                  style={{ height: "500px", ...scrollbarStyle }}
+                >
+                  <table className="table table-responsive">
+                    <thead>
+                      <tr className="text-dark">
+                        <th className="text-center text-dark">Select</th>
+                        <th className="text-center text-dark">Name</th>
+                        <th className="text-center text-dark">SKU</th>
+                        <th className="text-center text-dark">Category</th>
+                        <th className="text-center text-dark">Brand</th>
+                        <th className="text-center text-dark">Model</th>
+                      </tr>
+                    </thead>
+                    <tbody className="table-hover">
+                      {filteredBranchData?.map((dt, i) => (
+                        <tr key={i}>
+                          <td className="text-nowrap">
+                            <input
+                              type="checkbox"
+                              checked={selectedProduct?.find(
+                                (pd) => pd?.id === dt?.id
+                              )}
+                              onChange={(e) => {
+                                const isChecked = e.target.checked;
+                                if (isChecked) {
+                                  setSelectedProduct((prev) => [...prev, dt]);
+                                } else {
+                                  setSelectedProduct((prev) =>
+                                    prev.filter((item) => item.id !== dt.id)
+                                  );
+                                }
+                              }}
+                            />{" "}
+                          </td>
+                          <td className="text-nowrap">{dt?.name}</td>
+                          <td className="text-nowrap">{dt?.sku}</td>
+                          <td className="text-nowrap">{dt?.category_name}</td>
+                          <td className="text-nowrap">{dt?.brand_name}</td>
+                          <td className="text-nowrap">{dt?.model_name}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </>
-    );
+      ) : (
+        <div style={{ height: "100vh" }}>
+          <div className="d-flex align-items-center justify-content-center">
+            <div className="loader-box">
+              <div className="loader">
+                <div className="line bg-primary"></div>
+                <div className="line bg-primary"></div>
+                <div className="line bg-primary"></div>
+                <div className="line bg-primary"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default ProductInitialization;

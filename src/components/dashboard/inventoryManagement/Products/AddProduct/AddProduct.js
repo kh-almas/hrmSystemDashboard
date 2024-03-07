@@ -80,13 +80,12 @@ const AddProduct = () => {
 
 
     useEffect(() => {
-        console.log('allTaxData', allTaxData?.data?.body?.data);
         const allTax = allTaxData?.data?.body?.data;
         let finalArray = [];
         allTax?.map((item) => {
             let initialObj = {
-                id: item.id,
-                label: `${item.name_s}@${item.tax_s}`,
+                id: item?.id,
+                label: `${item?.name_s}@${item?.tax_s}`,
             };
 
             finalArray.push(initialObj);
@@ -618,7 +617,6 @@ const AddProduct = () => {
 
     const [settings, setSettings] = useState([]);
 
-    console.log('settings',settings);
 
     useEffect(() => {
         const fetchData = async () => {

@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { AlignLeft, Maximize, Bell, MessageCircle, MoreHorizontal } from 'react-feather';
 
 const Header = () => {
-  const [sidebar, setSidebar] = useState(false);
+  const [sidebar, setSidebar] = useState(true);
   const [rightSidebar, setRightSidebar] = useState(true);
   const [headerbar, setHeaderbar] = useState(true);
 
@@ -43,17 +43,26 @@ const Header = () => {
 
   }, []);
 
-  function openCloseSidebar() {
-    if (sidebar) {
-      setSidebar(!sidebar);
-      document.querySelector(".page-main-header").classList.remove('open');
-      document.querySelector(".page-sidebar").classList.remove('open');
-    } else {
-      setSidebar(!sidebar);
+  const openCloseSidebar = () => {
+    setSidebar(prev => !prev);
+
+    // if (!sidebar) {
+    //   document.querySelector(".page-main-header").classList.add('open');
+    //   document.querySelector(".page-sidebar").classList.add('open');
+    // } else {
+    //   document.querySelector(".page-main-header").classList.remove('open');
+    //   document.querySelector(".page-sidebar").classList.remove('open');
+    // }
+  }
+  useEffect(() => {
+    if (!sidebar) {
       document.querySelector(".page-main-header").classList.add('open');
       document.querySelector(".page-sidebar").classList.add('open');
+    } else {
+      document.querySelector(".page-main-header").classList.remove('open');
+      document.querySelector(".page-sidebar").classList.remove('open');
     }
-  }
+  }, [sidebar]);
 
   function showRightSidebar() {
     if (rightSidebar) {
@@ -89,7 +98,7 @@ const Header = () => {
 
   return (
     <Fragment>
-      <div className="page-main-header" >
+      <div className="page-main-header sticky-top bg-white py-2">
         <div className="main-header-right row">
           <div className="main-header-left d-lg-none col-auto">
             <div className="logo-wrapper">
@@ -101,21 +110,21 @@ const Header = () => {
           <div className="mobile-sidebar d-block col-auto">
             <div className="flex-grow-1 text-end switch-sm">
               <label className="switch">
-                <a href="#javascript" onClick={() => openCloseSidebar()}>
+                <span onClick={() => openCloseSidebar()} style={{ cursor: 'pointer' }}>
                   <AlignLeft />
-                </a>
+                </span>
               </label>
             </div>
           </div>
           <div className="nav-right col p-0">
             <ul className={`nav-menus ${headerbar ? '' : 'open'}`}>
+              {/*<li>*/}
+              {/*  <SearchHeader />*/}
+              {/*</li>*/}
               <li>
-                <SearchHeader />
-              </li>
-              <li>
-                <a onClick={goFull} className="text-dark" href="#!">
+                <span onClick={goFull} className="text-dark">
                   <Maximize />
-                </a>
+                </span>
               </li>
               <li className="onhover-dropdown">
                 <Language />

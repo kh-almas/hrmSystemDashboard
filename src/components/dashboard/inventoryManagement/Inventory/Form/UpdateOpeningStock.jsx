@@ -1,11 +1,11 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import React, { useEffect, useMemo, useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -14,8 +14,9 @@ import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import getAllSKUForSelect from "../../../../common/Query/inventory/GetAllSKUForSelect";
 import OpeningStockModal from "./OpeningStockModal";
 
-const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
+const UpdateOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   const [modal, setModal] = useState(false);
+  const [valueForEdit, setValueForEdit] = useState({});
   const [selectedBranch, setSelectedBranch] = useState({});
   const [batchNo, setBatchNo] = useState("");
   const [uniqueKey, setUniqueKey] = useState("");
@@ -56,15 +57,21 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     file: null,
   });
 
-  
-
   const {
     register,
     handleSubmit,
-    formState: { errors },
     clearErrors,
+    setError,
+    formState: { errors },
     reset,
-  } = useForm();
+  } = useForm({
+    defaultValues: useMemo(() => {
+      return valueForEdit;
+    }, [valueForEdit]),
+  });
+
+  console.log("valueForEdit--", valueForEdit);
+
   const [allBranchStatus, allBranchReFetch, allBranch, allBranchError] =
     getAllBranch();
   const [allSkuStatus, allSkuReFetch, allSku, allSkuError] =
@@ -97,12 +104,19 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   }, []);
 
   const onSubmit = (data) => {
-    data.branch_id = selectedBranch?.id;
-    data.date = date;
-    data.batch_no = batchNo;
-    data.sku_id = sku.id;
+    // console.log("dateeeeee-------",data);
+    // console.log("dateeeeee-------",date);
+    // data.branch_id = selectedBranch?.id;
+    // data.date = date;
+    // data.batch_no = batchNo;
+    // data.sku_id = sku.id;
+
+    // setFormData(data);
+
+    console.log("formddadaddaad", formData);
+
     axios
-      .post("/inventory-management/stock/opening/add", data)
+      .post("/inventory-management/stock/opening/add", formData)
       .then((info) => {
         if (info?.status == 200) {
           Swal.fire({
@@ -151,10 +165,10 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   }, [allBranch]);
 
   useEffect(() => {
-    const allSkuData = allSku?.data?.body?.data;
-    console.log('allSku', allSkuData);
+    const allProduct = allSku?.data?.body?.data;
     let finalArray = [];
-    allSkuData?.map((item) => {
+    allProduct?.map((item) => {
+      // console.log("item", item);
       let initialObj = {
         hasSerialKey: item?.hasSerialKey,
         hasExpired: item?.hasExpired,
@@ -756,4 +770,4 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   );
 };
 
-export default AddOpeningStock;
+export default UpdateOpeningStock;

@@ -108,7 +108,7 @@ $header-size: 80px;
     top: $main-header-top;
     z-index: $main-header-z-index;
     box-shadow: $main-header-shadow;
-    width: calc(100% - #{$sidebar-width});
+    width: 100%;
     display: flex;
     align-items: center;
     margin-left: $sidebar-width;
@@ -368,7 +368,7 @@ $header-size: 80px;
           border-left: 1px solid $light-semi-gray;
           padding: 0 20px;
           &:first-child {
-            width: 64%;
+            width: 100%;
             margin: 0 auto;
             border-left: none;
             .search-form {
