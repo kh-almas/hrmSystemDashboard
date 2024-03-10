@@ -152,14 +152,7 @@ const DataTable = ({
           muiTableContainerProps={{ maxHeight: 700 }}
           enableRowActions
           renderRowActions={({ row, table }) => (
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "nowrap",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+            <Box sx={{display: "flex", flexWrap: "nowrap", justifyContent: "center", alignItems: "center",}}>
               {editLink ? (
                 <Link
                   to={`${process.env.PUBLIC_URL}${editLink}${row?.original?.id}`}

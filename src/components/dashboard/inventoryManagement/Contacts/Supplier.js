@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../../../common/breadcrumb";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
-import CommonSearchComponet from "../../../common/salaryCard/CommonSearchComponet";
-import Single from "./Single";
-import getShiftAPI from "../../../common/Query/hrm/forSort/getShiftAPI";
 import getInventoryContact from "../../../common/Query/inventory/getInventoryContact";
-import {Pagination, PaginationItem, PaginationLink} from "reactstrap";
 import DataTable from "../../../common/component/DataTable";
 import Swal from "sweetalert2";
 import axios from "../../../../axios";
@@ -107,38 +103,11 @@ const Supplier = () => {
         <div className="row">
           <div className="col-sm-12">
             <div className="card" style={{ padding: "20px" }}>
-              <DataTable getAllData={data} handleDelete={handleDelete}></DataTable>
-              {/*<div className="table-responsive ">*/}
-              {/*  <table className="table ">*/}
-              {/*    <thead className=" table-border ">*/}
-              {/*      <tr className="">*/}
-              {/*        <th scope="col">{"Sl"}</th>*/}
-              {/*        <th scope="col">{"Image"}</th>*/}
-              {/*        <th scope="col">{"Supplier Name"}</th>*/}
-              {/*        <th scope="col">{"Email"}</th>*/}
-              {/*        <th scope="col">{"Phone"}</th>*/}
-              {/*        <th scope="col">{"Pay Term"}</th>*/}
-              {/*        <th scope="col">{"Tex Number"}</th>*/}
-              {/*        <th scope="col">{"Action"}</th>*/}
-              {/*      </tr>*/}
-              {/*    </thead>*/}
-              {/*    <tbody>*/}
-              {/*    {*/}
-              {/*      data?.map((item, index) => (*/}
-              {/*          <Single*/}
-              {/*              howManyItem={howManyItem}*/}
-              {/*              currentPage={currentPage}*/}
-              {/*              key={index}*/}
-              {/*              index={index}*/}
-              {/*              item={item}*/}
-              {/*              isUpdate={isUpdate}*/}
-              {/*              setIsUpdate={setIsUpdate}*/}
-              {/*          />*/}
-              {/*      ))*/}
-              {/*    }*/}
-              {/*    </tbody>*/}
-              {/*  </table>*/}
-              {/*</div>*/}
+              <DataTable
+                  getAllData={data}
+                  handleDelete={handleDelete}
+                  editLink={'/dashboard/inventory-management/contacts/edit-contacts/'}
+              ></DataTable>
             </div>
           </div>
         </div>

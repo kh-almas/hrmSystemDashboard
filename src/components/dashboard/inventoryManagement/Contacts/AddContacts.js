@@ -12,6 +12,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Swal from "sweetalert2";
 import { useParams } from 'react-router-dom';
+import TextField from "@mui/material/TextField";
 
 const AddContacts = () => {
     const {product_type} = useParams();
@@ -28,8 +29,8 @@ const AddContacts = () => {
             tax_number: yup.string().required("tax number is required"),
             pay_term: yup.string().required("Pay term is required"),
             email: yup.string().required("Email is required"),
-            mobile: yup.string().required("Mobile number is required"),
-            alternate_contact_no: yup.string().required( "Alternate contact number is required"),
+            mobile: yup.string().matches(/^[0-9]+$/, {message: "Please enter valid number.", excludeEmptyString: false}),
+            alternate_contact_no: yup.string().matches(/^[0-9]+$/, {message: "Please enter valid number.", excludeEmptyString: false}),
             country: yup.string().required("Country is required"),
             state: yup.string().required("State is required"),
             city: yup.string().required("City is required"),
@@ -170,8 +171,7 @@ const AddContacts = () => {
                     <div className="row row-cols-1 row-cols-lg-3 ">
                         <div>
                             <Select
-                                labelName={"Product-Type"}
-                                placeholder={"Select an option"}
+                                placeholder={"Select a Product-Type"}
                                 options={productType}
                                 setValue={setSelectedContactTye}
                                 cngFn={handleChangeForUpdateContactType}
@@ -191,6 +191,41 @@ const AddContacts = () => {
                                 }}
                                 error={errors?.name}
                             />
+
+                            {/*<TextField*/}
+                            {/*    variant='outlined'*/}
+                            {/*    fullWidth*/}
+                            {/*    autoComplete="off"*/}
+                            {/*    size='small'*/}
+                            {/*    type={'text'}*/}
+                            {/*    label={'Name'}*/}
+                            {/*    placeholder={'Name'}*/}
+                            {/*    validation={{*/}
+                            {/*        ...register("name"),*/}
+                            {/*    }}*/}
+
+                            {/*    sx={{*/}
+                            {/*        '& .MuiFormLabel-root': {*/}
+                            {/*            fontWeight: 400,*/}
+                            {/*            fontSize: { xs: '.7rem', md: '12px' },*/}
+                            {/*        },*/}
+                            {/*        '& label': {*/}
+                            {/*            fontSize: 12,*/}
+                            {/*        },*/}
+                            {/*        '& label.Mui-focused': {*/}
+                            {/*            color: '#1c2437',*/}
+                            {/*            fontSize: 16*/}
+                            {/*        },*/}
+                            {/*        '& .MuiOutlinedInput-root': {*/}
+                            {/*            // fontSize: { xs: 12, md: 14 },*/}
+                            {/*            height: 35,*/}
+                            {/*            backgroundColor: 'white',*/}
+                            {/*            '&.Mui-focused fieldset': {*/}
+                            {/*                borderColor: '#979797',*/}
+                            {/*                borderWidth: '1px'*/}
+                            {/*            },*/}
+                            {/*        },*/}
+                            {/*    }} />*/}
                         </div>
 
                         <div>
@@ -260,8 +295,8 @@ const AddContacts = () => {
 
                         <div>
                             <Select
-                                labelName={"pay-term-condition"}
-                                placeholder={"Select an option"}
+                                labelName={""}
+                                placeholder={"Select a pay_term_condition"}
                                 options={[{value: "Days", label: "Days"}, {value: "Months", label: "Months"}]}
                                 setValue={payTermCondition}
                                 cngFn={handleChangeForUpdatePayTermCondition}

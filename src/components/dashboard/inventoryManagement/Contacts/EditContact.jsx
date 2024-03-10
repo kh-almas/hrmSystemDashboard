@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../../../../axios";
@@ -11,9 +11,11 @@ import Select from "../../../common/modal/Select";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import Swal from "sweetalert2";
+import TextField from "@mui/material/TextField";
 
 const EditContact = () => {
   const [item, setItem] = useState({});
+  console.log('item', item?.name);
   const [type, setType] = useState("Supplier");
   const [note, setNote] = useState();
   const [show, setShow] = useState(false);
@@ -24,6 +26,8 @@ const EditContact = () => {
   const [payTermCondition, setPayTermCondition] = useState({});
   const [selectedContactTye, setSelectedContactTye] = useState({});
 
+
+
   const schema = yup
       .object({
         name: yup.string().required("Name is required"),
@@ -31,8 +35,8 @@ const EditContact = () => {
         tax_number: yup.string().required("tax number is required"),
         pay_term: yup.string().required("Pay term is required"),
         email: yup.string().required("Email is required"),
-        mobile: yup.string().required("Mobile number is required"),
-        alternate_contact_no: yup.string().required( "Alternate contact number is required"),
+        mobile: yup.string().matches(/^[0-9]+$/, {message: "Please enter valid number.", excludeEmptyString: false}),
+        alternate_contact_no: yup.string().matches(/^[0-9]+$/, {message: "Please enter valid number.", excludeEmptyString: false}),
         country: yup.string().required("Country is required"),
         state: yup.string().required("State is required"),
         city: yup.string().required("City is required"),
@@ -52,6 +56,9 @@ const EditContact = () => {
     formState: { errors },
     reset} = useForm({
     resolver: yupResolver(schema),
+    // defaultValues: useMemo(() => {
+    //   return item;
+    // }, [item]),
   });
 
   const payTermConditionValidation = (payTermCondition, fixedItem) => {
@@ -92,7 +99,8 @@ const EditContact = () => {
 
 
   useEffect(() => {
-    console.log(item?.contact_type)
+    reset();
+    // console.log(item?.contact_type)
     const filterContact = productType?.find(data => data.value == item?.contact_type)
     setSelectedContactTye(filterContact);
   }, [item])
@@ -133,8 +141,6 @@ const EditContact = () => {
     data.note = note;
     data.pay_term_condition = payTermCondition?.value;
 
-
-    console.log(data);
     const formData = new FormData();
 
     const appendToFormData = (obj) => {
@@ -197,6 +203,7 @@ const EditContact = () => {
     }
   };
 
+  console.log('selectedContactTye', item)
 
   return (
     <>
@@ -206,8 +213,7 @@ const EditContact = () => {
           <div className="row row-cols-1 row-cols-lg-3 ">
             <div>
               <Select
-                  labelName={"Product-Type"}
-                  placeholder={"Select an option"}
+                  placeholder={"Select a Product-Type"}
                   options={productType}
                   setValue={setSelectedContactTye}
                   cngFn={handleChangeForUpdateContactType}
@@ -217,17 +223,50 @@ const EditContact = () => {
             </div>
             {type === "Supplier" || type === "Customer" ? (
               <div>
-                <Input
-                  labelName={"Name"}
-                  inputName={"name"}
-                  inputType={"text"}
-                  placeholder={"Name"}
-                  validation={{
-                    ...register("name"),
-                  }}
-                  error={errors?.name}
-                  defaultValue={item?.name}
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"text"}
+                    label={"Name"}
+                    value={item?.name || ''}
+                    {...register("name", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["name"]);
+                      setItem(prev => ({ ...prev, name: e.target.value })); //// solve the error from here
+                      // item.name = e.target.value
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
                 />
+                {errors?.name && (
+                    <span style={{ fontSize: "10px" }}>
+                    {errors.name.message}
+                  </span>
+                )}
               </div>
             ) : (
               ""
@@ -248,19 +287,50 @@ const EditContact = () => {
 
             {type === "Supplier" || type === "Customer" ? (
               <div>
-                <div>
-                  <Input
-                    labelName={"Business Name"}
-                    inputName={"business-name"}
-                    placeholder={"Business Name"}
-                    inputType={"text"}
-                    validation={{
-                      ...register("business_name"),
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"text"}
+                    label={"Business Name"}
+                    value={item?.business_name || ''}
+                    {...register("business_name", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["business_name"]);
+                      setItem(prev => ({ ...prev, business_name: e.target.value })); //// solve the error from here
+                      // item.name = e.target.value
                     }}
-                    error={errors?.business_name}
-                    defaultValue={item?.business_name}
-                  />
-                </div>
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                />
+                {errors?.business_name && (
+                    <span style={{ fontSize: "10px" }}>
+                    {errors.business_name.message}
+                  </span>
+                )}
               </div>
             ) : (
               ""
@@ -268,19 +338,50 @@ const EditContact = () => {
 
             {type === "Supplier" || type === "Customer" ? (
               <div>
-                <div>
-                  <Input
-                    labelName={"Tax Number"}
-                    inputName={"tex-number"}
-                    inputType={"text"}
-                    placeholder={"0"}
-                    validation={{
-                      ...register("tax_number"),
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"text"}
+                    label={"Tax Number"}
+                    value={item?.tax_number || ''}
+                    {...register("tax_number", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["tax_number"]);
+                      setItem(prev => ({ ...prev, tax_number: e.target.value })); //// solve the error from here
+                      // item.name = e.target.value
                     }}
-                    error={errors?.tax_number}
-                    defaultValue={item?.tax_number}
-                  />
-                </div>
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                />
+                {errors?.tax_number && (
+                    <span style={{ fontSize: "10px" }}>
+                    {errors.tax_number.message}
+                  </span>
+                )}
               </div>
             ) : (
               ""
@@ -288,19 +389,50 @@ const EditContact = () => {
 
             {type === "Supplier" || type === "Customer" ? (
               <div>
-                <div>
-                  <Input
-                    labelName={"Openning Balance"}
-                    inputName={"opennibg-balance"}
-                    inputType={"text"}
-                    placeholder={"Openning Balance"}
-                    validation={{
-                      ...register("opening_balance"),
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"text"}
+                    label={"Opening Balance"}
+                    value={item?.opening_balance || ''}
+                    {...register("opening_balance", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["opening_balance"]);
+                      setItem(prev => ({ ...prev, opening_balance: e.target.value })); //// solve the error from here
+                      // item.name = e.target.value
                     }}
-                    error={errors?.opening_balance}
-                    defaultValue={item?.opening_balance}
-                  />
-                </div>
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                />
+                {errors?.opening_balance && (
+                    <span style={{ fontSize: "10px" }}>
+                    {errors.opening_balance.message}
+                  </span>
+                )}
               </div>
             ) : (
               ""
@@ -308,19 +440,50 @@ const EditContact = () => {
 
             {type === "Supplier" || type === "Customer" ? (
               <div>
-                <div>
-                  <Input
-                    labelName={"Pay Term"}
-                    inputName={"pay-term"}
-                    inputType={"text"}
-                    placeholder={"Pay Term"}
-                    validation={{
-                      ...register("pay_term"),
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"text"}
+                    label={"Pay Term"}
+                    value={item?.pay_term || ''}
+                    {...register("pay_term", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["pay_term"]);
+                      setItem(prev => ({ ...prev, pay_term: e.target.value })); //// solve the error from here
+                      // item.name = e.target.value
                     }}
-                    error={errors?.pay_term}
-                    defaultValue={item?.pay_term}
-                  />
-                </div>
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                />
+                {errors?.pay_term && (
+                    <span style={{ fontSize: "10px" }}>
+                    {errors.pay_term.message}
+                  </span>
+                )}
               </div>
             ) : (
               ""
@@ -328,130 +491,355 @@ const EditContact = () => {
 
             <div>
               <Select
-                  labelName={"pay-term-condition"}
-                  placeholder={"Select an option"}
+                  placeholder={"Select a pay_term_condition"}
                   options={payTerm}
                   setValue={payTermCondition}
                   cngFn={handleChangeForUpdatePayTermCondition}
                   error={errors['pay_term_condition']}
                   previous={payTermCondition}
               />
-              {console.log(errors)}
             </div>
 
             {type == "Supplier" || type === "Customer" ? (
               <div>
-                <div>
-                  <Input
-                    labelName={"Email"}
-                    inputName={"email"}
-                    inputType={"email"}
-                    placeholder={"Email"}
-                    validation={{
-                      ...register("email"),
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"email"}
+                    label={"Email"}
+                    value={item?.email || ''}
+                    {...register("email", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["email"]);
+                      setItem(prev => ({ ...prev, email: e.target.value })); //// solve the error from here
+                      // item.name = e.target.value
                     }}
-                    error={errors?.email}
-                    defaultValue={item?.email}
-                  />
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
-
-            {type == "Supplier" || type === "Customer" ? (
-              <div>
-                <div>
-                  <Input
-                    labelName={"Mobile"}
-                    inputName={"mobile"}
-                    inputType={"text"}
-                    placeholder={"Mobile"}
-                    validation={{
-                      ...register("mobile"),
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
                     }}
-                    error={errors?.mobile}
-                    defaultValue={item?.mobile}
-                  />
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
-
-            {type == "Supplier" || type === "Customer" ? (
-              <div>
-                <div>
-                  <Input
-                    labelName={"Alternate Contact No"}
-                    inputName={"alternate-contact-no"}
-                    inputType={"text"}
-                    placeholder={"Alternate Contact No"}
-                    validation={{
-                      ...register("alternate_contact_no"),
-                    }}
-                    error={errors?.alternate_contact_no}
-                    defaultValue={item?.alternate_contact_no}
-                  />
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
-
-            <div>
-              <Input
-                  labelName={"Country"}
-                  inputName={"country"}
-                  inputType={"text"}
-                  placeholder={"Your country"}
-                  validation={{
-                    ...register("country"),
-                  }}
-                  error={errors?.country}
-                  defaultValue={item?.country}
-              />
-            </div>
-
-            <div>
-              <Input
-                  labelName={"State"}
-                  inputName={"state"}
-                  inputType={"text"}
-                  placeholder={"Your state"}
-                  validation={{
-                    ...register("state"),
-                  }}
-                  error={errors?.state}
-                  defaultValue={item?.state}
-              />
-            </div>
-
-            <div>
-              <Input
-                  labelName={"City"}
-                  inputName={"city"}
-                  inputType={"text"}
-                  placeholder={"Your city"}
-                  validation={{
-                    ...register("city"),
-                  }}
-                  defaultValue={item?.city}
-                  error={errors?.city}
-              />
-            </div>
-
-            {type == "Supplier" || type === "Customer" ? (
-              <div>
-                <Input
-                  labelName={"Address"}
-                  inputName={"address"}
-                  inputType={"text"}
-                  placeholder={"Address"}
-                  validation={{ ...register("address") }}
-                  error={errors?.address}
-                  defaultValue={item?.address}
                 />
+                {errors?.email && (
+                    <span style={{ fontSize: "10px" }}>
+                    {errors.email.message}
+                  </span>
+                )}
+              </div>
+            ) : (
+              ""
+            )}
+
+            {type == "Supplier" || type === "Customer" ? (
+              <div>
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"text"}
+                    label={"Mobile"}
+                    value={item?.mobile || ''}
+                    {...register("mobile", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["mobile"]);
+                      setItem(prev => ({ ...prev, mobile: e.target.value })); //// solve the error from here
+                      // item.name = e.target.value
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                />
+                {errors?.mobile && (
+                    <span style={{ fontSize: "10px" }}>
+                    {errors.mobile.message}
+                  </span>
+                )}
+              </div>
+            ) : (
+              ""
+            )}
+
+            {type == "Supplier" || type === "Customer" ? (
+              <div>
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"text"}
+                    label={"Alternate Contact No"}
+                    value={item?.alternate_contact_no || ''}
+                    {...register("alternate_contact_no", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["alternate_contact_no"]);
+                      setItem(prev => ({ ...prev, alternate_contact_no: e.target.value })); //// solve the error from here
+                      // item.name = e.target.value
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                />
+                {errors?.alternate_contact_no && (
+                    <span style={{ fontSize: "10px" }}>
+                    {errors.alternate_contact_no.message}
+                  </span>
+                )}
+              </div>
+            ) : (
+              ""
+            )}
+
+            <div>
+              <TextField
+                  variant="outlined"
+                  fullWidth
+                  autoComplete="off"
+                  size="small"
+                  type={"text"}
+                  label={"Country"}
+                  value={item?.country || ''}
+                  {...register("country", {
+                    required: "This field is required",
+                  })}
+                  onChange={(e) => {
+                    clearErrors(["country"]);
+                    setItem(prev => ({ ...prev, country: e.target.value })); //// solve the error from here
+                    // item.name = e.target.value
+                  }}
+                  sx={{
+                    marginTop: 2,
+                    "& .MuiFormLabel-root": {
+                      fontWeight: 400,
+                      fontSize: 12,
+                    },
+                    "& label": {
+                      fontSize: 12,
+                    },
+                    "& label.Mui-focused": {
+                      color: "#1c2437",
+                      fontSize: 16,
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      height: 35,
+                      backgroundColor: "white",
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#979797",
+                        borderWidth: "1px",
+                      },
+                    },
+                  }}
+              />
+              {errors?.country && (
+                  <span style={{ fontSize: "10px" }}>
+                    {errors.country.message}
+                  </span>
+              )}
+            </div>
+
+            <div>
+              <TextField
+                  variant="outlined"
+                  fullWidth
+                  autoComplete="off"
+                  size="small"
+                  type={"text"}
+                  label={"State"}
+                  value={item?.state || ''}
+                  {...register("state", {
+                    required: "This field is required",
+                  })}
+                  onChange={(e) => {
+                    clearErrors(["state"]);
+                    setItem(prev => ({ ...prev, state: e.target.value })); //// solve the error from here
+                    // item.name = e.target.value
+                  }}
+                  sx={{
+                    marginTop: 2,
+                    "& .MuiFormLabel-root": {
+                      fontWeight: 400,
+                      fontSize: 12,
+                    },
+                    "& label": {
+                      fontSize: 12,
+                    },
+                    "& label.Mui-focused": {
+                      color: "#1c2437",
+                      fontSize: 16,
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      height: 35,
+                      backgroundColor: "white",
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#979797",
+                        borderWidth: "1px",
+                      },
+                    },
+                  }}
+              />
+              {errors?.state && (
+                  <span style={{ fontSize: "10px" }}>
+                    {errors.state.message}
+                  </span>
+              )}
+            </div>
+
+            <div>
+              <TextField
+                  variant="outlined"
+                  fullWidth
+                  autoComplete="off"
+                  size="small"
+                  type={"text"}
+                  label={"City"}
+                  value={item?.city || ''}
+                  {...register("city", {
+                    required: "This field is required",
+                  })}
+                  onChange={(e) => {
+                    clearErrors(["city"]);
+                    setItem(prev => ({ ...prev, city: e.target.value })); //// solve the error from here
+                    // item.name = e.target.value
+                  }}
+                  sx={{
+                    marginTop: 2,
+                    "& .MuiFormLabel-root": {
+                      fontWeight: 400,
+                      fontSize: 12,
+                    },
+                    "& label": {
+                      fontSize: 12,
+                    },
+                    "& label.Mui-focused": {
+                      color: "#1c2437",
+                      fontSize: 16,
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      height: 35,
+                      backgroundColor: "white",
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#979797",
+                        borderWidth: "1px",
+                      },
+                    },
+                  }}
+              />
+              {errors?.city && (
+                  <span style={{ fontSize: "10px" }}>
+                    {errors.city.message}
+                  </span>
+              )}
+            </div>
+
+            {type == "Supplier" || type === "Customer" ? (
+              <div>
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"text"}
+                    label={"Address"}
+                    value={item?.address || ''}
+                    {...register("address", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["address"]);
+                      setItem(prev => ({ ...prev, address: e.target.value })); //// solve the error from here
+                      // item.name = e.target.value
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                />
+                {errors?.address && (
+                    <span style={{ fontSize: "10px" }}>
+                    {errors.address.message}
+                  </span>
+                )}
               </div>
             ) : (
               ""

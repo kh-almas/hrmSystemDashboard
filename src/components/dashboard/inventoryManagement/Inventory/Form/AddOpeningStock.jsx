@@ -152,7 +152,6 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
 
   useEffect(() => {
     const allSkuData = allSku?.data?.body?.data;
-    console.log('allSku', allSkuData);
     let finalArray = [];
     allSkuData?.map((item) => {
       let initialObj = {
@@ -185,7 +184,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     setModal(!modal);
   };
 
-  console.log("formData", formData);
+  // console.log("formData", formData);
 
   return (
     <>

@@ -5,37 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b70791c6-b211-48c4-89c4-e4ed209f8fc5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/common/Query/inventory/GetAllStockReceived.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/common/Query/inventory/GetAllStockTransfer.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/common/Query/inventory/GetAllSupllier.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddStockReceived.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddStockTransfer.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/EditStockTransfer.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/OpeningStockModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/PurchaseProductModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/StockTransferModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/UpdateOpeningStock.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/StockReceived.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/scss/theme/_header.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/scss/theme/_header.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/scss/theme/_variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/scss/theme/_variables.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/app.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/app.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/Query/inventory/GetAllSKUForSelect.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/Query/inventory/GetAllSKUForSelect.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/component/CustomeMultiselect/DropdownTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/CustomeMultiselect/DropdownTable.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/common/component/DataTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/DataTable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/component/EditableTable/EditableTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/EditableTable/EditableTable.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/header-component/header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/header-component/header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/sidebar-component/sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/sidebar-component/sidebar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/theme-customizer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/theme-customizer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/modal/Input.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/modal/Input.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/modal/ReactSelect.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/modal/ReactSelect.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Contacts/AddContacts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Contacts/AddContacts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Contacts/EditContact.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Contacts/EditContact.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Contacts/Supplier.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Contacts/Supplier.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddPurchaseProducts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddPurchaseProducts.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/OpeningStock.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/OpeningStock.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/ProductInitialization.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/ProductInitialization.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/StockTransfer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/StockTransfer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/AddProduct.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/AddProduct/AddProduct.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Purchase/PurchaseOrder.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Purchase/PurchaseOrder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/layouts-routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/layouts-routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/OpeningStockModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/OpeningStockModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/ProductDiscount.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/ProductDiscount.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +36,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Merging alu&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;alu&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/hrmSystemFinal/hrmSystemBackend&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -120,7 +99,9 @@
       <workItem from="1708419735177" duration="1458000" />
       <workItem from="1709713658577" duration="252000" />
       <workItem from="1709719425363" duration="4204000" />
-      <workItem from="1709789057785" duration="11541000" />
+      <workItem from="1709789057785" duration="13563000" />
+      <workItem from="1709963103613" duration="15220000" />
+      <workItem from="1710051061333" duration="4726000" />
     </task>
     <servers />
   </component>
@@ -152,7 +133,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/ProductDiscount.jsx</url>
-          <line>266</line>
+          <line>71</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
