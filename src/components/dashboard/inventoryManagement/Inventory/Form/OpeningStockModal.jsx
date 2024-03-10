@@ -35,14 +35,14 @@ const OpeningStockModal = ({
     return code;
   }
 
-  // if (formData.hasSerialKey == 1) {
+  // if (formData.has_serial_key == 1) {
   //   const hasKey = generateUniqueKey(15);
   //   setHasKey(hasKey);
-  //   setFormData({ ...formData, hasSerialKey: hasKey });
+  //   setFormData({ ...formData, has_serial_key: hasKey });
   // }
 
   useEffect(() => {
-    //   if (sku?.hasSerialKey == 1) {
+    //   if (sku?.has_serial_key == 1) {
     //     let generatedKeys = [];
     //     for (let i = 0; i < quantity; i++) {
     //       const hasKey = generateUniqueKey(15);
@@ -50,7 +50,7 @@ const OpeningStockModal = ({
     //     }
     //     setSerialKeys(generatedKeys);
     //   }
-    // }, [sku?.hasSerialKey, quantity]);
+    // }, [sku?.has_serial_key, quantity]);
 
     if (sku?.hasSerialKey === 1) {
       let generatedKeys = [];
@@ -59,7 +59,10 @@ const OpeningStockModal = ({
         generatedKeys.push(hasKey);
       }
       setSerialKeys(generatedKeys);
-      setFormData(prevState => ({ ...prevState, hasSerialKey: generatedKeys }));
+      setFormData((prevState) => ({
+        ...prevState,
+        has_serial_key: generatedKeys,
+      }));
     }
   }, [sku?.hasSerialKey, quantity, setFormData]);
 
@@ -71,7 +74,7 @@ const OpeningStockModal = ({
       event.preventDefault();
       if (serialKeys.length < quantity) {
         setSerialKeys([...serialKeys, event.target.value]);
-        setFormData({ ...formData, hasSerialKey: serialKeys });
+        setFormData({ ...formData, has_serial_key: serialKeys });
         setHasKey("");
       } else {
         return alert("You've reached the maximum number of serial keys!");
@@ -79,7 +82,7 @@ const OpeningStockModal = ({
     }
   };
 
-  // setFormData(prevState => ({ ...prevState, hasSerialKey: serialKeys }));
+  // setFormData(prevState => ({ ...prevState, has_serial_key: serialKeys }));
 
   const handleDeleteKey = (index, event) => {
     event.preventDefault();

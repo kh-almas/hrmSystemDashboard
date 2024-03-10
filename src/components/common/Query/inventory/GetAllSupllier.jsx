@@ -21,7 +21,7 @@ const GetAllSupplier = () => {
   // }
 
   const allSupplier = AllSupplier?.data?.body?.data?.data;
-  console.log("allSupplier", AllSupplier);
+  // console.log("allSupplier", AllSupplier);
 
   if (allSupplierStatus === "error") {
     return Swal.fire({

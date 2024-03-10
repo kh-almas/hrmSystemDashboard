@@ -169,6 +169,7 @@ import ProductDiscount from "../components/dashboard/inventoryManagement/Invento
 import PurchaseProducts from "../components/dashboard/inventoryManagement/Inventory/PurchaseProducts";
 import EditableTable from "../components/common/component/EditableTable/EditableTable";
 import Tax from "../components/dashboard/inventoryManagement/Products/Tax/Tax";
+import PurchaseRequisition from "../components/dashboard/inventoryManagement/Purchase/PurchaseRequisition";
 
 
 export const routes = [
@@ -780,6 +781,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/c&f`,
     Component: <CAndF />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/purchase-requisition`,
+    Component: <PurchaseRequisition />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/quotation`,

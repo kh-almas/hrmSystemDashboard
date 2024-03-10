@@ -626,6 +626,11 @@ export const MENUITEMS = [
             type: "link",
             path: "/dashboard/inventory-management/purchase/c&f",
           },
+          {
+            title: "Purchase Requisition",
+            type: "link",
+            path: "/dashboard/inventory-management/purchase/purchase-requisition",
+          },
         ],
       },
 

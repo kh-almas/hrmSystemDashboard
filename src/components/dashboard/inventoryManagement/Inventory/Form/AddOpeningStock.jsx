@@ -41,7 +41,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   const [date, setDate] = useState("");
   const [formData, setFormData] = useState({
     date: "",
-    hasSerialKey: [],
+    has_serial_key: [],
     manufactureDate: "",
     expireDate: "",
     branch_id: "",
@@ -55,8 +55,6 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     total_discount: "",
     file: null,
   });
-
-  
 
   const {
     register,
@@ -184,8 +182,6 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
       setModal(true);
     }
   }, [formData?.qty, sku?.hasSerialKey]);
-
-
 
   const updateToggle = () => {
     setModal(!modal);
