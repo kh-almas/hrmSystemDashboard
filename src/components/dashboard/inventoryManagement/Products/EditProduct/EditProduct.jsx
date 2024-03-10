@@ -255,8 +255,8 @@ const EditProduct = () => {
             setStockOutSell(singleProductData?.stockoutSell)
         }
 
-        if(singleProductData?.hasSerialKey){
-            setHasSerial(singleProductData?.hasSerialKey)
+        if(singleProductData?.has_serial_key){
+            setHasSerial(singleProductData?.has_serial_key)
         }
 
         if(singleProductData?.warrantyBy){

@@ -169,9 +169,14 @@ import ProductDiscount from "../components/dashboard/inventoryManagement/Invento
 import PurchaseProducts from "../components/dashboard/inventoryManagement/Inventory/PurchaseProducts";
 import EditableTable from "../components/common/component/EditableTable/EditableTable";
 import Tax from "../components/dashboard/inventoryManagement/Products/Tax/Tax";
+
+import PurchaseRequisition from "../components/dashboard/inventoryManagement/Purchase/PurchaseRequisition";
+
+
 import UpdateOpeningStock from "../components/dashboard/inventoryManagement/Inventory/Form/UpdateOpeningStock";
 import EditStockTransfer from "../components/dashboard/inventoryManagement/Inventory/Form/EditStockTransfer";
 import StockReceived from "../components/dashboard/inventoryManagement/Inventory/StockReceived";
+
 
 export const routes = [
   {
@@ -795,6 +800,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/c&f`,
     Component: <CAndF />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/purchase-requisition`,
+    Component: <PurchaseRequisition />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/quotation`,
