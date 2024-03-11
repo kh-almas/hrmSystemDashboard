@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const DataTable = ({
   getAllData,
   handleDelete,
-  editLink = "",
+  editLink ,
   toggleUpdateModal,
   setValueForEdit,
   baseForDelete,

@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import BaseModal from "../../../../common/modal/BaseModal";
 
-const OpeningStockModal = ({
+const StockTransferModal = ({
   modal,
   setModal,
   toggle,
@@ -35,14 +35,14 @@ const OpeningStockModal = ({
     return code;
   }
 
-  // if (formData.has_serial_key == 1) {
+  // if (formData.hasSerialKey == 1) {
   //   const hasKey = generateUniqueKey(15);
   //   setHasKey(hasKey);
-  //   setFormData({ ...formData, has_serial_key: hasKey });
+  //   setFormData({ ...formData, hasSerialKey: hasKey });
   // }
 
   useEffect(() => {
-    //   if (sku?.has_serial_key == 1) {
+    //   if (sku?.hasSerialKey == 1) {
     //     let generatedKeys = [];
     //     for (let i = 0; i < quantity; i++) {
     //       const hasKey = generateUniqueKey(15);
@@ -50,7 +50,7 @@ const OpeningStockModal = ({
     //     }
     //     setSerialKeys(generatedKeys);
     //   }
-    // }, [sku?.has_serial_key, quantity]);
+    // }, [sku?.hasSerialKey, quantity]);
 
     if (sku?.hasSerialKey === 1) {
       let generatedKeys = [];
@@ -74,12 +74,10 @@ const OpeningStockModal = ({
       event.preventDefault();
       if (serialKeys.length < quantity) {
         setSerialKeys([...serialKeys, event.target.value]);
-
         setFormData({
           ...formData,
           hasSerialKey: [...serialKeys, event.target.value],
         });
-
         setHasKey("");
       } else {
         return alert("You've reached the maximum number of serial keys!");
@@ -87,7 +85,7 @@ const OpeningStockModal = ({
     }
   };
 
-  // setFormData(prevState => ({ ...prevState, has_serial_key: serialKeys }));
+  // setFormData(prevState => ({ ...prevState, hasSerialKey: serialKeys }));
 
   const handleDeleteKey = (index, event) => {
     event.preventDefault();
@@ -694,4 +692,4 @@ const OpeningStockModal = ({
   );
 };
 
-export default OpeningStockModal;
+export default StockTransferModal;

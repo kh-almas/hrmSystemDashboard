@@ -6,33 +6,34 @@ import { Card, Collapse } from "reactstrap";
 import Swal from "sweetalert2";
 import axios from "../../../../axios";
 import DataTable from "../../../common/component/DataTable";
-import GetAllStockTransfer from "../../../common/Query/inventory/GetAllStockTransfer";
-import AddStockTransfer from "./Form/AddStockTransfer";
+import AddStockReceived from "./Form/AddStockReceived";
+import GetAllStockReceived from "../../../common/Query/inventory/GetAllStockReceived";
 
-const StockTransfer = () => {
+const StockReceived = () => {
   const [showFromForAdd, setShowFromForAdd] = useState(false);
-  const [getAllStockTransfer, setGetAllStockTransfer] = useState([]);
+  const [getAllStockReceived, setGetAllStockReceived] = useState([]);
   const [isChange, setIsChange] = useState(false);
   const [valueForEdit, setValueForEdit] = useState({});
   const [editModal, setEditModal] = useState(false);
   const [
-    getAllStockTransferStatus,
-    getAllStockTransferReFetch,
-    getAllStockTransferData,
-    getAllStockTransferError,
-  ] = GetAllStockTransfer();
+    getAllStockReceivedStatus,
+    getAllStockReceivedReFetch,
+    getAllStockReceivedData,
+    getAllStockReceivedError,
+  ] = GetAllStockReceived();
 
   const isDarty = () => {
     setIsChange(!isChange);
   };
 
   useEffect(() => {
-    setGetAllStockTransfer(getAllStockTransferData?.data?.body?.data);
-  }, [getAllStockTransferData]);
+    setGetAllStockReceived(getAllStockReceivedData?.data?.body?.data);
+  }, [getAllStockReceivedData]);
 
   const updateToggle = () => {
     setEditModal(!editModal);
   };
+
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -57,7 +58,7 @@ const StockTransfer = () => {
                 timer: 1500,
               });
             }
-            getAllStockTransferReFetch();
+            getAllStockReceivedReFetch();
           })
           .catch((e) => {
             if (e?.response?.data?.body?.message?.sqlState === "23000") {
@@ -74,21 +75,21 @@ const StockTransfer = () => {
 
   return (
     <>
-      <Breadcrumb parent="Inventory management" title="Stock Transfer List" />
+      <Breadcrumb parent="Inventory management" title="Stock Received List" />
 
       <Button
         className="mt-3 btn btn-pill btn-info btn-air-info btn-air-info"
         onClick={() => setShowFromForAdd(!showFromForAdd)}
       >
-        Add Stock Transfer
+        Add Stock Received
       </Button>
 
       <Card className="mt-2">
         <Collapse isOpen={showFromForAdd}>
-          <AddStockTransfer
-            getAllStockTransferReFetch={getAllStockTransferReFetch}
+          <AddStockReceived
+            getAllStockReceivedReFetch={getAllStockReceivedReFetch}
             setShowFromForAdd={setShowFromForAdd}
-          ></AddStockTransfer>
+          ></AddStockReceived>
         </Collapse>
       </Card>
 
@@ -110,7 +111,7 @@ const StockTransfer = () => {
                   "/dashboard/inventory-management/inventory/stock-transfer/update/"
                 }
                 baseForDelete={"batch_s"}
-                getAllData={getAllStockTransfer}
+                getAllData={getAllStockReceived}
                 handleDelete={handleDelete}
                 toggleUpdateModal={updateToggle}
                 setValueForEdit={setValueForEdit}
@@ -119,9 +120,9 @@ const StockTransfer = () => {
           </div>
         </div>
       </div>
-      {/* <EditStockTransfer modal={editModal} toggle={updateToggle} reFetch={isDarty} valueForEdit={valueForEdit?.original} setValueForEdit={setValueForEdit} getAllStockTransferReFetch={getAllStockTransferReFetch}></EditStockTransfer> */}
+      {/* <EditStockReceived modal={editModal} toggle={updateToggle} reFetch={isDarty} valueForEdit={valueForEdit?.original} setValueForEdit={setValueForEdit} getAllStockReceivedReFetch={getAllStockReceivedReFetch}></EditStockReceived> */}
     </>
   );
 };
 
-export default StockTransfer;
+export default StockReceived;
