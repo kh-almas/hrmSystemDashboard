@@ -54,45 +54,45 @@ const AddPurchaseRequisition = ({
 
     console.log("Purchase Requisition", data);
 
-    // axios
-    //   .post("inventory-management/stock/adjustment/add", data)
-    //   .then((info) => {
-    //     if (info?.status == 200) {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "success",
-    //         title: "Your work has been saved",
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
+    axios
+      .post("/inventory-management/purchase/requisition", data)
+      .then((info) => {
+        if (info?.status == 200) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
 
-    //       setSelectedBranch("");
-    //       reset();
-    //       allPurchaseRequisitionReFetch();
-    //       setShowFromForAdd(false);
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //     if (e?.response?.data?.body?.message?.errno == 1062) {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "error",
-    //         title: "Can not duplicate variant name",
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     } else {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "error",
-    //         // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
-    //         title: `Something is wrong`,
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     }
-    //   });
+          setSelectedBranch("");
+          reset();
+          allPurchaseRequisitionReFetch();
+          setShowFromForAdd(false);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        if (e?.response?.data?.body?.message?.errno == 1062) {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Can not duplicate variant name",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
+            title: `Something is wrong`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
   };
 
   return (

@@ -126,8 +126,6 @@ const DataTable = ({
     }
   }, [data]);
 
-
-
   // const FindMax = useMemo(
   //     () => data.reduce((acc, curr) => Math.max(acc, curr.age), 0),
   //     [],
@@ -177,11 +175,15 @@ const DataTable = ({
                   <EditIcon />
                 </IconButton>
               )}
-{/* {console.log('row----',row)} */}
+              {/* {console.log('row----',row)} */}
               <IconButton
                 color="error"
                 onClick={() => {
-                  console.log('row?.original?.primary_id', row?.original)
+                  console.log(
+                    "row?.original?.primary_id",
+                    row?.original,
+                    row?.original?.[baseForDelete]
+                  );
                   handleDelete(
                     !baseForDelete
                       ? row?.original?.primary_id
