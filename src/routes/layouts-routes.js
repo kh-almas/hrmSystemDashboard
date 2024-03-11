@@ -176,6 +176,7 @@ import PurchaseRequisition from "../components/dashboard/inventoryManagement/Pur
 import UpdateOpeningStock from "../components/dashboard/inventoryManagement/Inventory/Form/UpdateOpeningStock";
 import EditStockTransfer from "../components/dashboard/inventoryManagement/Inventory/Form/EditStockTransfer";
 import StockReceived from "../components/dashboard/inventoryManagement/Inventory/StockReceived";
+import PurchaseQuote from "../components/dashboard/inventoryManagement/Purchase/PurchaseQuote";
 
 
 export const routes = [
@@ -804,6 +805,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/purchase-requisition`,
     Component: <PurchaseRequisition />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/purchase/purchase-quote`,
+    Component: <PurchaseQuote />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/quotation`,

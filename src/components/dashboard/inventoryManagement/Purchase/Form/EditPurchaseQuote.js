@@ -14,11 +14,11 @@ import BaseModal from "../../../../common/modal/BaseModal";
 import GetAllSupplier from "../../../../common/Query/inventory/GetAllSupllier";
 import GetAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 
-const EditPurchaseRequisition = ({
+const EditPurchaseQuote = ({
   modal,
   toggle,
   reFetch,
-  allPurchaseRequisitionReFetch,
+  allPurchaseQuoteReFetch,
   valueForEdit,
   setValueForEdit,
 }) => {
@@ -90,7 +90,7 @@ const EditPurchaseRequisition = ({
     data.supplier_id = selectedSupplier?.id ? selectedSupplier?.id : null;
     data.transaction_date = date;
 
-    console.log("Update Purchase Requisition", data);
+    console.log("Update Purchase Quote", data);
 
     axios
       .put(
@@ -108,7 +108,7 @@ const EditPurchaseRequisition = ({
           });
 
           reset();
-          allPurchaseRequisitionReFetch();
+          allPurchaseQuoteReFetch();
           setValueForEdit({});
           toggle();
         }
@@ -141,7 +141,7 @@ const EditPurchaseRequisition = ({
   return (
     <>
       <BaseModal
-        title={"Edit Purchase Requisition"}
+        title={"Edit Purchase Quote"}
         dataModal={modal}
         dataToggle={toggle}
       >
@@ -454,4 +454,4 @@ const EditPurchaseRequisition = ({
   );
 };
 
-export default EditPurchaseRequisition;
+export default EditPurchaseQuote;
