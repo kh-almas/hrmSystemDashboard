@@ -11,7 +11,7 @@ const GetAllPurchaseRequisition = () => {
   } = useQuery({
     queryKey: ["allPurchaseRequisition"],
     queryFn: async () => {
-      return axios.get("/inventory-management/stock/adjustment/");
+      return axios.get("/inventory-management/purchase/requisition");
     },
   });
 

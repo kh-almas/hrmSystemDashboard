@@ -11,71 +11,76 @@ import EditPurchaseRequisition from "./Form/EditPurchaseRequisition";
 import GetAllPurchaseRequisition from "../../../common/Query/inventory/GetAllPurchaseRequisition";
 
 const PurchaseRequisition = () => {
-    const [showFromForAdd, setShowFromForAdd] = useState(false);
-    // const [allPurchaseRequisition, setAllPurchaseRequisition] = useState([]);
-    const [isChange, setIsChange] = useState(false);
-    const [valueForEdit, setValueForEdit] = useState({});
-    const [editModal, setEditModal] = useState(false);
-    
-    // const [
-    //   allPurchaseRequisitionStatus,
-    //   allPurchaseRequisitionReFetch,
-    //   allPurchaseRequisitionData,
-    //   allPurchaseRequisitionError,
-    // ] = GetAllPurchaseRequisition() ;
+  const [showFromForAdd, setShowFromForAdd] = useState(false);
+  const [allPurchaseRequisition, setAllPurchaseRequisition] = useState([]);
+  const [isChange, setIsChange] = useState(false);
+  const [valueForEdit, setValueForEdit] = useState({});
+  const [editModal, setEditModal] = useState(false);
 
-  
-    // useEffect(() => {
-    //   setAllPurchaseRequisition(allPurchaseRequisitionData?.data?.body?.data);
-    // }, [allPurchaseRequisitionData]);
+  const [
+    allPurchaseRequisitionStatus,
+    allPurchaseRequisitionReFetch,
+    allPurchaseRequisitionData,
+    allPurchaseRequisitionError,
+  ] = GetAllPurchaseRequisition();
 
-    const isDarty = () => {
-        setIsChange(!isChange);
-      };
-  
-    const updateToggle = () => {
-      setEditModal(!editModal);
-    };
-  
-    // console.log('allPurchaseRequisitionData',allPurchaseRequisition)
-  
-    const handleDelete = (batch_id) => {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios
-            .delete(`/inventory-management/stock/adjustment/delete/${batch_id}`)
-            .then((info) => {
-              if (info?.status == 200) {
-                Swal.fire({
-                  position: "top-end",
-                  icon: "success",
-                  title: "Your file has been deleted.",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-              }
-              // allPurchaseRequisitionReFetch();
-            })
-            .catch((e) => {
-              if (e?.response?.data?.body?.message?.sqlState === "23000") {
-                Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: `Can not delete Stock Adjustment.`,
-                });
-              }
-            });
-        }
-      });
-    };
+  useEffect(() => {
+    setAllPurchaseRequisition(allPurchaseRequisitionData?.data?.body?.data);
+  }, [allPurchaseRequisitionData]);
+
+  console.log("allPurchaseRequisition", allPurchaseRequisition);
+
+  const isDarty = () => {
+    setIsChange(!isChange);
+  };
+
+  const updateToggle = () => {
+    setEditModal(!editModal);
+  };
+
+  // console.log('allPurchaseRequisitionData',allPurchaseRequisition)
+
+  const handleDelete = (primary_id) => {
+
+    console.log("primary_id", primary_id)
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(
+            `/inventory-management/purchase/requisition/delete/${primary_id}`
+          )
+          .then((info) => {
+            if (info?.status == 200) {
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Your file has been deleted.",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+            allPurchaseRequisitionReFetch();
+          })
+          .catch((e) => {
+            if (e?.response?.data?.body?.message?.sqlState === "23000") {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `Can not delete Stock Adjustment.`,
+              });
+            }
+          });
+      }
+    });
+  };
 
   return (
     <>
@@ -92,7 +97,7 @@ const PurchaseRequisition = () => {
         <Collapse isOpen={showFromForAdd}>
           <AddPurchaseRequisition
             setShowFromForAdd={setShowFromForAdd}
-            // allPurchaseRequisitionReFetch={allPurchaseRequisitionReFetch}
+            allPurchaseRequisitionReFetch={allPurchaseRequisitionReFetch}
           ></AddPurchaseRequisition>
         </Collapse>
       </Card>
@@ -111,8 +116,8 @@ const PurchaseRequisition = () => {
           <div className="col-sm-12">
             <div className="card" style={{ padding: "20px" }}>
               <DataTable
-                baseForDelete={"batch_s"}
-                // getAllData={allPurchaseRequisition}
+                baseForDelete={"primary_id"}
+                getAllData={allPurchaseRequisition}
                 handleDelete={handleDelete}
                 toggleUpdateModal={updateToggle}
                 setValueForEdit={setValueForEdit}
@@ -127,7 +132,7 @@ const PurchaseRequisition = () => {
         reFetch={isDarty}
         valueForEdit={valueForEdit?.original}
         setValueForEdit={setValueForEdit}
-        // allPurchaseRequisitionReFetch={allPurchaseRequisitionReFetch}
+        allPurchaseRequisitionReFetch={allPurchaseRequisitionReFetch}
       ></EditPurchaseRequisition>
     </>
   );
