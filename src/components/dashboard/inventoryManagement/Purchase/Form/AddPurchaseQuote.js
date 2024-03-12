@@ -14,11 +14,14 @@ import getAllBranch from "../../../../common/Query/hrm/GetAllBranch";
 import GetAllSupplier from "../../../../common/Query/inventory/GetAllSupllier";
 import { Checkbox, FormControlLabel } from "@mui/material";
 
-const AddPurchaseQuote = ({ setShowFromForAdd, allPurchaseQuoteReFetch }) => {
+const AddPurchaseQuote = ({
+  setShowFromForAddWithP,
+  allPurchaseQuoteReFetch,
+}) => {
   const [selectedBranch, setSelectedBranch] = useState({});
   const [selectedSupplier, setSelectedSupplier] = useState({});
   const [branch, setBranch] = useState([]);
-  const [hasLc, setHasLc] = useState(0);
+  const [hasLc, setHasLc] = useState(false);
 
   const [date, setDate] = useState(moment(new Date()).format("YYYY-MM-DD"));
   const status = [
@@ -47,10 +50,14 @@ const AddPurchaseQuote = ({ setShowFromForAdd, allPurchaseQuoteReFetch }) => {
   const onSubmit = (data) => {
     data.branch_id = selectedBranch?.id;
     data.supplier_id = selectedSupplier?.id ? selectedSupplier?.id : null;
-    // data.has_lc = hasLc;
+    data.has_lc = hasLc;
     data.transaction_date = date;
+    data.total_price = parseFloat(data.total_price);
+    data.total_discount = parseFloat(data.total_discount);
+    data.total_vat = parseFloat(data.total_vat);
+    data.other_cost = parseFloat(data.other_cost);
 
-    console.log("Purchase Quote", data);
+    // console.log("Purchase Quote", data);
 
     axios
       .post("/inventory-management/purchase/quote", data)
@@ -67,7 +74,7 @@ const AddPurchaseQuote = ({ setShowFromForAdd, allPurchaseQuoteReFetch }) => {
           setSelectedBranch("");
           reset();
           allPurchaseQuoteReFetch();
-          setShowFromForAdd(false);
+          setShowFromForAddWithP(false);
         }
       })
       .catch((e) => {
@@ -476,7 +483,7 @@ const AddPurchaseQuote = ({ setShowFromForAdd, allPurchaseQuoteReFetch }) => {
             </div>
 
             {/* other cost */}
-            <div> 
+            <div>
               <TextField
                 variant="outlined"
                 fullWidth
@@ -610,9 +617,11 @@ const AddPurchaseQuote = ({ setShowFromForAdd, allPurchaseQuoteReFetch }) => {
                 }}
                 control={
                   <Checkbox
-                    checked={hasLc == 1}
+                    checked={hasLc == true}
                     onChange={(e) => {
-                      e.target.checked === true ? setHasLc(1) : setHasLc(0);
+                      e.target.checked === true
+                        ? setHasLc(true)
+                        : setHasLc(false);
                     }}
                   />
                 }
