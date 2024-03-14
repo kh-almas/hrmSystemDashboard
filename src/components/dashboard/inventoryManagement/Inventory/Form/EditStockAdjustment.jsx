@@ -26,8 +26,8 @@ const EditStockAdjustment = ({
   const [branch, setBranch] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState({});
   const [purpose, setPurpose] = useState([
-    { id: "Damage", label: "Damage" },
-    { id: "Recompilation", label: "Recompilation" },
+    { id: "General", label: "General" },
+    { id: "Reconciliation", label: "Reconciliation" },
   ]);
   const [selectedPurpose, setSelectedPurpose] = useState("");
   const [selectedProduct, setSelectedProduct] = useState({});
@@ -37,6 +37,10 @@ const EditStockAdjustment = ({
     getAllBranch();
   const [allSkuStatus, allSkuReFetch, allSku, allSkuError] =
     getAllSKUForSelect();
+
+  useEffect(() => {
+    console.log('selectedPurpose', selectedPurpose)
+  }, [selectedPurpose]);
 
   const {
     register,
@@ -50,17 +54,6 @@ const EditStockAdjustment = ({
       return valueForEdit;
     }, [valueForEdit]),
   });
-
-  function generateSkuCode(count) {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let code = "";
-
-    for (let i = 0; i < count; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      code += characters.charAt(randomIndex);
-    }
-    return code;
-  }
 
   useEffect(() => {
     // setIsLoading(true);
@@ -78,7 +71,7 @@ const EditStockAdjustment = ({
     });
 
     const filterProduct = finalArray.find(
-      (item) => (item.id = valueForEdit?.sku_id)
+      (item) => (item.id = valueForEdit?.ref_id)
     );
 
     setSelectedProduct(filterProduct);
@@ -97,27 +90,25 @@ const EditStockAdjustment = ({
     setSelectedBranch(selected);
 
     const selectPurpose = purpose?.find(
-      (item) => item?.id == valueForEdit?.purpose_type_s
+      (item) => item?.id == valueForEdit?.purpose_type_s_g
     );
+    // console.log('selectPurpose', selectPurpose)
     setSelectedPurpose(selectPurpose);
 
     // setIsLoading(false);
   }, [allBranch, valueForEdit, allSku, purpose]);
 
-
-
   const onSubmit = async (data) => {
     data.branch_id = selectedBranch?.id;
     data.date = date;
     data.purpose_type = selectedPurpose?.id;
-    data.batch_no = valueForEdit?.batch_s;
-    data.sku_id = selectedProduct.id;
+    data.ref_id = selectedProduct.id;
 
     // console.log("datdaaaa", data);
 
     axios
       .put(
-        `/inventory-management/stock/adjustment/update/${valueForEdit?.batch_s}`,
+        `/inventory-management/stock/adjustment/update/${valueForEdit?.primary_id}`,
         data
       )
       .then((info) => {
@@ -159,156 +150,21 @@ const EditStockAdjustment = ({
 
   return (
     <>
-      {selectedBranch ? (
+      {selectedPurpose ? (
         <BaseModal
           title={"Edit Stock Adjustment"}
           dataModal={modal}
           dataToggle={toggle}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
+
             <div>
               <Autocomplete
-                disablePortal
-                size={"small"}
-                id="branch"
-                value={selectedBranch}
-                options={branch}
-                getOptionLabel={(option) => (option ? option?.name : "")}
-                onChange={(event, value) => {
-                  setSelectedBranch(value);
-                }}
-                sx={{
-                  width: "100%",
-                  marginTop: 3,
-                  "& label": {
-                    fontSize: 12,
-                  },
-                  "& label.Mui-focused": {
-                    fontSize: 16,
-                  },
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Branch"
-                    {...register("branch_id")}
-                  />
-                )}
-              />
-              {errors?.branch && (
-                <span style={{ fontSize: "10px" }}>
-                  {errors?.branch.message}
-                </span>
-              )}
-            </div>
-            <div>
-              <Autocomplete
-                disablePortal
-                size={"small"}
-                id="Select product"
-                value={selectedProduct}
-                options={data}
-                // getOptionLabel={(option) => option ? option?.name : ''}
-                onChange={(event, value) => {
-                  setSelectedProduct(value);
-                }}
-                sx={{
-                  width: "100%",
-                  marginTop: 3,
-                  "& label": {
-                    fontSize: 12,
-                  },
-                  "& label.Mui-focused": {
-                    fontSize: 16,
-                  },
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Select product"
-                    {...register("sku_id")}
-                  />
-                )}
-              />
-              {errors.branch && (
-                <span style={{ fontSize: "10px" }}>
-                  {errors.branch.message}
-                </span>
-              )}
-            </div>
-            <div className="row row-cols-1 row-cols-lg-2">
-              <div>
-                <TextField
                   readOnly
-                  variant="outlined"
-                  fullWidth
-                  autoComplete="off"
-                  size="small"
-                  type="text"
-                  value={valueForEdit?.batch_s}
-                  label="Batch no"
-                  sx={{
-                    marginTop: 2,
-                    "& .MuiFormLabel-root": {
-                      fontWeight: 400,
-                      fontSize: 12,
-                    },
-                    "& label": {
-                      fontSize: 12,
-                    },
-                    "& label.Mui-focused": {
-                      color: "#1c2437",
-                      fontSize: 16,
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      height: 35,
-                      backgroundColor: "white",
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#979797",
-                        borderWidth: "1px",
-                      },
-                    },
-                  }}
-                />
-              </div>
-
-              <div>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  {/*<DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />*/}
-                  <DatePicker
-                    label="Date"
-                    slotProps={{ textField: { size: "small" } }}
-                    value={dayjs(date)}
-                    onChange={(newValue) => {
-                      setDate(moment(newValue.$d).format("YYYY-MM-DD"));
-                    }}
-                    sx={{
-                      width: "100%",
-                      marginTop: 2,
-                      "& label": {
-                        fontSize: 12,
-                      },
-                      "& label.Mui-focused": {
-                        fontSize: 16,
-                      },
-                    }}
-                  />
-                </LocalizationProvider>
-
-                {errors.date && (
-                  <span style={{ fontSize: "10px" }}>
-                    {errors.date.message}
-                  </span>
-                )}
-              </div>
-
-              <div>
-                <Autocomplete
-                  disablePortal
                   size={"small"}
                   id="purpose"
                   options={purpose}
-                  defaultValue={valueForEdit?.purpose_type_s}
+                  defaultValue={selectedPurpose}
                   // getOptionLabel={(option) => (option ? option?.id : "")}
                   onChange={(event, value) => {
                     setSelectedPurpose(value);
@@ -336,194 +192,337 @@ const EditStockAdjustment = ({
                     },
                   }}
                   renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Purpose type "
-                      {...register("purpose_type", {
-                        required: "This field is required",
-                      })}
-                    />
+                      <TextField
+                          {...params}
+                          label="Purpose type "
+                          {...register("purpose_type")}
+                      />
                   )}
-                />
-                {errors?.purpose_type && (
-                  <span style={{ fontSize: "10px", color: "red" }}>
+              />
+              {errors?.purpose_type && (
+                  <span style={{fontSize: "10px", color: "red"}}>
                     {errors?.purpose_type?.message}
                   </span>
-                )}
-              </div>
-
-              <div>
-                <TextField
-                  variant="outlined"
-                  fullWidth
-                  autoComplete="off"
-                  size="small"
-                  type={"text"}
-                  label={"Ref Id"}
-                  defaultValue={valueForEdit?.ref_id_s}
-                  {...register("ref_id", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => {
-                    clearErrors(["ref_id"]);
+              )}
+            </div>
+            <div>
+              <Autocomplete
+                  disablePortal
+                  size={"small"}
+                  id="branch"
+                  value={selectedBranch}
+                  options={branch}
+                  getOptionLabel={(option) => (option ? option?.name : "")}
+                  onChange={(event, value) => {
+                    setSelectedBranch(value);
                   }}
                   sx={{
-                    marginTop: 2,
-                    "& .MuiFormLabel-root": {
-                      fontWeight: 400,
-                      fontSize: 12,
-                    },
+                    width: "100%",
+                    marginTop: 3,
                     "& label": {
                       fontSize: 12,
                     },
                     "& label.Mui-focused": {
-                      color: "#1c2437",
                       fontSize: 16,
                     },
-                    "& .MuiOutlinedInput-root": {
-                      height: 35,
-                      backgroundColor: "white",
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#979797",
-                        borderWidth: "1px",
-                      },
+                  }}
+                  renderInput={(params) => (
+                      <TextField
+                          {...params}
+                          label="Branch"
+                          {...register("branch_id")}
+                      />
+                  )}
+              />
+              {errors?.branch && (
+                  <span style={{fontSize: "10px"}}>
+                  {errors?.branch.message}
+                </span>
+              )}
+            </div>
+            <div>
+              <Autocomplete
+                  disablePortal
+                  size={"small"}
+                  id="Select product"
+                  value={selectedProduct}
+                  options={data}
+                  // getOptionLabel={(option) => option ? option?.name : ''}
+                  onChange={(event, value) => {
+                    setSelectedProduct(value);
+                  }}
+                  sx={{
+                    width: "100%",
+                    marginTop: 3,
+                    "& label": {
+                      fontSize: 12,
+                    },
+                    "& label.Mui-focused": {
+                      fontSize: 16,
                     },
                   }}
-                />
-                {errors?.ref_id && (
-                  <span style={{ fontSize: "10px" }}>
-                    {errors.ref_id.message}
+                  renderInput={(params) => (
+                      <TextField
+                          {...params}
+                          label="Select product"
+                          {...register("ref_id")}
+                      />
+                  )}
+              />
+              {errors.ref_id && (
+                  <span style={{fontSize: "10px"}}>
+                  {errors.ref_id.message}
+                </span>
+              )}
+            </div>
+            <div className="row row-cols-1 row-cols-lg-2">
+              <div>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  {/*<DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />*/}
+                  <DatePicker
+                      label="Date"
+                      slotProps={{textField: {size: "small"}}}
+                      value={dayjs(date)}
+                      onChange={(newValue) => {
+                        setDate(moment(newValue.$d).format("YYYY-MM-DD"));
+                      }}
+                      sx={{
+                        width: "100%",
+                        marginTop: 2,
+                        "& label": {
+                          fontSize: 12,
+                        },
+                        "& label.Mui-focused": {
+                          fontSize: 16,
+                        },
+                      }}
+                  />
+                </LocalizationProvider>
+
+                {errors.date && (
+                    <span style={{fontSize: "10px"}}>
+                    {errors.date.message}
                   </span>
                 )}
               </div>
 
               <div>
                 <TextField
-                  variant="outlined"
-                  fullWidth
-                  autoComplete="off"
-                  size="small"
-                  type={"number"}
-                  label={"Quantity"}
-                  defaultValue={valueForEdit?.quantity_s}
-                  {...register("qty", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => {
-                    clearErrors(["qty"]);
-                  }}
-                  sx={{
-                    marginTop: 2,
-                    "& .MuiFormLabel-root": {
-                      fontWeight: 400,
-                      fontSize: 12,
-                    },
-                    "& label": {
-                      fontSize: 12,
-                    },
-                    "& label.Mui-focused": {
-                      color: "#1c2437",
-                      fontSize: 16,
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      height: 35,
-                      backgroundColor: "white",
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#979797",
-                        borderWidth: "1px",
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"text"}
+                    label={"Quantity"}
+                    defaultValue={valueForEdit?.total_qty_s}
+                    {...register("total_qty", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["total_qty"]);
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
                       },
-                    },
-                  }}
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
                 />
-                {errors.qty && (
-                  <span style={{ fontSize: "10px" }}>{errors.qty.message}</span>
+                {errors?.total_qty && (
+                    <span style={{fontSize: "10px"}}>
+                    {errors.total_qty.message}
+                  </span>
+                )}
+              </div>
+
+              <div>
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"number"}
+                    label={"Total price"}
+                    defaultValue={valueForEdit?.total_price_s}
+                    {...register("total_price", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["total_price"]);
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                />
+                {errors.total_price && (
+                    <span style={{fontSize: "10px"}}>{errors.total_price.message}</span>
                 )}
               </div>
               <div>
                 <TextField
-                  variant="outlined"
-                  fullWidth
-                  autoComplete="off"
-                  size="small"
-                  type={"number"}
-                  label={"Purchase price"}
-                  defaultValue={valueForEdit?.purchase_price_s}
-                  {...register("purchase_price", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => {
-                    clearErrors(["purchase_price"]);
-                  }}
-                  sx={{
-                    marginTop: 2,
-                    "& .MuiFormLabel-root": {
-                      fontWeight: 400,
-                      fontSize: 12,
-                    },
-                    "& label": {
-                      fontSize: 12,
-                    },
-                    "& label.Mui-focused": {
-                      color: "#1c2437",
-                      fontSize: 16,
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      height: 35,
-                      backgroundColor: "white",
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#979797",
-                        borderWidth: "1px",
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"number"}
+                    label={"Total discount"}
+                    defaultValue={valueForEdit?.total_discount_s}
+                    {...register("total_discount", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["total_discount"]);
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
                       },
-                    },
-                  }}
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
                 />
-                {errors.purchase_price && (
-                  <span style={{ fontSize: "10px" }}>
-                    {errors.purchase_price.message}
+                {errors.total_discount && (
+                    <span style={{fontSize: "10px"}}>
+                    {errors.total_discount.message}
                   </span>
                 )}
               </div>
               <div>
                 <TextField
-                  variant="outlined"
-                  fullWidth
-                  autoComplete="off"
-                  size="small"
-                  type={"number"}
-                  label={"Selling price"}
-                  defaultValue={valueForEdit?.selling_price_s}
-                  {...register("sales_price", {
-                    required: "This field is required",
-                  })}
-                  onChange={(e) => {
-                    clearErrors(["sales_price"]);
-                  }}
-                  sx={{
-                    marginTop: 2,
-                    "& .MuiFormLabel-root": {
-                      fontWeight: 400,
-                      fontSize: 12,
-                    },
-                    "& label": {
-                      fontSize: 12,
-                    },
-                    "& label.Mui-focused": {
-                      color: "#1c2437",
-                      fontSize: 16,
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      height: 35,
-                      backgroundColor: "white",
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#979797",
-                        borderWidth: "1px",
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"number"}
+                    label={"Other Cost"}
+                    defaultValue={valueForEdit?.other_cost_s}
+                    {...register("other_cost", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["other_cost"]);
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
                       },
-                    },
-                  }}
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
                 />
-                {errors.sales_price && (
-                  <span style={{ fontSize: "10px" }}>
-                    {errors.sales_price.message}
+                {errors.other_cost && (
+                    <span style={{fontSize: "10px"}}>
+                    {errors.other_cost.message}
+                  </span>
+                )}
+              </div>
+
+              <div>
+                <TextField
+                    variant="outlined"
+                    fullWidth
+                    autoComplete="off"
+                    size="small"
+                    type={"number"}
+                    label={"Total Vat"}
+                    defaultValue={valueForEdit?.total_vat_s}
+                    {...register("total_vat", {
+                      required: "This field is required",
+                    })}
+                    onChange={(e) => {
+                      clearErrors(["total_vat"]);
+                    }}
+                    sx={{
+                      marginTop: 2,
+                      "& .MuiFormLabel-root": {
+                        fontWeight: 400,
+                        fontSize: 12,
+                      },
+                      "& label": {
+                        fontSize: 12,
+                      },
+                      "& label.Mui-focused": {
+                        color: "#1c2437",
+                        fontSize: 16,
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        height: 35,
+                        backgroundColor: "white",
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#979797",
+                          borderWidth: "1px",
+                        },
+                      },
+                    }}
+                />
+                {errors.total_vat && (
+                    <span style={{fontSize: "10px"}}>
+                    {errors.total_vat.message}
                   </span>
                 )}
               </div>
@@ -531,8 +530,8 @@ const EditStockAdjustment = ({
 
             <div className="d-flex justify-content-center align-items-center mt-3">
               <Button
-                type="submit"
-                className="me-2 btn btn-pill btn-info btn-air-info btn-info-gradien px-4"
+                  type="submit"
+                  className="me-2 btn btn-pill btn-info btn-air-info btn-info-gradien px-4"
               >
                 Submit
               </Button>
@@ -540,7 +539,7 @@ const EditStockAdjustment = ({
           </form>
         </BaseModal>
       ) : (
-        <div></div>
+          <div></div>
       )}
     </>
   );

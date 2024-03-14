@@ -9,6 +9,7 @@ import DataTable from "../../../common/component/DataTable";
 import FilesComponent from "../../../common/filesComponent/FilesComponent";
 import AddStockAdjustment from "./Form/AddStockAdjustment";
 import EditStockAdjustment from "./Form/EditStockAdjustment";
+import {Link} from "react-router-dom";
 
 const StockAdjustments = () => {
   const [showFromForAdd, setShowFromForAdd] = useState(false);
@@ -37,7 +38,7 @@ const StockAdjustments = () => {
 
   // console.log('allStockAdjustmentData',allStockAdjustment)
 
-  const handleDelete = (batch_id) => {
+  const handleDelete = (primary_id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -49,7 +50,7 @@ const StockAdjustments = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`/inventory-management/stock/adjustment/delete/${batch_id}`)
+          .delete(`/inventory-management/stock/adjustment/delete/${primary_id}`)
           .then((info) => {
             if (info?.status == 200) {
               Swal.fire({
@@ -86,6 +87,13 @@ const StockAdjustments = () => {
         Add Stock Adjustment
       </Button>
 
+      <Link
+          to={'/dashboard/inventory-management/inventory/stock-adjustment/create'}
+        className="mt-3 btn btn-pill btn-info btn-air-info btn-air-info"
+      >
+        Add Stock Adjustment
+      </Link>
+
       <Card className="mt-2">
         <Collapse isOpen={showFromForAdd}>
           <AddStockAdjustment
@@ -109,7 +117,8 @@ const StockAdjustments = () => {
           <div className="col-sm-12">
             <div className="card" style={{ padding: "20px" }}>
               <DataTable
-                baseForDelete={"batch_s"}
+                statusData={['active', 'pending', 'inactive']}
+                baseForDelete={"primary_id"}
                 getAllData={allStockAdjustment}
                 handleDelete={handleDelete}
                 toggleUpdateModal={updateToggle}

@@ -2,24 +2,20 @@ import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import axios from "../../../../axios";
 
-const GetAllSKUForSelect = () => {
+const GetAllProductForSelect = () => {
   const {
-    status: allSkuStatus = "",
-    refetch: allSkuReFetch,
-    data: allSku = [],
-    error: allSkuError,
+    status: allProductStatus = "",
+    refetch: allProductReFetch,
+    data: allProduct = [],
+    error: allProductError,
   } = useQuery({
-    queryKey: ["GetAllSKUForSelect"],
+    queryKey: ["GetAllProductForSelect"],
     queryFn: async () => {
-      return axios.get("/inventory-management/products/list/combo/select");
+      return axios.get("/inventory-management/products/list/combo/product/select");
     },
   });
 
-  // if (allEmployeeStatus === 'loading') {
-  //     return <span>Loading...</span>
-  // }
-
-  if (allSkuStatus === "error") {
+  if (allProductStatus === "error") {
     return Swal.fire({
       title: "Something is wrong.",
       width: 600,
@@ -35,7 +31,7 @@ const GetAllSKUForSelect = () => {
     });
   }
 
-  return [allSkuStatus, allSkuReFetch, allSku, allSkuError];
+  return [allProductStatus, allProductReFetch, allProduct, allProductError];
 };
 
-export default GetAllSKUForSelect;
+export default GetAllProductForSelect;

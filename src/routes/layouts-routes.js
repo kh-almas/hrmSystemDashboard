@@ -172,6 +172,8 @@ import Tax from "../components/dashboard/inventoryManagement/Products/Tax/Tax";
 import UpdateOpeningStock from "../components/dashboard/inventoryManagement/Inventory/Form/UpdateOpeningStock";
 import EditStockTransfer from "../components/dashboard/inventoryManagement/Inventory/Form/EditStockTransfer";
 import StockReceived from "../components/dashboard/inventoryManagement/Inventory/StockReceived";
+import AddStockAdjustment from "../components/dashboard/inventoryManagement/Inventory/Form/AddStockAdjustment";
+
 
 export const routes = [
   {
@@ -766,6 +768,10 @@ export const routes = [
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-adjustment`,
     Component: <StockAdjustments />,
+  },
+  {
+    path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/stock-adjustment/create`,
+    Component: <AddStockAdjustment />,
   },
   {
     path: `${process.env.PUBLIC_URL}/dashboard/inventory-management/inventory/product-info`,
