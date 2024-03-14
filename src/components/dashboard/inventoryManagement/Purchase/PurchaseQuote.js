@@ -110,7 +110,7 @@ const PurchaseQuote = () => {
                   setShowFromForAddWithoutP(!showFromForAddWithoutP);
                 }}
               >
-                With Purchase
+                Without Purchase
               </div>
             </DropdownItem>
             <DropdownItem>
@@ -121,7 +121,7 @@ const PurchaseQuote = () => {
                   setShowFromForAddWithoutP(!showFromForAddWithoutP);
                 }}
               >
-                Without Purchase
+                With Purchase
               </div>
             </DropdownItem>
           </DropdownMenu>
