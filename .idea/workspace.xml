@@ -5,12 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b70791c6-b211-48c4-89c4-e4ed209f8fc5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/common/Query/inventory/GetAllPurchaseQuote.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/common/Query/inventory/GetAllPurchaseRequisition.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Purchase/Form/AddPurchaseQuote.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Purchase/Form/AddPurchaseRequisition.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Purchase/Form/EditPurchaseQuote.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Purchase/Form/EditPurchaseRequisition.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Purchase/PurchaseQuote.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Purchase/PurchaseRequisition.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/Query/inventory/GetAllSKUForSelect.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/Query/inventory/GetAllSKUForSelect.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/static/js/main.921cd8a9.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/static/js/main.921cd8a9.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/static/js/main.921cd8a9.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/build/static/js/main.921cd8a9.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/Query/inventory/GetAllSupllier.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/Query/inventory/GetAllSupllier.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/common/component/DataTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/component/DataTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/sidebar-component/menu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/hrmSystem/attendance/Shift.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/hrmSystem/attendance/Shift.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddOpeningStock.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddPurchaseProducts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddPurchaseProducts.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddStockAdjustment.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddStockAdjustment.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/EditStockAdjustment.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/EditStockAdjustment.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/StockAdjustments.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/StockAdjustments.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddStockAdjustmentModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/AddStockAdjustmentModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/OpeningStockModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/OpeningStockModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/PurchaseProductModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Inventory/Form/PurchaseProductModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/EditProduct/EditProduct.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductList/Products.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/ProductList/Products.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/Service/Service.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/dashboard/inventoryManagement/Products/Service/Service.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/layouts-routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/layouts-routes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -29,23 +47,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "alu",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/hrmSystemFinal/hrmSystemBackend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2023.3.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging alu&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/hrmSystemFinal/hrmSystemBackend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\WebStorm 2023.3.3\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\hrmSystemFinal\hrmSystemDashboard\src\components\common\Query\inventory" />
@@ -102,7 +120,10 @@
       <workItem from="1710133549089" duration="8398000" />
       <workItem from="1710217710028" duration="8703000" />
       <workItem from="1710302065116" duration="11288000" />
-      <workItem from="1710394796683" duration="948000" />
+      <workItem from="1710394796683" duration="1526000" />
+      <workItem from="1710407184915" duration="588000" />
+      <workItem from="1710564512821" duration="6268000" />
+      <workItem from="1710734816615" duration="10665000" />
     </task>
     <servers />
   </component>

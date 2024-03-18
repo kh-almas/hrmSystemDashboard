@@ -24,28 +24,58 @@ const AddStockAdjustment = () => {
 
   const [modal, setModal] = useState(false);
   const [quantity, setQuantity] = useState("");
+  const [serialKeys, setSerialKeys] = useState([]);
   const updateToggle = () => {
     setModal(!modal);
   };
 
   const [formData, setFormData] = useState({
-    date: "",
+    date: moment(new Date()).format("YYYY-MM-DD"),
+    branch_id: "",
+    purpose: "General",
+    product: [],
+  });
+
+  const [productFormData, setProductFormData] = useState({
     hasSerialKey: [],
     manufactureDate: "",
     expireDate: "",
-    branch_id: "",
-    warehouse_id: "",
-    supplier_id: "",
+    sku: "",
     sku_id: "",
+    product_id: "",
     qty: "",
-    purchase_status: "",
-    purchase_price: "",
-    selling_price: "",
-    total_discount: "",
-    file: null,
+    batchNo: "",
   });
 
+  // useEffect(() => {
+  //   console.log('formData', formData)
+  // }, [formData]);
 
+  const addProductInfo = () => {
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      product: [
+        ...prevFormData.product,
+        productFormData
+      ],
+    }));
+
+    setProductFormData({
+      hasSerialKey: [],
+      manufactureDate: "",
+      expireDate: "",
+      sku: "",
+      sku_id: "",
+      product_id: "",
+      qty: "",
+    })
+    setQuantity('');
+    setSerialKeys([]);
+
+
+    // console.log('productFormData', productFormData);
+  }
+  console.log('formData', formData);
 
   const [selectedBranch, setSelectedBranch] = useState({});
   const [data, setData] = React.useState([]);
@@ -155,9 +185,12 @@ const AddStockAdjustment = () => {
           let initialObj = {
             id: item.id,
             productId: item.product_id,
+            hasBatch: item.hasBatch,
+            hasExpired: item.hasExpired,
+            hasSerialKey: item.hasSerialKey,
+            sku: item.sku,
             label: `${item.sku} > ${item.name} > ${item.category_name} > ${item.brand_name} > ${item.model_name}`,
           };
-          console.log('finalArray', finalArray)
 
           finalArray.push(initialObj);
         }
@@ -179,9 +212,10 @@ const AddStockAdjustment = () => {
                 id="purpose"
                 options={purpose}
                 defaultValue={selectedPurpose}
-                // getOptionLabel={(option) => (option ? option?.id : "")}
                 onChange={(event, value) => {
                   setSelectedPurpose(value);
+                  setFormData({...formData, purpose: value?.id});
+
                 }}
                 sx={{
                   marginTop: 2,
@@ -231,6 +265,7 @@ const AddStockAdjustment = () => {
                         getOptionLabel={(option) => (option ? option?.name : "")}
                         onChange={(event, value) => {
                           setSelectedBranch(value);
+                          setFormData({...formData, branch_id: value?.id});
                         }}
                         sx={{
                           width: "100%",
@@ -253,21 +288,23 @@ const AddStockAdjustment = () => {
                         )}
                     />
                     {errors.branch_id && (
-                        <span style={{fontSize: "10px", color: "red"}}>
-                      {errors.branch_id.message}
-                    </span>
-                    )}
+                        <span style={{fontSize: "10px", color: "red"}}>{errors.branch_id.message}</span>)}
                   </div>
 
                   <div>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      {/*<DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />*/}
                       <DatePicker
                           label="Date"
                           slotProps={{textField: {size: "small"}}}
                           value={dayjs(date)}
                           onChange={(newValue) => {
                             setDate(moment(newValue.$d).format("YYYY-MM-DD"));
+                            setFormData({
+                              ...productFormData,
+                              date: moment(newValue.$d).format(
+                                  "YYYY-MM-DD"
+                              ),
+                            });
                           }}
                           sx={{
                             width: "100%",
@@ -297,11 +334,11 @@ const AddStockAdjustment = () => {
                       size={"small"}
                       id="Select product"
                       options={productData}
-                      // getOptionLabel={(option) => option ? option?.name : ''}
                       onChange={(event, value) => {
                         setSelectedProduct(value);
                         setData({});
                         setSku({});
+                        setProductFormData({...productFormData, product_id: value?.id});
                       }}
                       sx={{
                         width: "100%",
@@ -340,6 +377,7 @@ const AddStockAdjustment = () => {
                       getOptionLabel={(option) => option.label ? option?.label : ''}
                       onChange={(event, value) => {
                         setSku(value);
+                        setProductFormData({...productFormData, sku_id: value?.id, sku: value?.sku});
                       }}
                       sx={{
                         width: "100%",
@@ -368,6 +406,41 @@ const AddStockAdjustment = () => {
                   )}
                 </div>
 
+                <div className={"card mt-3"}>
+                  <div className="card-block row">
+                    <div className="col-sm-12 col-lg-12 col-xl-12">
+                      <div className="table-responsive">
+                        <table className="table">
+                          <thead className="table-border">
+                          <tr>
+                            <th scope="col">{"SKU"}</th>
+                            <th scope="col">{"Quantity"}</th>
+                            <th scope="col">{"Batch No"}</th>
+                            <th scope="col">{"Manufacture Date"}</th>
+                            <th scope="col">{"Expire Date"}</th>
+                            <th scope="col">{"Action"}</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          {
+                            formData?.product?.map((item, index) =>
+                                <tr key={index}>
+                                  <td>{item.sku}</td>
+                                  <td>{item.qty}</td>
+                                  <td>{item.batchNo}</td>
+                                  <td>{item.manufactureDate}</td>
+                                  <td>{item.expireDate}</td>
+                                </tr>
+                            )
+                          }
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="d-flex justify-content-center align-items-center mt-3">
                   <Button
                       type="submit"
@@ -385,8 +458,11 @@ const AddStockAdjustment = () => {
               sku={sku}
               setQuantity={setQuantity}
               quantity={quantity}
-              setFormData={setFormData}
-              formData={formData}
+              setProductFormData={setProductFormData}
+              productFormData={productFormData}
+              addProductInfo={addProductInfo}
+              serialKeys={serialKeys}
+              setSerialKeys={setSerialKeys}
           ></AddStockAdjustmentModal>
         </form>
       </div>

@@ -116,8 +116,8 @@ const Products = () => {
                 header: 'isRawMaterial'
             },
             {
-                accessorKey: 'hasSerialKey',
-                header: 'hasSerialKey'
+                accessorKey: 'has_serial_key',
+                header: 'has_serial_key'
             },
             {
                 accessorKey: 'productType',

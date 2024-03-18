@@ -137,6 +137,11 @@ const DataTable = ({
     }
   }, [data]);
 
+  // const FindMax = useMemo(
+  //     () => data.reduce((acc, curr) => Math.max(acc, curr.age), 0),
+  //     [],
+  // );
+
   return (
     <>
       {groupingItem ? (
@@ -177,7 +182,11 @@ const DataTable = ({
               <IconButton
                 color="error"
                 onClick={() => {
-                  console.log('row?.original?.primary_id', row?.original)
+                  console.log(
+                    "row?.original?.primary_id",
+                    row?.original,
+                    row?.original?.[baseForDelete]
+                  );
                   handleDelete(
                     !baseForDelete ? row?.original?.primary_id : row?.original?.[baseForDelete]
                   );

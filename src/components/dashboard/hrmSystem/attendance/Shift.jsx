@@ -209,7 +209,7 @@ const Shift = () => {
                             <CommonSearchComponet setCurrentPage={setCurrentPage} searchData={searchData} setSearchData={setSearchData} howManyItem={howManyItem} setHowManyItem={setHowManyItem} />
                             <div className="table-responsive">
                                 <table className="table">
-                                    <thead className=" table-border">
+                                    <thead className="table-border">
                                     <tr>
                                         <th scope="col">{"Shift Id"}</th>
                                         <th scope="col">{"Shift Name"}</th>

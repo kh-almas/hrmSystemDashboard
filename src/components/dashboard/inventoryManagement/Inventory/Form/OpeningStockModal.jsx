@@ -33,14 +33,14 @@ const OpeningStockModal = ({
     return code;
   }
 
-  // if (formData.hasSerialKey == 1) {
+  // if (formData.has_serial_key == 1) {
   //   const hasKey = generateUniqueKey(15);
   //   setHasKey(hasKey);
-  //   setFormData({ ...formData, hasSerialKey: hasKey });
+  //   setFormData({ ...formData, has_serial_key: hasKey });
   // }
 
   useEffect(() => {
-    //   if (sku?.hasSerialKey == 1) {
+    //   if (sku?.has_serial_key == 1) {
     //     let generatedKeys = [];
     //     for (let i = 0; i < quantity; i++) {
     //       const hasKey = generateUniqueKey(15);
@@ -48,7 +48,7 @@ const OpeningStockModal = ({
     //     }
     //     setSerialKeys(generatedKeys);
     //   }
-    // }, [sku?.hasSerialKey, quantity]);
+    // }, [sku?.has_serial_key, quantity]);
 
     if (sku?.hasSerialKey === 1) {
       let generatedKeys = [];
@@ -72,10 +72,12 @@ const OpeningStockModal = ({
       event.preventDefault();
       if (serialKeys.length < quantity) {
         setSerialKeys([...serialKeys, event.target.value]);
+
         setFormData({
           ...formData,
           hasSerialKey: [...serialKeys, event.target.value],
         });
+
         setHasKey("");
       } else {
         return alert("You've reached the maximum number of serial keys!");
@@ -83,7 +85,7 @@ const OpeningStockModal = ({
     }
   };
 
-  // setFormData(prevState => ({ ...prevState, hasSerialKey: serialKeys }));
+  // setFormData(prevState => ({ ...prevState, has_serial_key: serialKeys }));
 
   const handleDeleteKey = (index, event) => {
     event.preventDefault();
@@ -647,11 +649,6 @@ const OpeningStockModal = ({
                     }}
                   />
                 </div>
-                {/* {errors.qty && (
-          <span style={{ fontSize: "10px", color: "red" }}>
-            {errors.qty.message}
-          </span>
-        )} */}
               </div>
               <div className="d-flex flex-wrap gap-2 mt-3">
                 {serialKeys.map((key, index) => (

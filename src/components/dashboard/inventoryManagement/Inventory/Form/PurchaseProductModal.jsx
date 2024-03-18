@@ -9,12 +9,10 @@ import { Button } from "react-bootstrap";
 import BaseModal from "../../../../common/modal/BaseModal";
 
 const PurchaseProductModal = ({
-  batchNo,
+  batch_no,
   modal,
   setModal,
   toggle,
-  setTotalQuantity,
-  totalQuantity,
   sku,
   setFormData,
   formData,
@@ -39,17 +37,17 @@ const PurchaseProductModal = ({
   useEffect(() => {
     if (sku?.hasSerialKey === 1) {
       let generatedKeys = [];
-      for (let i = 0; i < totalQuantity; i++) {
+      for (let i = 0; i < formData?.qty; i++) {
         const hasKey = generateUniqueKey(15);
         generatedKeys.push(hasKey);
       }
       setSerialKeys(generatedKeys);
       setFormData((prevState) => ({
         ...prevState,
-        hasSerialKey: generatedKeys,
+        has_serial_key: generatedKeys,
       }));
     }
-  }, [sku?.hasSerialKey, totalQuantity, setFormData]);
+  }, [sku?.hasSerialKey, setFormData]);
 
   const handleHasKey = (event) => {
     if (event.target.value == "") {
@@ -57,35 +55,32 @@ const PurchaseProductModal = ({
     }
     if (event.key === "Enter") {
       event.preventDefault();
-      if (serialKeys.length < totalQuantity) {
-        setSerialKeys([...serialKeys, event.target.value]);
-        setFormData({ ...formData, hasSerialKey: serialKeys });
-        setHasKey("");
-      } else {
-        return alert("You've reached the maximum number of serial keys!");
-      }
+      setSerialKeys([...serialKeys, event.target.value]);
+      setFormData({ ...formData, has_serial_key: serialKeys });
+      setFormData({ ...formData, qty: serialKeys?.length + 1 });
+      console.log("serialKeys?.length", serialKeys?.length, formData?.qty);
+      setHasKey("");
     }
   };
 
-  // setFormData(prevState => ({ ...prevState, hasSerialKey: serialKeys }));
+  // setFormData(prevState => ({ ...prevState, has_serial_key: serialKeys }));
 
   const handleDeleteKey = (index, event) => {
     event.preventDefault();
     const updatedKeys = [...serialKeys];
     updatedKeys.splice(index, 1);
     setSerialKeys(updatedKeys);
+    setFormData({ ...formData, qty: updatedKeys?.length });
   };
 
   const product = sku?.label;
   const productName = product.split(" > ")[0];
 
-  console.log("serialKeys", serialKeys);
-
   return (
     <>
       <BaseModal title={productName} dataModal={modal} dataToggle={toggle}>
         <form>
-          {sku.hasSerialKey == 0 && (
+          {sku?.hasSerialKey == 0 && (
             <>
               <div className="row row-cols-1 row-cols-lg-2">
                 <div>
@@ -96,11 +91,10 @@ const PurchaseProductModal = ({
                     autoComplete="off"
                     size="small"
                     type="text"
-                    value={batchNo}
+                    value={batch_no}
                     label="Batch no"
                     onChange={(e) => {
-                      // setTotalQuantity(e.target.value);
-                      setFormData({ ...formData, batchNo: e.target.value });
+                      setFormData({ ...formData, batch_no: e.target.value });
                       // clearErrors(["qty"]);
                     }}
                     sx={{
@@ -130,19 +124,17 @@ const PurchaseProductModal = ({
 
                 {sku?.hasExpired ? (
                   <>
-                    {" "}
                     <div>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         {/*<DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />*/}
                         <DatePicker
                           label="Manufacture date"
                           slotProps={{ textField: { size: "small" } }}
-                          value={dayjs(formData?.manufactureDate)}
+                          value={dayjs(formData?.manufacture_date)}
                           onChange={(newValue) => {
-                            // setDate(moment(newValue.$d).format("YYYY-MM-DD"));
                             setFormData({
                               ...formData,
-                              manufactureDate: moment(newValue.$d).format(
+                              manufacture_date: moment(newValue.$d).format(
                                 "YYYY-MM-DD"
                               ),
                             });
@@ -172,12 +164,12 @@ const PurchaseProductModal = ({
                         <DatePicker
                           label="Expire Date"
                           slotProps={{ textField: { size: "small" } }}
-                          value={dayjs(formData?.expireDate)}
+                          value={dayjs(formData?.expire_date)}
                           onChange={(newValue) => {
                             // setDate(moment(newValue.$d).format("YYYY-MM-DD"));
                             setFormData({
                               ...formData,
-                              expireDate: moment(newValue.$d).format(
+                              expire_date: moment(newValue.$d).format(
                                 "YYYY-MM-DD"
                               ),
                             });
@@ -212,13 +204,12 @@ const PurchaseProductModal = ({
                     autoComplete="off"
                     size="small"
                     type={"number"}
-                    label={"totalQuantity"}
-                    defaultValue={totalQuantity}
+                    label={"Quantity"}
+                    defaultValue={formData?.qty}
                     // {...register("qty", {
                     //   required: "This field is required",
                     // })}
                     onChange={(e) => {
-                      setTotalQuantity(e.target.value);
                       setFormData({ ...formData, qty: e.target.value });
                       // clearErrors(["qty"]);
                     }}
@@ -250,7 +241,7 @@ const PurchaseProductModal = ({
             </>
           )}
 
-          {sku.hasSerialKey == 1 && (
+          {sku?.hasSerialKey == 1 && (
             <>
               <div className="row row-cols-1 row-cols-lg-2">
                 {sku?.hasBatch ? (
@@ -262,12 +253,10 @@ const PurchaseProductModal = ({
                       autoComplete="off"
                       size="small"
                       type="text"
-                      // value={batchNo}
-
+                      value={formData?.batch_no}
                       label="Batch no"
                       onChange={(e) => {
-                        // settotalQuantity(e.target.value);
-                        setFormData({ ...formData, batchNo: e.target.value });
+                        setFormData({ ...formData, batch_no: e.target.value });
                         // clearErrors(["qty"]);
                       }}
                       sx={{
@@ -306,12 +295,12 @@ const PurchaseProductModal = ({
                         <DatePicker
                           label="Manufacture date"
                           slotProps={{ textField: { size: "small" } }}
-                          value={dayjs(formData?.manufactureDate)}
+                          value={dayjs(formData?.manufacture_date)}
                           onChange={(newValue) => {
                             // setDate(moment(newValue.$d).format("YYYY-MM-DD"));
                             setFormData({
                               ...formData,
-                              manufactureDate: moment(newValue.$d).format(
+                              manufacture_date: moment(newValue.$d).format(
                                 "YYYY-MM-DD"
                               ),
                             });
@@ -341,12 +330,12 @@ const PurchaseProductModal = ({
                         <DatePicker
                           label="Expire Date"
                           slotProps={{ textField: { size: "small" } }}
-                          value={dayjs(formData?.expireDate)}
+                          value={dayjs(formData?.expire_date)}
                           onChange={(newValue) => {
                             // setDate(moment(newValue.$d).format("YYYY-MM-DD"));
                             setFormData({
                               ...formData,
-                              expireDate: moment(newValue.$d).format(
+                              expire_date: moment(newValue.$d).format(
                                 "YYYY-MM-DD"
                               ),
                             });
@@ -381,13 +370,12 @@ const PurchaseProductModal = ({
                     autoComplete="off"
                     size="small"
                     type={"number"}
-                    label={"totalQuantity"}
-                    defaultValue={totalQuantity}
+                    label={"Quantity"}
+                    value={formData?.qty}
                     // {...register("qty", {
                     //   required: "This field is required",
                     // })}
                     onChange={(e) => {
-                      setTotalQuantity(e.target.value);
                       setFormData({ ...formData, qty: e.target.value });
                       // clearErrors(["qty"]);
                     }}
@@ -415,6 +403,7 @@ const PurchaseProductModal = ({
                     }}
                   />
                 </div>
+
                 <div>
                   <TextField
                     variant="outlined"
@@ -424,8 +413,8 @@ const PurchaseProductModal = ({
                     type={"text"}
                     label={"hasSerialKey"}
                     value={hasKey}
-                    // onChange={(e) => setHasKey(e.target.value)}
-                    // onKeyDown={handleHasKey}
+                    onChange={(e) => setHasKey(e.target.value)}
+                    onKeyDown={handleHasKey}
                     sx={{
                       marginTop: 2,
                       "& .MuiFormLabel-root": {
@@ -484,12 +473,11 @@ const PurchaseProductModal = ({
                       autoComplete="off"
                       size="small"
                       type="text"
-                      // value={batchNo}
+                      // value={batch_no}
 
                       label="Batch no"
                       onChange={(e) => {
-                        // settotalQuantity(e.target.value);
-                        setFormData({ ...formData, batchNo: e.target.value });
+                        setFormData({ ...formData, batch_no: e.target.value });
                         // clearErrors(["qty"]);
                       }}
                       sx={{
@@ -528,12 +516,12 @@ const PurchaseProductModal = ({
                         <DatePicker
                           label="Manufacture date"
                           slotProps={{ textField: { size: "small" } }}
-                          value={dayjs(formData?.manufactureDate)}
+                          value={dayjs(formData?.manufacture_date)}
                           onChange={(newValue) => {
                             // setDate(moment(newValue.$d).format("YYYY-MM-DD"));
                             setFormData({
                               ...formData,
-                              manufactureDate: moment(newValue.$d).format(
+                              manufacture_date: moment(newValue.$d).format(
                                 "YYYY-MM-DD"
                               ),
                             });
@@ -563,12 +551,12 @@ const PurchaseProductModal = ({
                         <DatePicker
                           label="Expire Date"
                           slotProps={{ textField: { size: "small" } }}
-                          value={dayjs(formData?.expireDate)}
+                          value={dayjs(formData?.expire_date)}
                           onChange={(newValue) => {
                             // setDate(moment(newValue.$d).format("YYYY-MM-DD"));
                             setFormData({
                               ...formData,
-                              expireDate: moment(newValue.$d).format(
+                              expire_date: moment(newValue.$d).format(
                                 "YYYY-MM-DD"
                               ),
                             });
@@ -604,8 +592,8 @@ const PurchaseProductModal = ({
                     autoComplete="off"
                     size="small"
                     type={"number"}
-                    label={"totalQuantity"}
-                    value={totalQuantity}
+                    label={"Quantity"}
+                    value={formData?.qty}
                     // {...register("qty", {
                     //   required: "This field is required",
                     // })}
@@ -644,7 +632,7 @@ const PurchaseProductModal = ({
                     autoComplete="off"
                     size="small"
                     type={"text"}
-                    label={"hasSerialKey"}
+                    label={"has_serial_key"}
                     value={hasKey}
                     onChange={(e) => setHasKey(e.target.value)}
                     onKeyDown={handleHasKey}
