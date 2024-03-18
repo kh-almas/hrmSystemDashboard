@@ -225,6 +225,37 @@ const ProductInitialization = () => {
     // },
   };
 
+
+  // search from all field functionality
+  // useEffect(() => {
+  //   searchAndSort(search)
+  // }, [search]);
+
+
+  // function searchAndSort(input) {
+  //   // console.log('input', input);
+  //   const lowerCaseInput = input.toLowerCase();
+  //
+  //   const filteredAndSortedArray = allData
+  //       .filter(obj => {
+  //         return Object.values(obj).some(value => {
+  //           if (typeof value === 'string' || typeof value === 'number') {
+  //             const stringValue = typeof value === 'number' ? value.toString() : value;
+  //             return stringValue.toLowerCase().includes(lowerCaseInput);
+  //           }
+  //           return false;
+  //         });
+  //       })
+  //       .sort((a, b) => {
+  //         const valueA = Object.values(a).join('').toLowerCase();
+  //         const valueB = Object.values(b).join('').toLowerCase();
+  //         return valueA.localeCompare(valueB);
+  //       });
+  //
+  //   setData(filteredAndSortedArray);
+  //   // console.log('filteredAndSortedArray', filteredAndSortedArray);
+  // }
+
   return (
     <>
       {!isLoading ? (

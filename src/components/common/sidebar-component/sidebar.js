@@ -173,15 +173,15 @@ const Sidebar = (props) => {
 
     return (
         <Fragment>
-            <div className="page-sidebar">
-                <div className="main-header-left d-none d-lg-block">
-                    <div className="logo-wrapper compactLogo">
-                        <Link to={`${process.env.PUBLIC_URL}/dashboard/default`}>
-                            <img className="blur-up lazyloaded rounded" src={logo_compact} alt="" style={{maxWidth: '200px'}}/>
-                            <img className="blur-up lazyloaded rounded" src={logo} alt="" style={{maxWidth: '200px'}} />
-                        </Link>
-                    </div>
-                </div>
+            <div className="page-sidebar" style={{marginTop: '60px'}}>
+                {/*<div className="main-header-left d-none d-lg-block">*/}
+                {/*    <div className="logo-wrapper compactLogo">*/}
+                {/*        <Link to={`${process.env.PUBLIC_URL}/dashboard/default`}>*/}
+                {/*            <img className="blur-up lazyloaded rounded" src={"https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.facebook.com%2Flogomakershop%2F&psig=AOvVaw10KKZDUfofCT-9vhwDUITO&ust=1709879185096000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPih7r3C4YQDFQAAAAAdAAAAABAE"} alt="" style={{maxWidth: '200px'}}/>*/}
+                {/*            <img className="blur-up lazyloaded rounded" src={"https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.facebook.com%2Flogomakershop%2F&psig=AOvVaw10KKZDUfofCT-9vhwDUITO&ust=1709879185096000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPih7r3C4YQDFQAAAAAdAAAAABAE"} alt="" style={{maxWidth: '200px'}} />*/}
+                {/*        </Link>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 <div className="sidebar custom-scrollbar">
                     {/* <UserPanel /> */}
                     <ul

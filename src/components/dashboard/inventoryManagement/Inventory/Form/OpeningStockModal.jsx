@@ -22,9 +22,7 @@ const OpeningStockModal = ({
   const [serialKeys, setSerialKeys] = useState([]);
 
   function generateUniqueKey(count) {
-    let timestamp = new Date().getTime().toString();
     let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    characters += timestamp;
     let code = "";
 
     for (let i = 0; i < count; i++) {
@@ -99,8 +97,6 @@ const OpeningStockModal = ({
 
   const product = sku?.label;
   const productName = product.split(" > ")[0];
-
-  console.log("serialKeys", serialKeys);
   return (
     <>
       <BaseModal title={productName} dataModal={modal} dataToggle={toggle}>
@@ -653,11 +649,6 @@ const OpeningStockModal = ({
                     }}
                   />
                 </div>
-                {/* {errors.qty && (
-          <span style={{ fontSize: "10px", color: "red" }}>
-            {errors.qty.message}
-          </span>
-        )} */}
               </div>
               <div className="d-flex flex-wrap gap-2 mt-3">
                 {serialKeys.map((key, index) => (

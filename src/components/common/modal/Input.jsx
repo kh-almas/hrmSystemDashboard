@@ -70,6 +70,7 @@ const Input = ({rules, performOnValue, labelName, inputName, inputType, placehol
                         },
                     },
                 }} />
+            <span style={{fontSize: '10px'}}>{error?.message}</span>
         </div>
     );
 };

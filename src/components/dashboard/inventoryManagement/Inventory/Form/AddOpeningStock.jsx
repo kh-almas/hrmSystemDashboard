@@ -95,60 +95,53 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   }, []);
 
   const onSubmit = (data) => {
-    // console.log("dateeeeee-------",data);
-    // console.log("dateeeeee-------",date);
-    // data.branch_id = selectedBranch?.id;
-    // data.date = date;
-    // data.batch_no = batchNo;
-    // data.sku_id = sku.id;
-
-    // setFormData(data);
-
-    console.log('formddadaddaad',formData)
-
-    // axios
-    //   .post("/inventory-management/stock/opening/add", formData)
-    //   .then((info) => {
-    //     if (info?.status == 200) {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "success",
-    //         title: "Your work has been saved",
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //       // allOpeningStockReFetch();
-    //       // reset();
-    //       // // setSelectedBranch({});
-    //       // setDate(moment(new Date()).format('YYYY-MM-DD'));
-    //       const batchNo = generateSkuCode(12);
-    //       setBatchNo(batchNo);
-    //       allOpeningStockReFetch();
-    //       setShowFromForAdd(false);
-    //       // const uniqueId = generateSkuCode(8);
-    //       // setUniqueKey(uniqueId);
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     if (e?.response?.data?.body?.message?.errno == 1062) {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "error",
-    //         title: "Can not duplicate variant name",
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     } else {
-    //       Swal.fire({
-    //         position: "top-end",
-    //         icon: "error",
-    //         // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
-    //         title: `Something is wrong`,
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       });
-    //     }
-    //   });
+    data.branch_id = selectedBranch?.id;
+    data.date = date;
+    data.batch_no = batchNo;
+    data.sku_id = sku.id;
+    axios
+      .post("/inventory-management/stock/opening/add", data)
+      .then((info) => {
+        if (info?.status == 200) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          // allOpeningStockReFetch();
+          // reset();
+          // // setSelectedBranch({});
+          // setDate(moment(new Date()).format('YYYY-MM-DD'));
+          const batchNo = generateSkuCode(12);
+          setBatchNo(batchNo);
+          allOpeningStockReFetch();
+          setShowFromForAdd(false);
+          // const uniqueId = generateSkuCode(8);
+          // setUniqueKey(uniqueId);
+        }
+      })
+      .catch((e) => {
+        if (e?.response?.data?.body?.message?.errno == 1062) {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: "Can not duplicate variant name",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            // title: `${e?.response?.data?.body?.message?.details?.[0].message}`,
+            title: `Something is wrong`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
   };
 
   useEffect(() => {
@@ -156,10 +149,9 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
   }, [allBranch]);
 
   useEffect(() => {
-    const allProduct = allSku?.data?.body?.data;
+    const allSkuData = allSku?.data?.body?.data;
     let finalArray = [];
-    allProduct?.map((item) => {
-      // console.log("item", item);
+    allSkuData?.map((item) => {
       let initialObj = {
         hasSerialKey: item?.hasSerialKey,
         hasExpired: item?.hasExpired,
@@ -192,7 +184,7 @@ const AddOpeningStock = ({ allOpeningStockReFetch, setShowFromForAdd }) => {
     setModal(!modal);
   };
 
-  console.log("formData", formData);
+  // console.log("formData", formData);
 
   return (
     <>

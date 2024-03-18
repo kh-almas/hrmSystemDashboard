@@ -15,16 +15,16 @@ const AppLayout = (props) => {
   return (
     <Fragment>
       {/* <Loader /> */}
+      <Header />
       <div className="page-wrapper"  ref={modalRefForAddProductInInventory}>
         <div className="page-body-wrapper">
-          <Header />
           <Sidebar />
           <RightSidebar />
-          <div className="page-body">
+          <div className="page-body mt-0">
             <Outlet />
           </div>
           <Footer />
-          <ThemeCustomizer />
+          {/*<ThemeCustomizer />*/}
         </div>
       </div>
       <ToastContainer />

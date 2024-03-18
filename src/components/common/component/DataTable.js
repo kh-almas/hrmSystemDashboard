@@ -3,6 +3,7 @@ import { Box, IconButton } from "@mui/material";
 import { MaterialReactTable } from "material-react-table";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {Button, Popover, PopoverBody, PopoverHeader} from "reactstrap";
 
 const DataTable = ({
   getAllData,
@@ -11,10 +12,22 @@ const DataTable = ({
   toggleUpdateModal,
   setValueForEdit,
   baseForDelete,
+  statusData,
 }) => {
   const [data, setData] = useState([]);
   const [tableInfo, setTableInfo] = useState([]);
   const [groupingItem, setGrouping] = useState("");
+
+  const [popover, setPopover] = useState('');
+  const Toggle = (id) => {
+    console.log('id', id);
+    if (id !== popover){
+      setPopover(id);
+    }else {
+      setPopover('');
+    }
+
+  };
 
   useEffect(() => {
     setData([]);
@@ -22,8 +35,6 @@ const DataTable = ({
   }, [getAllData]);
 
   useEffect(() => {
-    // setTableInfo([]);
-    // setGrouping([])
     if (data?.length > 0) {
       const objectKeys = Object.keys(data[0]);
 
@@ -141,41 +152,33 @@ const DataTable = ({
           enableStickyHeader
           initialState={{
             density: "compact",
-            expanded: true, //expand all groups by default
-            grouping: [groupingItem], //an array of columns to group by default (can be multiple)
+            expanded: true,
+            grouping: [groupingItem],
             pagination: { pageIndex: 0, pageSize: 10 },
-            // sorting: [{ id: 'state', desc: false }], //sort by state by default
+            // sorting: [{ id: 'state', desc: false }],
           }}
           muiToolbarAlertBannerChipProps={{ color: "secondary" }}
           muiTableContainerProps={{ maxHeight: 700 }}
           enableRowActions
           renderRowActions={({ row, table }) => (
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "nowrap",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              {editLink ? (
-                <Link
-                  to={`${process.env.PUBLIC_URL}${editLink}${row?.original?.id}`}
-                >
-                  <EditIcon />
-                </Link>
-              ) : (
-                <IconButton
-                  color="secondary"
-                  onClick={() => {
-                    setValueForEdit(row);
-                    toggleUpdateModal();
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-              )}
-              {/* {console.log('row----',row)} */}
+            <Box sx={{display: "flex", flexWrap: "nowrap", justifyContent: "center", alignItems: "center",}}>
+                {editLink ? (
+                  <Link
+                    to={`${process.env.PUBLIC_URL}${editLink}${row?.original?.id}`}
+                  >
+                    <EditIcon />
+                  </Link>
+                ) : (
+                  <IconButton
+                    color="secondary"
+                    onClick={() => {
+                      setValueForEdit(row);
+                      toggleUpdateModal();
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                )}
               <IconButton
                 color="error"
                 onClick={() => {
@@ -185,30 +188,58 @@ const DataTable = ({
                     row?.original?.[baseForDelete]
                   );
                   handleDelete(
-                    !baseForDelete
-                      ? row?.original?.primary_id
-                      : row?.original?.[baseForDelete]
+                    !baseForDelete ? row?.original?.primary_id : row?.original?.[baseForDelete]
                   );
                 }}
               >
                 <DeleteIcon />
               </IconButton>
+
+              {
+                statusData ?
+                    <>
+                <span
+                    onClick={() => Toggle(`Popover-${!baseForDelete ? row?.original?.primary_id : row?.original?.[baseForDelete]}`)}
+                    id={`Popover-${!baseForDelete ? row?.original?.primary_id : row?.original?.[baseForDelete]}`}>
+                  <i className="fa fa-cogs"></i>
+                </span>
+                      <Popover
+                          placement={'bottom'}
+                          isOpen={popover === `Popover-${!baseForDelete ? row?.original?.primary_id : row?.original?.[baseForDelete]}` ? true : false}
+                          target={`Popover-${!baseForDelete ? row?.original?.primary_id : row?.original?.[baseForDelete]}`}
+                          toggle={Toggle}
+                      >
+                        {/*{console.log('asdfghdflk', `Popover-${!baseForDelete ? row?.original?.primary_id : row?.original?.[baseForDelete]}`)}*/}
+                        <PopoverHeader style={{backgroundColor: "lightgray", color: 'darkgray'}}>{'Payment Status'}</PopoverHeader>
+                        <PopoverBody style={{padding: '8px'}}>
+                          {
+                            statusData?.map(item => <>
+                              <div style={{borderBottom: '1px solid gray', marginBottom: '4px', width: '120px', cursor: 'pointer', padding: '4px 10px', marginX: 'auto' }} onClick={() => console.log(item)}>{item}</div>
+                            </>)
+                          }
+                        </PopoverBody>
+                      </Popover>
+                    </>
+                    : ''
+              }
+
+
             </Box>
           )}
         />
       ) : (
-        <div style={{ height: "100vh" }}>
-          <div className="d-flex align-items-center justify-content-center">
-            <div className="loader-box">
-              <div className="loader">
-                <div className="line bg-primary"></div>
-                <div className="line bg-primary"></div>
-                <div className="line bg-primary"></div>
-                <div className="line bg-primary"></div>
+          <div style={{height: "100vh"}}>
+            <div className="d-flex align-items-center justify-content-center">
+              <div className="loader-box">
+                <div className="loader">
+                  <div className="line bg-primary"></div>
+                  <div className="line bg-primary"></div>
+                  <div className="line bg-primary"></div>
+                  <div className="line bg-primary"></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
       )}
     </>
   );

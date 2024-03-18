@@ -1,0 +1,34 @@
+Work Process
+
+1. Product Entry (done)
+2. Variant entry (done)
+3. Product option (done)
+4. Serial No
+5. Branch wise product initialization
+6. Product price setup (Batch, sales price*)
+7. Discount/Promotion (Batch)
+
+1. Purchase requisition 
+2. Purchase qoutation (Approval)
+3. purchase invoice (Approval){Batch*, serial*, purchase price*} (invoice wise supplier payment)
+4. Product recived 
+5. Purchase return {Batch, serial}
+
+1.  Sales qoutation (Approval){Batch, serial}
+2.  Sales invoice(Approval){Batch, serial}(invoice wise customer payment receive)
+3. POS {Batch, serial}
+4. Product delivery 
+5. Sales return {Batch, serial}
+
+1. Opening stock {Batch*, serial*, purchase price*}
+2. Damage product {Batch, serial}
+3. Expire products {Batch, serial}
+4. Stock reconcilation  {Batch, serial}
+5. Stock adjustment (Approval) {Batch, serial}
+6. Transfer requisition 
+7. Stock transfer {Batch, serial}
+8. Transfer recived 
+
+
+
+
